@@ -15,7 +15,7 @@ Revenexx PHP SDK for server-side applications.
 Install the SDK with [Composer](https://getcomposer.org/):
 
 ```bash
-composer require revenexx/php
+composer require revenexx/sdk
 ```
 
 

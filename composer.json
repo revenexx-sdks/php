@@ -1,5 +1,5 @@
 {
-    "name": "revenexx/php",
+    "name": "revenexx/sdk",
     "description": "Revenexx PHP SDK.",
     "type": "library",
     "license": "MIT",
