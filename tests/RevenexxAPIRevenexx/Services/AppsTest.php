@@ -27,7 +27,7 @@ final class AppsTest extends TestCase {
 
         $data = array(
             "functions" => array(),
-            "total" => );
+            "total" => 0);
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -67,7 +67,7 @@ final class AppsTest extends TestCase {
             "schedule" => "",
             "scopes" => array(),
             "specification" => "",
-            "timeout" => ,
+            "timeout" => 0,
             "vars" => array(),
             "version" => "");
 
@@ -118,7 +118,7 @@ final class AppsTest extends TestCase {
 
         $data = array(
             "runtimes" => array(),
-            "total" => );
+            "total" => 0);
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -134,7 +134,7 @@ final class AppsTest extends TestCase {
 
         $data = array(
             "specifications" => array(),
-            "total" => );
+            "total" => 0);
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -150,7 +150,7 @@ final class AppsTest extends TestCase {
 
         $data = array(
             "templates" => array(),
-            "total" => );
+            "total" => 0);
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -178,7 +178,7 @@ final class AppsTest extends TestCase {
             "runtimes" => array(),
             "scopes" => array(),
             "tagline" => "",
-            "timeout" => ,
+            "timeout" => 0,
             "useCases" => array(),
             "variables" => array(),
             "vcsProvider" => "");
@@ -199,28 +199,28 @@ final class AppsTest extends TestCase {
         $data = array(
             "builds" => array(),
             "buildsFailed" => array(),
-            "buildsFailedTotal" => ,
+            "buildsFailedTotal" => 0,
             "buildsMbSeconds" => array(),
-            "buildsMbSecondsTotal" => ,
+            "buildsMbSecondsTotal" => 0,
             "buildsStorage" => array(),
-            "buildsStorageTotal" => ,
+            "buildsStorageTotal" => 0,
             "buildsSuccess" => array(),
-            "buildsSuccessTotal" => ,
+            "buildsSuccessTotal" => 0,
             "buildsTime" => array(),
-            "buildsTimeTotal" => ,
-            "buildsTotal" => ,
+            "buildsTimeTotal" => 0,
+            "buildsTotal" => 0,
             "deployments" => array(),
             "deploymentsStorage" => array(),
-            "deploymentsStorageTotal" => ,
-            "deploymentsTotal" => ,
+            "deploymentsStorageTotal" => 0,
+            "deploymentsTotal" => 0,
             "executions" => array(),
             "executionsMbSeconds" => array(),
-            "executionsMbSecondsTotal" => ,
+            "executionsMbSecondsTotal" => 0,
             "executionsTime" => array(),
-            "executionsTimeTotal" => ,
-            "executionsTotal" => ,
+            "executionsTimeTotal" => 0,
+            "executionsTotal" => 0,
             "functions" => array(),
-            "functionsTotal" => ,
+            "functionsTotal" => 0,
             "range" => "");
 
         $this->client
@@ -276,7 +276,7 @@ final class AppsTest extends TestCase {
             "schedule" => "",
             "scopes" => array(),
             "specification" => "",
-            "timeout" => ,
+            "timeout" => 0,
             "vars" => array(),
             "version" => "");
 
@@ -319,7 +319,7 @@ final class AppsTest extends TestCase {
             "schedule" => "",
             "scopes" => array(),
             "specification" => "",
-            "timeout" => ,
+            "timeout" => 0,
             "vars" => array(),
             "version" => "");
 
@@ -363,7 +363,7 @@ final class AppsTest extends TestCase {
             "schedule" => "",
             "scopes" => array(),
             "specification" => "",
-            "timeout" => ,
+            "timeout" => 0,
             "vars" => array(),
             "version" => "");
 
@@ -383,7 +383,7 @@ final class AppsTest extends TestCase {
 
         $data = array(
             "deployments" => array(),
-            "total" => );
+            "total" => 0);
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -404,10 +404,10 @@ final class AppsTest extends TestCase {
             "\$updatedAt" => "",
             "activate" => true,
             "billingJson" => "",
-            "buildDuration" => ,
+            "buildDuration" => 0,
             "buildId" => "",
             "buildLogs" => "",
-            "buildSize" => ,
+            "buildSize" => 0,
             "entrypoint" => "",
             "manifestJson" => "",
             "providerBranch" => "",
@@ -424,9 +424,9 @@ final class AppsTest extends TestCase {
             "resourceType" => "",
             "screenshotDark" => "",
             "screenshotLight" => "",
-            "sourceSize" => ,
+            "sourceSize" => 0,
             "status" => "",
-            "totalSize" => ,
+            "totalSize" => 0,
             "type" => "");
 
         $this->client
@@ -450,10 +450,10 @@ final class AppsTest extends TestCase {
             "\$updatedAt" => "",
             "activate" => true,
             "billingJson" => "",
-            "buildDuration" => ,
+            "buildDuration" => 0,
             "buildId" => "",
             "buildLogs" => "",
-            "buildSize" => ,
+            "buildSize" => 0,
             "entrypoint" => "",
             "manifestJson" => "",
             "providerBranch" => "",
@@ -470,9 +470,9 @@ final class AppsTest extends TestCase {
             "resourceType" => "",
             "screenshotDark" => "",
             "screenshotLight" => "",
-            "sourceSize" => ,
+            "sourceSize" => 0,
             "status" => "",
-            "totalSize" => ,
+            "totalSize" => 0,
             "type" => "");
 
         $this->client
@@ -495,10 +495,10 @@ final class AppsTest extends TestCase {
             "\$updatedAt" => "",
             "activate" => true,
             "billingJson" => "",
-            "buildDuration" => ,
+            "buildDuration" => 0,
             "buildId" => "",
             "buildLogs" => "",
-            "buildSize" => ,
+            "buildSize" => 0,
             "entrypoint" => "",
             "manifestJson" => "",
             "providerBranch" => "",
@@ -515,9 +515,9 @@ final class AppsTest extends TestCase {
             "resourceType" => "",
             "screenshotDark" => "",
             "screenshotLight" => "",
-            "sourceSize" => ,
+            "sourceSize" => 0,
             "status" => "",
-            "totalSize" => ,
+            "totalSize" => 0,
             "type" => "");
 
         $this->client
@@ -544,10 +544,10 @@ final class AppsTest extends TestCase {
             "\$updatedAt" => "",
             "activate" => true,
             "billingJson" => "",
-            "buildDuration" => ,
+            "buildDuration" => 0,
             "buildId" => "",
             "buildLogs" => "",
-            "buildSize" => ,
+            "buildSize" => 0,
             "entrypoint" => "",
             "manifestJson" => "",
             "providerBranch" => "",
@@ -564,9 +564,9 @@ final class AppsTest extends TestCase {
             "resourceType" => "",
             "screenshotDark" => "",
             "screenshotLight" => "",
-            "sourceSize" => ,
+            "sourceSize" => 0,
             "status" => "",
-            "totalSize" => ,
+            "totalSize" => 0,
             "type" => "");
 
         $this->client
@@ -606,10 +606,10 @@ final class AppsTest extends TestCase {
             "\$updatedAt" => "",
             "activate" => true,
             "billingJson" => "",
-            "buildDuration" => ,
+            "buildDuration" => 0,
             "buildId" => "",
             "buildLogs" => "",
-            "buildSize" => ,
+            "buildSize" => 0,
             "entrypoint" => "",
             "manifestJson" => "",
             "providerBranch" => "",
@@ -626,9 +626,9 @@ final class AppsTest extends TestCase {
             "resourceType" => "",
             "screenshotDark" => "",
             "screenshotLight" => "",
-            "sourceSize" => ,
+            "sourceSize" => 0,
             "status" => "",
-            "totalSize" => ,
+            "totalSize" => 0,
             "type" => "");
 
         $this->client
@@ -667,10 +667,10 @@ final class AppsTest extends TestCase {
             "\$updatedAt" => "",
             "activate" => true,
             "billingJson" => "",
-            "buildDuration" => ,
+            "buildDuration" => 0,
             "buildId" => "",
             "buildLogs" => "",
-            "buildSize" => ,
+            "buildSize" => 0,
             "entrypoint" => "",
             "manifestJson" => "",
             "providerBranch" => "",
@@ -687,9 +687,9 @@ final class AppsTest extends TestCase {
             "resourceType" => "",
             "screenshotDark" => "",
             "screenshotLight" => "",
-            "sourceSize" => ,
+            "sourceSize" => 0,
             "status" => "",
-            "totalSize" => ,
+            "totalSize" => 0,
             "type" => "");
 
         $this->client
@@ -708,7 +708,7 @@ final class AppsTest extends TestCase {
 
         $data = array(
             "executions" => array(),
-            "total" => );
+            "total" => 0);
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -729,7 +729,7 @@ final class AppsTest extends TestCase {
             "\$permissions" => array(),
             "\$updatedAt" => "",
             "deploymentId" => "",
-            "duration" => ,
+            "duration" => 0,
             "errors" => "",
             "functionId" => "",
             "logs" => "",
@@ -738,7 +738,7 @@ final class AppsTest extends TestCase {
             "requestPath" => "",
             "responseBody" => "",
             "responseHeaders" => array(),
-            "responseStatusCode" => ,
+            "responseStatusCode" => 0,
             "status" => "",
             "trigger" => "");
 
@@ -777,7 +777,7 @@ final class AppsTest extends TestCase {
             "\$permissions" => array(),
             "\$updatedAt" => "",
             "deploymentId" => "",
-            "duration" => ,
+            "duration" => 0,
             "errors" => "",
             "functionId" => "",
             "logs" => "",
@@ -786,7 +786,7 @@ final class AppsTest extends TestCase {
             "requestPath" => "",
             "responseBody" => "",
             "responseHeaders" => array(),
-            "responseStatusCode" => ,
+            "responseStatusCode" => 0,
             "status" => "",
             "trigger" => "");
 
@@ -852,27 +852,27 @@ final class AppsTest extends TestCase {
         $data = array(
             "builds" => array(),
             "buildsFailed" => array(),
-            "buildsFailedTotal" => ,
+            "buildsFailedTotal" => 0,
             "buildsMbSeconds" => array(),
-            "buildsMbSecondsTotal" => ,
+            "buildsMbSecondsTotal" => 0,
             "buildsStorage" => array(),
-            "buildsStorageTotal" => ,
+            "buildsStorageTotal" => 0,
             "buildsSuccess" => array(),
-            "buildsSuccessTotal" => ,
+            "buildsSuccessTotal" => 0,
             "buildsTime" => array(),
-            "buildsTimeAverage" => ,
-            "buildsTimeTotal" => ,
-            "buildsTotal" => ,
+            "buildsTimeAverage" => 0,
+            "buildsTimeTotal" => 0,
+            "buildsTotal" => 0,
             "deployments" => array(),
             "deploymentsStorage" => array(),
-            "deploymentsStorageTotal" => ,
-            "deploymentsTotal" => ,
+            "deploymentsStorageTotal" => 0,
+            "deploymentsTotal" => 0,
             "executions" => array(),
             "executionsMbSeconds" => array(),
-            "executionsMbSecondsTotal" => ,
+            "executionsMbSecondsTotal" => 0,
             "executionsTime" => array(),
-            "executionsTimeTotal" => ,
-            "executionsTotal" => ,
+            "executionsTimeTotal" => 0,
+            "executionsTotal" => 0,
             "range" => "");
 
         $this->client
@@ -889,7 +889,7 @@ final class AppsTest extends TestCase {
     public function testMethodAppsListVariables(): void {
 
         $data = array(
-            "total" => ,
+            "total" => 0,
             "variables" => array());
 
         $this->client

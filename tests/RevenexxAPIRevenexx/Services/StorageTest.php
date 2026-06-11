@@ -23,7 +23,7 @@ final class StorageTest extends TestCase {
 
         $data = array(
             "buckets" => array(),
-            "total" => );
+            "total" => 0);
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -48,9 +48,9 @@ final class StorageTest extends TestCase {
             "enabled" => true,
             "encryption" => true,
             "fileSecurity" => true,
-            "maximumFileSize" => ,
+            "maximumFileSize" => 0,
             "name" => "",
-            "totalSize" => ,
+            "totalSize" => 0,
             "transformations" => true);
 
         $this->client
@@ -93,9 +93,9 @@ final class StorageTest extends TestCase {
             "enabled" => true,
             "encryption" => true,
             "fileSecurity" => true,
-            "maximumFileSize" => ,
+            "maximumFileSize" => 0,
             "name" => "",
-            "totalSize" => ,
+            "totalSize" => 0,
             "transformations" => true);
 
         $this->client
@@ -122,9 +122,9 @@ final class StorageTest extends TestCase {
             "enabled" => true,
             "encryption" => true,
             "fileSecurity" => true,
-            "maximumFileSize" => ,
+            "maximumFileSize" => 0,
             "name" => "",
-            "totalSize" => ,
+            "totalSize" => 0,
             "transformations" => true);
 
         $this->client
@@ -143,7 +143,7 @@ final class StorageTest extends TestCase {
 
         $data = array(
             "files" => array(),
-            "total" => );
+            "total" => 0);
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -164,14 +164,14 @@ final class StorageTest extends TestCase {
             "\$permissions" => array(),
             "\$updatedAt" => "",
             "bucketId" => "",
-            "chunksTotal" => ,
-            "chunksUploaded" => ,
+            "chunksTotal" => 0,
+            "chunksUploaded" => 0,
             "compression" => "",
             "encryption" => true,
             "mimeType" => "",
             "name" => "",
             "signature" => "",
-            "sizeOriginal" => );
+            "sizeOriginal" => 0);
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -210,14 +210,14 @@ final class StorageTest extends TestCase {
             "\$permissions" => array(),
             "\$updatedAt" => "",
             "bucketId" => "",
-            "chunksTotal" => ,
-            "chunksUploaded" => ,
+            "chunksTotal" => 0,
+            "chunksUploaded" => 0,
             "compression" => "",
             "encryption" => true,
             "mimeType" => "",
             "name" => "",
             "signature" => "",
-            "sizeOriginal" => );
+            "sizeOriginal" => 0);
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -239,14 +239,14 @@ final class StorageTest extends TestCase {
             "\$permissions" => array(),
             "\$updatedAt" => "",
             "bucketId" => "",
-            "chunksTotal" => ,
-            "chunksUploaded" => ,
+            "chunksTotal" => 0,
+            "chunksUploaded" => 0,
             "compression" => "",
             "encryption" => true,
             "mimeType" => "",
             "name" => "",
             "signature" => "",
-            "sizeOriginal" => );
+            "sizeOriginal" => 0);
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

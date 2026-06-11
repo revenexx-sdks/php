@@ -24,7 +24,7 @@ final class SitesTest extends TestCase {
 
         $data = array(
             "sites" => array(),
-            "total" => );
+            "total" => 0);
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -66,7 +66,7 @@ final class SitesTest extends TestCase {
             "providerRootDirectory" => "",
             "providerSilentMode" => true,
             "specification" => "",
-            "timeout" => ,
+            "timeout" => 0,
             "vars" => array());
 
         $this->client
@@ -87,7 +87,7 @@ final class SitesTest extends TestCase {
 
         $data = array(
             "frameworks" => array(),
-            "total" => );
+            "total" => 0);
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -103,7 +103,7 @@ final class SitesTest extends TestCase {
 
         $data = array(
             "specifications" => array(),
-            "total" => );
+            "total" => 0);
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -160,7 +160,7 @@ final class SitesTest extends TestCase {
             "providerRootDirectory" => "",
             "providerSilentMode" => true,
             "specification" => "",
-            "timeout" => ,
+            "timeout" => 0,
             "vars" => array());
 
         $this->client
@@ -204,7 +204,7 @@ final class SitesTest extends TestCase {
             "providerRootDirectory" => "",
             "providerSilentMode" => true,
             "specification" => "",
-            "timeout" => ,
+            "timeout" => 0,
             "vars" => array());
 
         $this->client
@@ -250,7 +250,7 @@ final class SitesTest extends TestCase {
             "providerRootDirectory" => "",
             "providerSilentMode" => true,
             "specification" => "",
-            "timeout" => ,
+            "timeout" => 0,
             "vars" => array());
 
         $this->client
@@ -269,7 +269,7 @@ final class SitesTest extends TestCase {
 
         $data = array(
             "deployments" => array(),
-            "total" => );
+            "total" => 0);
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -290,10 +290,10 @@ final class SitesTest extends TestCase {
             "\$updatedAt" => "",
             "activate" => true,
             "billingJson" => "",
-            "buildDuration" => ,
+            "buildDuration" => 0,
             "buildId" => "",
             "buildLogs" => "",
-            "buildSize" => ,
+            "buildSize" => 0,
             "entrypoint" => "",
             "manifestJson" => "",
             "providerBranch" => "",
@@ -310,9 +310,9 @@ final class SitesTest extends TestCase {
             "resourceType" => "",
             "screenshotDark" => "",
             "screenshotLight" => "",
-            "sourceSize" => ,
+            "sourceSize" => 0,
             "status" => "",
-            "totalSize" => ,
+            "totalSize" => 0,
             "type" => "");
 
         $this->client
@@ -336,10 +336,10 @@ final class SitesTest extends TestCase {
             "\$updatedAt" => "",
             "activate" => true,
             "billingJson" => "",
-            "buildDuration" => ,
+            "buildDuration" => 0,
             "buildId" => "",
             "buildLogs" => "",
-            "buildSize" => ,
+            "buildSize" => 0,
             "entrypoint" => "",
             "manifestJson" => "",
             "providerBranch" => "",
@@ -356,9 +356,9 @@ final class SitesTest extends TestCase {
             "resourceType" => "",
             "screenshotDark" => "",
             "screenshotLight" => "",
-            "sourceSize" => ,
+            "sourceSize" => 0,
             "status" => "",
-            "totalSize" => ,
+            "totalSize" => 0,
             "type" => "");
 
         $this->client
@@ -381,10 +381,10 @@ final class SitesTest extends TestCase {
             "\$updatedAt" => "",
             "activate" => true,
             "billingJson" => "",
-            "buildDuration" => ,
+            "buildDuration" => 0,
             "buildId" => "",
             "buildLogs" => "",
-            "buildSize" => ,
+            "buildSize" => 0,
             "entrypoint" => "",
             "manifestJson" => "",
             "providerBranch" => "",
@@ -401,9 +401,9 @@ final class SitesTest extends TestCase {
             "resourceType" => "",
             "screenshotDark" => "",
             "screenshotLight" => "",
-            "sourceSize" => ,
+            "sourceSize" => 0,
             "status" => "",
-            "totalSize" => ,
+            "totalSize" => 0,
             "type" => "");
 
         $this->client
@@ -430,10 +430,10 @@ final class SitesTest extends TestCase {
             "\$updatedAt" => "",
             "activate" => true,
             "billingJson" => "",
-            "buildDuration" => ,
+            "buildDuration" => 0,
             "buildId" => "",
             "buildLogs" => "",
-            "buildSize" => ,
+            "buildSize" => 0,
             "entrypoint" => "",
             "manifestJson" => "",
             "providerBranch" => "",
@@ -450,9 +450,9 @@ final class SitesTest extends TestCase {
             "resourceType" => "",
             "screenshotDark" => "",
             "screenshotLight" => "",
-            "sourceSize" => ,
+            "sourceSize" => 0,
             "status" => "",
-            "totalSize" => ,
+            "totalSize" => 0,
             "type" => "");
 
         $this->client
@@ -492,10 +492,10 @@ final class SitesTest extends TestCase {
             "\$updatedAt" => "",
             "activate" => true,
             "billingJson" => "",
-            "buildDuration" => ,
+            "buildDuration" => 0,
             "buildId" => "",
             "buildLogs" => "",
-            "buildSize" => ,
+            "buildSize" => 0,
             "entrypoint" => "",
             "manifestJson" => "",
             "providerBranch" => "",
@@ -512,9 +512,9 @@ final class SitesTest extends TestCase {
             "resourceType" => "",
             "screenshotDark" => "",
             "screenshotLight" => "",
-            "sourceSize" => ,
+            "sourceSize" => 0,
             "status" => "",
-            "totalSize" => ,
+            "totalSize" => 0,
             "type" => "");
 
         $this->client
@@ -553,10 +553,10 @@ final class SitesTest extends TestCase {
             "\$updatedAt" => "",
             "activate" => true,
             "billingJson" => "",
-            "buildDuration" => ,
+            "buildDuration" => 0,
             "buildId" => "",
             "buildLogs" => "",
-            "buildSize" => ,
+            "buildSize" => 0,
             "entrypoint" => "",
             "manifestJson" => "",
             "providerBranch" => "",
@@ -573,9 +573,9 @@ final class SitesTest extends TestCase {
             "resourceType" => "",
             "screenshotDark" => "",
             "screenshotLight" => "",
-            "sourceSize" => ,
+            "sourceSize" => 0,
             "status" => "",
-            "totalSize" => ,
+            "totalSize" => 0,
             "type" => "");
 
         $this->client
@@ -594,7 +594,7 @@ final class SitesTest extends TestCase {
 
         $data = array(
             "executions" => array(),
-            "total" => );
+            "total" => 0);
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -631,7 +631,7 @@ final class SitesTest extends TestCase {
             "\$permissions" => array(),
             "\$updatedAt" => "",
             "deploymentId" => "",
-            "duration" => ,
+            "duration" => 0,
             "errors" => "",
             "functionId" => "",
             "logs" => "",
@@ -640,7 +640,7 @@ final class SitesTest extends TestCase {
             "requestPath" => "",
             "responseBody" => "",
             "responseHeaders" => array(),
-            "responseStatusCode" => ,
+            "responseStatusCode" => 0,
             "status" => "",
             "trigger" => "");
 
@@ -659,7 +659,7 @@ final class SitesTest extends TestCase {
     public function testMethodSitesListVariables(): void {
 
         $data = array(
-            "total" => ,
+            "total" => 0,
             "variables" => array());
 
         $this->client

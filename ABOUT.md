@@ -2,7 +2,7 @@
 
 Revenexx PHP SDK for server-side applications.
 
-- **Version:** 1.0.0
+- **Version:** 0.0.1
 - **Language:** PHP
 - **API version:** 1.0.0
 - **Endpoint:** https://api.revenexx.com

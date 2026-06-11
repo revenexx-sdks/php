@@ -41,7 +41,7 @@ final class LocaleTest extends TestCase {
 
         $data = array(
             "localeCodes" => array(),
-            "total" => );
+            "total" => 0);
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -57,7 +57,7 @@ final class LocaleTest extends TestCase {
 
         $data = array(
             "continents" => array(),
-            "total" => );
+            "total" => 0);
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -73,7 +73,7 @@ final class LocaleTest extends TestCase {
 
         $data = array(
             "countries" => array(),
-            "total" => );
+            "total" => 0);
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -89,7 +89,7 @@ final class LocaleTest extends TestCase {
 
         $data = array(
             "countries" => array(),
-            "total" => );
+            "total" => 0);
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -105,7 +105,7 @@ final class LocaleTest extends TestCase {
 
         $data = array(
             "phones" => array(),
-            "total" => );
+            "total" => 0);
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -121,7 +121,7 @@ final class LocaleTest extends TestCase {
 
         $data = array(
             "currencies" => array(),
-            "total" => );
+            "total" => 0);
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -137,7 +137,7 @@ final class LocaleTest extends TestCase {
 
         $data = array(
             "languages" => array(),
-            "total" => );
+            "total" => 0);
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

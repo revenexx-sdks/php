@@ -1,12 +1,10 @@
 {
-    "name": "revenexx/sdk-for-php",
+    "name": "revenexx/php",
     "description": "Revenexx PHP SDK.",
     "type": "library",
-    "license": "",
+    "license": "MIT",
     "support": {
-        "url": "https://revenexx.com",
-        "email": ""
-    },
+        "url": "https://revenexx.com"    },
     "scripts": {
         "test": "vendor/bin/phpunit"
     },

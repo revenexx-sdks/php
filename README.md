@@ -2,7 +2,7 @@
 
 # Revenexx API — revenexx Revenexx PHP SDK
 
-![License](https://img.shields.io/github/license/revenexx/sdk-for-php.svg?style=flat-square&v=1)
+![License](https://img.shields.io/github/license/revenexx-sdks/php.svg?style=flat-square&v=1)
 ![Version](https://img.shields.io/badge/api%20version-1.0.0-blue.svg?style=flat-square&v=1)
 [![Twitter Account](https://img.shields.io/twitter/follow/revenexx?color=00acee&label=twitter&style=flat-square)](https://twitter.com/revenexx)
 
@@ -12,32 +12,10 @@ Revenexx PHP SDK for server-side applications.
 
 ## Installation
 
-This SDK is distributed through the private Revenexx Composer registry (Packistry) at `packages.revenexx.com`. Installing it requires an access token — ask your team admin or generate one in the registry UI.
-
-### 1. Configure authentication
-
-Store your access token in your global [Composer](http://getcomposer.org/) auth config:
+Install the SDK with [Composer](https://getcomposer.org/):
 
 ```bash
-composer config --global http-basic.packages.revenexx.com token <your-access-token>
-```
-
-Alternatively, keep it per-project in an `auth.json` next to your `composer.json` (make sure it is gitignored), or provide it via the `COMPOSER_AUTH` environment variable (useful in CI):
-
-```bash
-export COMPOSER_AUTH='{"http-basic":{"packages.revenexx.com":{"username":"token","password":"<your-access-token>"}}}'
-```
-
-### 2. Add the registry to your project
-
-```bash
-composer config repositories.revenexx composer https://packages.revenexx.com
-```
-
-### 3. Require the package
-
-```bash
-composer require revenexx/sdk-for-php
+composer require revenexx/php
 ```
 
 

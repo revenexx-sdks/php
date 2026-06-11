@@ -697,6 +697,12 @@ class Apps extends Service
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'multipart/form-data';
 
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
     }
 
     /**

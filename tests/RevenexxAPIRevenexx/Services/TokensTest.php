@@ -20,7 +20,7 @@ final class TokensTest extends TestCase {
 
         $data = array(
             "tokens" => array(),
-            "total" => );
+            "total" => 0);
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
