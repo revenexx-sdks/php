@@ -13,5 +13,10 @@ $client = (new Client())
 $products = new Products($client);
 
 $result = $products->productsAttributeOptionsUpdate(
-    id: ''
+    id: '',
+    attributeId: '', // optional
+    code: '', // optional
+    labels: [], // optional
+    position: null, // optional
+    swatch: [] // optional
 );```

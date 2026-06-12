@@ -13,5 +13,10 @@ $client = (new Client())
 $markets = new Markets($client);
 
 $result = $markets->marketsLocalesCreate(
-    marketId: ''
+    marketId: '',
+    code: '',
+    country: '',
+    language: '',
+    isDefault: null, // optional
+    position: null // optional
 );```

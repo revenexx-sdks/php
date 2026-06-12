@@ -3,6 +3,8 @@
 
 use RevenexxAPIRevenexx\Client;
 use RevenexxAPIRevenexx\Services\Payments;
+use RevenexxAPIRevenexx\Enums\PaymentFeeType;
+use RevenexxAPIRevenexx\Enums\PaymentMethodKind;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -13,5 +15,21 @@ $client = (new Client())
 $payments = new Payments($client);
 
 $result = $payments->paymentsMethodsUpdate(
-    id: ''
+    id: '',
+    code: '', // optional
+    countries: [], // optional
+    description: '', // optional
+    enabled: null, // optional
+    feeAmount: null, // optional
+    feeCurrency: '', // optional
+    feeType: PaymentFeeType::NONE(), // optional
+    kind: PaymentMethodKind::SELFMANAGED(), // optional
+    labels: [], // optional
+    maxOrderValue: null, // optional
+    metadata: [], // optional
+    minOrderValue: null, // optional
+    name: '', // optional
+    position: null, // optional
+    provider: '', // optional
+    providerMethod: '' // optional
 );```

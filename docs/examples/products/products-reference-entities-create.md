@@ -12,5 +12,8 @@ $client = (new Client())
 
 $products = new Products($client);
 
-$result = $products->productsReferenceEntitiesCreate();
-```
+$result = $products->productsReferenceEntitiesCreate(
+    code: '',
+    image: '', // optional
+    labels: [] // optional
+);```

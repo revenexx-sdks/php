@@ -12,5 +12,9 @@ $client = (new Client())
 
 $products = new Products($client);
 
-$result = $products->productsMeasurementFamiliesCreate();
-```
+$result = $products->productsMeasurementFamiliesCreate(
+    code: '',
+    standardUnit: '',
+    labels: [], // optional
+    units: [] // optional
+);```

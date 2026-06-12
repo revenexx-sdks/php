@@ -13,5 +13,9 @@ $client = (new Client())
 $products = new Products($client);
 
 $result = $products->productsMeasurementFamiliesUpdate(
-    id: ''
+    id: '',
+    code: '', // optional
+    labels: [], // optional
+    standardUnit: '', // optional
+    units: [] // optional
 );```

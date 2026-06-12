@@ -12,5 +12,8 @@ $client = (new Client())
 
 $products = new Products($client);
 
-$result = $products->productsAssetFamiliesCreate();
-```
+$result = $products->productsAssetFamiliesCreate(
+    code: '',
+    labels: [], // optional
+    namingConvention: [] // optional
+);```

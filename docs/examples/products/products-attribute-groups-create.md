@@ -12,5 +12,8 @@ $client = (new Client())
 
 $products = new Products($client);
 
-$result = $products->productsAttributeGroupsCreate();
-```
+$result = $products->productsAttributeGroupsCreate(
+    code: '',
+    labels: [], // optional
+    position: null // optional
+);```

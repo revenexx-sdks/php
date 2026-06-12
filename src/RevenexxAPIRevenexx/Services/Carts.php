@@ -6,6 +6,12 @@ use RevenexxAPIRevenexx\RevenexxAPIRevenexxException;
 use RevenexxAPIRevenexx\Client;
 use RevenexxAPIRevenexx\Service;
 use RevenexxAPIRevenexx\InputFile;
+use RevenexxAPIRevenexx\Enums\CartIoDirection;
+use RevenexxAPIRevenexx\Enums\CartIoApplyMode;
+use RevenexxAPIRevenexx\Enums\CartIoEntity;
+use RevenexxAPIRevenexx\Enums\CartIoFormat;
+use RevenexxAPIRevenexx\Enums\CartItemType;
+use RevenexxAPIRevenexx\Enums\CartExportFormat;
 
 class Carts extends Service
 {
@@ -39,10 +45,18 @@ class Carts extends Service
     }
 
     /**
+     * @param ?string $channelId
+     * @param ?string $contactId
+     * @param ?string $currency
+     * @param ?bool $isCurrent
+     * @param ?string $marketId
+     * @param ?array $metadata
+     * @param ?string $name
+     * @param ?string $sessionKey
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function cartsCreate(): array
+    public function cartsCreate(?string $channelId = null, ?string $contactId = null, ?string $currency = null, ?bool $isCurrent = null, ?string $marketId = null, ?array $metadata = null, ?string $name = null, ?string $sessionKey = null): array
     {
         $apiPath = str_replace(
             [],
@@ -52,6 +66,38 @@ class Carts extends Service
 
         $apiParams = [];
 
+        if (!is_null($channelId)) {
+            $apiParams['channel_id'] = $channelId;
+        }
+
+        if (!is_null($contactId)) {
+            $apiParams['contact_id'] = $contactId;
+        }
+
+        if (!is_null($currency)) {
+            $apiParams['currency'] = $currency;
+        }
+
+        if (!is_null($isCurrent)) {
+            $apiParams['is_current'] = $isCurrent;
+        }
+
+        if (!is_null($marketId)) {
+            $apiParams['market_id'] = $marketId;
+        }
+
+        if (!is_null($metadata)) {
+            $apiParams['metadata'] = $metadata;
+        }
+
+        if (!is_null($name)) {
+            $apiParams['name'] = $name;
+        }
+
+        if (!is_null($sessionKey)) {
+            $apiParams['session_key'] = $sessionKey;
+        }
+
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
 
@@ -64,10 +110,13 @@ class Carts extends Service
     }
 
     /**
+     * @param string $contactId
+     * @param string $sessionKey
+     * @param ?string $targetCartId
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function cartsClaim(): array
+    public function cartsClaim(string $contactId, string $sessionKey, ?string $targetCartId = null): array
     {
         $apiPath = str_replace(
             [],
@@ -76,6 +125,12 @@ class Carts extends Service
         );
 
         $apiParams = [];
+        $apiParams['contact_id'] = $contactId;
+        $apiParams['session_key'] = $sessionKey;
+
+        if (!is_null($targetCartId)) {
+            $apiParams['target_cart_id'] = $targetCartId;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -89,10 +144,17 @@ class Carts extends Service
     }
 
     /**
+     * @param ?string $contactId
+     * @param ?string $csv
+     * @param ?string $name
+     * @param ?array $payload
+     * @param ?string $profileId
+     * @param ?string $sessionKey
+     * @param ?string $targetCartId
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function cartsImport(): array
+    public function cartsImport(?string $contactId = null, ?string $csv = null, ?string $name = null, ?array $payload = null, ?string $profileId = null, ?string $sessionKey = null, ?string $targetCartId = null): array
     {
         $apiPath = str_replace(
             [],
@@ -101,6 +163,34 @@ class Carts extends Service
         );
 
         $apiParams = [];
+
+        if (!is_null($contactId)) {
+            $apiParams['contact_id'] = $contactId;
+        }
+
+        if (!is_null($csv)) {
+            $apiParams['csv'] = $csv;
+        }
+
+        if (!is_null($name)) {
+            $apiParams['name'] = $name;
+        }
+
+        if (!is_null($payload)) {
+            $apiParams['payload'] = $payload;
+        }
+
+        if (!is_null($profileId)) {
+            $apiParams['profile_id'] = $profileId;
+        }
+
+        if (!is_null($sessionKey)) {
+            $apiParams['session_key'] = $sessionKey;
+        }
+
+        if (!is_null($targetCartId)) {
+            $apiParams['target_cart_id'] = $targetCartId;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -138,10 +228,18 @@ class Carts extends Service
     }
 
     /**
+     * @param CartIoDirection $direction
+     * @param string $name
+     * @param ?CartIoApplyMode $applyMode
+     * @param ?CartIoEntity $entity
+     * @param ?CartIoFormat $format
+     * @param ?bool $isTemplate
+     * @param ?array $mapping
+     * @param ?array $options
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function cartsIoProfilesCreate(): array
+    public function cartsIoProfilesCreate(CartIoDirection $direction, string $name, ?CartIoApplyMode $applyMode = null, ?CartIoEntity $entity = null, ?CartIoFormat $format = null, ?bool $isTemplate = null, ?array $mapping = null, ?array $options = null): array
     {
         $apiPath = str_replace(
             [],
@@ -150,6 +248,32 @@ class Carts extends Service
         );
 
         $apiParams = [];
+        $apiParams['direction'] = $direction;
+        $apiParams['name'] = $name;
+
+        if (!is_null($applyMode)) {
+            $apiParams['apply_mode'] = $applyMode;
+        }
+
+        if (!is_null($entity)) {
+            $apiParams['entity'] = $entity;
+        }
+
+        if (!is_null($format)) {
+            $apiParams['format'] = $format;
+        }
+
+        if (!is_null($isTemplate)) {
+            $apiParams['is_template'] = $isTemplate;
+        }
+
+        if (!is_null($mapping)) {
+            $apiParams['mapping'] = $mapping;
+        }
+
+        if (!is_null($options)) {
+            $apiParams['options'] = $options;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -240,10 +364,18 @@ class Carts extends Service
 
     /**
      * @param string $id
+     * @param ?CartIoApplyMode $applyMode
+     * @param ?CartIoDirection $direction
+     * @param ?CartIoEntity $entity
+     * @param ?CartIoFormat $format
+     * @param ?bool $isTemplate
+     * @param ?array $mapping
+     * @param ?string $name
+     * @param ?array $options
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function cartsIoProfilesUpdate(string $id): array
+    public function cartsIoProfilesUpdate(string $id, ?CartIoApplyMode $applyMode = null, ?CartIoDirection $direction = null, ?CartIoEntity $entity = null, ?CartIoFormat $format = null, ?bool $isTemplate = null, ?array $mapping = null, ?string $name = null, ?array $options = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -253,6 +385,38 @@ class Carts extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($applyMode)) {
+            $apiParams['apply_mode'] = $applyMode;
+        }
+
+        if (!is_null($direction)) {
+            $apiParams['direction'] = $direction;
+        }
+
+        if (!is_null($entity)) {
+            $apiParams['entity'] = $entity;
+        }
+
+        if (!is_null($format)) {
+            $apiParams['format'] = $format;
+        }
+
+        if (!is_null($isTemplate)) {
+            $apiParams['is_template'] = $isTemplate;
+        }
+
+        if (!is_null($mapping)) {
+            $apiParams['mapping'] = $mapping;
+        }
+
+        if (!is_null($name)) {
+            $apiParams['name'] = $name;
+        }
+
+        if (!is_null($options)) {
+            $apiParams['options'] = $options;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -266,10 +430,12 @@ class Carts extends Service
     }
 
     /**
+     * @param string $sourceCartId
+     * @param string $targetCartId
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function cartsMerge(): array
+    public function cartsMerge(string $sourceCartId, string $targetCartId): array
     {
         $apiPath = str_replace(
             [],
@@ -278,6 +444,8 @@ class Carts extends Service
         );
 
         $apiParams = [];
+        $apiParams['source_cart_id'] = $sourceCartId;
+        $apiParams['target_cart_id'] = $targetCartId;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -298,7 +466,7 @@ class Carts extends Service
     public function cartsItemsList(string $cartId): array
     {
         $apiPath = str_replace(
-            ['{cartId}'],
+            ['{cart_id}'],
             [$cartId],
             '/v1/carts/{cart_id}/items'
         );
@@ -318,19 +486,84 @@ class Carts extends Service
 
     /**
      * @param string $cartId
+     * @param ?array $configuration
+     * @param ?string $currency
+     * @param ?array $metadata
+     * @param ?string $name
+     * @param ?int $position
+     * @param ?string $productId
+     * @param ?float $quantity
+     * @param ?string $sku
+     * @param ?array $snapshot
+     * @param ?float $taxRate
+     * @param ?CartItemType $type
+     * @param ?string $unit
+     * @param ?float $unitPrice
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function cartsItemsCreate(string $cartId): array
+    public function cartsItemsCreate(string $cartId, ?array $configuration = null, ?string $currency = null, ?array $metadata = null, ?string $name = null, ?int $position = null, ?string $productId = null, ?float $quantity = null, ?string $sku = null, ?array $snapshot = null, ?float $taxRate = null, ?CartItemType $type = null, ?string $unit = null, ?float $unitPrice = null): array
     {
         $apiPath = str_replace(
-            ['{cartId}'],
+            ['{cart_id}'],
             [$cartId],
             '/v1/carts/{cart_id}/items'
         );
 
         $apiParams = [];
         $apiParams['cart_id'] = $cartId;
+
+        if (!is_null($configuration)) {
+            $apiParams['configuration'] = $configuration;
+        }
+
+        if (!is_null($currency)) {
+            $apiParams['currency'] = $currency;
+        }
+
+        if (!is_null($metadata)) {
+            $apiParams['metadata'] = $metadata;
+        }
+
+        if (!is_null($name)) {
+            $apiParams['name'] = $name;
+        }
+
+        if (!is_null($position)) {
+            $apiParams['position'] = $position;
+        }
+
+        if (!is_null($productId)) {
+            $apiParams['product_id'] = $productId;
+        }
+
+        if (!is_null($quantity)) {
+            $apiParams['quantity'] = $quantity;
+        }
+
+        if (!is_null($sku)) {
+            $apiParams['sku'] = $sku;
+        }
+
+        if (!is_null($snapshot)) {
+            $apiParams['snapshot'] = $snapshot;
+        }
+
+        if (!is_null($taxRate)) {
+            $apiParams['tax_rate'] = $taxRate;
+        }
+
+        if (!is_null($type)) {
+            $apiParams['type'] = $type;
+        }
+
+        if (!is_null($unit)) {
+            $apiParams['unit'] = $unit;
+        }
+
+        if (!is_null($unitPrice)) {
+            $apiParams['unit_price'] = $unitPrice;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -345,19 +578,21 @@ class Carts extends Service
 
     /**
      * @param string $cartId
+     * @param array $items
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function cartsItemsReplace(string $cartId): array
+    public function cartsItemsReplace(string $cartId, array $items): array
     {
         $apiPath = str_replace(
-            ['{cartId}'],
+            ['{cart_id}'],
             [$cartId],
             '/v1/carts/{cart_id}/items'
         );
 
         $apiParams = [];
         $apiParams['cart_id'] = $cartId;
+        $apiParams['items'] = $items;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -379,7 +614,7 @@ class Carts extends Service
     public function cartsItemsDelete(string $cartId, string $id): array
     {
         $apiPath = str_replace(
-            ['{cartId}', '{id}'],
+            ['{cart_id}', '{id}'],
             [$cartId, $id],
             '/v1/carts/{cart_id}/items/{id}'
         );
@@ -407,7 +642,7 @@ class Carts extends Service
     public function cartsItemsGet(string $cartId, string $id): array
     {
         $apiPath = str_replace(
-            ['{cartId}', '{id}'],
+            ['{cart_id}', '{id}'],
             [$cartId, $id],
             '/v1/carts/{cart_id}/items/{id}'
         );
@@ -429,13 +664,26 @@ class Carts extends Service
     /**
      * @param string $cartId
      * @param string $id
+     * @param ?array $configuration
+     * @param ?string $currency
+     * @param ?array $metadata
+     * @param ?string $name
+     * @param ?int $position
+     * @param ?string $productId
+     * @param ?float $quantity
+     * @param ?string $sku
+     * @param ?array $snapshot
+     * @param ?float $taxRate
+     * @param ?CartItemType $type
+     * @param ?string $unit
+     * @param ?float $unitPrice
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function cartsItemsUpdate(string $cartId, string $id): array
+    public function cartsItemsUpdate(string $cartId, string $id, ?array $configuration = null, ?string $currency = null, ?array $metadata = null, ?string $name = null, ?int $position = null, ?string $productId = null, ?float $quantity = null, ?string $sku = null, ?array $snapshot = null, ?float $taxRate = null, ?CartItemType $type = null, ?string $unit = null, ?float $unitPrice = null): array
     {
         $apiPath = str_replace(
-            ['{cartId}', '{id}'],
+            ['{cart_id}', '{id}'],
             [$cartId, $id],
             '/v1/carts/{cart_id}/items/{id}'
         );
@@ -443,6 +691,58 @@ class Carts extends Service
         $apiParams = [];
         $apiParams['cart_id'] = $cartId;
         $apiParams['id'] = $id;
+
+        if (!is_null($configuration)) {
+            $apiParams['configuration'] = $configuration;
+        }
+
+        if (!is_null($currency)) {
+            $apiParams['currency'] = $currency;
+        }
+
+        if (!is_null($metadata)) {
+            $apiParams['metadata'] = $metadata;
+        }
+
+        if (!is_null($name)) {
+            $apiParams['name'] = $name;
+        }
+
+        if (!is_null($position)) {
+            $apiParams['position'] = $position;
+        }
+
+        if (!is_null($productId)) {
+            $apiParams['product_id'] = $productId;
+        }
+
+        if (!is_null($quantity)) {
+            $apiParams['quantity'] = $quantity;
+        }
+
+        if (!is_null($sku)) {
+            $apiParams['sku'] = $sku;
+        }
+
+        if (!is_null($snapshot)) {
+            $apiParams['snapshot'] = $snapshot;
+        }
+
+        if (!is_null($taxRate)) {
+            $apiParams['tax_rate'] = $taxRate;
+        }
+
+        if (!is_null($type)) {
+            $apiParams['type'] = $type;
+        }
+
+        if (!is_null($unit)) {
+            $apiParams['unit'] = $unit;
+        }
+
+        if (!is_null($unitPrice)) {
+            $apiParams['unit_price'] = $unitPrice;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -509,10 +809,15 @@ class Carts extends Service
 
     /**
      * @param string $id
+     * @param ?string $channelId
+     * @param ?string $currency
+     * @param ?string $marketId
+     * @param ?array $metadata
+     * @param ?string $name
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function cartsUpdate(string $id): array
+    public function cartsUpdate(string $id, ?string $channelId = null, ?string $currency = null, ?string $marketId = null, ?array $metadata = null, ?string $name = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -522,6 +827,26 @@ class Carts extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($channelId)) {
+            $apiParams['channel_id'] = $channelId;
+        }
+
+        if (!is_null($currency)) {
+            $apiParams['currency'] = $currency;
+        }
+
+        if (!is_null($marketId)) {
+            $apiParams['market_id'] = $marketId;
+        }
+
+        if (!is_null($metadata)) {
+            $apiParams['metadata'] = $metadata;
+        }
+
+        if (!is_null($name)) {
+            $apiParams['name'] = $name;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -588,10 +913,12 @@ class Carts extends Service
 
     /**
      * @param string $id
+     * @param ?CartExportFormat $format
+     * @param ?string $profileId
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function cartsExport(string $id): array
+    public function cartsExport(string $id, ?CartExportFormat $format = null, ?string $profileId = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -601,6 +928,14 @@ class Carts extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($format)) {
+            $apiParams['format'] = $format;
+        }
+
+        if (!is_null($profileId)) {
+            $apiParams['profile_id'] = $profileId;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -615,10 +950,11 @@ class Carts extends Service
 
     /**
      * @param string $id
+     * @param ?string $orderRef
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function cartsOrder(string $id): array
+    public function cartsOrder(string $id, ?string $orderRef = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -628,6 +964,10 @@ class Carts extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($orderRef)) {
+            $apiParams['order_ref'] = $orderRef;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';

@@ -12,5 +12,12 @@ $client = (new Client())
 
 $customers = new Customers($client);
 
-$result = $customers->customersAuthRegister();
-```
+$result = $customers->customersAuthRegister(
+    email: '',
+    password: '',
+    firstName: '', // optional
+    lastName: '', // optional
+    locale: '', // optional
+    organizationId: '', // optional
+    organizationName: '' // optional
+);```

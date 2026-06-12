@@ -12,5 +12,9 @@ $client = (new Client())
 
 $products = new Products($client);
 
-$result = $products->productsReferenceEntityRecordsCreate();
-```
+$result = $products->productsReferenceEntityRecordsCreate(
+    code: '',
+    referenceEntityId: '',
+    attributeValues: [], // optional
+    labels: [] // optional
+);```

@@ -3,6 +3,10 @@
 
 use RevenexxAPIRevenexx\Client;
 use RevenexxAPIRevenexx\Services\Carts;
+use RevenexxAPIRevenexx\Enums\CartIoDirection;
+use RevenexxAPIRevenexx\Enums\CartIoApplyMode;
+use RevenexxAPIRevenexx\Enums\CartIoEntity;
+use RevenexxAPIRevenexx\Enums\CartIoFormat;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -12,5 +16,13 @@ $client = (new Client())
 
 $carts = new Carts($client);
 
-$result = $carts->cartsIoProfilesCreate();
-```
+$result = $carts->cartsIoProfilesCreate(
+    direction: CartIoDirection::IMPORT(),
+    name: '',
+    applyMode: CartIoApplyMode::INSERT(), // optional
+    entity: CartIoEntity::CARTS(), // optional
+    format: CartIoFormat::JSON(), // optional
+    isTemplate: null, // optional
+    mapping: [], // optional
+    options: [] // optional
+);```

@@ -6,6 +6,7 @@ use RevenexxAPIRevenexx\Client;
 use RevenexxAPIRevenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
+use RevenexxAPIRevenexx\Enums\MarketStatus;
 
 final class MarketsTest extends TestCase {
     private $client;
@@ -39,6 +40,8 @@ final class MarketsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->markets->marketsCreate(
+            "",
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -128,6 +131,9 @@ final class MarketsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->markets->marketsLocalesCreate(
+            "",
+            "",
+            "",
             ""
         );
 
@@ -206,6 +212,8 @@ final class MarketsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->markets->marketsTaxClassesCreate(
+            "",
+            "",
             ""
         );
 

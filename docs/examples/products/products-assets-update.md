@@ -13,5 +13,9 @@ $client = (new Client())
 $products = new Products($client);
 
 $result = $products->productsAssetsUpdate(
-    id: ''
+    id: '',
+    assetFamilyId: '', // optional
+    attributeValues: [], // optional
+    code: '', // optional
+    mediaUuid: '' // optional
 );```

@@ -6,6 +6,8 @@ use RevenexxAPIRevenexx\RevenexxAPIRevenexxException;
 use RevenexxAPIRevenexx\Client;
 use RevenexxAPIRevenexx\Service;
 use RevenexxAPIRevenexx\InputFile;
+use RevenexxAPIRevenexx\Enums\ShippingMethodMatrixBasis;
+use RevenexxAPIRevenexx\Enums\ShippingMethodPricingType;
 
 class Shipping extends Service
 {
@@ -39,10 +41,27 @@ class Shipping extends Service
     }
 
     /**
+     * @param string $code
+     * @param string $name
+     * @param ?string $carrier
+     * @param ?array $countries
+     * @param ?string $currency
+     * @param ?string $description
+     * @param ?bool $enabled
+     * @param ?int $etaDaysMax
+     * @param ?int $etaDaysMin
+     * @param ?float $freeAbove
+     * @param ?array $labels
+     * @param ?string $matrixAttribute
+     * @param ?ShippingMethodMatrixBasis $matrixBasis
+     * @param ?array $metadata
+     * @param ?int $position
+     * @param ?float $price
+     * @param ?ShippingMethodPricingType $pricingType
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function shippingMethodsCreate(): array
+    public function shippingMethodsCreate(string $code, string $name, ?string $carrier = null, ?array $countries = null, ?string $currency = null, ?string $description = null, ?bool $enabled = null, ?int $etaDaysMax = null, ?int $etaDaysMin = null, ?float $freeAbove = null, ?array $labels = null, ?string $matrixAttribute = null, ?ShippingMethodMatrixBasis $matrixBasis = null, ?array $metadata = null, ?int $position = null, ?float $price = null, ?ShippingMethodPricingType $pricingType = null): array
     {
         $apiPath = str_replace(
             [],
@@ -51,6 +70,38 @@ class Shipping extends Service
         );
 
         $apiParams = [];
+        $apiParams['code'] = $code;
+        $apiParams['name'] = $name;
+        $apiParams['carrier'] = $carrier;
+        $apiParams['countries'] = $countries;
+
+        if (!is_null($currency)) {
+            $apiParams['currency'] = $currency;
+        }
+        $apiParams['description'] = $description;
+
+        if (!is_null($enabled)) {
+            $apiParams['enabled'] = $enabled;
+        }
+        $apiParams['eta_days_max'] = $etaDaysMax;
+        $apiParams['eta_days_min'] = $etaDaysMin;
+        $apiParams['free_above'] = $freeAbove;
+        $apiParams['labels'] = $labels;
+        $apiParams['matrix_attribute'] = $matrixAttribute;
+        $apiParams['matrix_basis'] = $matrixBasis;
+        $apiParams['metadata'] = $metadata;
+
+        if (!is_null($position)) {
+            $apiParams['position'] = $position;
+        }
+
+        if (!is_null($price)) {
+            $apiParams['price'] = $price;
+        }
+
+        if (!is_null($pricingType)) {
+            $apiParams['pricing_type'] = $pricingType;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -141,10 +192,27 @@ class Shipping extends Service
 
     /**
      * @param string $id
+     * @param ?string $carrier
+     * @param ?string $code
+     * @param ?array $countries
+     * @param ?string $currency
+     * @param ?string $description
+     * @param ?bool $enabled
+     * @param ?int $etaDaysMax
+     * @param ?int $etaDaysMin
+     * @param ?float $freeAbove
+     * @param ?array $labels
+     * @param ?string $matrixAttribute
+     * @param ?ShippingMethodMatrixBasis $matrixBasis
+     * @param ?array $metadata
+     * @param ?string $name
+     * @param ?int $position
+     * @param ?float $price
+     * @param ?ShippingMethodPricingType $pricingType
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function shippingMethodsUpdate(string $id): array
+    public function shippingMethodsUpdate(string $id, ?string $carrier = null, ?string $code = null, ?array $countries = null, ?string $currency = null, ?string $description = null, ?bool $enabled = null, ?int $etaDaysMax = null, ?int $etaDaysMin = null, ?float $freeAbove = null, ?array $labels = null, ?string $matrixAttribute = null, ?ShippingMethodMatrixBasis $matrixBasis = null, ?array $metadata = null, ?string $name = null, ?int $position = null, ?float $price = null, ?ShippingMethodPricingType $pricingType = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -154,6 +222,44 @@ class Shipping extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+        $apiParams['carrier'] = $carrier;
+
+        if (!is_null($code)) {
+            $apiParams['code'] = $code;
+        }
+        $apiParams['countries'] = $countries;
+
+        if (!is_null($currency)) {
+            $apiParams['currency'] = $currency;
+        }
+        $apiParams['description'] = $description;
+
+        if (!is_null($enabled)) {
+            $apiParams['enabled'] = $enabled;
+        }
+        $apiParams['eta_days_max'] = $etaDaysMax;
+        $apiParams['eta_days_min'] = $etaDaysMin;
+        $apiParams['free_above'] = $freeAbove;
+        $apiParams['labels'] = $labels;
+        $apiParams['matrix_attribute'] = $matrixAttribute;
+        $apiParams['matrix_basis'] = $matrixBasis;
+        $apiParams['metadata'] = $metadata;
+
+        if (!is_null($name)) {
+            $apiParams['name'] = $name;
+        }
+
+        if (!is_null($position)) {
+            $apiParams['position'] = $position;
+        }
+
+        if (!is_null($price)) {
+            $apiParams['price'] = $price;
+        }
+
+        if (!is_null($pricingType)) {
+            $apiParams['pricing_type'] = $pricingType;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -174,7 +280,7 @@ class Shipping extends Service
     public function shippingTiersList(string $methodId): array
     {
         $apiPath = str_replace(
-            ['{methodId}'],
+            ['{method_id}'],
             [$methodId],
             '/v1/shipping/methods/{method_id}/tiers'
         );
@@ -194,19 +300,34 @@ class Shipping extends Service
 
     /**
      * @param string $methodId
+     * @param ?float $fromValue
+     * @param ?int $position
+     * @param ?float $price
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function shippingTiersCreate(string $methodId): array
+    public function shippingTiersCreate(string $methodId, ?float $fromValue = null, ?int $position = null, ?float $price = null): array
     {
         $apiPath = str_replace(
-            ['{methodId}'],
+            ['{method_id}'],
             [$methodId],
             '/v1/shipping/methods/{method_id}/tiers'
         );
 
         $apiParams = [];
         $apiParams['method_id'] = $methodId;
+
+        if (!is_null($fromValue)) {
+            $apiParams['from_value'] = $fromValue;
+        }
+
+        if (!is_null($position)) {
+            $apiParams['position'] = $position;
+        }
+
+        if (!is_null($price)) {
+            $apiParams['price'] = $price;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -221,19 +342,21 @@ class Shipping extends Service
 
     /**
      * @param string $methodId
+     * @param array $tiers
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function shippingTiersReplace(string $methodId): array
+    public function shippingTiersReplace(string $methodId, array $tiers): array
     {
         $apiPath = str_replace(
-            ['{methodId}'],
+            ['{method_id}'],
             [$methodId],
             '/v1/shipping/methods/{method_id}/tiers'
         );
 
         $apiParams = [];
         $apiParams['method_id'] = $methodId;
+        $apiParams['tiers'] = $tiers;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -255,7 +378,7 @@ class Shipping extends Service
     public function shippingTiersDelete(string $methodId, string $id): array
     {
         $apiPath = str_replace(
-            ['{methodId}', '{id}'],
+            ['{method_id}', '{id}'],
             [$methodId, $id],
             '/v1/shipping/methods/{method_id}/tiers/{id}'
         );
@@ -283,7 +406,7 @@ class Shipping extends Service
     public function shippingTiersGet(string $methodId, string $id): array
     {
         $apiPath = str_replace(
-            ['{methodId}', '{id}'],
+            ['{method_id}', '{id}'],
             [$methodId, $id],
             '/v1/shipping/methods/{method_id}/tiers/{id}'
         );
@@ -305,13 +428,16 @@ class Shipping extends Service
     /**
      * @param string $methodId
      * @param string $id
+     * @param ?float $fromValue
+     * @param ?int $position
+     * @param ?float $price
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function shippingTiersUpdate(string $methodId, string $id): array
+    public function shippingTiersUpdate(string $methodId, string $id, ?float $fromValue = null, ?int $position = null, ?float $price = null): array
     {
         $apiPath = str_replace(
-            ['{methodId}', '{id}'],
+            ['{method_id}', '{id}'],
             [$methodId, $id],
             '/v1/shipping/methods/{method_id}/tiers/{id}'
         );
@@ -319,6 +445,18 @@ class Shipping extends Service
         $apiParams = [];
         $apiParams['method_id'] = $methodId;
         $apiParams['id'] = $id;
+
+        if (!is_null($fromValue)) {
+            $apiParams['from_value'] = $fromValue;
+        }
+
+        if (!is_null($position)) {
+            $apiParams['position'] = $position;
+        }
+
+        if (!is_null($price)) {
+            $apiParams['price'] = $price;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -332,10 +470,16 @@ class Shipping extends Service
     }
 
     /**
+     * @param ?array $attributes
+     * @param ?string $country
+     * @param ?string $currency
+     * @param ?float $orderValue
+     * @param ?float $quantity
+     * @param ?float $weight
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function shippingRates(): array
+    public function shippingRates(?array $attributes = null, ?string $country = null, ?string $currency = null, ?float $orderValue = null, ?float $quantity = null, ?float $weight = null): array
     {
         $apiPath = str_replace(
             [],
@@ -344,6 +488,30 @@ class Shipping extends Service
         );
 
         $apiParams = [];
+
+        if (!is_null($attributes)) {
+            $apiParams['attributes'] = $attributes;
+        }
+
+        if (!is_null($country)) {
+            $apiParams['country'] = $country;
+        }
+
+        if (!is_null($currency)) {
+            $apiParams['currency'] = $currency;
+        }
+
+        if (!is_null($orderValue)) {
+            $apiParams['order_value'] = $orderValue;
+        }
+
+        if (!is_null($quantity)) {
+            $apiParams['quantity'] = $quantity;
+        }
+
+        if (!is_null($weight)) {
+            $apiParams['weight'] = $weight;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';

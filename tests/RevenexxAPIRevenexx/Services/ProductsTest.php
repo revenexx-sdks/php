@@ -39,6 +39,7 @@ final class ProductsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->products->productsCreate(
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -67,6 +68,7 @@ final class ProductsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->products->productsAssetFamiliesCreate(
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -140,6 +142,8 @@ final class ProductsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->products->productsAssetsCreate(
+            "",
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -213,6 +217,7 @@ final class ProductsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->products->productsAssociationTypesCreate(
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -286,6 +291,7 @@ final class ProductsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->products->productsAttributeGroupsCreate(
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -359,6 +365,8 @@ final class ProductsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->products->productsAttributeOptionsCreate(
+            "",
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -432,6 +440,8 @@ final class ProductsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->products->productsAttributesCreate(
+            "",
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -505,6 +515,7 @@ final class ProductsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->products->productsCategoriesCreate(
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -578,6 +589,7 @@ final class ProductsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->products->productsFamiliesCreate(
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -651,6 +663,8 @@ final class ProductsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->products->productsFamilyAttributesCreate(
+            "",
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -724,6 +738,8 @@ final class ProductsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->products->productsFamilyVariantsCreate(
+            "",
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -797,6 +813,8 @@ final class ProductsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->products->productsMeasurementFamiliesCreate(
+            "",
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -870,6 +888,9 @@ final class ProductsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->products->productsProductAssociationsCreate(
+            "",
+            "",
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -943,6 +964,8 @@ final class ProductsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->products->productsProductCategoriesCreate(
+            "",
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -1016,6 +1039,7 @@ final class ProductsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->products->productsReferenceEntitiesCreate(
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -1089,6 +1113,8 @@ final class ProductsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->products->productsReferenceEntityRecordsCreate(
+            "",
+            ""
         );
 
         $this->assertSame($data, $response);

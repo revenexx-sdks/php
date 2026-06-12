@@ -13,5 +13,9 @@ $client = (new Client())
 $products = new Products($client);
 
 $result = $products->productsReferenceEntityRecordsUpdate(
-    id: ''
+    id: '',
+    attributeValues: [], // optional
+    code: '', // optional
+    labels: [], // optional
+    referenceEntityId: '' // optional
 );```

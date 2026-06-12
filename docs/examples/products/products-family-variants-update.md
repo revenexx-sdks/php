@@ -13,5 +13,9 @@ $client = (new Client())
 $products = new Products($client);
 
 $result = $products->productsFamilyVariantsUpdate(
-    id: ''
+    id: '',
+    axes: [], // optional
+    code: '', // optional
+    familyId: '', // optional
+    labels: [] // optional
 );```

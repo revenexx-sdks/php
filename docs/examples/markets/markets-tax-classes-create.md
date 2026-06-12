@@ -13,5 +13,11 @@ $client = (new Client())
 $markets = new Markets($client);
 
 $result = $markets->marketsTaxClassesCreate(
-    marketId: ''
+    marketId: '',
+    code: '',
+    name: '',
+    isDefault: null, // optional
+    labels: [], // optional
+    position: null, // optional
+    rate: null // optional
 );```

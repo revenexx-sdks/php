@@ -13,5 +13,15 @@ $client = (new Client())
 $products = new Products($client);
 
 $result = $products->productsUpdate(
-    id: ''
+    id: '',
+    attributeValues: [], // optional
+    completeness: [], // optional
+    deletedAt: '', // optional
+    enabled: null, // optional
+    familyId: '', // optional
+    familyVariantId: '', // optional
+    kind: '', // optional
+    parentId: '', // optional
+    quantifiedAssociations: [], // optional
+    sku: '' // optional
 );```

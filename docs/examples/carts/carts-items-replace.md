@@ -13,5 +13,6 @@ $client = (new Client())
 $carts = new Carts($client);
 
 $result = $carts->cartsItemsReplace(
-    cartId: ''
+    cartId: '',
+    items: []
 );```

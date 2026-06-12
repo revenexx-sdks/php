@@ -13,5 +13,19 @@ $client = (new Client())
 $products = new Products($client);
 
 $result = $products->productsAttributesUpdate(
-    id: ''
+    id: '',
+    code: '', // optional
+    config: [], // optional
+    entityRef: '', // optional
+    entityType: '', // optional
+    groupId: '', // optional
+    isFilterable: null, // optional
+    isUnique: null, // optional
+    labels: [], // optional
+    localizable: null, // optional
+    position: null, // optional
+    scopable: null, // optional
+    type: '', // optional
+    usableInGrid: null, // optional
+    validation: [] // optional
 );```

@@ -13,5 +13,8 @@ $client = (new Client())
 $products = new Products($client);
 
 $result = $products->productsReferenceEntitiesUpdate(
-    id: ''
+    id: '',
+    code: '', // optional
+    image: '', // optional
+    labels: [] // optional
 );```

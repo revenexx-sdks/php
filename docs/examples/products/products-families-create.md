@@ -12,5 +12,9 @@ $client = (new Client())
 
 $products = new Products($client);
 
-$result = $products->productsFamiliesCreate();
-```
+$result = $products->productsFamiliesCreate(
+    code: '',
+    imageAttribute: '', // optional
+    labelAttribute: '', // optional
+    labels: [] // optional
+);```

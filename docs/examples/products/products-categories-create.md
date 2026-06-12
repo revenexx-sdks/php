@@ -12,5 +12,11 @@ $client = (new Client())
 
 $products = new Products($client);
 
-$result = $products->productsCategoriesCreate();
-```
+$result = $products->productsCategoriesCreate(
+    code: '',
+    labels: [], // optional
+    parentId: '', // optional
+    path: '', // optional
+    position: null, // optional
+    values: [] // optional
+);```

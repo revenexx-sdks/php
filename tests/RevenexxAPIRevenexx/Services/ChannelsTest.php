@@ -6,6 +6,8 @@ use RevenexxAPIRevenexx\Client;
 use RevenexxAPIRevenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
+use RevenexxAPIRevenexx\Enums\ChannelStatus;
+use RevenexxAPIRevenexx\Enums\ChannelType;
 
 final class ChannelsTest extends TestCase {
     private $client;
@@ -39,6 +41,8 @@ final class ChannelsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->channels->channelsCreate(
+            "",
+            ""
         );
 
         $this->assertSame($data, $response);

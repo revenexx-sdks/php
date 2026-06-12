@@ -12,5 +12,6 @@ $client = (new Client())
 
 $customers = new Customers($client);
 
-$result = $customers->customersAuthMe();
-```
+$result = $customers->customersAuthMe(
+    userId: ''
+);```

@@ -13,5 +13,9 @@ $client = (new Client())
 $products = new Products($client);
 
 $result = $products->productsFamiliesUpdate(
-    id: ''
+    id: '',
+    code: '', // optional
+    imageAttribute: '', // optional
+    labelAttribute: '', // optional
+    labels: [] // optional
 );```

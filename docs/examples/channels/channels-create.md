@@ -3,6 +3,8 @@
 
 use RevenexxAPIRevenexx\Client;
 use RevenexxAPIRevenexx\Services\Channels;
+use RevenexxAPIRevenexx\Enums\ChannelStatus;
+use RevenexxAPIRevenexx\Enums\ChannelType;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -12,5 +14,12 @@ $client = (new Client())
 
 $channels = new Channels($client);
 
-$result = $channels->channelsCreate();
-```
+$result = $channels->channelsCreate(
+    code: '',
+    name: '',
+    isDefault: null, // optional
+    labels: [], // optional
+    position: null, // optional
+    status: ChannelStatus::ACTIVE(), // optional
+    type: ChannelType::STOREFRONT() // optional
+);```

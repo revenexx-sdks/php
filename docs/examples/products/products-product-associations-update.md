@@ -13,5 +13,10 @@ $client = (new Client())
 $products = new Products($client);
 
 $result = $products->productsProductAssociationsUpdate(
-    id: ''
+    id: '',
+    associationTypeId: '', // optional
+    position: null, // optional
+    productId: '', // optional
+    quantity: null, // optional
+    targetProductId: '' // optional
 );```

@@ -12,5 +12,9 @@ $client = (new Client())
 
 $products = new Products($client);
 
-$result = $products->productsAssociationTypesCreate();
-```
+$result = $products->productsAssociationTypesCreate(
+    code: '',
+    isQuantified: null, // optional
+    isTwoWay: null, // optional
+    labels: [] // optional
+);```

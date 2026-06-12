@@ -12,5 +12,9 @@ $client = (new Client())
 
 $products = new Products($client);
 
-$result = $products->productsFamilyVariantsCreate();
-```
+$result = $products->productsFamilyVariantsCreate(
+    code: '',
+    familyId: '',
+    axes: [], // optional
+    labels: [] // optional
+);```

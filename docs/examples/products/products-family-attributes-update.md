@@ -13,5 +13,10 @@ $client = (new Client())
 $products = new Products($client);
 
 $result = $products->productsFamilyAttributesUpdate(
-    id: ''
+    id: '',
+    attributeId: '', // optional
+    familyId: '', // optional
+    isRequired: null, // optional
+    position: null, // optional
+    requiredChannels: [] // optional
 );```

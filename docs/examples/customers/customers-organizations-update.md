@@ -3,6 +3,7 @@
 
 use RevenexxAPIRevenexx\Client;
 use RevenexxAPIRevenexx\Services\Customers;
+use RevenexxAPIRevenexx\Enums\OrganizationStatus;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -13,5 +14,9 @@ $client = (new Client())
 $customers = new Customers($client);
 
 $result = $customers->customersOrganizationsUpdate(
-    id: ''
+    id: '',
+    name: '', // optional
+    settings: [], // optional
+    status: OrganizationStatus::ACTIVE(), // optional
+    vatId: '' // optional
 );```

@@ -3,6 +3,7 @@
 
 use RevenexxAPIRevenexx\Client;
 use RevenexxAPIRevenexx\Services\Markets;
+use RevenexxAPIRevenexx\Enums\MarketStatus;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -12,5 +13,12 @@ $client = (new Client())
 
 $markets = new Markets($client);
 
-$result = $markets->marketsCreate();
-```
+$result = $markets->marketsCreate(
+    code: '',
+    name: '',
+    currency: '', // optional
+    isDefault: null, // optional
+    labels: [], // optional
+    position: null, // optional
+    status: MarketStatus::ACTIVE() // optional
+);```

@@ -6,6 +6,8 @@ use RevenexxAPIRevenexx\Client;
 use RevenexxAPIRevenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
+use RevenexxAPIRevenexx\Enums\PaymentFeeType;
+use RevenexxAPIRevenexx\Enums\PaymentMethodKind;
 
 final class PaymentsTest extends TestCase {
     private $client;
@@ -39,6 +41,8 @@ final class PaymentsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->payments->paymentsCreate(
+            1.0,
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -67,6 +71,8 @@ final class PaymentsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->payments->paymentsMethodsCreate(
+            "",
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -168,6 +174,7 @@ final class PaymentsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->payments->paymentsProvidersCreate(
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -227,6 +234,22 @@ final class PaymentsTest extends TestCase {
 
         $response = $this->payments->paymentsProvidersUpdate(
             ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPaymentsWebhooksIngest(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->payments->paymentsWebhooksIngest(
+            "",
+            array()
         );
 
         $this->assertSame($data, $response);

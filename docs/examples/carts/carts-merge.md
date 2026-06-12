@@ -12,5 +12,7 @@ $client = (new Client())
 
 $carts = new Carts($client);
 
-$result = $carts->cartsMerge();
-```
+$result = $carts->cartsMerge(
+    sourceCartId: '',
+    targetCartId: ''
+);```

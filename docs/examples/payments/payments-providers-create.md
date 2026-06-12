@@ -12,5 +12,12 @@ $client = (new Client())
 
 $payments = new Payments($client);
 
-$result = $payments->paymentsProvidersCreate();
-```
+$result = $payments->paymentsProvidersCreate(
+    provider: '',
+    credentials: [], // optional
+    enabled: null, // optional
+    name: '', // optional
+    options: [], // optional
+    testMode: null, // optional
+    webhookSecret: '' // optional
+);```

@@ -6,6 +6,12 @@ use RevenexxAPIRevenexx\Client;
 use RevenexxAPIRevenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
+use RevenexxAPIRevenexx\Enums\CartIoDirection;
+use RevenexxAPIRevenexx\Enums\CartIoApplyMode;
+use RevenexxAPIRevenexx\Enums\CartIoEntity;
+use RevenexxAPIRevenexx\Enums\CartIoFormat;
+use RevenexxAPIRevenexx\Enums\CartItemType;
+use RevenexxAPIRevenexx\Enums\CartExportFormat;
 
 final class CartsTest extends TestCase {
     private $client;
@@ -53,6 +59,8 @@ final class CartsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->carts->cartsClaim(
+            "",
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -95,6 +103,8 @@ final class CartsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->carts->cartsIoProfilesCreate(
+            CartIoDirection::IMPORT(),
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -168,6 +178,8 @@ final class CartsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->carts->cartsMerge(
+            "",
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -212,7 +224,8 @@ final class CartsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->carts->cartsItemsReplace(
-            ""
+            "",
+            array()
         );
 
         $this->assertSame($data, $response);

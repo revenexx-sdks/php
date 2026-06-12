@@ -12,5 +12,15 @@ $client = (new Client())
 
 $products = new Products($client);
 
-$result = $products->productsCreate();
-```
+$result = $products->productsCreate(
+    sku: '',
+    attributeValues: [], // optional
+    completeness: [], // optional
+    deletedAt: '', // optional
+    enabled: null, // optional
+    familyId: '', // optional
+    familyVariantId: '', // optional
+    kind: '', // optional
+    parentId: '', // optional
+    quantifiedAssociations: [] // optional
+);```

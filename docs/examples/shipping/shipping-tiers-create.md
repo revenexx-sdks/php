@@ -13,5 +13,8 @@ $client = (new Client())
 $shipping = new Shipping($client);
 
 $result = $shipping->shippingTiersCreate(
-    methodId: ''
+    methodId: '',
+    fromValue: null, // optional
+    position: null, // optional
+    price: null // optional
 );```

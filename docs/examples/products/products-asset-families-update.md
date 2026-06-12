@@ -13,5 +13,8 @@ $client = (new Client())
 $products = new Products($client);
 
 $result = $products->productsAssetFamiliesUpdate(
-    id: ''
+    id: '',
+    code: '', // optional
+    labels: [], // optional
+    namingConvention: [] // optional
 );```

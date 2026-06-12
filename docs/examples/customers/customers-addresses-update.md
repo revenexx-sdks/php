@@ -3,6 +3,7 @@
 
 use RevenexxAPIRevenexx\Client;
 use RevenexxAPIRevenexx\Services\Customers;
+use RevenexxAPIRevenexx\Enums\AddressType;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -13,5 +14,18 @@ $client = (new Client())
 $customers = new Customers($client);
 
 $result = $customers->customersAddressesUpdate(
-    id: ''
+    id: '',
+    city: '', // optional
+    company: '', // optional
+    contactId: '', // optional
+    country: '', // optional
+    isDefault: null, // optional
+    name: '', // optional
+    organizationId: '', // optional
+    phone: '', // optional
+    region: '', // optional
+    street: '', // optional
+    street2: '', // optional
+    type: AddressType::BILLING(), // optional
+    zip: '' // optional
 );```

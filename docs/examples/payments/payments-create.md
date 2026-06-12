@@ -12,5 +12,15 @@ $client = (new Client())
 
 $payments = new Payments($client);
 
-$result = $payments->paymentsCreate();
-```
+$result = $payments->paymentsCreate(
+    amount: null,
+    methodCode: '',
+    cartId: '', // optional
+    contactId: '', // optional
+    country: '', // optional
+    currency: '', // optional
+    idempotencyKey: '', // optional
+    metadata: [], // optional
+    orderRef: '', // optional
+    returnUrl: '' // optional
+);```

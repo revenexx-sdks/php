@@ -12,5 +12,7 @@ $client = (new Client())
 
 $customers = new Customers($client);
 
-$result = $customers->customersAuthLogout();
-```
+$result = $customers->customersAuthLogout(
+    sessionId: '',
+    userId: ''
+);```

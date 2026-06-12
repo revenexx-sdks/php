@@ -6,6 +6,7 @@ use RevenexxAPIRevenexx\RevenexxAPIRevenexxException;
 use RevenexxAPIRevenexx\Client;
 use RevenexxAPIRevenexx\Service;
 use RevenexxAPIRevenexx\InputFile;
+use RevenexxAPIRevenexx\Enums\MarketStatus;
 
 class Markets extends Service
 {
@@ -39,10 +40,17 @@ class Markets extends Service
     }
 
     /**
+     * @param string $code
+     * @param string $name
+     * @param ?string $currency
+     * @param ?bool $isDefault
+     * @param ?array $labels
+     * @param ?int $position
+     * @param ?MarketStatus $status
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function marketsCreate(): array
+    public function marketsCreate(string $code, string $name, ?string $currency = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?MarketStatus $status = null): array
     {
         $apiPath = str_replace(
             [],
@@ -51,6 +59,25 @@ class Markets extends Service
         );
 
         $apiParams = [];
+        $apiParams['code'] = $code;
+        $apiParams['name'] = $name;
+
+        if (!is_null($currency)) {
+            $apiParams['currency'] = $currency;
+        }
+
+        if (!is_null($isDefault)) {
+            $apiParams['is_default'] = $isDefault;
+        }
+        $apiParams['labels'] = $labels;
+
+        if (!is_null($position)) {
+            $apiParams['position'] = $position;
+        }
+
+        if (!is_null($status)) {
+            $apiParams['status'] = $status;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -117,10 +144,17 @@ class Markets extends Service
 
     /**
      * @param string $id
+     * @param ?string $code
+     * @param ?string $currency
+     * @param ?bool $isDefault
+     * @param ?array $labels
+     * @param ?string $name
+     * @param ?int $position
+     * @param ?MarketStatus $status
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function marketsUpdate(string $id): array
+    public function marketsUpdate(string $id, ?string $code = null, ?string $currency = null, ?bool $isDefault = null, ?array $labels = null, ?string $name = null, ?int $position = null, ?MarketStatus $status = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -130,6 +164,31 @@ class Markets extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($code)) {
+            $apiParams['code'] = $code;
+        }
+
+        if (!is_null($currency)) {
+            $apiParams['currency'] = $currency;
+        }
+
+        if (!is_null($isDefault)) {
+            $apiParams['is_default'] = $isDefault;
+        }
+        $apiParams['labels'] = $labels;
+
+        if (!is_null($name)) {
+            $apiParams['name'] = $name;
+        }
+
+        if (!is_null($position)) {
+            $apiParams['position'] = $position;
+        }
+
+        if (!is_null($status)) {
+            $apiParams['status'] = $status;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -176,7 +235,7 @@ class Markets extends Service
     public function marketsLocalesList(string $marketId): array
     {
         $apiPath = str_replace(
-            ['{marketId}'],
+            ['{market_id}'],
             [$marketId],
             '/v1/markets/{market_id}/locales'
         );
@@ -196,19 +255,35 @@ class Markets extends Service
 
     /**
      * @param string $marketId
+     * @param string $code
+     * @param string $country
+     * @param string $language
+     * @param ?bool $isDefault
+     * @param ?int $position
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function marketsLocalesCreate(string $marketId): array
+    public function marketsLocalesCreate(string $marketId, string $code, string $country, string $language, ?bool $isDefault = null, ?int $position = null): array
     {
         $apiPath = str_replace(
-            ['{marketId}'],
+            ['{market_id}'],
             [$marketId],
             '/v1/markets/{market_id}/locales'
         );
 
         $apiParams = [];
         $apiParams['market_id'] = $marketId;
+        $apiParams['code'] = $code;
+        $apiParams['country'] = $country;
+        $apiParams['language'] = $language;
+
+        if (!is_null($isDefault)) {
+            $apiParams['is_default'] = $isDefault;
+        }
+
+        if (!is_null($position)) {
+            $apiParams['position'] = $position;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -230,7 +305,7 @@ class Markets extends Service
     public function marketsLocalesDelete(string $marketId, string $id): array
     {
         $apiPath = str_replace(
-            ['{marketId}', '{id}'],
+            ['{market_id}', '{id}'],
             [$marketId, $id],
             '/v1/markets/{market_id}/locales/{id}'
         );
@@ -258,7 +333,7 @@ class Markets extends Service
     public function marketsLocalesGet(string $marketId, string $id): array
     {
         $apiPath = str_replace(
-            ['{marketId}', '{id}'],
+            ['{market_id}', '{id}'],
             [$marketId, $id],
             '/v1/markets/{market_id}/locales/{id}'
         );
@@ -280,13 +355,18 @@ class Markets extends Service
     /**
      * @param string $marketId
      * @param string $id
+     * @param ?string $code
+     * @param ?string $country
+     * @param ?bool $isDefault
+     * @param ?string $language
+     * @param ?int $position
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function marketsLocalesUpdate(string $marketId, string $id): array
+    public function marketsLocalesUpdate(string $marketId, string $id, ?string $code = null, ?string $country = null, ?bool $isDefault = null, ?string $language = null, ?int $position = null): array
     {
         $apiPath = str_replace(
-            ['{marketId}', '{id}'],
+            ['{market_id}', '{id}'],
             [$marketId, $id],
             '/v1/markets/{market_id}/locales/{id}'
         );
@@ -294,6 +374,26 @@ class Markets extends Service
         $apiParams = [];
         $apiParams['market_id'] = $marketId;
         $apiParams['id'] = $id;
+
+        if (!is_null($code)) {
+            $apiParams['code'] = $code;
+        }
+
+        if (!is_null($country)) {
+            $apiParams['country'] = $country;
+        }
+
+        if (!is_null($isDefault)) {
+            $apiParams['is_default'] = $isDefault;
+        }
+
+        if (!is_null($language)) {
+            $apiParams['language'] = $language;
+        }
+
+        if (!is_null($position)) {
+            $apiParams['position'] = $position;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -314,7 +414,7 @@ class Markets extends Service
     public function marketsTaxClassesList(string $marketId): array
     {
         $apiPath = str_replace(
-            ['{marketId}'],
+            ['{market_id}'],
             [$marketId],
             '/v1/markets/{market_id}/tax_classes'
         );
@@ -334,19 +434,40 @@ class Markets extends Service
 
     /**
      * @param string $marketId
+     * @param string $code
+     * @param string $name
+     * @param ?bool $isDefault
+     * @param ?array $labels
+     * @param ?int $position
+     * @param ?float $rate
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function marketsTaxClassesCreate(string $marketId): array
+    public function marketsTaxClassesCreate(string $marketId, string $code, string $name, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?float $rate = null): array
     {
         $apiPath = str_replace(
-            ['{marketId}'],
+            ['{market_id}'],
             [$marketId],
             '/v1/markets/{market_id}/tax_classes'
         );
 
         $apiParams = [];
         $apiParams['market_id'] = $marketId;
+        $apiParams['code'] = $code;
+        $apiParams['name'] = $name;
+
+        if (!is_null($isDefault)) {
+            $apiParams['is_default'] = $isDefault;
+        }
+        $apiParams['labels'] = $labels;
+
+        if (!is_null($position)) {
+            $apiParams['position'] = $position;
+        }
+
+        if (!is_null($rate)) {
+            $apiParams['rate'] = $rate;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -368,7 +489,7 @@ class Markets extends Service
     public function marketsTaxClassesDelete(string $marketId, string $id): array
     {
         $apiPath = str_replace(
-            ['{marketId}', '{id}'],
+            ['{market_id}', '{id}'],
             [$marketId, $id],
             '/v1/markets/{market_id}/tax_classes/{id}'
         );
@@ -396,7 +517,7 @@ class Markets extends Service
     public function marketsTaxClassesGet(string $marketId, string $id): array
     {
         $apiPath = str_replace(
-            ['{marketId}', '{id}'],
+            ['{market_id}', '{id}'],
             [$marketId, $id],
             '/v1/markets/{market_id}/tax_classes/{id}'
         );
@@ -418,13 +539,19 @@ class Markets extends Service
     /**
      * @param string $marketId
      * @param string $id
+     * @param ?string $code
+     * @param ?bool $isDefault
+     * @param ?array $labels
+     * @param ?string $name
+     * @param ?int $position
+     * @param ?float $rate
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function marketsTaxClassesUpdate(string $marketId, string $id): array
+    public function marketsTaxClassesUpdate(string $marketId, string $id, ?string $code = null, ?bool $isDefault = null, ?array $labels = null, ?string $name = null, ?int $position = null, ?float $rate = null): array
     {
         $apiPath = str_replace(
-            ['{marketId}', '{id}'],
+            ['{market_id}', '{id}'],
             [$marketId, $id],
             '/v1/markets/{market_id}/tax_classes/{id}'
         );
@@ -432,6 +559,27 @@ class Markets extends Service
         $apiParams = [];
         $apiParams['market_id'] = $marketId;
         $apiParams['id'] = $id;
+
+        if (!is_null($code)) {
+            $apiParams['code'] = $code;
+        }
+
+        if (!is_null($isDefault)) {
+            $apiParams['is_default'] = $isDefault;
+        }
+        $apiParams['labels'] = $labels;
+
+        if (!is_null($name)) {
+            $apiParams['name'] = $name;
+        }
+
+        if (!is_null($position)) {
+            $apiParams['position'] = $position;
+        }
+
+        if (!is_null($rate)) {
+            $apiParams['rate'] = $rate;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';

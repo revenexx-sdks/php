@@ -12,5 +12,10 @@ $client = (new Client())
 
 $products = new Products($client);
 
-$result = $products->productsAttributeOptionsCreate();
-```
+$result = $products->productsAttributeOptionsCreate(
+    attributeId: '',
+    code: '',
+    labels: [], // optional
+    position: null, // optional
+    swatch: [] // optional
+);```

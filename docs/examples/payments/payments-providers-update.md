@@ -13,5 +13,12 @@ $client = (new Client())
 $payments = new Payments($client);
 
 $result = $payments->paymentsProvidersUpdate(
-    id: ''
+    id: '',
+    credentials: [], // optional
+    enabled: null, // optional
+    name: '', // optional
+    options: [], // optional
+    provider: '', // optional
+    testMode: null, // optional
+    webhookSecret: '' // optional
 );```

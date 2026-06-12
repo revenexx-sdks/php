@@ -3,6 +3,7 @@
 
 use RevenexxAPIRevenexx\Client;
 use RevenexxAPIRevenexx\Services\Carts;
+use RevenexxAPIRevenexx\Enums\CartItemType;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -14,5 +15,18 @@ $carts = new Carts($client);
 
 $result = $carts->cartsItemsUpdate(
     cartId: '',
-    id: ''
+    id: '',
+    configuration: [], // optional
+    currency: '', // optional
+    metadata: [], // optional
+    name: '', // optional
+    position: null, // optional
+    productId: '', // optional
+    quantity: null, // optional
+    sku: '', // optional
+    snapshot: [], // optional
+    taxRate: null, // optional
+    type: CartItemType::PRODUCT(), // optional
+    unit: '', // optional
+    unitPrice: null // optional
 );```

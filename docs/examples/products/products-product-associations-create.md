@@ -12,5 +12,10 @@ $client = (new Client())
 
 $products = new Products($client);
 
-$result = $products->productsProductAssociationsCreate();
-```
+$result = $products->productsProductAssociationsCreate(
+    associationTypeId: '',
+    productId: '',
+    targetProductId: '',
+    position: null, // optional
+    quantity: null // optional
+);```

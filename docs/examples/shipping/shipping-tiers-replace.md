@@ -13,5 +13,6 @@ $client = (new Client())
 $shipping = new Shipping($client);
 
 $result = $shipping->shippingTiersReplace(
-    methodId: ''
+    methodId: '',
+    tiers: []
 );```

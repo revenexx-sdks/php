@@ -12,5 +12,11 @@ $client = (new Client())
 
 $shipping = new Shipping($client);
 
-$result = $shipping->shippingRates();
-```
+$result = $shipping->shippingRates(
+    attributes: [], // optional
+    country: '', // optional
+    currency: '', // optional
+    orderValue: null, // optional
+    quantity: null, // optional
+    weight: null // optional
+);```

@@ -6,6 +6,8 @@ use RevenexxAPIRevenexx\Client;
 use RevenexxAPIRevenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
+use RevenexxAPIRevenexx\Enums\ShippingMethodMatrixBasis;
+use RevenexxAPIRevenexx\Enums\ShippingMethodPricingType;
 
 final class ShippingTest extends TestCase {
     private $client;
@@ -39,6 +41,8 @@ final class ShippingTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->shipping->shippingMethodsCreate(
+            "",
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -142,7 +146,8 @@ final class ShippingTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->shipping->shippingTiersReplace(
-            ""
+            "",
+            array()
         );
 
         $this->assertSame($data, $response);

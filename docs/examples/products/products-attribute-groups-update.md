@@ -13,5 +13,8 @@ $client = (new Client())
 $products = new Products($client);
 
 $result = $products->productsAttributeGroupsUpdate(
-    id: ''
+    id: '',
+    code: '', // optional
+    labels: [], // optional
+    position: null // optional
 );```

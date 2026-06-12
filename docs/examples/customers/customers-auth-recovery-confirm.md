@@ -12,5 +12,8 @@ $client = (new Client())
 
 $customers = new Customers($client);
 
-$result = $customers->customersAuthRecoveryConfirm();
-```
+$result = $customers->customersAuthRecoveryConfirm(
+    password: '',
+    secret: '',
+    userId: ''
+);```

@@ -13,5 +13,10 @@ $client = (new Client())
 $carts = new Carts($client);
 
 $result = $carts->cartsUpdate(
-    id: ''
+    id: '',
+    channelId: '', // optional
+    currency: '', // optional
+    marketId: '', // optional
+    metadata: [], // optional
+    name: '' // optional
 );```

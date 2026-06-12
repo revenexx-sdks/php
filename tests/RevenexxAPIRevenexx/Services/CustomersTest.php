@@ -6,6 +6,10 @@ use RevenexxAPIRevenexx\Client;
 use RevenexxAPIRevenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
+use RevenexxAPIRevenexx\Enums\AddressType;
+use RevenexxAPIRevenexx\Enums\ContactRole;
+use RevenexxAPIRevenexx\Enums\ContactStatus;
+use RevenexxAPIRevenexx\Enums\OrganizationStatus;
 
 final class CustomersTest extends TestCase {
     private $client;
@@ -39,6 +43,10 @@ final class CustomersTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->customers->customersAddressesCreate(
+            "",
+            "",
+            "",
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -98,6 +106,8 @@ final class CustomersTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->customers->customersAuthLogin(
+            "",
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -112,6 +122,8 @@ final class CustomersTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->customers->customersAuthLogout(
+            "",
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -126,6 +138,7 @@ final class CustomersTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->customers->customersAuthMe(
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -140,6 +153,8 @@ final class CustomersTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->customers->customersAuthRecovery(
+            "",
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -154,6 +169,9 @@ final class CustomersTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->customers->customersAuthRecoveryConfirm(
+            "",
+            "",
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -168,6 +186,8 @@ final class CustomersTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->customers->customersAuthRegister(
+            "",
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -196,6 +216,7 @@ final class CustomersTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->customers->customersContactsCreate(
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -269,6 +290,7 @@ final class CustomersTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->customers->customersOrganizationsCreate(
+            ""
         );
 
         $this->assertSame($data, $response);

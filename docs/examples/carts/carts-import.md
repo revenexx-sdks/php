@@ -12,5 +12,12 @@ $client = (new Client())
 
 $carts = new Carts($client);
 
-$result = $carts->cartsImport();
-```
+$result = $carts->cartsImport(
+    contactId: '', // optional
+    csv: '', // optional
+    name: '', // optional
+    payload: [], // optional
+    profileId: '', // optional
+    sessionKey: '', // optional
+    targetCartId: '' // optional
+);```

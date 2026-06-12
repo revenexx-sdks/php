@@ -3,6 +3,7 @@
 
 use RevenexxAPIRevenexx\Client;
 use RevenexxAPIRevenexx\Services\Carts;
+use RevenexxAPIRevenexx\Enums\CartExportFormat;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -13,5 +14,7 @@ $client = (new Client())
 $carts = new Carts($client);
 
 $result = $carts->cartsExport(
-    id: ''
+    id: '',
+    format: CartExportFormat::JSON(), // optional
+    profileId: '' // optional
 );```

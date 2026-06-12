@@ -14,5 +14,8 @@ $shipping = new Shipping($client);
 
 $result = $shipping->shippingTiersUpdate(
     methodId: '',
-    id: ''
+    id: '',
+    fromValue: null, // optional
+    position: null, // optional
+    price: null // optional
 );```

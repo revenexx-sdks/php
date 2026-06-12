@@ -12,5 +12,8 @@ $client = (new Client())
 
 $carts = new Carts($client);
 
-$result = $carts->cartsClaim();
-```
+$result = $carts->cartsClaim(
+    contactId: '',
+    sessionKey: '',
+    targetCartId: '' // optional
+);```

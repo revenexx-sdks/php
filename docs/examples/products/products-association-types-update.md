@@ -13,5 +13,9 @@ $client = (new Client())
 $products = new Products($client);
 
 $result = $products->productsAssociationTypesUpdate(
-    id: ''
+    id: '',
+    code: '', // optional
+    isQuantified: null, // optional
+    isTwoWay: null, // optional
+    labels: [] // optional
 );```

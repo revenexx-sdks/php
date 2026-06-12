@@ -13,5 +13,11 @@ $client = (new Client())
 $products = new Products($client);
 
 $result = $products->productsCategoriesUpdate(
-    id: ''
+    id: '',
+    code: '', // optional
+    labels: [], // optional
+    parentId: '', // optional
+    path: '', // optional
+    position: null, // optional
+    values: [] // optional
 );```

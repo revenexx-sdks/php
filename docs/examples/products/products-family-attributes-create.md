@@ -12,5 +12,10 @@ $client = (new Client())
 
 $products = new Products($client);
 
-$result = $products->productsFamilyAttributesCreate();
-```
+$result = $products->productsFamilyAttributesCreate(
+    attributeId: '',
+    familyId: '',
+    isRequired: null, // optional
+    position: null, // optional
+    requiredChannels: [] // optional
+);```

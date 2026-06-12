@@ -12,5 +12,9 @@ $client = (new Client())
 
 $products = new Products($client);
 
-$result = $products->productsAssetsCreate();
-```
+$result = $products->productsAssetsCreate(
+    assetFamilyId: '',
+    code: '',
+    attributeValues: [], // optional
+    mediaUuid: '' // optional
+);```

@@ -12,5 +12,8 @@ $client = (new Client())
 
 $payments = new Payments($client);
 
-$result = $payments->paymentsMethodsEligible();
-```
+$result = $payments->paymentsMethodsEligible(
+    amount: null, // optional
+    country: '', // optional
+    currency: '' // optional
+);```

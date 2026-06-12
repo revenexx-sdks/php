@@ -6,6 +6,10 @@ use RevenexxAPIRevenexx\RevenexxAPIRevenexxException;
 use RevenexxAPIRevenexx\Client;
 use RevenexxAPIRevenexx\Service;
 use RevenexxAPIRevenexx\InputFile;
+use RevenexxAPIRevenexx\Enums\AddressType;
+use RevenexxAPIRevenexx\Enums\ContactRole;
+use RevenexxAPIRevenexx\Enums\ContactStatus;
+use RevenexxAPIRevenexx\Enums\OrganizationStatus;
 
 class Customers extends Service
 {
@@ -39,10 +43,23 @@ class Customers extends Service
     }
 
     /**
+     * @param string $city
+     * @param string $country
+     * @param string $street
+     * @param string $zip
+     * @param ?string $company
+     * @param ?string $contactId
+     * @param ?bool $isDefault
+     * @param ?string $name
+     * @param ?string $organizationId
+     * @param ?string $phone
+     * @param ?string $region
+     * @param ?string $street2
+     * @param ?AddressType $type
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function customersAddressesCreate(): array
+    public function customersAddressesCreate(string $city, string $country, string $street, string $zip, ?string $company = null, ?string $contactId = null, ?bool $isDefault = null, ?string $name = null, ?string $organizationId = null, ?string $phone = null, ?string $region = null, ?string $street2 = null, ?AddressType $type = null): array
     {
         $apiPath = str_replace(
             [],
@@ -51,6 +68,25 @@ class Customers extends Service
         );
 
         $apiParams = [];
+        $apiParams['city'] = $city;
+        $apiParams['country'] = $country;
+        $apiParams['street'] = $street;
+        $apiParams['zip'] = $zip;
+        $apiParams['company'] = $company;
+        $apiParams['contact_id'] = $contactId;
+
+        if (!is_null($isDefault)) {
+            $apiParams['is_default'] = $isDefault;
+        }
+        $apiParams['name'] = $name;
+        $apiParams['organization_id'] = $organizationId;
+        $apiParams['phone'] = $phone;
+        $apiParams['region'] = $region;
+        $apiParams['street2'] = $street2;
+
+        if (!is_null($type)) {
+            $apiParams['type'] = $type;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -117,10 +153,23 @@ class Customers extends Service
 
     /**
      * @param string $id
+     * @param ?string $city
+     * @param ?string $company
+     * @param ?string $contactId
+     * @param ?string $country
+     * @param ?bool $isDefault
+     * @param ?string $name
+     * @param ?string $organizationId
+     * @param ?string $phone
+     * @param ?string $region
+     * @param ?string $street
+     * @param ?string $street2
+     * @param ?AddressType $type
+     * @param ?string $zip
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function customersAddressesUpdate(string $id): array
+    public function customersAddressesUpdate(string $id, ?string $city = null, ?string $company = null, ?string $contactId = null, ?string $country = null, ?bool $isDefault = null, ?string $name = null, ?string $organizationId = null, ?string $phone = null, ?string $region = null, ?string $street = null, ?string $street2 = null, ?AddressType $type = null, ?string $zip = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -131,6 +180,37 @@ class Customers extends Service
         $apiParams = [];
         $apiParams['id'] = $id;
 
+        if (!is_null($city)) {
+            $apiParams['city'] = $city;
+        }
+        $apiParams['company'] = $company;
+        $apiParams['contact_id'] = $contactId;
+
+        if (!is_null($country)) {
+            $apiParams['country'] = $country;
+        }
+
+        if (!is_null($isDefault)) {
+            $apiParams['is_default'] = $isDefault;
+        }
+        $apiParams['name'] = $name;
+        $apiParams['organization_id'] = $organizationId;
+        $apiParams['phone'] = $phone;
+        $apiParams['region'] = $region;
+
+        if (!is_null($street)) {
+            $apiParams['street'] = $street;
+        }
+        $apiParams['street2'] = $street2;
+
+        if (!is_null($type)) {
+            $apiParams['type'] = $type;
+        }
+
+        if (!is_null($zip)) {
+            $apiParams['zip'] = $zip;
+        }
+
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
 
@@ -143,10 +223,12 @@ class Customers extends Service
     }
 
     /**
+     * @param string $email
+     * @param string $password
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function customersAuthLogin(): array
+    public function customersAuthLogin(string $email, string $password): array
     {
         $apiPath = str_replace(
             [],
@@ -155,6 +237,8 @@ class Customers extends Service
         );
 
         $apiParams = [];
+        $apiParams['email'] = $email;
+        $apiParams['password'] = $password;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -168,10 +252,12 @@ class Customers extends Service
     }
 
     /**
+     * @param string $sessionId
+     * @param string $userId
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function customersAuthLogout(): array
+    public function customersAuthLogout(string $sessionId, string $userId): array
     {
         $apiPath = str_replace(
             [],
@@ -180,6 +266,8 @@ class Customers extends Service
         );
 
         $apiParams = [];
+        $apiParams['session_id'] = $sessionId;
+        $apiParams['user_id'] = $userId;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -193,10 +281,11 @@ class Customers extends Service
     }
 
     /**
+     * @param string $userId
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function customersAuthMe(): array
+    public function customersAuthMe(string $userId): array
     {
         $apiPath = str_replace(
             [],
@@ -205,6 +294,7 @@ class Customers extends Service
         );
 
         $apiParams = [];
+        $apiParams['user_id'] = $userId;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -218,10 +308,12 @@ class Customers extends Service
     }
 
     /**
+     * @param string $email
+     * @param string $url
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function customersAuthRecovery(): array
+    public function customersAuthRecovery(string $email, string $url): array
     {
         $apiPath = str_replace(
             [],
@@ -230,6 +322,8 @@ class Customers extends Service
         );
 
         $apiParams = [];
+        $apiParams['email'] = $email;
+        $apiParams['url'] = $url;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -243,10 +337,13 @@ class Customers extends Service
     }
 
     /**
+     * @param string $password
+     * @param string $secret
+     * @param string $userId
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function customersAuthRecoveryConfirm(): array
+    public function customersAuthRecoveryConfirm(string $password, string $secret, string $userId): array
     {
         $apiPath = str_replace(
             [],
@@ -255,6 +352,9 @@ class Customers extends Service
         );
 
         $apiParams = [];
+        $apiParams['password'] = $password;
+        $apiParams['secret'] = $secret;
+        $apiParams['user_id'] = $userId;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -268,10 +368,17 @@ class Customers extends Service
     }
 
     /**
+     * @param string $email
+     * @param string $password
+     * @param ?string $firstName
+     * @param ?string $lastName
+     * @param ?string $locale
+     * @param ?string $organizationId
+     * @param ?string $organizationName
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function customersAuthRegister(): array
+    public function customersAuthRegister(string $email, string $password, ?string $firstName = null, ?string $lastName = null, ?string $locale = null, ?string $organizationId = null, ?string $organizationName = null): array
     {
         $apiPath = str_replace(
             [],
@@ -280,6 +387,28 @@ class Customers extends Service
         );
 
         $apiParams = [];
+        $apiParams['email'] = $email;
+        $apiParams['password'] = $password;
+
+        if (!is_null($firstName)) {
+            $apiParams['first_name'] = $firstName;
+        }
+
+        if (!is_null($lastName)) {
+            $apiParams['last_name'] = $lastName;
+        }
+
+        if (!is_null($locale)) {
+            $apiParams['locale'] = $locale;
+        }
+
+        if (!is_null($organizationId)) {
+            $apiParams['organization_id'] = $organizationId;
+        }
+
+        if (!is_null($organizationName)) {
+            $apiParams['organization_name'] = $organizationName;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -317,10 +446,19 @@ class Customers extends Service
     }
 
     /**
+     * @param string $email
+     * @param ?string $firstName
+     * @param ?bool $isPrimary
+     * @param ?string $lastName
+     * @param ?string $locale
+     * @param ?string $organizationId
+     * @param ?string $phone
+     * @param ?ContactRole $role
+     * @param ?ContactStatus $status
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function customersContactsCreate(): array
+    public function customersContactsCreate(string $email, ?string $firstName = null, ?bool $isPrimary = null, ?string $lastName = null, ?string $locale = null, ?string $organizationId = null, ?string $phone = null, ?ContactRole $role = null, ?ContactStatus $status = null): array
     {
         $apiPath = str_replace(
             [],
@@ -329,6 +467,24 @@ class Customers extends Service
         );
 
         $apiParams = [];
+        $apiParams['email'] = $email;
+        $apiParams['first_name'] = $firstName;
+
+        if (!is_null($isPrimary)) {
+            $apiParams['is_primary'] = $isPrimary;
+        }
+        $apiParams['last_name'] = $lastName;
+        $apiParams['locale'] = $locale;
+        $apiParams['organization_id'] = $organizationId;
+        $apiParams['phone'] = $phone;
+
+        if (!is_null($role)) {
+            $apiParams['role'] = $role;
+        }
+
+        if (!is_null($status)) {
+            $apiParams['status'] = $status;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -395,10 +551,19 @@ class Customers extends Service
 
     /**
      * @param string $id
+     * @param ?string $email
+     * @param ?string $firstName
+     * @param ?bool $isPrimary
+     * @param ?string $lastName
+     * @param ?string $locale
+     * @param ?string $organizationId
+     * @param ?string $phone
+     * @param ?ContactRole $role
+     * @param ?ContactStatus $status
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function customersContactsUpdate(string $id): array
+    public function customersContactsUpdate(string $id, ?string $email = null, ?string $firstName = null, ?bool $isPrimary = null, ?string $lastName = null, ?string $locale = null, ?string $organizationId = null, ?string $phone = null, ?ContactRole $role = null, ?ContactStatus $status = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -408,6 +573,27 @@ class Customers extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($email)) {
+            $apiParams['email'] = $email;
+        }
+        $apiParams['first_name'] = $firstName;
+
+        if (!is_null($isPrimary)) {
+            $apiParams['is_primary'] = $isPrimary;
+        }
+        $apiParams['last_name'] = $lastName;
+        $apiParams['locale'] = $locale;
+        $apiParams['organization_id'] = $organizationId;
+        $apiParams['phone'] = $phone;
+
+        if (!is_null($role)) {
+            $apiParams['role'] = $role;
+        }
+
+        if (!is_null($status)) {
+            $apiParams['status'] = $status;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -445,10 +631,14 @@ class Customers extends Service
     }
 
     /**
+     * @param string $name
+     * @param ?array $settings
+     * @param ?OrganizationStatus $status
+     * @param ?string $vatId
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function customersOrganizationsCreate(): array
+    public function customersOrganizationsCreate(string $name, ?array $settings = null, ?OrganizationStatus $status = null, ?string $vatId = null): array
     {
         $apiPath = str_replace(
             [],
@@ -457,6 +647,13 @@ class Customers extends Service
         );
 
         $apiParams = [];
+        $apiParams['name'] = $name;
+        $apiParams['settings'] = $settings;
+
+        if (!is_null($status)) {
+            $apiParams['status'] = $status;
+        }
+        $apiParams['vat_id'] = $vatId;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -523,10 +720,14 @@ class Customers extends Service
 
     /**
      * @param string $id
+     * @param ?string $name
+     * @param ?array $settings
+     * @param ?OrganizationStatus $status
+     * @param ?string $vatId
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function customersOrganizationsUpdate(string $id): array
+    public function customersOrganizationsUpdate(string $id, ?string $name = null, ?array $settings = null, ?OrganizationStatus $status = null, ?string $vatId = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -536,6 +737,16 @@ class Customers extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($name)) {
+            $apiParams['name'] = $name;
+        }
+        $apiParams['settings'] = $settings;
+
+        if (!is_null($status)) {
+            $apiParams['status'] = $status;
+        }
+        $apiParams['vat_id'] = $vatId;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';

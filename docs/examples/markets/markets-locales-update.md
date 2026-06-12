@@ -14,5 +14,10 @@ $markets = new Markets($client);
 
 $result = $markets->marketsLocalesUpdate(
     marketId: '',
-    id: ''
+    id: '',
+    code: '', // optional
+    country: '', // optional
+    isDefault: null, // optional
+    language: '', // optional
+    position: null // optional
 );```
