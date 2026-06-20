@@ -66,10 +66,7 @@ class Channels extends Service
         if (!is_null($isDefault)) {
             $apiParams['is_default'] = $isDefault;
         }
-
-        if (!is_null($labels)) {
-            $apiParams['labels'] = $labels;
-        }
+        $apiParams['labels'] = $labels;
 
         if (!is_null($position)) {
             $apiParams['position'] = $position;
@@ -200,10 +197,7 @@ class Channels extends Service
         if (!is_null($isDefault)) {
             $apiParams['is_default'] = $isDefault;
         }
-
-        if (!is_null($labels)) {
-            $apiParams['labels'] = $labels;
-        }
+        $apiParams['labels'] = $labels;
 
         if (!is_null($name)) {
             $apiParams['name'] = $name;

@@ -23,5 +23,6 @@ $result = $products->productsUpdate(
     kind: '', // optional
     parentId: '', // optional
     quantifiedAssociations: [], // optional
-    sku: '' // optional
+    sku: '', // optional
+    taxClass: '' // optional
 );```

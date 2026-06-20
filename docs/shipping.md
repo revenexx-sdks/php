@@ -175,6 +175,7 @@ POST https://api.revenexx.com/v1/shipping/rates
 | attributes | object | Measure values for attribute matrices, keyed by attribute name. |  |
 | country | string | Destination ISO 3166-1 alpha-2 code — checked against method country restrictions. |  |
 | currency | string | Echoed into the rates (default 'EUR'). |  |
+| market_id | string | Buyer market for tax resolution (else inferred from country, else first market). |  |
 | order_value | number | Order value (default 0) — drives free-above thresholds and order_value matrices. |  |
 | quantity | number | Total quantity — measure for quantity matrices. |  |
 | weight | number | Total weight — measure for weight matrices. |  |

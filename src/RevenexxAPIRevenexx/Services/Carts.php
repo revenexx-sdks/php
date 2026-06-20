@@ -65,38 +65,14 @@ class Carts extends Service
         );
 
         $apiParams = [];
-
-        if (!is_null($channelId)) {
-            $apiParams['channel_id'] = $channelId;
-        }
-
-        if (!is_null($contactId)) {
-            $apiParams['contact_id'] = $contactId;
-        }
-
-        if (!is_null($currency)) {
-            $apiParams['currency'] = $currency;
-        }
-
-        if (!is_null($isCurrent)) {
-            $apiParams['is_current'] = $isCurrent;
-        }
-
-        if (!is_null($marketId)) {
-            $apiParams['market_id'] = $marketId;
-        }
-
-        if (!is_null($metadata)) {
-            $apiParams['metadata'] = $metadata;
-        }
-
-        if (!is_null($name)) {
-            $apiParams['name'] = $name;
-        }
-
-        if (!is_null($sessionKey)) {
-            $apiParams['session_key'] = $sessionKey;
-        }
+        $apiParams['channel_id'] = $channelId;
+        $apiParams['contact_id'] = $contactId;
+        $apiParams['currency'] = $currency;
+        $apiParams['is_current'] = $isCurrent;
+        $apiParams['market_id'] = $marketId;
+        $apiParams['metadata'] = $metadata;
+        $apiParams['name'] = $name;
+        $apiParams['session_key'] = $sessionKey;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -127,10 +103,7 @@ class Carts extends Service
         $apiParams = [];
         $apiParams['contact_id'] = $contactId;
         $apiParams['session_key'] = $sessionKey;
-
-        if (!is_null($targetCartId)) {
-            $apiParams['target_cart_id'] = $targetCartId;
-        }
+        $apiParams['target_cart_id'] = $targetCartId;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -163,10 +136,7 @@ class Carts extends Service
         );
 
         $apiParams = [];
-
-        if (!is_null($contactId)) {
-            $apiParams['contact_id'] = $contactId;
-        }
+        $apiParams['contact_id'] = $contactId;
 
         if (!is_null($csv)) {
             $apiParams['csv'] = $csv;
@@ -179,18 +149,12 @@ class Carts extends Service
         if (!is_null($payload)) {
             $apiParams['payload'] = $payload;
         }
-
-        if (!is_null($profileId)) {
-            $apiParams['profile_id'] = $profileId;
-        }
+        $apiParams['profile_id'] = $profileId;
 
         if (!is_null($sessionKey)) {
             $apiParams['session_key'] = $sessionKey;
         }
-
-        if (!is_null($targetCartId)) {
-            $apiParams['target_cart_id'] = $targetCartId;
-        }
+        $apiParams['target_cart_id'] = $targetCartId;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -512,58 +476,22 @@ class Carts extends Service
 
         $apiParams = [];
         $apiParams['cart_id'] = $cartId;
-
-        if (!is_null($configuration)) {
-            $apiParams['configuration'] = $configuration;
-        }
-
-        if (!is_null($currency)) {
-            $apiParams['currency'] = $currency;
-        }
-
-        if (!is_null($metadata)) {
-            $apiParams['metadata'] = $metadata;
-        }
-
-        if (!is_null($name)) {
-            $apiParams['name'] = $name;
-        }
-
-        if (!is_null($position)) {
-            $apiParams['position'] = $position;
-        }
-
-        if (!is_null($productId)) {
-            $apiParams['product_id'] = $productId;
-        }
-
-        if (!is_null($quantity)) {
-            $apiParams['quantity'] = $quantity;
-        }
-
-        if (!is_null($sku)) {
-            $apiParams['sku'] = $sku;
-        }
-
-        if (!is_null($snapshot)) {
-            $apiParams['snapshot'] = $snapshot;
-        }
-
-        if (!is_null($taxRate)) {
-            $apiParams['tax_rate'] = $taxRate;
-        }
+        $apiParams['configuration'] = $configuration;
+        $apiParams['currency'] = $currency;
+        $apiParams['metadata'] = $metadata;
+        $apiParams['name'] = $name;
+        $apiParams['position'] = $position;
+        $apiParams['product_id'] = $productId;
+        $apiParams['quantity'] = $quantity;
+        $apiParams['sku'] = $sku;
+        $apiParams['snapshot'] = $snapshot;
+        $apiParams['tax_rate'] = $taxRate;
 
         if (!is_null($type)) {
             $apiParams['type'] = $type;
         }
-
-        if (!is_null($unit)) {
-            $apiParams['unit'] = $unit;
-        }
-
-        if (!is_null($unitPrice)) {
-            $apiParams['unit_price'] = $unitPrice;
-        }
+        $apiParams['unit'] = $unit;
+        $apiParams['unit_price'] = $unitPrice;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -691,58 +619,22 @@ class Carts extends Service
         $apiParams = [];
         $apiParams['cart_id'] = $cartId;
         $apiParams['id'] = $id;
-
-        if (!is_null($configuration)) {
-            $apiParams['configuration'] = $configuration;
-        }
-
-        if (!is_null($currency)) {
-            $apiParams['currency'] = $currency;
-        }
-
-        if (!is_null($metadata)) {
-            $apiParams['metadata'] = $metadata;
-        }
-
-        if (!is_null($name)) {
-            $apiParams['name'] = $name;
-        }
-
-        if (!is_null($position)) {
-            $apiParams['position'] = $position;
-        }
-
-        if (!is_null($productId)) {
-            $apiParams['product_id'] = $productId;
-        }
-
-        if (!is_null($quantity)) {
-            $apiParams['quantity'] = $quantity;
-        }
-
-        if (!is_null($sku)) {
-            $apiParams['sku'] = $sku;
-        }
-
-        if (!is_null($snapshot)) {
-            $apiParams['snapshot'] = $snapshot;
-        }
-
-        if (!is_null($taxRate)) {
-            $apiParams['tax_rate'] = $taxRate;
-        }
+        $apiParams['configuration'] = $configuration;
+        $apiParams['currency'] = $currency;
+        $apiParams['metadata'] = $metadata;
+        $apiParams['name'] = $name;
+        $apiParams['position'] = $position;
+        $apiParams['product_id'] = $productId;
+        $apiParams['quantity'] = $quantity;
+        $apiParams['sku'] = $sku;
+        $apiParams['snapshot'] = $snapshot;
+        $apiParams['tax_rate'] = $taxRate;
 
         if (!is_null($type)) {
             $apiParams['type'] = $type;
         }
-
-        if (!is_null($unit)) {
-            $apiParams['unit'] = $unit;
-        }
-
-        if (!is_null($unitPrice)) {
-            $apiParams['unit_price'] = $unitPrice;
-        }
+        $apiParams['unit'] = $unit;
+        $apiParams['unit_price'] = $unitPrice;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -827,26 +719,11 @@ class Carts extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
-
-        if (!is_null($channelId)) {
-            $apiParams['channel_id'] = $channelId;
-        }
-
-        if (!is_null($currency)) {
-            $apiParams['currency'] = $currency;
-        }
-
-        if (!is_null($marketId)) {
-            $apiParams['market_id'] = $marketId;
-        }
-
-        if (!is_null($metadata)) {
-            $apiParams['metadata'] = $metadata;
-        }
-
-        if (!is_null($name)) {
-            $apiParams['name'] = $name;
-        }
+        $apiParams['channel_id'] = $channelId;
+        $apiParams['currency'] = $currency;
+        $apiParams['market_id'] = $marketId;
+        $apiParams['metadata'] = $metadata;
+        $apiParams['name'] = $name;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -932,10 +809,7 @@ class Carts extends Service
         if (!is_null($format)) {
             $apiParams['format'] = $format;
         }
-
-        if (!is_null($profileId)) {
-            $apiParams['profile_id'] = $profileId;
-        }
+        $apiParams['profile_id'] = $profileId;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -964,10 +838,7 @@ class Carts extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
-
-        if (!is_null($orderRef)) {
-            $apiParams['order_ref'] = $orderRef;
-        }
+        $apiParams['order_ref'] = $orderRef;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';

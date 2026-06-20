@@ -153,6 +153,22 @@ final class PricesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodPricesEntriesBulk(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->prices->pricesEntriesBulk(
+            "",
+            array()
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodPricesEntriesDelete(): void {
 
         $data = array();

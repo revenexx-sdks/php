@@ -49,10 +49,11 @@ class Products extends Service
      * @param ?string $kind
      * @param ?string $parentId
      * @param ?array $quantifiedAssociations
+     * @param ?string $taxClass
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function productsCreate(string $sku, ?array $attributeValues = null, ?array $completeness = null, ?string $deletedAt = null, ?bool $enabled = null, ?string $familyId = null, ?string $familyVariantId = null, ?string $kind = null, ?string $parentId = null, ?array $quantifiedAssociations = null): array
+    public function productsCreate(string $sku, ?array $attributeValues = null, ?array $completeness = null, ?string $deletedAt = null, ?bool $enabled = null, ?string $familyId = null, ?string $familyVariantId = null, ?string $kind = null, ?string $parentId = null, ?array $quantifiedAssociations = null, ?string $taxClass = null): array
     {
         $apiPath = str_replace(
             [],
@@ -80,6 +81,7 @@ class Products extends Service
         }
         $apiParams['parent_id'] = $parentId;
         $apiParams['quantified_associations'] = $quantifiedAssociations;
+        $apiParams['tax_class'] = $taxClass;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -1085,6 +1087,41 @@ class Products extends Service
 
         return $this->client->call(
             Client::METHOD_PUT,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * @param ?array $ids
+     * @param ?array $skus
+     * @throws RevenexxAPIRevenexxException
+     * @return array
+     */
+    public function productsBatch(?array $ids = null, ?array $skus = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/products/batch'
+        );
+
+        $apiParams = [];
+
+        if (!is_null($ids)) {
+            $apiParams['ids'] = $ids;
+        }
+
+        if (!is_null($skus)) {
+            $apiParams['skus'] = $skus;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
             $apiPath,
             $apiHeaders,
             $apiParams
@@ -2543,10 +2580,11 @@ class Products extends Service
      * @param ?string $parentId
      * @param ?array $quantifiedAssociations
      * @param ?string $sku
+     * @param ?string $taxClass
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function productsUpdate(string $id, ?array $attributeValues = null, ?array $completeness = null, ?string $deletedAt = null, ?bool $enabled = null, ?string $familyId = null, ?string $familyVariantId = null, ?string $kind = null, ?string $parentId = null, ?array $quantifiedAssociations = null, ?string $sku = null): array
+    public function productsUpdate(string $id, ?array $attributeValues = null, ?array $completeness = null, ?string $deletedAt = null, ?bool $enabled = null, ?string $familyId = null, ?string $familyVariantId = null, ?string $kind = null, ?string $parentId = null, ?array $quantifiedAssociations = null, ?string $sku = null, ?string $taxClass = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -2578,6 +2616,7 @@ class Products extends Service
         if (!is_null($sku)) {
             $apiParams['sku'] = $sku;
         }
+        $apiParams['tax_class'] = $taxClass;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';

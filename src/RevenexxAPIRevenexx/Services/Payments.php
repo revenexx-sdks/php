@@ -65,38 +65,17 @@ class Payments extends Service
         $apiParams = [];
         $apiParams['amount'] = $amount;
         $apiParams['method_code'] = $methodCode;
-
-        if (!is_null($cartId)) {
-            $apiParams['cart_id'] = $cartId;
-        }
-
-        if (!is_null($contactId)) {
-            $apiParams['contact_id'] = $contactId;
-        }
-
-        if (!is_null($country)) {
-            $apiParams['country'] = $country;
-        }
+        $apiParams['cart_id'] = $cartId;
+        $apiParams['contact_id'] = $contactId;
+        $apiParams['country'] = $country;
 
         if (!is_null($currency)) {
             $apiParams['currency'] = $currency;
         }
-
-        if (!is_null($idempotencyKey)) {
-            $apiParams['idempotency_key'] = $idempotencyKey;
-        }
-
-        if (!is_null($metadata)) {
-            $apiParams['metadata'] = $metadata;
-        }
-
-        if (!is_null($orderRef)) {
-            $apiParams['order_ref'] = $orderRef;
-        }
-
-        if (!is_null($returnUrl)) {
-            $apiParams['return_url'] = $returnUrl;
-        }
+        $apiParams['idempotency_key'] = $idempotencyKey;
+        $apiParams['metadata'] = $metadata;
+        $apiParams['order_ref'] = $orderRef;
+        $apiParams['return_url'] = $returnUrl;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -164,14 +143,8 @@ class Payments extends Service
         $apiParams = [];
         $apiParams['code'] = $code;
         $apiParams['name'] = $name;
-
-        if (!is_null($countries)) {
-            $apiParams['countries'] = $countries;
-        }
-
-        if (!is_null($description)) {
-            $apiParams['description'] = $description;
-        }
+        $apiParams['countries'] = $countries;
+        $apiParams['description'] = $description;
 
         if (!is_null($enabled)) {
             $apiParams['enabled'] = $enabled;
@@ -192,34 +165,16 @@ class Payments extends Service
         if (!is_null($kind)) {
             $apiParams['kind'] = $kind;
         }
-
-        if (!is_null($labels)) {
-            $apiParams['labels'] = $labels;
-        }
-
-        if (!is_null($maxOrderValue)) {
-            $apiParams['max_order_value'] = $maxOrderValue;
-        }
-
-        if (!is_null($metadata)) {
-            $apiParams['metadata'] = $metadata;
-        }
-
-        if (!is_null($minOrderValue)) {
-            $apiParams['min_order_value'] = $minOrderValue;
-        }
+        $apiParams['labels'] = $labels;
+        $apiParams['max_order_value'] = $maxOrderValue;
+        $apiParams['metadata'] = $metadata;
+        $apiParams['min_order_value'] = $minOrderValue;
 
         if (!is_null($position)) {
             $apiParams['position'] = $position;
         }
-
-        if (!is_null($provider)) {
-            $apiParams['provider'] = $provider;
-        }
-
-        if (!is_null($providerMethod)) {
-            $apiParams['provider_method'] = $providerMethod;
-        }
+        $apiParams['provider'] = $provider;
+        $apiParams['provider_method'] = $providerMethod;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -272,18 +227,9 @@ class Payments extends Service
         );
 
         $apiParams = [];
-
-        if (!is_null($amount)) {
-            $apiParams['amount'] = $amount;
-        }
-
-        if (!is_null($country)) {
-            $apiParams['country'] = $country;
-        }
-
-        if (!is_null($currency)) {
-            $apiParams['currency'] = $currency;
-        }
+        $apiParams['amount'] = $amount;
+        $apiParams['country'] = $country;
+        $apiParams['currency'] = $currency;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -383,14 +329,8 @@ class Payments extends Service
         if (!is_null($code)) {
             $apiParams['code'] = $code;
         }
-
-        if (!is_null($countries)) {
-            $apiParams['countries'] = $countries;
-        }
-
-        if (!is_null($description)) {
-            $apiParams['description'] = $description;
-        }
+        $apiParams['countries'] = $countries;
+        $apiParams['description'] = $description;
 
         if (!is_null($enabled)) {
             $apiParams['enabled'] = $enabled;
@@ -411,22 +351,10 @@ class Payments extends Service
         if (!is_null($kind)) {
             $apiParams['kind'] = $kind;
         }
-
-        if (!is_null($labels)) {
-            $apiParams['labels'] = $labels;
-        }
-
-        if (!is_null($maxOrderValue)) {
-            $apiParams['max_order_value'] = $maxOrderValue;
-        }
-
-        if (!is_null($metadata)) {
-            $apiParams['metadata'] = $metadata;
-        }
-
-        if (!is_null($minOrderValue)) {
-            $apiParams['min_order_value'] = $minOrderValue;
-        }
+        $apiParams['labels'] = $labels;
+        $apiParams['max_order_value'] = $maxOrderValue;
+        $apiParams['metadata'] = $metadata;
+        $apiParams['min_order_value'] = $minOrderValue;
 
         if (!is_null($name)) {
             $apiParams['name'] = $name;
@@ -435,14 +363,8 @@ class Payments extends Service
         if (!is_null($position)) {
             $apiParams['position'] = $position;
         }
-
-        if (!is_null($provider)) {
-            $apiParams['provider'] = $provider;
-        }
-
-        if (!is_null($providerMethod)) {
-            $apiParams['provider_method'] = $providerMethod;
-        }
+        $apiParams['provider'] = $provider;
+        $apiParams['provider_method'] = $providerMethod;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -500,30 +422,12 @@ class Payments extends Service
 
         $apiParams = [];
         $apiParams['provider'] = $provider;
-
-        if (!is_null($credentials)) {
-            $apiParams['credentials'] = $credentials;
-        }
-
-        if (!is_null($enabled)) {
-            $apiParams['enabled'] = $enabled;
-        }
-
-        if (!is_null($name)) {
-            $apiParams['name'] = $name;
-        }
-
-        if (!is_null($options)) {
-            $apiParams['options'] = $options;
-        }
-
-        if (!is_null($testMode)) {
-            $apiParams['test_mode'] = $testMode;
-        }
-
-        if (!is_null($webhookSecret)) {
-            $apiParams['webhook_secret'] = $webhookSecret;
-        }
+        $apiParams['credentials'] = $credentials;
+        $apiParams['enabled'] = $enabled;
+        $apiParams['name'] = $name;
+        $apiParams['options'] = $options;
+        $apiParams['test_mode'] = $testMode;
+        $apiParams['webhook_secret'] = $webhookSecret;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -634,10 +538,7 @@ class Payments extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
-
-        if (!is_null($credentials)) {
-            $apiParams['credentials'] = $credentials;
-        }
+        $apiParams['credentials'] = $credentials;
 
         if (!is_null($enabled)) {
             $apiParams['enabled'] = $enabled;
@@ -646,10 +547,7 @@ class Payments extends Service
         if (!is_null($name)) {
             $apiParams['name'] = $name;
         }
-
-        if (!is_null($options)) {
-            $apiParams['options'] = $options;
-        }
+        $apiParams['options'] = $options;
 
         if (!is_null($provider)) {
             $apiParams['provider'] = $provider;
@@ -658,10 +556,7 @@ class Payments extends Service
         if (!is_null($testMode)) {
             $apiParams['test_mode'] = $testMode;
         }
-
-        if (!is_null($webhookSecret)) {
-            $apiParams['webhook_secret'] = $webhookSecret;
-        }
+        $apiParams['webhook_secret'] = $webhookSecret;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';

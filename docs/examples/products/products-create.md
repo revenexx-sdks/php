@@ -22,5 +22,6 @@ $result = $products->productsCreate(
     familyVariantId: '', // optional
     kind: '', // optional
     parentId: '', // optional
-    quantifiedAssociations: [] // optional
+    quantifiedAssociations: [], // optional
+    taxClass: '' // optional
 );```

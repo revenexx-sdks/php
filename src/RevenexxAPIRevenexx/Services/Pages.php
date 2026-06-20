@@ -19,6 +19,30 @@ class Pages extends Service
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
+    public function pagesDeliveryMenus(): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/pages/delivery/menus'
+        );
+
+        $apiParams = [];
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * @throws RevenexxAPIRevenexxException
+     * @return array
+     */
     public function pagesDeliveryPage(): array
     {
         $apiPath = str_replace(
@@ -199,10 +223,7 @@ class Pages extends Service
         );
 
         $apiParams = [];
-
-        if (!is_null($items)) {
-            $apiParams['items'] = $items;
-        }
+        $apiParams['items'] = $items;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -253,10 +274,7 @@ class Pages extends Service
         );
 
         $apiParams = [];
-
-        if (!is_null($settings)) {
-            $apiParams['settings'] = $settings;
-        }
+        $apiParams['settings'] = $settings;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -338,14 +356,8 @@ class Pages extends Service
         $apiParams = [];
         $apiParams['page_id'] = $pageId;
         $apiParams['body'] = $body;
-
-        if (!is_null($blockUuids)) {
-            $apiParams['blockUuids'] = $blockUuids;
-        }
-
-        if (!is_null($parentUuid)) {
-            $apiParams['parentUuid'] = $parentUuid;
-        }
+        $apiParams['blockUuids'] = $blockUuids;
+        $apiParams['parentUuid'] = $parentUuid;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -522,10 +534,7 @@ class Pages extends Service
         $apiParams = [];
         $apiParams['page_id'] = $pageId;
         $apiParams['index'] = $index;
-
-        if (!is_null($langcode)) {
-            $apiParams['langcode'] = $langcode;
-        }
+        $apiParams['langcode'] = $langcode;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -584,10 +593,7 @@ class Pages extends Service
         $apiParams['page_id'] = $pageId;
         $apiParams['enabled'] = $enabled;
         $apiParams['index'] = $index;
-
-        if (!is_null($langcode)) {
-            $apiParams['langcode'] = $langcode;
-        }
+        $apiParams['langcode'] = $langcode;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -619,14 +625,8 @@ class Pages extends Service
         $apiParams = [];
         $apiParams['page_id'] = $pageId;
         $apiParams['plugin'] = $plugin;
-
-        if (!is_null($langcode)) {
-            $apiParams['langcode'] = $langcode;
-        }
-
-        if (!is_null($payload)) {
-            $apiParams['payload'] = $payload;
-        }
+        $apiParams['langcode'] = $langcode;
+        $apiParams['payload'] = $payload;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -688,14 +688,8 @@ class Pages extends Service
 
         $apiParams = [];
         $apiParams['page_id'] = $pageId;
-
-        if (!is_null($force)) {
-            $apiParams['force'] = $force;
-        }
-
-        if (!is_null($label)) {
-            $apiParams['label'] = $label;
-        }
+        $apiParams['force'] = $force;
+        $apiParams['label'] = $label;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -838,22 +832,10 @@ class Pages extends Service
         $apiParams['page_id'] = $pageId;
         $apiParams['label'] = $label;
         $apiParams['uuids'] = $uuids;
-
-        if (!is_null($description)) {
-            $apiParams['description'] = $description;
-        }
-
-        if (!is_null($fieldName)) {
-            $apiParams['fieldName'] = $fieldName;
-        }
-
-        if (!is_null($isDefault)) {
-            $apiParams['isDefault'] = $isDefault;
-        }
-
-        if (!is_null($pageBundle)) {
-            $apiParams['pageBundle'] = $pageBundle;
-        }
+        $apiParams['description'] = $description;
+        $apiParams['fieldName'] = $fieldName;
+        $apiParams['isDefault'] = $isDefault;
+        $apiParams['pageBundle'] = $pageBundle;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -1014,6 +996,153 @@ class Pages extends Service
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
+    public function pagesMenusList(): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/pages/menus'
+        );
+
+        $apiParams = [];
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * @param string $label
+     * @param string $menuKey
+     * @param ?array $items
+     * @throws RevenexxAPIRevenexxException
+     * @return array
+     */
+    public function pagesMenusUpsert(string $label, string $menuKey, ?array $items = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/pages/menus'
+        );
+
+        $apiParams = [];
+        $apiParams['label'] = $label;
+        $apiParams['menuKey'] = $menuKey;
+
+        if (!is_null($items)) {
+            $apiParams['items'] = $items;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * @param string $id
+     * @throws RevenexxAPIRevenexxException
+     * @return array
+     */
+    public function pagesMenusDelete(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/pages/menus/{id}'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_DELETE,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * @param string $id
+     * @throws RevenexxAPIRevenexxException
+     * @return array
+     */
+    public function pagesMenusGet(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/pages/menus/{id}'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * @param string $id
+     * @param ?array $items
+     * @param ?string $label
+     * @throws RevenexxAPIRevenexxException
+     * @return array
+     */
+    public function pagesMenusUpdate(string $id, ?array $items = null, ?string $label = null): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/pages/menus/{id}'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        if (!is_null($items)) {
+            $apiParams['items'] = $items;
+        }
+
+        if (!is_null($label)) {
+            $apiParams['label'] = $label;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_PUT,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * @throws RevenexxAPIRevenexxException
+     * @return array
+     */
     public function pagesPagesList(): array
     {
         $apiPath = str_replace(
@@ -1054,26 +1183,11 @@ class Pages extends Service
 
         $apiParams = [];
         $apiParams['title'] = $title;
-
-        if (!is_null($bundle)) {
-            $apiParams['bundle'] = $bundle;
-        }
-
-        if (!is_null($hostOptions)) {
-            $apiParams['hostOptions'] = $hostOptions;
-        }
-
-        if (!is_null($meta)) {
-            $apiParams['meta'] = $meta;
-        }
-
-        if (!is_null($slug)) {
-            $apiParams['slug'] = $slug;
-        }
-
-        if (!is_null($sourceLanguage)) {
-            $apiParams['sourceLanguage'] = $sourceLanguage;
-        }
+        $apiParams['bundle'] = $bundle;
+        $apiParams['hostOptions'] = $hostOptions;
+        $apiParams['meta'] = $meta;
+        $apiParams['slug'] = $slug;
+        $apiParams['sourceLanguage'] = $sourceLanguage;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -1214,11 +1328,12 @@ class Pages extends Service
     }
 
     /**
+     * @param ?array $menus
      * @param ?array $pages
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function pagesSeed(?array $pages = null): array
+    public function pagesSeed(?array $menus = null, ?array $pages = null): array
     {
         $apiPath = str_replace(
             [],
@@ -1227,10 +1342,8 @@ class Pages extends Service
         );
 
         $apiParams = [];
-
-        if (!is_null($pages)) {
-            $apiParams['pages'] = $pages;
-        }
+        $apiParams['menus'] = $menus;
+        $apiParams['pages'] = $pages;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';

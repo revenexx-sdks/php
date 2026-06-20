@@ -2,227 +2,294 @@
 
 
 ```http request
-GET https://api.revenexx.com/v1/storage/buckets
+GET https://api.revenexx.com/v1/storage/assets
 ```
-
-** Get a list of all the storage buckets. You can use the query params to filter your results. **
 
 ### Parameters
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
-| queries | array | Array of query strings generated using the Query class provided by the SDK. [Learn more about queries](https://appwrite.io/docs/queries). Maximum of 100 queries are allowed, each 4096 characters long. You may filter on the following attributes: enabled, name, fileSecurity, maximumFileSize, encryption, antivirus, transformations |  |
-| search | string | Search term to filter your list results. Max length: 256 chars. |  |
-| total | boolean | When set to false, the total count returned will be 0 and will not be calculated. |  |
+| search | string |  |  |
 
 
 ```http request
-POST https://api.revenexx.com/v1/storage/buckets
+POST https://api.revenexx.com/v1/storage/assets
 ```
-
-** Create a new storage bucket. **
 
 ### Parameters
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
-| allowedFileExtensions | array | Allowed file extensions. Maximum of 100 extensions are allowed, each 64 characters long. |  |
-| antivirus | boolean | Is virus scanning enabled? For file size above 20MB AntiVirus scanning is skipped even if it's enabled |  |
-| bucketId | string | Unique Id. Choose a custom ID or generate a random ID with `ID.unique()`. Valid chars are a-z, A-Z, 0-9, period, hyphen, and underscore. Can't start with a special char. Max length is 36 chars. |  |
-| compression | string | Compression algorithm chosen for compression. Can be one of none,  [gzip](https://en.wikipedia.org/wiki/Gzip), or [zstd](https://en.wikipedia.org/wiki/Zstd), For file size above 20MB compression is skipped even if it's enabled |  |
-| enabled | boolean | Is bucket enabled? When set to 'disabled', users cannot access the files in this bucket but Server SDKs with and API key can still access the bucket. No files are lost when this is toggled. |  |
-| encryption | boolean | Is encryption enabled? For file size above 20MB encryption is skipped even if it's enabled |  |
-| fileSecurity | boolean | Enables configuring permissions for individual file. A user needs one of file or bucket level permissions to access a file. [Learn more about permissions](https://appwrite.io/docs/permissions). |  |
-| maximumFileSize | integer | Maximum file size allowed in bytes. Maximum allowed value is 30MB. |  |
-| name | string | Bucket name |  |
-| permissions | array | An array of permission strings. By default, no user is granted with any permissions. [Learn more about permissions](https://appwrite.io/docs/permissions). |  |
-| transformations | boolean | Are image transformations enabled? |  |
+| alt_text | string |  |  |
+| description | string |  |  |
+| display_name | string |  |  |
+| file | string |  |  |
+| folder_id | string |  |  |
+| keep_archive | boolean |  |  |
+| tags | array |  |  |
+| unpack | boolean | Archives only: unpack the members after upload (see AssetController). |  |
+| visibility | string |  |  |
 
 
 ```http request
-DELETE https://api.revenexx.com/v1/storage/buckets/{bucketId}
+POST https://api.revenexx.com/v1/storage/assets/bulk
 ```
-
-** Delete a storage bucket by its unique ID. **
 
 ### Parameters
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
-| bucketId | string | **Required** Bucket unique ID. |  |
+| folder_id | string |  |  |
+| visibility | string |  |  |
 
 
 ```http request
-GET https://api.revenexx.com/v1/storage/buckets/{bucketId}
+DELETE https://api.revenexx.com/v1/storage/assets/{id}
 ```
-
-** Get a storage bucket by its unique ID. This endpoint response returns a JSON object with the storage bucket metadata. **
 
 ### Parameters
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
-| bucketId | string | **Required** Bucket unique ID. |  |
+| id | string | **Required**  |  |
 
 
 ```http request
-PUT https://api.revenexx.com/v1/storage/buckets/{bucketId}
+GET https://api.revenexx.com/v1/storage/assets/{id}
 ```
-
-** Update a storage bucket by its unique ID. **
 
 ### Parameters
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
-| bucketId | string | **Required** Bucket unique ID. |  |
-| allowedFileExtensions | array | Allowed file extensions. Maximum of 100 extensions are allowed, each 64 characters long. |  |
-| antivirus | boolean | Is virus scanning enabled? For file size above 20MB AntiVirus scanning is skipped even if it's enabled |  |
-| compression | string | Compression algorithm chosen for compression. Can be one of none, [gzip](https://en.wikipedia.org/wiki/Gzip), or [zstd](https://en.wikipedia.org/wiki/Zstd), For file size above 20MB compression is skipped even if it's enabled |  |
-| enabled | boolean | Is bucket enabled? When set to 'disabled', users cannot access the files in this bucket but Server SDKs with and API key can still access the bucket. No files are lost when this is toggled. |  |
-| encryption | boolean | Is encryption enabled? For file size above 20MB encryption is skipped even if it's enabled |  |
-| fileSecurity | boolean | Enables configuring permissions for individual file. A user needs one of file or bucket level permissions to access a file. [Learn more about permissions](https://appwrite.io/docs/permissions). |  |
-| maximumFileSize | integer | Maximum file size allowed in bytes. Maximum allowed value is 30MB. |  |
-| name | string | Bucket name |  |
-| permissions | array | An array of permission strings. By default, the current permissions are inherited. [Learn more about permissions](https://appwrite.io/docs/permissions). |  |
-| transformations | boolean | Are image transformations enabled? |  |
+| id | string | **Required**  |  |
 
 
 ```http request
-GET https://api.revenexx.com/v1/storage/buckets/{bucketId}/files
+PATCH https://api.revenexx.com/v1/storage/assets/{id}
 ```
-
-** Get a list of all the user files. You can use the query params to filter your results. **
 
 ### Parameters
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
-| bucketId | string | **Required** Storage bucket unique ID. You can create a new storage bucket using the Storage service [server integration](https://appwrite.io/docs/server/storage#createBucket). |  |
-| queries | array | Array of query strings generated using the Query class provided by the SDK. [Learn more about queries](https://appwrite.io/docs/queries). Maximum of 100 queries are allowed, each 4096 characters long. You may filter on the following attributes: name, signature, mimeType, sizeOriginal, chunksTotal, chunksUploaded |  |
-| search | string | Search term to filter your list results. Max length: 256 chars. |  |
-| total | boolean | When set to false, the total count returned will be 0 and will not be calculated. |  |
+| id | string | **Required**  |  |
+| alt_text | string |  |  |
+| description | string |  |  |
+| display_name | string |  |  |
+| folder_id | string |  |  |
+| name | string |  |  |
+| tags | array |  |  |
+| visibility | string |  |  |
 
 
 ```http request
-POST https://api.revenexx.com/v1/storage/buckets/{bucketId}/files
+GET https://api.revenexx.com/v1/storage/assets/{id}/download
 ```
-
-** Create a new file. Before using this route, you should create a new bucket resource using either a [server integration](https://app.revenexx.com/docs/server/storage#storageCreateBucket) API or directly from your Revenexx console.
-
-Larger files should be uploaded using multiple requests with the [content-range](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Range) header to send a partial request with a maximum supported chunk of `5MB`. The `content-range` header values should always be in bytes.
-
-When the first request is sent, the server will return the **File** object, and the subsequent part request must include the file&#039;s **id** in `x-revenexx-id` header to allow the server to know that the partial upload is for the existing file and not for a new one.
-
-If you&#039;re creating a new file using one of the Revenexx SDKs, all the chunking logic will be managed by the SDK internally.
- **
 
 ### Parameters
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
-| bucketId | string | **Required** Storage bucket unique ID. You can create a new storage bucket using the Storage service [server integration](https://appwrite.io/docs/server/storage#createBucket). |  |
-| file | string | Binary file. Appwrite SDKs provide helpers to handle file input. [Learn about file input](https://appwrite.io/docs/products/storage/upload-download#input-file). |  |
-| fileId | string | File ID. Choose a custom ID or generate a random ID with `ID.unique()`. Valid chars are a-z, A-Z, 0-9, period, hyphen, and underscore. Can't start with a special char. Max length is 36 chars. |  |
-| permissions | array | An array of permission strings. By default, only the current user is granted all permissions. [Learn more about permissions](https://appwrite.io/docs/permissions). |  |
+| id | string | **Required**  |  |
 
 
 ```http request
-DELETE https://api.revenexx.com/v1/storage/buckets/{bucketId}/files/{fileId}
+DELETE https://api.revenexx.com/v1/storage/assets/{id}/permanent
 ```
-
-** Delete a file by its unique ID. Only users with write permissions have access to delete this resource. **
 
 ### Parameters
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
-| bucketId | string | **Required** Storage bucket unique ID. You can create a new storage bucket using the Storage service [server integration](https://appwrite.io/docs/server/storage#createBucket). |  |
-| fileId | string | **Required** File ID. |  |
+| id | string | **Required**  |  |
 
 
 ```http request
-GET https://api.revenexx.com/v1/storage/buckets/{bucketId}/files/{fileId}
+POST https://api.revenexx.com/v1/storage/assets/{id}/reprocess
 ```
-
-** Get a file by its unique ID. This endpoint response returns a JSON object with the file metadata. **
 
 ### Parameters
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
-| bucketId | string | **Required** Storage bucket unique ID. You can create a new storage bucket using the Storage service [server integration](https://appwrite.io/docs/server/storage#createBucket). |  |
-| fileId | string | **Required** File ID. |  |
+| id | string | **Required**  |  |
 
 
 ```http request
-PUT https://api.revenexx.com/v1/storage/buckets/{bucketId}/files/{fileId}
+POST https://api.revenexx.com/v1/storage/assets/{id}/restore
 ```
-
-** Update a file by its unique ID. Only users with write permissions have access to update this resource. **
 
 ### Parameters
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
-| bucketId | string | **Required** Bucket unique ID. |  |
-| fileId | string | **Required** File ID. |  |
-| name | string | File name. |  |
-| permissions | array | An array of permission strings. By default, the current permissions are inherited. [Learn more about permissions](https://appwrite.io/docs/permissions). |  |
+| id | string | **Required**  |  |
 
 
 ```http request
-GET https://api.revenexx.com/v1/storage/buckets/{bucketId}/files/{fileId}/download
+POST https://api.revenexx.com/v1/storage/assets/{id}/sign
 ```
-
-** Get a file content by its unique ID. The endpoint response return with a &#039;Content-Disposition: attachment&#039; header that tells the browser to start downloading the file to user downloads directory. **
 
 ### Parameters
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
-| bucketId | string | **Required** Storage bucket ID. You can create a new storage bucket using the Storage service [server integration](https://appwrite.io/docs/server/storage#createBucket). |  |
-| fileId | string | **Required** File ID. |  |
-| token | string | File token for accessing this file. |  |
+| id | string | **Required**  |  |
+| ttl_seconds | integer |  |  |
 
 
 ```http request
-GET https://api.revenexx.com/v1/storage/buckets/{bucketId}/files/{fileId}/preview
+POST https://api.revenexx.com/v1/storage/assets/{id}/unpack
 ```
-
-** Get a file preview image. Currently, this method supports preview for image files (jpg, png, and gif), other supported formats, like pdf, docs, slides, and spreadsheets, will return the file icon image. You can also pass query string arguments for cutting and resizing your preview image. Preview is supported only for image files smaller than 10MB. **
 
 ### Parameters
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
-| bucketId | string | **Required** Storage bucket unique ID. You can create a new storage bucket using the Storage service [server integration](https://appwrite.io/docs/server/storage#createBucket). |  |
-| fileId | string | **Required** File ID |  |
-| width | integer | Resize preview image width, Pass an integer between 0 to 4000. |  |
-| height | integer | Resize preview image height, Pass an integer between 0 to 4000. |  |
-| gravity | string | Image crop gravity. Can be one of center,top-left,top,top-right,left,right,bottom-left,bottom,bottom-right |  |
-| quality | integer | Preview image quality. Pass an integer between 0 to 100. Defaults to keep existing image quality. |  |
-| borderWidth | integer | Preview image border in pixels. Pass an integer between 0 to 100. Defaults to 0. |  |
-| borderColor | string | Preview image border color. Use a valid HEX color, no # is needed for prefix. |  |
-| borderRadius | integer | Preview image border radius in pixels. Pass an integer between 0 to 4000. |  |
-| opacity | number | Preview image opacity. Only works with images having an alpha channel (like png). Pass a number between 0 to 1. |  |
-| rotation | integer | Preview image rotation in degrees. Pass an integer between -360 and 360. |  |
-| background | string | Preview image background color. Only works with transparent images (png). Use a valid HEX color, no # is needed for prefix. |  |
-| output | string | Output format type (jpeg, jpg, png, gif and webp). |  |
-| token | string | File token for accessing this file. |  |
+| id | string | **Required**  |  |
+| keep_archive | boolean |  |  |
+| target_folder_id | string |  |  |
 
 
 ```http request
-GET https://api.revenexx.com/v1/storage/buckets/{bucketId}/files/{fileId}/view
+GET https://api.revenexx.com/v1/storage/folders
 ```
 
-** Get a file content by its unique ID. This endpoint is similar to the download method but returns with no  &#039;Content-Disposition: attachment&#039; header. **
+
+```http request
+POST https://api.revenexx.com/v1/storage/folders
+```
 
 ### Parameters
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
-| bucketId | string | **Required** Storage bucket unique ID. You can create a new storage bucket using the Storage service [server integration](https://appwrite.io/docs/server/storage#createBucket). |  |
-| fileId | string | **Required** File ID. |  |
-| token | string | File token for accessing this file. |  |
+| name | string |  |  |
+| parent_id | string |  |  |
+
+
+```http request
+DELETE https://api.revenexx.com/v1/storage/folders/{id}
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required**  |  |
+| recursive | boolean |  |  |
+
+
+```http request
+GET https://api.revenexx.com/v1/storage/folders/{id}
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required**  |  |
+
+
+```http request
+PATCH https://api.revenexx.com/v1/storage/folders/{id}
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required**  |  |
+| name | string |  |  |
+| parent_id | string |  |  |
+
+
+```http request
+GET https://api.revenexx.com/v1/storage/sftp/rules
+```
+
+
+```http request
+POST https://api.revenexx.com/v1/storage/sftp/rules
+```
+
+
+```http request
+DELETE https://api.revenexx.com/v1/storage/sftp/rules/{id}
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required**  |  |
+
+
+```http request
+GET https://api.revenexx.com/v1/storage/sftp/rules/{id}
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required**  |  |
+
+
+```http request
+PATCH https://api.revenexx.com/v1/storage/sftp/rules/{id}
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required**  |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/storage/sftp/rules/{id}/run
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required**  |  |
+
+
+```http request
+GET https://api.revenexx.com/v1/storage/sftp/rules/{id}/runs/{runId}
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required**  |  |
+| runId | string | **Required**  |  |
+
+
+```http request
+GET https://api.revenexx.com/v1/storage/sftp/sync-history
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| rule_id | string |  |  |
+| from | string |  |  |
+| to | string |  |  |
+
+
+```http request
+GET https://api.revenexx.com/v1/storage/tenant/stats
+```
+
+
+```http request
+GET https://api.revenexx.com/v1/storage/tenant/usage
+```
 

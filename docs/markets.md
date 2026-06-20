@@ -75,6 +75,70 @@ GET https://api.revenexx.com/v1/markets/{id}/context
 
 
 ```http request
+GET https://api.revenexx.com/v1/markets/{market_id}/currencies
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| market_id | string | **Required**  |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/markets/{market_id}/currencies
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| market_id | string | **Required**  |  |
+| code | string | ISO 4217 code, e.g. EUR (unique per market). |  |
+| is_default | boolean |  |  |
+| position | integer | Sort position (default 0). |  |
+
+
+```http request
+DELETE https://api.revenexx.com/v1/markets/{market_id}/currencies/{id}
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| market_id | string | **Required**  |  |
+| id | string | **Required**  |  |
+
+
+```http request
+GET https://api.revenexx.com/v1/markets/{market_id}/currencies/{id}
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| market_id | string | **Required**  |  |
+| id | string | **Required**  |  |
+
+
+```http request
+PUT https://api.revenexx.com/v1/markets/{market_id}/currencies/{id}
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| market_id | string | **Required**  |  |
+| id | string | **Required**  |  |
+| code | string | ISO 4217 code, e.g. EUR (unique per market). |  |
+| is_default | boolean |  |  |
+| position | integer | Sort position (default 0). |  |
+
+
+```http request
 GET https://api.revenexx.com/v1/markets/{market_id}/locales
 ```
 

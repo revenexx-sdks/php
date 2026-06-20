@@ -282,10 +282,11 @@ class Customers extends Service
 
     /**
      * @param string $userId
+     * @param ?string $sessionId
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function customersAuthMe(string $userId): array
+    public function customersAuthMe(string $userId, ?string $sessionId = null): array
     {
         $apiPath = str_replace(
             [],
@@ -295,6 +296,7 @@ class Customers extends Service
 
         $apiParams = [];
         $apiParams['user_id'] = $userId;
+        $apiParams['session_id'] = $sessionId;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -389,26 +391,11 @@ class Customers extends Service
         $apiParams = [];
         $apiParams['email'] = $email;
         $apiParams['password'] = $password;
-
-        if (!is_null($firstName)) {
-            $apiParams['first_name'] = $firstName;
-        }
-
-        if (!is_null($lastName)) {
-            $apiParams['last_name'] = $lastName;
-        }
-
-        if (!is_null($locale)) {
-            $apiParams['locale'] = $locale;
-        }
-
-        if (!is_null($organizationId)) {
-            $apiParams['organization_id'] = $organizationId;
-        }
-
-        if (!is_null($organizationName)) {
-            $apiParams['organization_name'] = $organizationName;
-        }
+        $apiParams['first_name'] = $firstName;
+        $apiParams['last_name'] = $lastName;
+        $apiParams['locale'] = $locale;
+        $apiParams['organization_id'] = $organizationId;
+        $apiParams['organization_name'] = $organizationName;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';

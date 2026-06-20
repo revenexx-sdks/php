@@ -473,13 +473,14 @@ class Shipping extends Service
      * @param ?array $attributes
      * @param ?string $country
      * @param ?string $currency
+     * @param ?string $marketId
      * @param ?float $orderValue
      * @param ?float $quantity
      * @param ?float $weight
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function shippingRates(?array $attributes = null, ?string $country = null, ?string $currency = null, ?float $orderValue = null, ?float $quantity = null, ?float $weight = null): array
+    public function shippingRates(?array $attributes = null, ?string $country = null, ?string $currency = null, ?string $marketId = null, ?float $orderValue = null, ?float $quantity = null, ?float $weight = null): array
     {
         $apiPath = str_replace(
             [],
@@ -488,30 +489,13 @@ class Shipping extends Service
         );
 
         $apiParams = [];
-
-        if (!is_null($attributes)) {
-            $apiParams['attributes'] = $attributes;
-        }
-
-        if (!is_null($country)) {
-            $apiParams['country'] = $country;
-        }
-
-        if (!is_null($currency)) {
-            $apiParams['currency'] = $currency;
-        }
-
-        if (!is_null($orderValue)) {
-            $apiParams['order_value'] = $orderValue;
-        }
-
-        if (!is_null($quantity)) {
-            $apiParams['quantity'] = $quantity;
-        }
-
-        if (!is_null($weight)) {
-            $apiParams['weight'] = $weight;
-        }
+        $apiParams['attributes'] = $attributes;
+        $apiParams['country'] = $country;
+        $apiParams['currency'] = $currency;
+        $apiParams['market_id'] = $marketId;
+        $apiParams['order_value'] = $orderValue;
+        $apiParams['quantity'] = $quantity;
+        $apiParams['weight'] = $weight;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';

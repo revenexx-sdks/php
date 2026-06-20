@@ -33,10 +33,7 @@ class Inventories extends Service
         $apiParams = [];
         $apiParams['items'] = $items;
         $apiParams['reason'] = $reason;
-
-        if (!is_null($locationCode)) {
-            $apiParams['location_code'] = $locationCode;
-        }
+        $apiParams['location_code'] = $locationCode;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -65,10 +62,7 @@ class Inventories extends Service
 
         $apiParams = [];
         $apiParams['items'] = $items;
-
-        if (!is_null($locationCode)) {
-            $apiParams['location_code'] = $locationCode;
-        }
+        $apiParams['location_code'] = $locationCode;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -155,22 +149,13 @@ class Inventories extends Service
         $apiParams = [];
         $apiParams['code'] = $code;
         $apiParams['name'] = $name;
-
-        if (!is_null($address)) {
-            $apiParams['address'] = $address;
-        }
+        $apiParams['address'] = $address;
 
         if (!is_null($enabled)) {
             $apiParams['enabled'] = $enabled;
         }
-
-        if (!is_null($labels)) {
-            $apiParams['labels'] = $labels;
-        }
-
-        if (!is_null($metadata)) {
-            $apiParams['metadata'] = $metadata;
-        }
+        $apiParams['labels'] = $labels;
+        $apiParams['metadata'] = $metadata;
 
         if (!is_null($priority)) {
             $apiParams['priority'] = $priority;
@@ -290,10 +275,7 @@ class Inventories extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
-
-        if (!is_null($address)) {
-            $apiParams['address'] = $address;
-        }
+        $apiParams['address'] = $address;
 
         if (!is_null($code)) {
             $apiParams['code'] = $code;
@@ -302,14 +284,8 @@ class Inventories extends Service
         if (!is_null($enabled)) {
             $apiParams['enabled'] = $enabled;
         }
-
-        if (!is_null($labels)) {
-            $apiParams['labels'] = $labels;
-        }
-
-        if (!is_null($metadata)) {
-            $apiParams['metadata'] = $metadata;
-        }
+        $apiParams['labels'] = $labels;
+        $apiParams['metadata'] = $metadata;
 
         if (!is_null($name)) {
             $apiParams['name'] = $name;
@@ -401,14 +377,8 @@ class Inventories extends Service
 
         $apiParams = [];
         $apiParams['items'] = $items;
-
-        if (!is_null($locationCode)) {
-            $apiParams['location_code'] = $locationCode;
-        }
-
-        if (!is_null($reason)) {
-            $apiParams['reason'] = $reason;
-        }
+        $apiParams['location_code'] = $locationCode;
+        $apiParams['reason'] = $reason;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -516,10 +486,7 @@ class Inventories extends Service
         $apiParams = [];
         $apiParams['items'] = $items;
         $apiParams['order_ref'] = $orderRef;
-
-        if (!is_null($expiresAt)) {
-            $apiParams['expires_at'] = $expiresAt;
-        }
+        $apiParams['expires_at'] = $expiresAt;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -550,18 +517,9 @@ class Inventories extends Service
 
         $apiParams = [];
         $apiParams['items'] = $items;
-
-        if (!is_null($locationCode)) {
-            $apiParams['location_code'] = $locationCode;
-        }
-
-        if (!is_null($orderRef)) {
-            $apiParams['order_ref'] = $orderRef;
-        }
-
-        if (!is_null($reason)) {
-            $apiParams['reason'] = $reason;
-        }
+        $apiParams['location_code'] = $locationCode;
+        $apiParams['order_ref'] = $orderRef;
+        $apiParams['reason'] = $reason;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -619,27 +577,18 @@ class Inventories extends Service
 
         $apiParams = [];
         $apiParams['location_id'] = $locationId;
-
-        if (!is_null($metadata)) {
-            $apiParams['metadata'] = $metadata;
-        }
+        $apiParams['metadata'] = $metadata;
 
         if (!is_null($onHand)) {
             $apiParams['on_hand'] = $onHand;
         }
-
-        if (!is_null($productId)) {
-            $apiParams['product_id'] = $productId;
-        }
+        $apiParams['product_id'] = $productId;
         $apiParams['reorder_point'] = $reorderPoint;
 
         if (!is_null($reserved)) {
             $apiParams['reserved'] = $reserved;
         }
-
-        if (!is_null($sku)) {
-            $apiParams['sku'] = $sku;
-        }
+        $apiParams['sku'] = $sku;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -730,27 +679,18 @@ class Inventories extends Service
         if (!is_null($locationId)) {
             $apiParams['location_id'] = $locationId;
         }
-
-        if (!is_null($metadata)) {
-            $apiParams['metadata'] = $metadata;
-        }
+        $apiParams['metadata'] = $metadata;
 
         if (!is_null($onHand)) {
             $apiParams['on_hand'] = $onHand;
         }
-
-        if (!is_null($productId)) {
-            $apiParams['product_id'] = $productId;
-        }
+        $apiParams['product_id'] = $productId;
         $apiParams['reorder_point'] = $reorderPoint;
 
         if (!is_null($reserved)) {
             $apiParams['reserved'] = $reserved;
         }
-
-        if (!is_null($sku)) {
-            $apiParams['sku'] = $sku;
-        }
+        $apiParams['sku'] = $sku;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';

@@ -71,42 +71,21 @@ class Prices extends Service
         $apiParams = [];
         $apiParams['code'] = $code;
         $apiParams['name'] = $name;
-
-        if (!is_null($channelId)) {
-            $apiParams['channel_id'] = $channelId;
-        }
-
-        if (!is_null($contactId)) {
-            $apiParams['contact_id'] = $contactId;
-        }
+        $apiParams['channel_id'] = $channelId;
+        $apiParams['contact_id'] = $contactId;
 
         if (!is_null($currency)) {
             $apiParams['currency'] = $currency;
         }
-
-        if (!is_null($description)) {
-            $apiParams['description'] = $description;
-        }
+        $apiParams['description'] = $description;
 
         if (!is_null($isDefault)) {
             $apiParams['is_default'] = $isDefault;
         }
-
-        if (!is_null($labels)) {
-            $apiParams['labels'] = $labels;
-        }
-
-        if (!is_null($marketId)) {
-            $apiParams['market_id'] = $marketId;
-        }
-
-        if (!is_null($metadata)) {
-            $apiParams['metadata'] = $metadata;
-        }
-
-        if (!is_null($organizationId)) {
-            $apiParams['organization_id'] = $organizationId;
-        }
+        $apiParams['labels'] = $labels;
+        $apiParams['market_id'] = $marketId;
+        $apiParams['metadata'] = $metadata;
+        $apiParams['organization_id'] = $organizationId;
 
         if (!is_null($priority)) {
             $apiParams['priority'] = $priority;
@@ -119,14 +98,8 @@ class Prices extends Service
         if (!is_null($taxIncluded)) {
             $apiParams['tax_included'] = $taxIncluded;
         }
-
-        if (!is_null($validFrom)) {
-            $apiParams['valid_from'] = $validFrom;
-        }
-
-        if (!is_null($validUntil)) {
-            $apiParams['valid_until'] = $validUntil;
-        }
+        $apiParams['valid_from'] = $validFrom;
+        $apiParams['valid_until'] = $validUntil;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -246,50 +219,29 @@ class Prices extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
-
-        if (!is_null($channelId)) {
-            $apiParams['channel_id'] = $channelId;
-        }
+        $apiParams['channel_id'] = $channelId;
 
         if (!is_null($code)) {
             $apiParams['code'] = $code;
         }
-
-        if (!is_null($contactId)) {
-            $apiParams['contact_id'] = $contactId;
-        }
+        $apiParams['contact_id'] = $contactId;
 
         if (!is_null($currency)) {
             $apiParams['currency'] = $currency;
         }
-
-        if (!is_null($description)) {
-            $apiParams['description'] = $description;
-        }
+        $apiParams['description'] = $description;
 
         if (!is_null($isDefault)) {
             $apiParams['is_default'] = $isDefault;
         }
-
-        if (!is_null($labels)) {
-            $apiParams['labels'] = $labels;
-        }
-
-        if (!is_null($marketId)) {
-            $apiParams['market_id'] = $marketId;
-        }
-
-        if (!is_null($metadata)) {
-            $apiParams['metadata'] = $metadata;
-        }
+        $apiParams['labels'] = $labels;
+        $apiParams['market_id'] = $marketId;
+        $apiParams['metadata'] = $metadata;
 
         if (!is_null($name)) {
             $apiParams['name'] = $name;
         }
-
-        if (!is_null($organizationId)) {
-            $apiParams['organization_id'] = $organizationId;
-        }
+        $apiParams['organization_id'] = $organizationId;
 
         if (!is_null($priority)) {
             $apiParams['priority'] = $priority;
@@ -302,14 +254,8 @@ class Prices extends Service
         if (!is_null($taxIncluded)) {
             $apiParams['tax_included'] = $taxIncluded;
         }
-
-        if (!is_null($validFrom)) {
-            $apiParams['valid_from'] = $validFrom;
-        }
-
-        if (!is_null($validUntil)) {
-            $apiParams['valid_until'] = $validUntil;
-        }
+        $apiParams['valid_from'] = $validFrom;
+        $apiParams['valid_until'] = $validUntil;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -372,42 +318,24 @@ class Prices extends Service
 
         $apiParams = [];
         $apiParams['list_id'] = $listId;
-
-        if (!is_null($metadata)) {
-            $apiParams['metadata'] = $metadata;
-        }
+        $apiParams['metadata'] = $metadata;
 
         if (!is_null($priceType)) {
             $apiParams['price_type'] = $priceType;
         }
-
-        if (!is_null($productId)) {
-            $apiParams['product_id'] = $productId;
-        }
+        $apiParams['product_id'] = $productId;
 
         if (!is_null($quantityMin)) {
             $apiParams['quantity_min'] = $quantityMin;
         }
-
-        if (!is_null($sku)) {
-            $apiParams['sku'] = $sku;
-        }
-
-        if (!is_null($unit)) {
-            $apiParams['unit'] = $unit;
-        }
+        $apiParams['sku'] = $sku;
+        $apiParams['unit'] = $unit;
 
         if (!is_null($unitPrice)) {
             $apiParams['unit_price'] = $unitPrice;
         }
-
-        if (!is_null($validFrom)) {
-            $apiParams['valid_from'] = $validFrom;
-        }
-
-        if (!is_null($validUntil)) {
-            $apiParams['valid_until'] = $validUntil;
-        }
+        $apiParams['valid_from'] = $validFrom;
+        $apiParams['valid_until'] = $validUntil;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -443,6 +371,35 @@ class Prices extends Service
 
         return $this->client->call(
             Client::METHOD_PUT,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * @param string $listId
+     * @param array $entries
+     * @throws RevenexxAPIRevenexxException
+     * @return array
+     */
+    public function pricesEntriesBulk(string $listId, array $entries): array
+    {
+        $apiPath = str_replace(
+            ['{list_id}'],
+            [$listId],
+            '/v1/prices/lists/{list_id}/entries/bulk'
+        );
+
+        $apiParams = [];
+        $apiParams['list_id'] = $listId;
+        $apiParams['entries'] = $entries;
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
             $apiPath,
             $apiHeaders,
             $apiParams
@@ -531,42 +488,24 @@ class Prices extends Service
         $apiParams = [];
         $apiParams['list_id'] = $listId;
         $apiParams['id'] = $id;
-
-        if (!is_null($metadata)) {
-            $apiParams['metadata'] = $metadata;
-        }
+        $apiParams['metadata'] = $metadata;
 
         if (!is_null($priceType)) {
             $apiParams['price_type'] = $priceType;
         }
-
-        if (!is_null($productId)) {
-            $apiParams['product_id'] = $productId;
-        }
+        $apiParams['product_id'] = $productId;
 
         if (!is_null($quantityMin)) {
             $apiParams['quantity_min'] = $quantityMin;
         }
-
-        if (!is_null($sku)) {
-            $apiParams['sku'] = $sku;
-        }
-
-        if (!is_null($unit)) {
-            $apiParams['unit'] = $unit;
-        }
+        $apiParams['sku'] = $sku;
+        $apiParams['unit'] = $unit;
 
         if (!is_null($unitPrice)) {
             $apiParams['unit_price'] = $unitPrice;
         }
-
-        if (!is_null($validFrom)) {
-            $apiParams['valid_from'] = $validFrom;
-        }
-
-        if (!is_null($validUntil)) {
-            $apiParams['valid_until'] = $validUntil;
-        }
+        $apiParams['valid_from'] = $validFrom;
+        $apiParams['valid_until'] = $validUntil;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -600,30 +539,12 @@ class Prices extends Service
 
         $apiParams = [];
         $apiParams['items'] = $items;
-
-        if (!is_null($at)) {
-            $apiParams['at'] = $at;
-        }
-
-        if (!is_null($channelId)) {
-            $apiParams['channel_id'] = $channelId;
-        }
-
-        if (!is_null($contactId)) {
-            $apiParams['contact_id'] = $contactId;
-        }
-
-        if (!is_null($currency)) {
-            $apiParams['currency'] = $currency;
-        }
-
-        if (!is_null($marketId)) {
-            $apiParams['market_id'] = $marketId;
-        }
-
-        if (!is_null($organizationId)) {
-            $apiParams['organization_id'] = $organizationId;
-        }
+        $apiParams['at'] = $at;
+        $apiParams['channel_id'] = $channelId;
+        $apiParams['contact_id'] = $contactId;
+        $apiParams['currency'] = $currency;
+        $apiParams['market_id'] = $marketId;
+        $apiParams['organization_id'] = $organizationId;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';

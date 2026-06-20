@@ -40,11 +40,11 @@ class Client
      */
     protected array $headers = [
         'content-type' => '',
-        'user-agent' => 'RevenexxAPIRevenexxPHPSDK/0.0.3 ()',
+        'user-agent' => 'RevenexxAPIRevenexxPHPSDK/0.0.4 ()',
         'x-sdk-name'=> 'Revenexx PHP',
         'x-sdk-platform'=> '',
         'x-sdk-language'=> 'php',
-        'x-sdk-version'=> '0.0.3',
+        'x-sdk-version'=> '0.0.4',
     ];
 
     /**
@@ -394,7 +394,7 @@ class Client
     {
         return [
             'name' => 'Revenexx PHP',
-            'version' => '0.0.3',
+            'version' => '0.0.4',
             'language' => 'php',
             'generator' => 'revenexx/sdk-generator',
             'generatorUrl' => 'https://github.com/revenexx/sdk-generator',

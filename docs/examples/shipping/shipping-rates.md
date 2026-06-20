@@ -16,6 +16,7 @@ $result = $shipping->shippingRates(
     attributes: [], // optional
     country: '', // optional
     currency: '', // optional
+    marketId: '', // optional
     orderValue: null, // optional
     quantity: null, // optional
     weight: null // optional

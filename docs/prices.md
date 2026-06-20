@@ -130,6 +130,18 @@ PUT https://api.revenexx.com/v1/prices/lists/{list_id}/entries
 
 
 ```http request
+POST https://api.revenexx.com/v1/prices/lists/{list_id}/entries/bulk
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| list_id | string | **Required**  |  |
+| entries | array | The complete new entry set (set semantics). |  |
+
+
+```http request
 DELETE https://api.revenexx.com/v1/prices/lists/{list_id}/entries/{id}
 ```
 

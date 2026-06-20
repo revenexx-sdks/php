@@ -107,6 +107,85 @@ final class MarketsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodMarketsCurrenciesList(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->markets->marketsCurrenciesList(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodMarketsCurrenciesCreate(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->markets->marketsCurrenciesCreate(
+            "",
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodMarketsCurrenciesDelete(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->markets->marketsCurrenciesDelete(
+            "",
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodMarketsCurrenciesGet(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->markets->marketsCurrenciesGet(
+            "",
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodMarketsCurrenciesUpdate(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->markets->marketsCurrenciesUpdate(
+            "",
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodMarketsLocalesList(): void {
 
         $data = array();

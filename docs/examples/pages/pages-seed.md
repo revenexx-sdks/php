@@ -13,5 +13,6 @@ $client = (new Client())
 $pages = new Pages($client);
 
 $result = $pages->pagesSeed(
+    menus: [], // optional
     pages: [] // optional
 );```

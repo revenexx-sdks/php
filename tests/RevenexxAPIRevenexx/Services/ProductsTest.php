@@ -492,6 +492,20 @@ final class ProductsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodProductsBatch(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->products->productsBatch(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodProductsCategoriesList(): void {
 
         $data = array();

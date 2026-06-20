@@ -310,70 +310,22 @@ class Orders extends Service
 
         $apiParams = [];
         $apiParams['items'] = $items;
-
-        if (!is_null($billingAddress)) {
-            $apiParams['billing_address'] = $billingAddress;
-        }
-
-        if (!is_null($buyer)) {
-            $apiParams['buyer'] = $buyer;
-        }
-
-        if (!is_null($cartId)) {
-            $apiParams['cart_id'] = $cartId;
-        }
-
-        if (!is_null($channelId)) {
-            $apiParams['channel_id'] = $channelId;
-        }
-
-        if (!is_null($contactId)) {
-            $apiParams['contact_id'] = $contactId;
-        }
-
-        if (!is_null($currency)) {
-            $apiParams['currency'] = $currency;
-        }
-
-        if (!is_null($customerOrderNumber)) {
-            $apiParams['customer_order_number'] = $customerOrderNumber;
-        }
-
-        if (!is_null($grandTotal)) {
-            $apiParams['grand_total'] = $grandTotal;
-        }
-
-        if (!is_null($marketId)) {
-            $apiParams['market_id'] = $marketId;
-        }
-
-        if (!is_null($metadata)) {
-            $apiParams['metadata'] = $metadata;
-        }
-
-        if (!is_null($organizationId)) {
-            $apiParams['organization_id'] = $organizationId;
-        }
-
-        if (!is_null($payment)) {
-            $apiParams['payment'] = $payment;
-        }
-
-        if (!is_null($shipping)) {
-            $apiParams['shipping'] = $shipping;
-        }
-
-        if (!is_null($shippingAddress)) {
-            $apiParams['shipping_address'] = $shippingAddress;
-        }
-
-        if (!is_null($shippingTotal)) {
-            $apiParams['shipping_total'] = $shippingTotal;
-        }
-
-        if (!is_null($userData)) {
-            $apiParams['user_data'] = $userData;
-        }
+        $apiParams['billing_address'] = $billingAddress;
+        $apiParams['buyer'] = $buyer;
+        $apiParams['cart_id'] = $cartId;
+        $apiParams['channel_id'] = $channelId;
+        $apiParams['contact_id'] = $contactId;
+        $apiParams['currency'] = $currency;
+        $apiParams['customer_order_number'] = $customerOrderNumber;
+        $apiParams['grand_total'] = $grandTotal;
+        $apiParams['market_id'] = $marketId;
+        $apiParams['metadata'] = $metadata;
+        $apiParams['organization_id'] = $organizationId;
+        $apiParams['payment'] = $payment;
+        $apiParams['shipping'] = $shipping;
+        $apiParams['shipping_address'] = $shippingAddress;
+        $apiParams['shipping_total'] = $shippingTotal;
+        $apiParams['user_data'] = $userData;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';

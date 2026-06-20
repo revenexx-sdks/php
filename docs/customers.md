@@ -107,6 +107,7 @@ POST https://api.revenexx.com/v1/customers/auth/me
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
+| session_id | string | Optional session to verify — answers 401 when the session is expired or revoked. |  |
 | user_id | string |  |  |
 
 

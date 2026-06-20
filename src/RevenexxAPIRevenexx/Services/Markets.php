@@ -232,6 +232,171 @@ class Markets extends Service
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
+    public function marketsCurrenciesList(string $marketId): array
+    {
+        $apiPath = str_replace(
+            ['{market_id}'],
+            [$marketId],
+            '/v1/markets/{market_id}/currencies'
+        );
+
+        $apiParams = [];
+        $apiParams['market_id'] = $marketId;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * @param string $marketId
+     * @param string $code
+     * @param ?bool $isDefault
+     * @param ?int $position
+     * @throws RevenexxAPIRevenexxException
+     * @return array
+     */
+    public function marketsCurrenciesCreate(string $marketId, string $code, ?bool $isDefault = null, ?int $position = null): array
+    {
+        $apiPath = str_replace(
+            ['{market_id}'],
+            [$marketId],
+            '/v1/markets/{market_id}/currencies'
+        );
+
+        $apiParams = [];
+        $apiParams['market_id'] = $marketId;
+        $apiParams['code'] = $code;
+
+        if (!is_null($isDefault)) {
+            $apiParams['is_default'] = $isDefault;
+        }
+
+        if (!is_null($position)) {
+            $apiParams['position'] = $position;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * @param string $marketId
+     * @param string $id
+     * @throws RevenexxAPIRevenexxException
+     * @return array
+     */
+    public function marketsCurrenciesDelete(string $marketId, string $id): array
+    {
+        $apiPath = str_replace(
+            ['{market_id}', '{id}'],
+            [$marketId, $id],
+            '/v1/markets/{market_id}/currencies/{id}'
+        );
+
+        $apiParams = [];
+        $apiParams['market_id'] = $marketId;
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_DELETE,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * @param string $marketId
+     * @param string $id
+     * @throws RevenexxAPIRevenexxException
+     * @return array
+     */
+    public function marketsCurrenciesGet(string $marketId, string $id): array
+    {
+        $apiPath = str_replace(
+            ['{market_id}', '{id}'],
+            [$marketId, $id],
+            '/v1/markets/{market_id}/currencies/{id}'
+        );
+
+        $apiParams = [];
+        $apiParams['market_id'] = $marketId;
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * @param string $marketId
+     * @param string $id
+     * @param ?string $code
+     * @param ?bool $isDefault
+     * @param ?int $position
+     * @throws RevenexxAPIRevenexxException
+     * @return array
+     */
+    public function marketsCurrenciesUpdate(string $marketId, string $id, ?string $code = null, ?bool $isDefault = null, ?int $position = null): array
+    {
+        $apiPath = str_replace(
+            ['{market_id}', '{id}'],
+            [$marketId, $id],
+            '/v1/markets/{market_id}/currencies/{id}'
+        );
+
+        $apiParams = [];
+        $apiParams['market_id'] = $marketId;
+        $apiParams['id'] = $id;
+
+        if (!is_null($code)) {
+            $apiParams['code'] = $code;
+        }
+
+        if (!is_null($isDefault)) {
+            $apiParams['is_default'] = $isDefault;
+        }
+
+        if (!is_null($position)) {
+            $apiParams['position'] = $position;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_PUT,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * @param string $marketId
+     * @throws RevenexxAPIRevenexxException
+     * @return array
+     */
     public function marketsLocalesList(string $marketId): array
     {
         $apiPath = str_replace(

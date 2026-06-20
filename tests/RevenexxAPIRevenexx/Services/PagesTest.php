@@ -17,6 +17,20 @@ final class PagesTest extends TestCase {
         $this->pages = new Pages($this->client);
     }
 
+    public function testMethodPagesDeliveryMenus(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->pages->pagesDeliveryMenus(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodPagesDeliveryPage(): void {
 
         $data = array();
@@ -525,6 +539,81 @@ final class PagesTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->pages->pagesLibraryUpdate(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPagesMenusList(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->pages->pagesMenusList(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPagesMenusUpsert(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->pages->pagesMenusUpsert(
+            "",
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPagesMenusDelete(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->pages->pagesMenusDelete(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPagesMenusGet(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->pages->pagesMenusGet(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPagesMenusUpdate(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->pages->pagesMenusUpdate(
             ""
         );
 

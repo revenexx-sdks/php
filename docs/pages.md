@@ -2,6 +2,11 @@
 
 
 ```http request
+GET https://api.revenexx.com/v1/pages/delivery/menus
+```
+
+
+```http request
 GET https://api.revenexx.com/v1/pages/delivery/page
 ```
 
@@ -353,6 +358,59 @@ PUT https://api.revenexx.com/v1/pages/library/{id}
 
 
 ```http request
+GET https://api.revenexx.com/v1/pages/menus
+```
+
+
+```http request
+POST https://api.revenexx.com/v1/pages/menus
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| items | array | Ordered menu entries ({ label, to?, items? }). |  |
+| label | string |  |  |
+| menuKey | string | Stable menu identifier, e.g. "main", "footer", "account". |  |
+
+
+```http request
+DELETE https://api.revenexx.com/v1/pages/menus/{id}
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required**  |  |
+
+
+```http request
+GET https://api.revenexx.com/v1/pages/menus/{id}
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required**  |  |
+
+
+```http request
+PUT https://api.revenexx.com/v1/pages/menus/{id}
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required**  |  |
+| items | array |  |  |
+| label | string |  |  |
+
+
+```http request
 GET https://api.revenexx.com/v1/pages/pages
 ```
 
@@ -430,6 +488,7 @@ POST https://api.revenexx.com/v1/pages/seed
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
+| menus | array |  |  |
 | pages | array |  |  |
 
 

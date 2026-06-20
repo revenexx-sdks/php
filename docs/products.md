@@ -24,6 +24,7 @@ POST https://api.revenexx.com/v1/products
 | parent_id | string |  |  |
 | quantified_associations | object |  |  |
 | sku | string |  |  |
+| tax_class | string |  |  |
 
 
 ```http request
@@ -378,6 +379,18 @@ PUT https://api.revenexx.com/v1/products/attributes/{id}
 | type | string |  |  |
 | usable_in_grid | boolean |  |  |
 | validation | object |  |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/products/batch
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| ids | array |  |  |
+| skus | array |  |  |
 
 
 ```http request
@@ -929,4 +942,5 @@ PUT https://api.revenexx.com/v1/products/{id}
 | parent_id | string |  |  |
 | quantified_associations | object |  |  |
 | sku | string |  |  |
+| tax_class | string |  |  |
 
