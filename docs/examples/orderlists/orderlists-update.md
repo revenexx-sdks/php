@@ -18,5 +18,5 @@ $result = $orderlists->orderlistsUpdate(
     kind: OrderListKind::SHOPPING(), // optional
     metadata: [], // optional
     name: '', // optional
-    public: null // optional
+    shared: null // optional
 );```

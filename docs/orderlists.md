@@ -21,7 +21,7 @@ POST https://api.revenexx.com/v1/orderlists
 | organization_id | string | Owning organization (scopes public sharing). |  |
 | owner_id | string | Owning contact. |  |
 | owner_name | string | Owner display name (snapshot). |  |
-| public | boolean | Shared read-only across the organization (default false). |  |
+| shared | boolean | Shared read-only across the organization (default false). |  |
 
 
 ```http request
@@ -63,7 +63,7 @@ PUT https://api.revenexx.com/v1/orderlists/{id}
 | kind | string | List kind (default 'shopping'). |  |
 | metadata | object |  |  |
 | name | string |  |  |
-| public | boolean |  |  |
+| shared | boolean |  |  |
 
 
 ```http request

@@ -47,11 +47,11 @@ class Orderlists extends Service
      * @param ?OrderListKind $kind
      * @param ?array $metadata
      * @param ?string $organizationId
-     * @param ?bool $xpublic
+     * @param ?bool $shared
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function orderlistsCreate(string $name, string $ownerId, string $ownerName, ?array $items = null, ?OrderListKind $kind = null, ?array $metadata = null, ?string $organizationId = null, ?bool $xpublic = null): array
+    public function orderlistsCreate(string $name, string $ownerId, string $ownerName, ?array $items = null, ?OrderListKind $kind = null, ?array $metadata = null, ?string $organizationId = null, ?bool $shared = null): array
     {
         $apiPath = str_replace(
             [],
@@ -74,8 +74,8 @@ class Orderlists extends Service
         $apiParams['metadata'] = $metadata;
         $apiParams['organization_id'] = $organizationId;
 
-        if (!is_null($xpublic)) {
-            $apiParams['public'] = $xpublic;
+        if (!is_null($shared)) {
+            $apiParams['shared'] = $shared;
         }
 
         $apiHeaders = [];
@@ -170,11 +170,11 @@ class Orderlists extends Service
      * @param ?OrderListKind $kind
      * @param ?array $metadata
      * @param ?string $name
-     * @param ?bool $xpublic
+     * @param ?bool $shared
      * @throws RevenexxAPIRevenexxException
      * @return array
      */
-    public function orderlistsUpdate(string $id, ?OrderListKind $kind = null, ?array $metadata = null, ?string $name = null, ?bool $xpublic = null): array
+    public function orderlistsUpdate(string $id, ?OrderListKind $kind = null, ?array $metadata = null, ?string $name = null, ?bool $shared = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -194,8 +194,8 @@ class Orderlists extends Service
             $apiParams['name'] = $name;
         }
 
-        if (!is_null($xpublic)) {
-            $apiParams['public'] = $xpublic;
+        if (!is_null($shared)) {
+            $apiParams['shared'] = $shared;
         }
 
         $apiHeaders = [];

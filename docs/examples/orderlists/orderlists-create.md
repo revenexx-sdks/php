@@ -21,5 +21,5 @@ $result = $orderlists->orderlistsCreate(
     kind: OrderListKind::SHOPPING(), // optional
     metadata: [], // optional
     organizationId: '', // optional
-    public: null // optional
+    shared: null // optional
 );```
