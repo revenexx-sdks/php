@@ -1,9 +1,9 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Sites;
-use RevenexxAPIRevenexx\Enums\Type;
+use Revenexx\Client;
+use Revenexx\Services\Sites;
+use Revenexx\Enums\SitesCreateTemplateDeploymentType;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -15,7 +15,7 @@ $sites = new Sites($client);
 
 $result = $sites->sitesCreateVcsDeployment(
     siteId: '',
-    reference: '',
-    type: Type::BRANCH(),
-    activate: null // optional
+    reference: 'main',
+    type: SitesCreateTemplateDeploymentType::BRANCH(),
+    activate: true // optional
 );```

@@ -1,9 +1,9 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Storage;
-use RevenexxAPIRevenexx\Enums\Visibility;
+use Revenexx\Client;
+use Revenexx\Services\Storage;
+use Revenexx\Enums\Visibility;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint

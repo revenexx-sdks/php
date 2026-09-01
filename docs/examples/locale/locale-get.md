@@ -1,8 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Locale;
+use Revenexx\Client;
+use Revenexx\Services\Locale;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint

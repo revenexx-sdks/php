@@ -1,9 +1,9 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Apps;
-use RevenexxAPIRevenexx\Enums\Type;
+use Revenexx\Client;
+use Revenexx\Services\Apps;
+use Revenexx\Enums\Type;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -20,5 +20,5 @@ $result = $apps->appsCreateTemplateDeployment(
     repository: '',
     rootDirectory: '',
     type: Type::COMMIT(),
-    activate: null // optional
+    activate: true // optional
 );```

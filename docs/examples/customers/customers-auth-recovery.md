@@ -1,8 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Customers;
+use Revenexx\Client;
+use Revenexx\Services\Customers;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -13,6 +13,6 @@ $client = (new Client())
 $customers = new Customers($client);
 
 $result = $customers->customersAuthRecovery(
-    email: '',
-    url: ''
+    email: 'einkauf@example.com',
+    url: 'https://example.com'
 );```

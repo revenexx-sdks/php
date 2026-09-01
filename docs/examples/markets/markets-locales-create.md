@@ -1,8 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Markets;
+use Revenexx\Client;
+use Revenexx\Services\Markets;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -14,9 +14,9 @@ $markets = new Markets($client);
 
 $result = $markets->marketsLocalesCreate(
     marketId: '',
-    code: '',
-    country: '',
-    language: '',
-    isDefault: null, // optional
-    position: null // optional
+    code: 'de-DE',
+    country: 'DE',
+    language: 'de',
+    isDefault: true, // optional
+    position: 0 // optional
 );```

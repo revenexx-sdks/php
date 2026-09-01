@@ -1,8 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Storage;
+use Revenexx\Client;
+use Revenexx\Services\Storage;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -12,5 +12,11 @@ $client = (new Client())
 
 $storage = new Storage($client);
 
-$result = $storage->syncRuleStore();
-```
+$result = $storage->syncRuleStore(
+    sftpAccountId: '',
+    sourcePath: '/uploads',
+    enabled: true, // optional
+    options: [], // optional
+    schedule: '0 3 * * *', // optional
+    targetFolderId: '' // optional
+);```

@@ -1,9 +1,9 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Avatars;
-use RevenexxAPIRevenexx\Enums\Code;
+use Revenexx\Client;
+use Revenexx\Services\Avatars;
+use Revenexx\Enums\AvatarsGetFlagCode;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -14,8 +14,8 @@ $client = (new Client())
 $avatars = new Avatars($client);
 
 $result = $avatars->avatarsGetFlag(
-    code: Code::AF(),
-    width: null, // optional
-    height: null, // optional
-    quality: null // optional
+    code: AvatarsGetFlagCode::AF(),
+    width: 1, // optional
+    height: 1, // optional
+    quality: 1 // optional
 );```

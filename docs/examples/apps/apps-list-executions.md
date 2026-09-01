@@ -1,8 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Apps;
+use Revenexx\Client;
+use Revenexx\Services\Apps;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -15,5 +15,5 @@ $apps = new Apps($client);
 $result = $apps->appsListExecutions(
     functionId: '',
     queries: [], // optional
-    total: null // optional
+    total: true // optional
 );```

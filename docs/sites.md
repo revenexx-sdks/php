@@ -11,7 +11,7 @@ GET https://api.revenexx.com/v1/sites
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
-| queries | array | Array of query strings generated using the Query class provided by the SDK. [Learn more about queries](https://appwrite.io/docs/queries). Maximum of 100 queries are allowed, each 4096 characters long. You may filter on the following attributes: name, enabled, framework, deploymentId, buildCommand, installCommand, outputDirectory, installationId |  |
+| queries | array | Result filters, paging and ordering. Repeat the parameter once per query — `?queries=…&queries=…` — and make each value a JSON object, e.g. `{"method":"limit","values":[25]}`. The bracketed spellings `queries[]=` and `queries[0]=` are accepted too; the `limit(25)` call syntax is not. See “Query parameters” in this document's introduction. Filterable attributes, besides `$id`, `$createdAt`, `$updatedAt` and `$sequence`: name, enabled, framework, deploymentId, buildCommand, installCommand, outputDirectory, installationId |  |
 | search | string | Search term to filter your list results. Max length: 256 chars. |  |
 | total | boolean | When set to false, the total count returned will be 0 and will not be calculated. |  |
 
@@ -33,7 +33,7 @@ POST https://api.revenexx.com/v1/sites
 | fallbackFile | string | Fallback file for single page application sites. |  |
 | framework | string | Sites framework. |  |
 | installCommand | string | Install Command. |  |
-| installationId | string | Appwrite Installation ID for VCS (Version Control System) deployment. |  |
+| installationId | string | Installation ID of the platform's VCS (Version Control System) integration to deploy from. |  |
 | logging | boolean | When disabled, request logs will exclude logs and errors, and site responses will be slightly faster. |  |
 | name | string | Site name. Max length: 128 chars. |  |
 | outputDirectory | string | Output Directory for site. |  |
@@ -104,7 +104,7 @@ PUT https://api.revenexx.com/v1/sites/{siteId}
 | fallbackFile | string | Fallback file for single page application sites. |  |
 | framework | string | Sites framework. |  |
 | installCommand | string | Install Command. |  |
-| installationId | string | Appwrite Installation ID for VCS (Version Control System) deployment. |  |
+| installationId | string | Installation ID of the platform's VCS (Version Control System) integration to deploy from. |  |
 | logging | boolean | When disabled, request logs will exclude logs and errors, and site responses will be slightly faster. |  |
 | name | string | Site name. Max length: 128 chars. |  |
 | outputDirectory | string | Output Directory for site. |  |
@@ -141,7 +141,7 @@ GET https://api.revenexx.com/v1/sites/{siteId}/deployments
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | siteId | string | **Required** Site ID. |  |
-| queries | array | Array of query strings generated using the Query class provided by the SDK. [Learn more about queries](https://appwrite.io/docs/queries). Maximum of 100 queries are allowed, each 4096 characters long. You may filter on the following attributes: buildSize, sourceSize, totalSize, buildDuration, status, activate, type |  |
+| queries | array | Result filters, paging and ordering. Repeat the parameter once per query — `?queries=…&queries=…` — and make each value a JSON object, e.g. `{"method":"limit","values":[25]}`. The bracketed spellings `queries[]=` and `queries[0]=` are accepted too; the `limit(25)` call syntax is not. See “Query parameters” in this document's introduction. Filterable attributes, besides `$id`, `$createdAt`, `$updatedAt` and `$sequence`: buildSize, sourceSize, totalSize, buildDuration, status, activate, type |  |
 | search | string | Search term to filter your list results. Max length: 256 chars. |  |
 | total | boolean | When set to false, the total count returned will be 0 and will not be calculated. |  |
 
@@ -159,7 +159,7 @@ POST https://api.revenexx.com/v1/sites/{siteId}/deployments
 | siteId | string | **Required** Site ID. |  |
 | activate | boolean | Automatically activate the deployment when it is finished building. |  |
 | buildCommand | string | Build Commands. |  |
-| code | string | Gzip file with your code package. When used with the Appwrite CLI, pass the path to your code directory, and the CLI will automatically package your code. Use a path that is within the current directory. |  |
+| code | file | Your source directory packaged as a gzipped tar archive (`.tar.gz`), sent as the file part of the multipart request. |  |
 | installCommand | string | Install Commands. |  |
 | outputDirectory | string | Output Directory. |  |
 
@@ -184,7 +184,7 @@ POST https://api.revenexx.com/v1/sites/{siteId}/deployments/template
 
 ** Create a deployment based on a template.
 
-Use this endpoint with combination of [listTemplates](https://appwrite.io/docs/products/sites/templates) to find the template details. **
+Unlike app templates, site templates have no listing on this API — that catalogue is the vendor&#039;s and is not reproduced here. Take `repository`, `owner`, `rootDirectory` and `reference` from wherever the template is published. **
 
 ### Parameters
 
@@ -285,7 +285,7 @@ GET https://api.revenexx.com/v1/sites/{siteId}/logs
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | siteId | string | **Required** Site ID. |  |
-| queries | array | Array of query strings generated using the Query class provided by the SDK. [Learn more about queries](https://appwrite.io/docs/queries). Maximum of 100 queries are allowed, each 4096 characters long. You may filter on the following attributes: trigger, status, responseStatusCode, duration, requestMethod, requestPath, deploymentId |  |
+| queries | array | Result filters, paging and ordering. Repeat the parameter once per query — `?queries=…&queries=…` — and make each value a JSON object, e.g. `{"method":"limit","values":[25]}`. The bracketed spellings `queries[]=` and `queries[0]=` are accepted too; the `limit(25)` call syntax is not. See “Query parameters” in this document's introduction. Filterable attributes, besides `$id`, `$createdAt`, `$updatedAt` and `$sequence`: trigger, status, responseStatusCode, duration, requestMethod, requestPath, deploymentId |  |
 | total | boolean | When set to false, the total count returned will be 0 and will not be calculated. |  |
 
 

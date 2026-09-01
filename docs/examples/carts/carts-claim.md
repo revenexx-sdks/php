@@ -1,8 +1,9 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Carts;
+use Revenexx\Client;
+use Revenexx\Services\Carts;
+use Revenexx\Enums\CartMergeStrategy;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -14,6 +15,7 @@ $carts = new Carts($client);
 
 $result = $carts->cartsClaim(
     contactId: '',
-    sessionKey: '',
+    sessionKey: 'a1b2c3d4e5f6',
+    strategy: CartMergeStrategy::MERGE(), // optional
     targetCartId: '' // optional
 );```

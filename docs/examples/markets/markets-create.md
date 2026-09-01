@@ -1,9 +1,9 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Markets;
-use RevenexxAPIRevenexx\Enums\MarketStatus;
+use Revenexx\Client;
+use Revenexx\Services\Markets;
+use Revenexx\Enums\MarketStatus;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -14,11 +14,14 @@ $client = (new Client())
 $markets = new Markets($client);
 
 $result = $markets->marketsCreate(
-    code: '',
-    name: '',
-    currency: '', // optional
-    isDefault: null, // optional
-    labels: [], // optional
-    position: null, // optional
+    code: 'northwind',
+    name: 'Northwind',
+    currency: 'EUR', // optional
+    isDefault: false, // optional
+    labels: [
+        'de-DE' => 'Nordwind',
+        'en-GB' => 'Northwind'
+    ], // optional
+    position: 0, // optional
     status: MarketStatus::ACTIVE() // optional
 );```

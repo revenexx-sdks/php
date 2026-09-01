@@ -1,8 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Storage;
+use Revenexx\Client;
+use Revenexx\Services\Storage;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -14,6 +14,6 @@ $storage = new Storage($client);
 
 $result = $storage->syncRuleHistory(
     ruleId: '', // optional
-    from: '', // optional
-    to: '' // optional
+    from: '2026-01-01T12:00:00Z', // optional
+    to: '2026-01-01T12:00:00Z' // optional
 );```

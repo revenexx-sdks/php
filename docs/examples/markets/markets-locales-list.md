@@ -1,8 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Markets;
+use Revenexx\Client;
+use Revenexx\Services\Markets;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -13,5 +13,15 @@ $client = (new Client())
 $markets = new Markets($client);
 
 $result = $markets->marketsLocalesList(
-    marketId: ''
+    marketId: '',
+    id: '', // optional
+    code: 'de-DE', // optional
+    language: 'de', // optional
+    country: 'DE', // optional
+    isDefault: true, // optional
+    position: 0, // optional
+    createdAt: '2026-01-01T12:00:00Z', // optional
+    limit: 50, // optional
+    offset: 0, // optional
+    order: 'position.asc' // optional
 );```

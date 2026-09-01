@@ -1,8 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Orders;
+use Revenexx\Client;
+use Revenexx\Services\Orders;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -14,7 +14,10 @@ $orders = new Orders($client);
 
 $result = $orders->ordersReturn(
     id: '',
-    positions: [],
-    metadata: [], // optional
-    reason: '' // optional
+    metadata: [
+        'rma_portal_case' => 'C-2026-0917'
+    ], // optional
+    positions: [], // optional
+    reason: 'Damaged on arrival', // optional
+    restock: true // optional
 );```

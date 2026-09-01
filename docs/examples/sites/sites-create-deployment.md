@@ -1,8 +1,9 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Sites;
+use Revenexx\Client;
+use Revenexx\InputFile;
+use Revenexx\Services\Sites;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -14,8 +15,8 @@ $sites = new Sites($client);
 
 $result = $sites->sitesCreateDeployment(
     siteId: '',
-    activate: null,
-    code: '',
+    activate: true,
+    code: InputFile::withPath('file.png'),
     buildCommand: '', // optional
     installCommand: '', // optional
     outputDirectory: '' // optional

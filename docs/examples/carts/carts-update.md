@@ -1,8 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Carts;
+use Revenexx\Client;
+use Revenexx\Services\Carts;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -15,8 +15,11 @@ $carts = new Carts($client);
 $result = $carts->cartsUpdate(
     id: '',
     channelId: '', // optional
-    currency: '', // optional
-    marketId: '', // optional
-    metadata: [], // optional
-    name: '' // optional
+    currency: 'EUR', // optional
+    metadata: [
+        'campaign' => 'spring-catalogue',
+        'locale' => 'de-DE',
+        'source' => 'storefront'
+    ], // optional
+    name: 'Weekly order' // optional
 );```

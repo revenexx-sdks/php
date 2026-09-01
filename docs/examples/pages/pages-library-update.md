@@ -1,8 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Pages;
+use Revenexx\Client;
+use Revenexx\Services\Pages;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -14,7 +14,7 @@ $pages = new Pages($client);
 
 $result = $pages->pagesLibraryUpdate(
     id: '',
-    bundle: '', // optional
-    label: '', // optional
+    bundle: 'teaser', // optional
+    label: 'Newsletter teaser', // optional
     tree: [] // optional
 );```

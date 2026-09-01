@@ -11,7 +11,7 @@ GET https://api.revenexx.com/v1/apps
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
-| queries | array | Array of query strings generated using the Query class provided by the SDK. [Learn more about queries](https://appwrite.io/docs/queries). Maximum of 100 queries are allowed, each 4096 characters long. You may filter on the following attributes: name, enabled, runtime, deploymentId, schedule, scheduleNext, schedulePrevious, timeout, entrypoint, commands, installationId |  |
+| queries | array | Result filters, paging and ordering. Repeat the parameter once per query — `?queries=…&queries=…` — and make each value a JSON object, e.g. `{"method":"limit","values":[25]}`. The bracketed spellings `queries[]=` and `queries[0]=` are accepted too; the `limit(25)` call syntax is not. See “Query parameters” in this document's introduction. Filterable attributes, besides `$id`, `$createdAt`, `$updatedAt` and `$sequence`: name, enabled, runtime, deploymentId, schedule, scheduleNext, schedulePrevious, timeout, entrypoint, commands, installationId |  |
 | search | string | Search term to filter your list results. Max length: 256 chars. |  |
 | total | boolean | When set to false, the total count returned will be 0 and will not be calculated. |  |
 
@@ -32,9 +32,9 @@ Phase 1 mirrors the underlying Functions runtime 1:1; future phases will add man
 | enabled | boolean | Is function enabled? When set to 'disabled', users cannot access the function but Server SDKs with and API key can still access the function. No data is lost when this is toggled. |  |
 | entrypoint | string | Entrypoint File. This path is relative to the "providerRootDirectory". |  |
 | events | array | Events list. Maximum of 100 events are allowed. |  |
-| execute | array | An array of role strings with execution permissions. By default no user is granted with any execute permissions. [learn more about roles](https://appwrite.io/docs/permissions#permission-roles). Maximum of 100 roles are allowed, each 64 characters long. |  |
+| execute | array | An array of role strings with execution permissions. By default no user is granted with any execute permissions. Roles take the form `any`, `guests`, `users`, `user:<id>`, `team:<id>`, `member:<id>` or `label:<name>`, some of them with a `/<dimension>` suffix such as `users/verified` or `team:<id>/owner`. At most 100 entries. See “Role strings” in this document's introduction. |  |
 | functionId | string | Function ID. Choose a custom ID or generate a random ID with `ID.unique()`. Valid chars are a-z, A-Z, 0-9, period, hyphen, and underscore. Can't start with a special char. Max length is 36 chars. |  |
-| installationId | string | Appwrite Installation ID for VCS (Version Control System) deployment. |  |
+| installationId | string | Installation ID of the platform's VCS (Version Control System) integration to deploy from. |  |
 | logging | boolean | When disabled, executions will exclude logs and errors, and will be slightly faster. |  |
 | name | string | Function name. Max length: 128 chars. |  |
 | providerBranch | string | Production branch for the repo linked to the function. |  |
@@ -175,8 +175,8 @@ PUT https://api.revenexx.com/v1/apps/{functionId}
 | enabled | boolean | Is function enabled? When set to 'disabled', users cannot access the function but Server SDKs with and API key can still access the function. No data is lost when this is toggled. |  |
 | entrypoint | string | Entrypoint File. This path is relative to the "providerRootDirectory". |  |
 | events | array | Events list. Maximum of 100 events are allowed. |  |
-| execute | array | An array of role strings with execution permissions. By default no user is granted with any execute permissions. [learn more about roles](https://appwrite.io/docs/permissions#permission-roles). Maximum of 100 roles are allowed, each 64 characters long. |  |
-| installationId | string | Appwrite Installation ID for VCS (Version Controle System) deployment. |  |
+| execute | array | An array of role strings with execution permissions. By default no user is granted with any execute permissions. Roles take the form `any`, `guests`, `users`, `user:<id>`, `team:<id>`, `member:<id>` or `label:<name>`, some of them with a `/<dimension>` suffix such as `users/verified` or `team:<id>/owner`. At most 100 entries. See “Role strings” in this document's introduction. |  |
+| installationId | string | Installation ID of the platform's VCS (Version Control System) integration to deploy from. |  |
 | logging | boolean | When disabled, executions will exclude logs and errors, and will be slightly faster. |  |
 | name | string | Function name. Max length: 128 chars. |  |
 | providerBranch | string | Production branch for the repo linked to the function |  |
@@ -215,7 +215,7 @@ GET https://api.revenexx.com/v1/apps/{functionId}/deployments
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | functionId | string | **Required** Function ID. |  |
-| queries | array | Array of query strings generated using the Query class provided by the SDK. [Learn more about queries](https://appwrite.io/docs/queries). Maximum of 100 queries are allowed, each 4096 characters long. You may filter on the following attributes: buildSize, sourceSize, totalSize, buildDuration, status, activate, type |  |
+| queries | array | Result filters, paging and ordering. Repeat the parameter once per query — `?queries=…&queries=…` — and make each value a JSON object, e.g. `{"method":"limit","values":[25]}`. The bracketed spellings `queries[]=` and `queries[0]=` are accepted too; the `limit(25)` call syntax is not. See “Query parameters” in this document's introduction. Filterable attributes, besides `$id`, `$createdAt`, `$updatedAt` and `$sequence`: buildSize, sourceSize, totalSize, buildDuration, status, activate, type |  |
 | search | string | Search term to filter your list results. Max length: 256 chars. |  |
 | total | boolean | When set to false, the total count returned will be 0 and will not be calculated. |  |
 
@@ -235,7 +235,7 @@ Registry before kicking off the build. **
 | --- | --- | --- | --- |
 | functionId | string | **Required** Function ID. |  |
 | activate | boolean | Automatically activate the deployment when it is finished building. |  |
-| code | string | Gzip file with your code package. When used with the Appwrite CLI, pass the path to your code directory, and the CLI will automatically package your code. Use a path that is within the current directory. |  |
+| code | file | Your source directory packaged as a gzipped tar archive (`.tar.gz`), sent as the file part of the multipart request. |  |
 | commands | string | Build Commands. |  |
 | entrypoint | string | Entrypoint File. |  |
 
@@ -358,7 +358,7 @@ GET https://api.revenexx.com/v1/apps/{functionId}/executions
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | functionId | string | **Required** Function ID. |  |
-| queries | array | Array of query strings generated using the Query class provided by the SDK. [Learn more about queries](https://appwrite.io/docs/queries). Maximum of 100 queries are allowed, each 4096 characters long. You may filter on the following attributes: trigger, status, responseStatusCode, duration, requestMethod, requestPath, deploymentId |  |
+| queries | array | Result filters, paging and ordering. Repeat the parameter once per query — `?queries=…&queries=…` — and make each value a JSON object, e.g. `{"method":"limit","values":[25]}`. The bracketed spellings `queries[]=` and `queries[0]=` are accepted too; the `limit(25)` call syntax is not. See “Query parameters” in this document's introduction. Filterable attributes, besides `$id`, `$createdAt`, `$updatedAt` and `$sequence`: trigger, status, responseStatusCode, duration, requestMethod, requestPath, deploymentId |  |
 | total | boolean | When set to false, the total count returned will be 0 and will not be calculated. |  |
 
 

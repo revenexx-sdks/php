@@ -1,8 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Orderlists;
+use Revenexx\Client;
+use Revenexx\Services\Orderlists;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -15,19 +15,21 @@ $orderlists = new Orderlists($client);
 $result = $orderlists->orderlistsItemsUpdate(
     listId: '',
     id: '',
-    categorySlug: '', // optional
-    costCenterId: '', // optional
-    customSku: '', // optional
-    image: '', // optional
-    metadata: [], // optional
-    name: '', // optional
-    position: null, // optional
-    positionTexts: [], // optional
-    price: null, // optional
+    categorySlug: 'office-supplies', // optional
+    costCenterId: 'CC-100', // optional
+    customSku: 'CUST-4711', // optional
+    image: 'https://cdn.example.com/catalog/acme-4711-blk.jpg', // optional
+    metadata: [
+        'erp_line_ref' => '4711-01'
+    ], // optional
+    name: 'Copy paper A4, 80 g/m², white', // optional
+    position: 0, // optional
+    positionTexts: ["Deliver to bay 3","Engraving: Team A"], // optional
+    price: 3.49, // optional
     productId: '', // optional
-    quantity: null, // optional
-    sku: '', // optional
-    subcategorySlug: '', // optional
-    taxRate: null, // optional
-    unit: '' // optional
+    quantity: 12, // optional
+    sku: 'ACME-4711-BLK', // optional
+    subcategorySlug: 'paper', // optional
+    taxRate: 19, // optional
+    unit: 'piece' // optional
 );```

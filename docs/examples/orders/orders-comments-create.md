@@ -1,9 +1,9 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Orders;
-use RevenexxAPIRevenexx\Enums\OrderCommentVisibility;
+use Revenexx\Client;
+use Revenexx\Services\Orders;
+use Revenexx\Enums\OrderCommentVisibility;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -15,7 +15,7 @@ $orders = new Orders($client);
 
 $result = $orders->ordersCommentsCreate(
     id: '',
-    body: '',
-    author: '', // optional
+    body: 'Called the customer, delivery agreed for next week.',
+    author: 'service-desk', // optional
     visibility: OrderCommentVisibility::INTERNAL() // optional
 );```

@@ -1,9 +1,9 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Search;
-use RevenexxAPIRevenexx\Enums\Collection;
+use Revenexx\Client;
+use Revenexx\Services\Search;
+use Revenexx\Enums\Collection;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -14,11 +14,18 @@ $client = (new Client())
 $search = new Search($client);
 
 $result = $search->searchSearchDocuments(
-    collection: Collection::GREETINGS(),
+    collection: Collection::PRODUCTS(),
+    excludeFields: '', // optional
     facetBy: '', // optional
     filterBy: '', // optional
-    page: null, // optional
-    perPage: null, // optional
+    groupBy: '', // optional
+    highlightFullFields: '', // optional
+    includeFields: '', // optional
+    maxFacetValues: 1, // optional
+    numTypos: 1, // optional
+    page: 1, // optional
+    perPage: 1, // optional
+    prefix: '', // optional
     q: '', // optional
     queryBy: '', // optional
     sortBy: '' // optional

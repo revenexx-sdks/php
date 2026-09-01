@@ -1,8 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Products;
+use Revenexx\Client;
+use Revenexx\Services\Products;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -15,8 +15,8 @@ $products = new Products($client);
 $result = $products->productsProductAssociationsUpdate(
     id: '',
     associationTypeId: '', // optional
-    position: null, // optional
+    position: 1, // optional
     productId: '', // optional
-    quantity: null, // optional
+    quantity: 4, // optional
     targetProductId: '' // optional
 );```

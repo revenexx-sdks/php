@@ -1,9 +1,9 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Apps;
-use RevenexxAPIRevenexx\Enums\Method;
+use Revenexx\Client;
+use Revenexx\Services\Apps;
+use Revenexx\Enums\Method;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -15,10 +15,10 @@ $apps = new Apps($client);
 
 $result = $apps->appsCreateExecution(
     functionId: '',
-    async: null, // optional
+    async: true, // optional
     body: '', // optional
     headers: [], // optional
     method: Method::GET(), // optional
-    path: '', // optional
+    path: '/', // optional
     scheduledAt: '' // optional
 );```

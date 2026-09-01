@@ -1,8 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Orders;
+use Revenexx\Client;
+use Revenexx\Services\Orders;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -15,6 +15,6 @@ $orders = new Orders($client);
 $result = $orders->ordersItemsCancel(
     id: '',
     positions: [],
-    cancelledBy: '', // optional
-    reason: '' // optional
+    cancelledBy: 'service-desk', // optional
+    reason: 'Out of stock, customer agreed' // optional
 );```

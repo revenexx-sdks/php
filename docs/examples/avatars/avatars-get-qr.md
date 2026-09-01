@@ -1,8 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Avatars;
+use Revenexx\Client;
+use Revenexx\Services\Avatars;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -14,7 +14,7 @@ $avatars = new Avatars($client);
 
 $result = $avatars->avatarsGetQR(
     text: '',
-    size: null, // optional
-    margin: null, // optional
-    download: null // optional
+    size: 1, // optional
+    margin: 1, // optional
+    download: true // optional
 );```

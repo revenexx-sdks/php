@@ -1,8 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Pages;
+use Revenexx\Client;
+use Revenexx\Services\Pages;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -12,5 +12,17 @@ $client = (new Client())
 
 $pages = new Pages($client);
 
-$result = $pages->pagesTemplatesList();
-```
+$result = $pages->pagesTemplatesList(
+    limit: 1, // optional
+    offset: 1, // optional
+    order: 'created_at.desc', // optional
+    id: '', // optional
+    label: 'Hero with two teasers', // optional
+    description: 'Full-width hero followed by a two-column teaser row.', // optional
+    pageBundle: 'standard', // optional
+    fieldName: 'content', // optional
+    isDefault: true, // optional
+    createdBy: '', // optional
+    createdAt: '', // optional
+    updatedAt: '' // optional
+);```

@@ -19,14 +19,14 @@
     failOnWarning="true"
 >
     <testsuites>
-        <testsuite name="RevenexxAPIRevenexx SDK Test Suite">
+        <testsuite name="Revenexx SDK Test Suite">
             <directory>./tests/</directory>
         </testsuite>
     </testsuites>
 
     <source>
         <include>
-            <directory suffix=".php">./src/RevenexxAPIRevenexx</directory>
+            <directory suffix=".php">./src/Revenexx</directory>
         </include>
     </source>
 </phpunit>

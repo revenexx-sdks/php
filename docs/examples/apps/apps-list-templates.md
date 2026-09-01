@@ -1,10 +1,10 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Apps;
-use RevenexxAPIRevenexx\Enums\Runtimes;
-use RevenexxAPIRevenexx\Enums\UseCases;
+use Revenexx\Client;
+use Revenexx\Services\Apps;
+use Revenexx\Enums\Runtimes;
+use Revenexx\Enums\UseCases;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -17,7 +17,7 @@ $apps = new Apps($client);
 $result = $apps->appsListTemplates(
     runtimes: [Runtimes::NODE180()], // optional
     useCases: [UseCases::STARTER()], // optional
-    limit: null, // optional
-    offset: null, // optional
-    total: null // optional
+    limit: 1, // optional
+    offset: 1, // optional
+    total: true // optional
 );```

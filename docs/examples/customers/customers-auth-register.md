@@ -1,8 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Customers;
+use Revenexx\Client;
+use Revenexx\Services\Customers;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -13,11 +13,14 @@ $client = (new Client())
 $customers = new Customers($client);
 
 $result = $customers->customersAuthRegister(
-    email: '',
+    email: 'einkauf@example.com',
     password: '',
-    firstName: '', // optional
-    lastName: '', // optional
-    locale: '', // optional
+    firstName: 'Anna', // optional
+    lastName: 'Berger', // optional
+    locale: 'de-DE', // optional
     organizationId: '', // optional
-    organizationName: '' // optional
+    organizationName: 'Beispiel Industrietechnik GmbH', // optional
+    url: 'https://shop.example.com/account', // optional
+    vatId: 'DE123456789', // optional
+    verificationUrl: 'https://shop.example.com/bestaetigen' // optional
 );```

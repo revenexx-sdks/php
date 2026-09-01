@@ -1,8 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Pages;
+use Revenexx\Client;
+use Revenexx\Services\Pages;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -13,10 +13,10 @@ $client = (new Client())
 $pages = new Pages($client);
 
 $result = $pages->pagesPagesCreate(
-    title: '',
-    bundle: '', // optional
+    title: 'About us',
+    bundle: 'standard', // optional
     hostOptions: [], // optional
     meta: [], // optional
-    slug: '', // optional
-    sourceLanguage: '' // optional
+    slug: 'about-us', // optional
+    sourceLanguage: 'de' // optional
 );```

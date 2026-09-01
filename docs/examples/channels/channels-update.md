@@ -1,10 +1,10 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Channels;
-use RevenexxAPIRevenexx\Enums\ChannelStatus;
-use RevenexxAPIRevenexx\Enums\ChannelType;
+use Revenexx\Client;
+use Revenexx\Services\Channels;
+use Revenexx\Enums\ChannelStatus;
+use Revenexx\Enums\ChannelUnassignedVisibility;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -16,11 +16,15 @@ $channels = new Channels($client);
 
 $result = $channels->channelsUpdate(
     id: '',
-    code: '', // optional
-    isDefault: null, // optional
-    labels: [], // optional
-    name: '', // optional
-    position: null, // optional
+    code: 'shop', // optional
+    isDefault: true, // optional
+    labels: [
+        'de' => 'Shop',
+        'en' => 'Shop'
+    ], // optional
+    name: 'Shop', // optional
+    position: 1, // optional
     status: ChannelStatus::ACTIVE(), // optional
-    type: ChannelType::STOREFRONT() // optional
+    type: 'storefront', // optional
+    unassignedVisibility: ChannelUnassignedVisibility::INHERIT() // optional
 );```

@@ -1,0 +1,20 @@
+```php
+<?php
+
+use Revenexx\Client;
+use Revenexx\Services\ProductsCategories;
+use Revenexx\Enums\CategoryRuleMatch;
+
+$client = (new Client())
+    ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
+    ->setTenant('<TENANT_SLUG>') // Your tenant slug
+    ->setApiKeyAuth('<API_KEY>') // A gateway-managed scoped API key (rvxk_…).
+;
+
+$productsCategories = new ProductsCategories($client);
+
+$result = $productsCategories->productsCategoriesRulesPreview(
+    categoryId: '',
+    conditions: [],
+    ruleMatch: CategoryRuleMatch::ALL() // optional
+);```

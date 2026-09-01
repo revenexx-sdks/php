@@ -1,9 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Orderlists;
-use RevenexxAPIRevenexx\Enums\OrderListKind;
+use Revenexx\Client;
+use Revenexx\Services\Orderlists;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -15,8 +14,11 @@ $orderlists = new Orderlists($client);
 
 $result = $orderlists->orderlistsUpdate(
     id: '',
-    kind: OrderListKind::SHOPPING(), // optional
-    metadata: [], // optional
-    name: '', // optional
-    shared: null // optional
+    kind: 'shopping', // optional
+    metadata: [
+        'department' => 'facility',
+        'erp_reference' => 'REQ-2026-0042'
+    ], // optional
+    name: 'Weekly office supplies', // optional
+    shared: true // optional
 );```

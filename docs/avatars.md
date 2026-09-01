@@ -39,21 +39,6 @@ When one dimension is specified and the other is 0, the image is scaled with pre
 
 
 ```http request
-GET https://api.revenexx.com/v1/avatars/favicon
-```
-
-** Use this endpoint to fetch the favorite icon (AKA favicon) of any remote website URL.
-
-This endpoint does not follow HTTP redirects. **
-
-### Parameters
-
-| Field Name | Type | Description | Default |
-| --- | --- | --- | --- |
-| url | string | **Required** Website URL which you want to fetch the favicon from. |  |
-
-
-```http request
 GET https://api.revenexx.com/v1/avatars/flags/{code}
 ```
 
@@ -86,7 +71,7 @@ This endpoint does not follow HTTP redirects. **
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
-| url | string | **Required** Image URL which you want to crop. |  |
+| url | string | **Required** Image URL which you want to crop. Must be publicly reachable and answer 200 with a raster image on the first request: the fetch does not follow redirects, so a URL that 301s answers 404, as does any URL whose response is not 200. The bytes are decoded by Imagick — an SVG (including most `favicon.ico` files, which are SVG in disguise) and a genuine `.ico` both fail to decode and answer 500. |  |
 | width | integer | Resize preview image width, Pass an integer between 0 to 2000. Defaults to 400. |  |
 | height | integer | Resize preview image height, Pass an integer between 0 to 2000. Defaults to 400. |  |
 
@@ -152,7 +137,7 @@ When width and height are specified, the image is resized accordingly. If both d
 | userAgent | string | Custom user agent string. Defaults to browser default. |  |
 | fullpage | boolean | Capture full page scroll. Pass 0 for viewport only, or 1 for full page. Defaults to 0. |  |
 | locale | string | Browser locale (e.g., "en-US", "fr-FR"). Defaults to browser default. |  |
-| timezone | string | IANA timezone identifier (e.g., "America/New_York", "Europe/London"). Defaults to browser default. |  |
+| timezone | string | IANA timezone identifier, canonically cased (e.g. `America/New_York`, `Europe/London`). Defaults to the browser default. Only two-segment identifiers are accepted: `UTC` and the three-segment ids such as `America/Argentina/Buenos_Aires` are refused with 404. |  |
 | latitude | number | Geolocation latitude. Pass a number between -90 to 90. Defaults to 0. |  |
 | longitude | number | Geolocation longitude. Pass a number between -180 to 180. Defaults to 0. |  |
 | accuracy | number | Geolocation accuracy in meters. Pass a number between 0 to 100000. Defaults to 0. |  |

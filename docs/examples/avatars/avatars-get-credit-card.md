@@ -1,9 +1,9 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Avatars;
-use RevenexxAPIRevenexx\Enums\Code;
+use Revenexx\Client;
+use Revenexx\Services\Avatars;
+use Revenexx\Enums\AvatarsGetCreditCardCode;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -14,8 +14,8 @@ $client = (new Client())
 $avatars = new Avatars($client);
 
 $result = $avatars->avatarsGetCreditCard(
-    code: Code::AMEX(),
-    width: null, // optional
-    height: null, // optional
-    quality: null // optional
+    code: AvatarsGetCreditCardCode::AMEX(),
+    width: 1, // optional
+    height: 1, // optional
+    quality: 1 // optional
 );```

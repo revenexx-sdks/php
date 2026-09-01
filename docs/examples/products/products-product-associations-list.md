@@ -1,8 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Products;
+use Revenexx\Client;
+use Revenexx\Services\Products;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -12,5 +12,15 @@ $client = (new Client())
 
 $products = new Products($client);
 
-$result = $products->productsProductAssociationsList();
-```
+$result = $products->productsProductAssociationsList(
+    limit: 1, // optional
+    offset: 1, // optional
+    order: 'created_at.desc', // optional
+    id: '', // optional
+    productId: '', // optional
+    associationTypeId: '', // optional
+    targetProductId: '', // optional
+    quantity: 9.99, // optional
+    position: 1, // optional
+    createdAt: '2026-01-01T12:00:00Z' // optional
+);```

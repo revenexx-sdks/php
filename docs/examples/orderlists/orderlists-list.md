@@ -1,8 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Orderlists;
+use Revenexx\Client;
+use Revenexx\Services\Orderlists;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -12,5 +12,11 @@ $client = (new Client())
 
 $orderlists = new Orderlists($client);
 
-$result = $orderlists->orderlistsList();
-```
+$result = $orderlists->orderlistsList(
+    ownerId: '', // optional
+    organizationId: '', // optional
+    kind: 'shopping', // optional
+    limit: 50, // optional
+    offset: 0, // optional
+    order: 'created_at.desc' // optional
+);```

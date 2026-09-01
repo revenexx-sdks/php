@@ -1,8 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Prices;
+use Revenexx\Client;
+use Revenexx\Services\Prices;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -14,10 +14,10 @@ $prices = new Prices($client);
 
 $result = $prices->pricesResolve(
     items: [],
-    at: '', // optional
+    at: '2026-03-15T09:00:00Z', // optional
     channelId: '', // optional
     contactId: '', // optional
-    currency: '', // optional
+    currency: 'EUR', // optional
     marketId: '', // optional
     organizationId: '' // optional
 );```

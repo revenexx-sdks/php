@@ -1,8 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Pages;
+use Revenexx\Client;
+use Revenexx\Services\Pages;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -12,5 +12,8 @@ $client = (new Client())
 
 $pages = new Pages($client);
 
-$result = $pages->pagesMenusList();
-```
+$result = $pages->pagesMenusList(
+    limit: 1, // optional
+    offset: 1, // optional
+    order: 'created_at.desc' // optional
+);```

@@ -1,9 +1,9 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Orders;
-use RevenexxAPIRevenexx\Enums\OrderPaymentStatus;
+use Revenexx\Client;
+use Revenexx\Services\Orders;
+use Revenexx\Enums\OrderPaymentStatus;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -16,5 +16,5 @@ $orders = new Orders($client);
 $result = $orders->ordersPaymentStatusUpdate(
     id: '',
     status: OrderPaymentStatus::OPEN(),
-    paymentId: '' // optional
+    paymentId: 'pay_000000000001' // optional
 );```

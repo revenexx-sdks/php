@@ -1,8 +1,9 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Prices;
+use Revenexx\Client;
+use Revenexx\Services\Prices;
+use Revenexx\Enums\PriceEntriesBulkMode;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -14,5 +15,6 @@ $prices = new Prices($client);
 
 $result = $prices->pricesEntriesBulk(
     listId: '',
-    entries: []
+    entries: [],
+    mode: PriceEntriesBulkMode::UPSERT() // optional
 );```

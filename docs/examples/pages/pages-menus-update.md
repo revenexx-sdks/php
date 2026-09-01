@@ -1,8 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Pages;
+use Revenexx\Client;
+use Revenexx\Services\Pages;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -15,5 +15,5 @@ $pages = new Pages($client);
 $result = $pages->pagesMenusUpdate(
     id: '',
     items: [], // optional
-    label: '' // optional
+    label: 'Main navigation' // optional
 );```

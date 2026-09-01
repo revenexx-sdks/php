@@ -1,8 +1,9 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Orders;
+use Revenexx\Client;
+use Revenexx\Services\Orders;
+use Revenexx\Enums\OrderReturnRefusal;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -15,6 +16,6 @@ $orders = new Orders($client);
 $result = $orders->ordersReturnsReject(
     id: '',
     rid: '',
-    reason: '', // optional
-    resolution: '' // optional
+    reason: 'Returned outside the agreed window', // optional
+    resolution: OrderReturnRefusal::WEARANDTEAR() // optional
 );```

@@ -1,8 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Orders;
+use Revenexx\Client;
+use Revenexx\Services\Orders;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -13,13 +13,15 @@ $client = (new Client())
 $orders = new Orders($client);
 
 $result = $orders->ordersNumberRangesCreate(
-    code: '',
+    code: 'order',
     channelId: '', // optional
-    counter: null, // optional
-    metadata: [], // optional
-    padding: null, // optional
-    positionStep: null, // optional
-    prefix: '', // optional
-    step: null, // optional
+    counter: 123, // optional
+    metadata: [
+        'owner' => 'erp-sync'
+    ], // optional
+    padding: 6, // optional
+    positionStep: 10, // optional
+    prefix: 'ORD-', // optional
+    step: 1, // optional
     suffix: '' // optional
 );```

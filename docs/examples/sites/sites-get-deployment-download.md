@@ -1,9 +1,9 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Sites;
-use RevenexxAPIRevenexx\Enums\Type;
+use Revenexx\Client;
+use Revenexx\Services\Sites;
+use Revenexx\Enums\AppsGetDeploymentDownloadType;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -16,5 +16,5 @@ $sites = new Sites($client);
 $result = $sites->sitesGetDeploymentDownload(
     siteId: '',
     deploymentId: '',
-    type: Type::SOURCE() // optional
+    type: AppsGetDeploymentDownloadType::SOURCE() // optional
 );```

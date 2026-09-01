@@ -1,11 +1,11 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Sites;
-use RevenexxAPIRevenexx\Enums\Framework;
-use RevenexxAPIRevenexx\Enums\Adapter;
-use RevenexxAPIRevenexx\Enums\BuildRuntime;
+use Revenexx\Client;
+use Revenexx\Services\Sites;
+use Revenexx\Enums\Framework;
+use Revenexx\Enums\Adapter;
+use Revenexx\Enums\BuildRuntime;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -20,18 +20,18 @@ $result = $sites->sitesUpdate(
     framework: Framework::ANALOG(),
     name: '',
     adapter: Adapter::STATIC(), // optional
-    buildCommand: '', // optional
+    buildCommand: 'npm run build', // optional
     buildRuntime: BuildRuntime::NODE180(), // optional
-    enabled: null, // optional
-    fallbackFile: '', // optional
-    installCommand: '', // optional
+    enabled: true, // optional
+    fallbackFile: 'index.html', // optional
+    installCommand: 'npm install', // optional
     installationId: '', // optional
-    logging: null, // optional
+    logging: true, // optional
     outputDirectory: '', // optional
-    providerBranch: '', // optional
+    providerBranch: 'main', // optional
     providerRepositoryId: '', // optional
     providerRootDirectory: '', // optional
-    providerSilentMode: null, // optional
-    specification: '', // optional
-    timeout: null // optional
+    providerSilentMode: true, // optional
+    specification: 's-1vcpu-512mb', // optional
+    timeout: 1 // optional
 );```

@@ -1,8 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Carts;
+use Revenexx\Client;
+use Revenexx\Services\Carts;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -14,5 +14,5 @@ $carts = new Carts($client);
 
 $result = $carts->cartsOrder(
     id: '',
-    orderRef: '' // optional
+    orderRef: 'SO-10042' // optional
 );```

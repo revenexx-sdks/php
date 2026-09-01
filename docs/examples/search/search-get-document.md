@@ -1,9 +1,9 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Search;
-use RevenexxAPIRevenexx\Enums\Collection;
+use Revenexx\Client;
+use Revenexx\Services\Search;
+use Revenexx\Enums\Collection;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -14,6 +14,6 @@ $client = (new Client())
 $search = new Search($client);
 
 $result = $search->searchGetDocument(
-    collection: Collection::GREETINGS(),
+    collection: Collection::PRODUCTS(),
     documentId: ''
 );```

@@ -1,8 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Orders;
+use Revenexx\Client;
+use Revenexx\Services\Orders;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -14,20 +14,50 @@ $orders = new Orders($client);
 
 $result = $orders->ordersPlace(
     items: [],
-    billingAddress: [], // optional
-    buyer: [], // optional
+    billingAddress: [
+        'city' => 'Berlin',
+        'company' => 'Beispiel Industrietechnik GmbH',
+        'country' => 'DE',
+        'name' => 'Anna Berger',
+        'street' => 'Musterstraße 12',
+        'zip' => '10115'
+    ], // optional
+    buyer: [
+        'company' => 'Beispiel Industrietechnik GmbH',
+        'customer_number' => 'K-10042',
+        'email' => 'anna.berger@example.com',
+        'name' => 'Anna Berger'
+    ], // optional
     cartId: '', // optional
     channelId: '', // optional
     contactId: '', // optional
-    currency: '', // optional
-    customerOrderNumber: '', // optional
-    grandTotal: null, // optional
-    marketId: '', // optional
-    metadata: [], // optional
+    currency: 'EUR', // optional
+    customerOrderNumber: 'PO-2026-0042', // optional
+    grandTotal: 243.9, // optional
+    metadata: [
+        'erp_batch' => '2026-W32'
+    ], // optional
     organizationId: '', // optional
-    payment: [], // optional
-    shipping: [], // optional
-    shippingAddress: [], // optional
-    shippingTotal: null, // optional
-    userData: [] // optional
+    payment: [
+        'method' => 'invoice',
+        'status' => 'open'
+    ], // optional
+    shipping: [
+        'method' => 'standard',
+        'price' => 5.9,
+        'tax_rate' => 19
+    ], // optional
+    shippingAddress: [
+        'city' => 'Berlin',
+        'company' => 'Beispiel Industrietechnik GmbH',
+        'country' => 'DE',
+        'name' => 'Anna Berger',
+        'street' => 'Musterstraße 12',
+        'zip' => '10115'
+    ], // optional
+    shippingTotal: 5.9, // optional
+    userData: [
+        'campaign' => 'spring-catalogue',
+        'source' => 'webshop'
+    ] // optional
 );```

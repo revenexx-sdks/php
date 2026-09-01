@@ -1,9 +1,10 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Prices;
-use RevenexxAPIRevenexx\Enums\PriceListStatus;
+use Revenexx\Client;
+use Revenexx\Services\Prices;
+use Revenexx\Enums\PriceListStatus;
+use Revenexx\Enums\PriceListTaxBasis;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -14,20 +15,27 @@ $client = (new Client())
 $prices = new Prices($client);
 
 $result = $prices->pricesListsCreate(
-    code: '',
-    name: '',
+    code: 'dealer-de',
+    name: 'Dealer prices',
     channelId: '', // optional
     contactId: '', // optional
-    currency: '', // optional
-    description: '', // optional
-    isDefault: null, // optional
-    labels: [], // optional
-    marketId: '', // optional
-    metadata: [], // optional
+    currency: 'EUR', // optional
+    description: 'Contract prices for authorised dealers.', // optional
+    isDefault: true, // optional
+    labels: [
+        'de' => 'Händlerpreise',
+        'en' => 'Dealer prices'
+    ], // optional
+    metadata: [
+        'erp_price_group' => 'A1',
+        'source_system' => 'erp'
+    ], // optional
     organizationId: '', // optional
-    priority: null, // optional
+    priority: 1, // optional
+    requiresAuth: true, // optional
     status: PriceListStatus::ACTIVE(), // optional
-    taxIncluded: null, // optional
-    validFrom: '', // optional
-    validUntil: '' // optional
+    taxBasis: PriceListTaxBasis::NET(), // optional
+    taxIncluded: true, // optional
+    validFrom: '2026-01-01T00:00:00Z', // optional
+    validUntil: '2026-12-31T23:59:59Z' // optional
 );```

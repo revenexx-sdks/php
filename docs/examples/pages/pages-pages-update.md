@@ -1,9 +1,9 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Pages;
-use RevenexxAPIRevenexx\Enums\PageStatus;
+use Revenexx\Client;
+use Revenexx\Services\Pages;
+use Revenexx\Enums\PageStatus;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -15,9 +15,9 @@ $pages = new Pages($client);
 
 $result = $pages->pagesPagesUpdate(
     id: '',
-    bundle: '', // optional
+    bundle: 'standard', // optional
     meta: [], // optional
-    slug: '', // optional
+    slug: 'about-us', // optional
     status: PageStatus::DRAFT(), // optional
-    title: '' // optional
+    title: 'About us' // optional
 );```

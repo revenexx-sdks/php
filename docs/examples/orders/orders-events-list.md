@@ -1,8 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Orders;
+use Revenexx\Client;
+use Revenexx\Services\Orders;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -13,5 +13,12 @@ $client = (new Client())
 $orders = new Orders($client);
 
 $result = $orders->ordersEventsList(
-    id: ''
+    id: '',
+    idQuery: '', // optional
+    name: 'order.shipment.created', // optional
+    actor: '', // optional
+    createdAt: '2026-01-01T12:00:00Z', // optional
+    limit: 50, // optional
+    offset: 0, // optional
+    order: 'created_at.desc' // optional
 );```

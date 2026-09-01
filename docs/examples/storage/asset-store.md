@@ -1,9 +1,10 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Storage;
-use RevenexxAPIRevenexx\Enums\Visibility;
+use Revenexx\Client;
+use Revenexx\InputFile;
+use Revenexx\Services\Storage;
+use Revenexx\Enums\Visibility;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -14,13 +15,13 @@ $client = (new Client())
 $storage = new Storage($client);
 
 $result = $storage->assetStore(
-    file: '',
+    file: InputFile::withPath('file.png'),
     altText: '', // optional
     description: '', // optional
     displayName: '', // optional
     folderId: '', // optional
-    keepArchive: null, // optional
+    keepArchive: true, // optional
     tags: [], // optional
-    unpack: null, // optional
+    unpack: true, // optional
     visibility: Visibility::PUBLIC() // optional
 );```

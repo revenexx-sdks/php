@@ -1,8 +1,9 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Orders;
+use Revenexx\Client;
+use Revenexx\Services\Orders;
+use Revenexx\Enums\OrderReturnSettlement;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -15,5 +16,5 @@ $orders = new Orders($client);
 $result = $orders->ordersReturnsComplete(
     id: '',
     rid: '',
-    resolution: '' // optional
+    resolution: OrderReturnSettlement::REFUND() // optional
 );```

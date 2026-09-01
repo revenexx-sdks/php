@@ -1,8 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Markets;
+use Revenexx\Client;
+use Revenexx\Services\Markets;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -14,10 +14,13 @@ $markets = new Markets($client);
 
 $result = $markets->marketsTaxClassesCreate(
     marketId: '',
-    code: '',
-    name: '',
-    isDefault: null, // optional
-    labels: [], // optional
-    position: null, // optional
-    rate: null // optional
+    code: 'standard',
+    name: 'Standard rate',
+    isDefault: true, // optional
+    labels: [
+        'de-DE' => 'Regelsatz',
+        'en-GB' => 'Standard rate'
+    ], // optional
+    position: 0, // optional
+    rate: 20 // optional
 );```

@@ -1,8 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Orders;
+use Revenexx\Client;
+use Revenexx\Services\Orders;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -14,5 +14,5 @@ $orders = new Orders($client);
 
 $result = $orders->ordersAcknowledge(
     id: '',
-    externalRef: '' // optional
+    externalRef: 'ERP-4711' // optional
 );```

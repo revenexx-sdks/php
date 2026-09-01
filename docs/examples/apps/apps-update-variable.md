@@ -1,8 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Apps;
+use Revenexx\Client;
+use Revenexx\Services\Apps;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -16,6 +16,6 @@ $result = $apps->appsUpdateVariable(
     functionId: '',
     variableId: '',
     key: '',
-    secret: null, // optional
+    secret: true, // optional
     value: '' // optional
 );```

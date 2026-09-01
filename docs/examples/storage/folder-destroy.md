@@ -1,8 +1,8 @@
 ```php
 <?php
 
-use RevenexxAPIRevenexx\Client;
-use RevenexxAPIRevenexx\Services\Storage;
+use Revenexx\Client;
+use Revenexx\Services\Storage;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -14,5 +14,5 @@ $storage = new Storage($client);
 
 $result = $storage->folderDestroy(
     id: '',
-    recursive: null // optional
+    recursive: true // optional
 );```
