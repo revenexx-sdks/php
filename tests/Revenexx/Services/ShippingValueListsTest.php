@@ -34,8 +34,7 @@ final class ShippingValueListsTest extends TestCase {
 
     public function testMethodShippingServiceLevelsCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -51,8 +50,7 @@ final class ShippingValueListsTest extends TestCase {
 
     public function testMethodShippingServiceLevelsDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -67,8 +65,7 @@ final class ShippingValueListsTest extends TestCase {
 
     public function testMethodShippingServiceLevelsGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -83,8 +80,7 @@ final class ShippingValueListsTest extends TestCase {
 
     public function testMethodShippingServiceLevelsUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -99,8 +95,7 @@ final class ShippingValueListsTest extends TestCase {
 
     public function testMethodShippingServiceLevelsMakeDefault(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -130,8 +125,7 @@ final class ShippingValueListsTest extends TestCase {
 
     public function testMethodShippingVocabulariesGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -160,8 +154,7 @@ final class ShippingValueListsTest extends TestCase {
 
     public function testMethodShippingWeightUnitsCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -178,8 +171,7 @@ final class ShippingValueListsTest extends TestCase {
 
     public function testMethodShippingWeightUnitsDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -194,8 +186,7 @@ final class ShippingValueListsTest extends TestCase {
 
     public function testMethodShippingWeightUnitsGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -210,8 +201,7 @@ final class ShippingValueListsTest extends TestCase {
 
     public function testMethodShippingWeightUnitsUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -226,8 +216,7 @@ final class ShippingValueListsTest extends TestCase {
 
     public function testMethodShippingWeightUnitsMakeDefault(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

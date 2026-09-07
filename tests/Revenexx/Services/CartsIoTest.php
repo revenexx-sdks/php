@@ -23,8 +23,7 @@ final class CartsIoTest extends TestCase {
 
     public function testMethodCartsImport(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -38,8 +37,7 @@ final class CartsIoTest extends TestCase {
 
     public function testMethodCartsIoProfilesList(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -53,8 +51,7 @@ final class CartsIoTest extends TestCase {
 
     public function testMethodCartsIoProfilesCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -84,8 +81,7 @@ final class CartsIoTest extends TestCase {
 
     public function testMethodCartsIoProfilesDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -100,8 +96,7 @@ final class CartsIoTest extends TestCase {
 
     public function testMethodCartsIoProfilesGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -116,8 +111,7 @@ final class CartsIoTest extends TestCase {
 
     public function testMethodCartsIoProfilesUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -132,8 +126,7 @@ final class CartsIoTest extends TestCase {
 
     public function testMethodCartsExport(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

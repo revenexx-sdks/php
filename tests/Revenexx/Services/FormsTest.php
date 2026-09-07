@@ -22,8 +22,7 @@ final class FormsTest extends TestCase {
 
     public function testMethodFormsList(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -37,8 +36,7 @@ final class FormsTest extends TestCase {
 
     public function testMethodFormsCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -68,8 +66,7 @@ final class FormsTest extends TestCase {
 
     public function testMethodFormsSubmissionsList(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -83,8 +80,7 @@ final class FormsTest extends TestCase {
 
     public function testMethodFormsSubmissionsCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -100,8 +96,7 @@ final class FormsTest extends TestCase {
 
     public function testMethodFormsSubmissionsPrune(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -115,8 +110,7 @@ final class FormsTest extends TestCase {
 
     public function testMethodFormsSubmissionsDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -131,8 +125,7 @@ final class FormsTest extends TestCase {
 
     public function testMethodFormsSubmissionsGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -147,8 +140,7 @@ final class FormsTest extends TestCase {
 
     public function testMethodFormsSubmissionsUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -177,8 +169,7 @@ final class FormsTest extends TestCase {
 
     public function testMethodFormsVocabulariesGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -193,8 +184,7 @@ final class FormsTest extends TestCase {
 
     public function testMethodFormsDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -209,8 +199,7 @@ final class FormsTest extends TestCase {
 
     public function testMethodFormsGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -225,8 +214,7 @@ final class FormsTest extends TestCase {
 
     public function testMethodFormsUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

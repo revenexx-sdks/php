@@ -34,8 +34,7 @@ final class CustomersValueListsTest extends TestCase {
 
     public function testMethodCustomersAddressTypesCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -51,8 +50,7 @@ final class CustomersValueListsTest extends TestCase {
 
     public function testMethodCustomersAddressTypesDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -67,8 +65,7 @@ final class CustomersValueListsTest extends TestCase {
 
     public function testMethodCustomersAddressTypesGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -83,8 +80,7 @@ final class CustomersValueListsTest extends TestCase {
 
     public function testMethodCustomersAddressTypesUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -113,8 +109,7 @@ final class CustomersValueListsTest extends TestCase {
 
     public function testMethodCustomersContactEventKindsCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -130,8 +125,7 @@ final class CustomersValueListsTest extends TestCase {
 
     public function testMethodCustomersContactEventKindsDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -146,8 +140,7 @@ final class CustomersValueListsTest extends TestCase {
 
     public function testMethodCustomersContactEventKindsGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -162,8 +155,7 @@ final class CustomersValueListsTest extends TestCase {
 
     public function testMethodCustomersContactEventKindsUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -178,8 +170,7 @@ final class CustomersValueListsTest extends TestCase {
 
     public function testMethodCustomersDefaults(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -208,8 +199,7 @@ final class CustomersValueListsTest extends TestCase {
 
     public function testMethodCustomersLifecycleStagesCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -225,8 +215,7 @@ final class CustomersValueListsTest extends TestCase {
 
     public function testMethodCustomersLifecycleStagesDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -241,8 +230,7 @@ final class CustomersValueListsTest extends TestCase {
 
     public function testMethodCustomersLifecycleStagesGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -257,8 +245,7 @@ final class CustomersValueListsTest extends TestCase {
 
     public function testMethodCustomersLifecycleStagesUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -287,8 +274,7 @@ final class CustomersValueListsTest extends TestCase {
 
     public function testMethodCustomersPaymentTermsCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -304,8 +290,7 @@ final class CustomersValueListsTest extends TestCase {
 
     public function testMethodCustomersPaymentTermsDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -320,8 +305,7 @@ final class CustomersValueListsTest extends TestCase {
 
     public function testMethodCustomersPaymentTermsGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -336,8 +320,7 @@ final class CustomersValueListsTest extends TestCase {
 
     public function testMethodCustomersPaymentTermsUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -366,8 +349,7 @@ final class CustomersValueListsTest extends TestCase {
 
     public function testMethodCustomersVocabulariesGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

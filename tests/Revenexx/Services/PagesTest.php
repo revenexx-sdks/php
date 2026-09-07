@@ -34,8 +34,7 @@ final class PagesTest extends TestCase {
 
     public function testMethodPagesLibraryDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -50,8 +49,7 @@ final class PagesTest extends TestCase {
 
     public function testMethodPagesLibraryGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -66,8 +64,7 @@ final class PagesTest extends TestCase {
 
     public function testMethodPagesLibraryUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -96,8 +93,7 @@ final class PagesTest extends TestCase {
 
     public function testMethodPagesMenusUpsert(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -113,8 +109,7 @@ final class PagesTest extends TestCase {
 
     public function testMethodPagesMenusDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -129,8 +124,7 @@ final class PagesTest extends TestCase {
 
     public function testMethodPagesMenusGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -145,8 +139,7 @@ final class PagesTest extends TestCase {
 
     public function testMethodPagesMenusUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -175,8 +168,7 @@ final class PagesTest extends TestCase {
 
     public function testMethodPagesPagesCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -191,8 +183,7 @@ final class PagesTest extends TestCase {
 
     public function testMethodPagesPagesDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -207,8 +198,7 @@ final class PagesTest extends TestCase {
 
     public function testMethodPagesPagesGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -223,8 +213,7 @@ final class PagesTest extends TestCase {
 
     public function testMethodPagesPagesUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -239,8 +228,7 @@ final class PagesTest extends TestCase {
 
     public function testMethodPagesPagesRevisions(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -283,8 +271,7 @@ final class PagesTest extends TestCase {
 
     public function testMethodPagesTemplatesDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -300,7 +287,35 @@ final class PagesTest extends TestCase {
     public function testMethodPagesTemplatesGet(): void {
 
         $data = array(
-            "error" => "");
+            "body_html" => "",
+            "body_text" => "",
+            "channel" => "",
+            "content_sid" => "",
+            "created_at" => "2026-01-01T12:00:00Z",
+            "design" => array(),
+            "enabled" => true,
+            "has_unpublished_changes" => "",
+            "id" => "",
+            "is_published" => "",
+            "key" => "",
+            "layout_id" => "",
+            "lifecycle_state" => "",
+            "locale" => "",
+            "markets" => array(),
+            "message_class" => "",
+            "published_version_id" => "",
+            "source_library_key" => "",
+            "subject" => "",
+            "tenant_id" => "",
+            "test_mode" => true,
+            "title" => "",
+            "updated_at" => "2026-01-01T12:00:00Z",
+            "uses_raw_html" => "",
+            "valid_from" => "2026-01-01T12:00:00Z",
+            "valid_until" => "2026-01-01T12:00:00Z",
+            "variable_defaults" => array(),
+            "variables" => array(),
+            "whatsapp_category" => "");
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -316,7 +331,35 @@ final class PagesTest extends TestCase {
     public function testMethodPagesTemplatesUpdate(): void {
 
         $data = array(
-            "error" => "");
+            "body_html" => "",
+            "body_text" => "",
+            "channel" => "",
+            "content_sid" => "",
+            "created_at" => "2026-01-01T12:00:00Z",
+            "design" => array(),
+            "enabled" => true,
+            "has_unpublished_changes" => "",
+            "id" => "",
+            "is_published" => "",
+            "key" => "",
+            "layout_id" => "",
+            "lifecycle_state" => "",
+            "locale" => "",
+            "markets" => array(),
+            "message_class" => "",
+            "published_version_id" => "",
+            "source_library_key" => "",
+            "subject" => "",
+            "tenant_id" => "",
+            "test_mode" => true,
+            "title" => "",
+            "updated_at" => "2026-01-01T12:00:00Z",
+            "uses_raw_html" => "",
+            "valid_from" => "2026-01-01T12:00:00Z",
+            "valid_until" => "2026-01-01T12:00:00Z",
+            "variable_defaults" => array(),
+            "variables" => array(),
+            "whatsapp_category" => "");
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -345,8 +388,7 @@ final class PagesTest extends TestCase {
 
     public function testMethodPagesVocabulariesGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

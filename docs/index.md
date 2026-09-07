@@ -34,6 +34,17 @@ $client = (new Client())
 ;
 ```
 
+Acting on behalf of a signed-in user instead? Pass their bearer token as issued by the identity
+provider — the SDK sends it unchanged in the `Authorization` header:
+
+```php
+$client = (new Client())
+    ->setEndpoint('https://api.revenexx.com')
+    ->setTenant('<TENANT_SLUG>')
+    ->setBearerAuth('<USER_JWT>') // "Bearer " prefix optional
+;
+```
+
 ### Make Your First Request
 Once your SDK object is set, create any of the Revenexx service objects and choose any request to send. Full documentation for any service method you would like to use can be found in your SDK documentation or in the [API References](https://revenexx.com/docs) section.
 

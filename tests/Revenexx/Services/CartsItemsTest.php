@@ -19,8 +19,7 @@ final class CartsItemsTest extends TestCase {
 
     public function testMethodCartsItemsList(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -35,8 +34,7 @@ final class CartsItemsTest extends TestCase {
 
     public function testMethodCartsItemsCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -51,8 +49,7 @@ final class CartsItemsTest extends TestCase {
 
     public function testMethodCartsItemsReplace(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -68,8 +65,7 @@ final class CartsItemsTest extends TestCase {
 
     public function testMethodCartsItemsDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -85,8 +81,7 @@ final class CartsItemsTest extends TestCase {
 
     public function testMethodCartsItemsGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -102,8 +97,7 @@ final class CartsItemsTest extends TestCase {
 
     public function testMethodCartsItemsUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

@@ -37,8 +37,7 @@ final class CustomersSegmentsTest extends TestCase {
 
     public function testMethodCustomersSegmentMembersCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -54,8 +53,7 @@ final class CustomersSegmentsTest extends TestCase {
 
     public function testMethodCustomersSegmentMembersDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -70,8 +68,7 @@ final class CustomersSegmentsTest extends TestCase {
 
     public function testMethodCustomersSegmentMembersGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -86,8 +83,7 @@ final class CustomersSegmentsTest extends TestCase {
 
     public function testMethodCustomersSegmentMembersUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -116,8 +112,7 @@ final class CustomersSegmentsTest extends TestCase {
 
     public function testMethodCustomersSegmentsCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -132,8 +127,7 @@ final class CustomersSegmentsTest extends TestCase {
 
     public function testMethodCustomersSegmentsRulesRecomputeAll(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -148,8 +142,7 @@ final class CustomersSegmentsTest extends TestCase {
 
     public function testMethodCustomersSegmentsDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -164,8 +157,7 @@ final class CustomersSegmentsTest extends TestCase {
 
     public function testMethodCustomersSegmentsGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -180,8 +172,7 @@ final class CustomersSegmentsTest extends TestCase {
 
     public function testMethodCustomersSegmentsUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -196,8 +187,7 @@ final class CustomersSegmentsTest extends TestCase {
 
     public function testMethodCustomersSegmentsRulesPreview(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -213,8 +203,7 @@ final class CustomersSegmentsTest extends TestCase {
 
     public function testMethodCustomersSegmentsRulesRecompute(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

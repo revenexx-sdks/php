@@ -32,8 +32,7 @@ final class ProductsReferencesTest extends TestCase {
 
     public function testMethodProductsReferenceEntitiesCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -48,8 +47,7 @@ final class ProductsReferencesTest extends TestCase {
 
     public function testMethodProductsReferenceEntitiesDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -64,8 +62,7 @@ final class ProductsReferencesTest extends TestCase {
 
     public function testMethodProductsReferenceEntitiesGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -80,8 +77,7 @@ final class ProductsReferencesTest extends TestCase {
 
     public function testMethodProductsReferenceEntitiesUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -110,8 +106,7 @@ final class ProductsReferencesTest extends TestCase {
 
     public function testMethodProductsReferenceEntityRecordsCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -127,8 +122,7 @@ final class ProductsReferencesTest extends TestCase {
 
     public function testMethodProductsReferenceEntityRecordsDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -143,8 +137,7 @@ final class ProductsReferencesTest extends TestCase {
 
     public function testMethodProductsReferenceEntityRecordsGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -159,8 +152,7 @@ final class ProductsReferencesTest extends TestCase {
 
     public function testMethodProductsReferenceEntityRecordsUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

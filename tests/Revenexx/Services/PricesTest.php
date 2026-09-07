@@ -24,8 +24,7 @@ final class PricesTest extends TestCase {
 
     public function testMethodPricesListsList(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -39,8 +38,7 @@ final class PricesTest extends TestCase {
 
     public function testMethodPricesListsCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -70,8 +68,7 @@ final class PricesTest extends TestCase {
 
     public function testMethodPricesListsDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -86,8 +83,7 @@ final class PricesTest extends TestCase {
 
     public function testMethodPricesListsGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -102,8 +98,7 @@ final class PricesTest extends TestCase {
 
     public function testMethodPricesListsUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -118,8 +113,7 @@ final class PricesTest extends TestCase {
 
     public function testMethodPricesEntriesList(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -134,8 +128,7 @@ final class PricesTest extends TestCase {
 
     public function testMethodPricesEntriesCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -150,8 +143,7 @@ final class PricesTest extends TestCase {
 
     public function testMethodPricesEntriesReplace(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -167,8 +159,7 @@ final class PricesTest extends TestCase {
 
     public function testMethodPricesEntriesAdjust(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -183,8 +174,7 @@ final class PricesTest extends TestCase {
 
     public function testMethodPricesEntriesBulk(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -200,8 +190,7 @@ final class PricesTest extends TestCase {
 
     public function testMethodPricesEntriesLadder(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -217,8 +206,7 @@ final class PricesTest extends TestCase {
 
     public function testMethodPricesEntriesDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -234,8 +222,7 @@ final class PricesTest extends TestCase {
 
     public function testMethodPricesEntriesGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -251,8 +238,7 @@ final class PricesTest extends TestCase {
 
     public function testMethodPricesEntriesUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -268,8 +254,7 @@ final class PricesTest extends TestCase {
 
     public function testMethodPricesListsMakeDefault(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -285,8 +270,7 @@ final class PricesTest extends TestCase {
 
     public function testMethodPricesResolve(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -315,8 +299,7 @@ final class PricesTest extends TestCase {
 
     public function testMethodPricesVocabulariesGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

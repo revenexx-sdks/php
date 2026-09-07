@@ -2,8 +2,6 @@
 
 namespace Revenexx;
 
-use Ahc\Jwt\JWT;
-
 class Client
 {
     const METHOD_GET = 'GET';
@@ -17,7 +15,6 @@ class Client
     const METHOD_TRACE = 'TRACE';
 
     const CHUNK_SIZE = 5 * 1024 * 1024;
-    const JWT_MAX_AGE_SECONDS = 3600;
 
     /**
      * Is Self Signed Certificates Allowed?
@@ -40,33 +37,12 @@ class Client
      */
     protected array $headers = [
         'content-type' => '',
-        'user-agent' => 'RevenexxPHPSDK/0.1.1 ()',
+        'user-agent' => 'RevenexxPHPSDK/0.1.2 ()',
         'x-sdk-name'=> 'Revenexx PHP',
         'x-sdk-platform'=> '',
         'x-sdk-language'=> 'php',
-        'x-sdk-version'=> '0.1.1',
+        'x-sdk-version'=> '0.1.2',
     ];
-
-    /**
-     * API key for JWT generation
-     *
-     * @var string|null
-     */
-    protected ?string $key = null;
-
-    /**
-     * Cached authorization header value
-     *
-     * @var string|null
-     */
-    protected ?string $authorization = null;
-
-    /**
-     * Authorization header expiry time
-     *
-     * @var \DateTime|null
-     */
-    protected ?\DateTime $authorizationExpiresAt = null;
 
     /**
      * Timeout in seconds
@@ -117,9 +93,9 @@ class Client
      */
     public function setBearerAuth(string $value): Client
     {
-        $this->key = $value;
-        $this->authorization = null;
-        $this->authorizationExpiresAt = null;
+        // Sent as-is: the token is issued by the identity provider, never
+        // minted here. Accepts both "eyJ..." and "Bearer eyJ...".
+        $this->addHeader('Authorization', \str_starts_with(\strtolower($value), 'bearer ') ? $value : 'Bearer ' . $value);
 
         return $this;
     }
@@ -219,25 +195,6 @@ class Client
     }
 
     /**
-     * Get authorization header, generating a new JWT if needed
-     *
-     * @return string
-     */
-    private function getAuthorization(): string
-    {
-        if (\is_string($this->authorization) && $this->authorizationExpiresAt > new \DateTime()) {
-            return $this->authorization;
-        }
-
-        $jwt = new JWT($this->key, maxAge: self::JWT_MAX_AGE_SECONDS);
-        $this->authorization = "Bearer {$jwt->encode([])}";
-
-        $this->authorizationExpiresAt = (new \DateTime())->modify('+' . (self::JWT_MAX_AGE_SECONDS - 5) . ' seconds');
-
-        return $this->authorization;
-    }
-
-    /**
      * Call
      *
      * Make an API call
@@ -257,9 +214,6 @@ class Client
         ?string $responseType = null
     )
     {
-        if ($this->key !== null) {
-            $this->headers['authorization'] = $this->getAuthorization();
-        }
         $headers = array_merge($this->headers, $headers);
         $ch = curl_init($this->endpoint . $path . (($method == self::METHOD_GET && !empty($params)) ? '?' . http_build_query($params) : ''));
         $responseHeaders = [];
@@ -411,7 +365,7 @@ class Client
     {
         return [
             'name' => 'Revenexx PHP',
-            'version' => '0.1.1',
+            'version' => '0.1.2',
             'language' => 'php',
             'generator' => 'revenexx/sdk-generator',
             'generatorUrl' => 'https://github.com/revenexx/sdk-generator',

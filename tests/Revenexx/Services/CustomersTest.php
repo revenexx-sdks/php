@@ -18,8 +18,7 @@ final class CustomersTest extends TestCase {
 
     public function testMethodCustomersAuthLogin(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -35,8 +34,7 @@ final class CustomersTest extends TestCase {
 
     public function testMethodCustomersAuthLogout(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -52,8 +50,7 @@ final class CustomersTest extends TestCase {
 
     public function testMethodCustomersAuthMagicLink(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -69,8 +66,7 @@ final class CustomersTest extends TestCase {
 
     public function testMethodCustomersAuthMagicLinkConfirm(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -86,8 +82,7 @@ final class CustomersTest extends TestCase {
 
     public function testMethodCustomersAuthMe(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -102,8 +97,7 @@ final class CustomersTest extends TestCase {
 
     public function testMethodCustomersAuthMfaChallenge(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -118,8 +112,7 @@ final class CustomersTest extends TestCase {
 
     public function testMethodCustomersAuthMfaChallengeConfirm(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -136,8 +129,7 @@ final class CustomersTest extends TestCase {
 
     public function testMethodCustomersAuthOtp(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -152,8 +144,7 @@ final class CustomersTest extends TestCase {
 
     public function testMethodCustomersAuthOtpConfirm(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -169,8 +160,7 @@ final class CustomersTest extends TestCase {
 
     public function testMethodCustomersAuthRecovery(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -186,8 +176,7 @@ final class CustomersTest extends TestCase {
 
     public function testMethodCustomersAuthRecoveryConfirm(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -204,8 +193,7 @@ final class CustomersTest extends TestCase {
 
     public function testMethodCustomersAuthRegister(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -221,8 +209,7 @@ final class CustomersTest extends TestCase {
 
     public function testMethodCustomersAuthVerification(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -238,8 +225,7 @@ final class CustomersTest extends TestCase {
 
     public function testMethodCustomersAuthVerificationConfirm(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -255,8 +241,7 @@ final class CustomersTest extends TestCase {
 
     public function testMethodCustomersPrincipalResolve(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

@@ -121,8 +121,7 @@ final class PagesCollaborationTest extends TestCase {
 
     public function testMethodPagesEditorCommentsUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -139,8 +138,7 @@ final class PagesCollaborationTest extends TestCase {
 
     public function testMethodPagesEditorCommentsResolve(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -156,8 +154,7 @@ final class PagesCollaborationTest extends TestCase {
 
     public function testMethodPagesEditorCommentsToggleTask(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -174,8 +171,7 @@ final class PagesCollaborationTest extends TestCase {
 
     public function testMethodPagesEditorCommentsUnresolve(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

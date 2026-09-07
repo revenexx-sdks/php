@@ -20,8 +20,7 @@ final class InventoriesLocationsTest extends TestCase {
 
     public function testMethodInventoriesLocationsList(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -35,8 +34,7 @@ final class InventoriesLocationsTest extends TestCase {
 
     public function testMethodInventoriesLocationsCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -66,8 +64,7 @@ final class InventoriesLocationsTest extends TestCase {
 
     public function testMethodInventoriesLocationsDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -82,8 +79,7 @@ final class InventoriesLocationsTest extends TestCase {
 
     public function testMethodInventoriesLocationsGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -98,8 +94,7 @@ final class InventoriesLocationsTest extends TestCase {
 
     public function testMethodInventoriesLocationsUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

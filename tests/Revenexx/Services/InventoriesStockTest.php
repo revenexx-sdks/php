@@ -20,8 +20,7 @@ final class InventoriesStockTest extends TestCase {
 
     public function testMethodInventoriesAdjust(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -35,8 +34,7 @@ final class InventoriesStockTest extends TestCase {
 
     public function testMethodInventoriesAvailability(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -50,8 +48,7 @@ final class InventoriesStockTest extends TestCase {
 
     public function testMethodInventoriesMovementsList(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -65,8 +62,7 @@ final class InventoriesStockTest extends TestCase {
 
     public function testMethodInventoriesMovementsGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -81,8 +77,7 @@ final class InventoriesStockTest extends TestCase {
 
     public function testMethodInventoriesReceive(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -128,8 +123,7 @@ final class InventoriesStockTest extends TestCase {
 
     public function testMethodInventoriesRestock(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -143,8 +137,7 @@ final class InventoriesStockTest extends TestCase {
 
     public function testMethodInventoriesStockList(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -158,8 +151,7 @@ final class InventoriesStockTest extends TestCase {
 
     public function testMethodInventoriesStockCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -174,8 +166,7 @@ final class InventoriesStockTest extends TestCase {
 
     public function testMethodInventoriesStockDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -190,8 +181,7 @@ final class InventoriesStockTest extends TestCase {
 
     public function testMethodInventoriesStockGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -206,8 +196,7 @@ final class InventoriesStockTest extends TestCase {
 
     public function testMethodInventoriesStockUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -222,8 +211,7 @@ final class InventoriesStockTest extends TestCase {
 
     public function testMethodInventoriesStockAdjust(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -253,8 +241,7 @@ final class InventoriesStockTest extends TestCase {
 
     public function testMethodInventoriesVocabulariesGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

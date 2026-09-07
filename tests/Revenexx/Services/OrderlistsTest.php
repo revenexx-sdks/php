@@ -21,8 +21,7 @@ final class OrderlistsTest extends TestCase {
 
     public function testMethodOrderlistsList(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -36,8 +35,7 @@ final class OrderlistsTest extends TestCase {
 
     public function testMethodOrderlistsCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -54,8 +52,7 @@ final class OrderlistsTest extends TestCase {
 
     public function testMethodOrderlistsDefaults(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -83,8 +80,7 @@ final class OrderlistsTest extends TestCase {
 
     public function testMethodOrderlistsKindsCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -100,8 +96,7 @@ final class OrderlistsTest extends TestCase {
 
     public function testMethodOrderlistsKindsDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -116,8 +111,7 @@ final class OrderlistsTest extends TestCase {
 
     public function testMethodOrderlistsKindsGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -132,8 +126,7 @@ final class OrderlistsTest extends TestCase {
 
     public function testMethodOrderlistsKindsUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -148,8 +141,7 @@ final class OrderlistsTest extends TestCase {
 
     public function testMethodOrderlistsKindsMakeDefault(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -179,8 +171,7 @@ final class OrderlistsTest extends TestCase {
 
     public function testMethodOrderlistsVocabulariesGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -195,8 +186,7 @@ final class OrderlistsTest extends TestCase {
 
     public function testMethodOrderlistsDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -211,8 +201,7 @@ final class OrderlistsTest extends TestCase {
 
     public function testMethodOrderlistsGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -227,8 +216,7 @@ final class OrderlistsTest extends TestCase {
 
     public function testMethodOrderlistsUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -243,8 +231,7 @@ final class OrderlistsTest extends TestCase {
 
     public function testMethodOrderlistsToCart(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -259,8 +246,7 @@ final class OrderlistsTest extends TestCase {
 
     public function testMethodOrderlistsToOrder(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -275,8 +261,7 @@ final class OrderlistsTest extends TestCase {
 
     public function testMethodOrderlistsItemsList(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -291,8 +276,7 @@ final class OrderlistsTest extends TestCase {
 
     public function testMethodOrderlistsItemsCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -308,8 +292,7 @@ final class OrderlistsTest extends TestCase {
 
     public function testMethodOrderlistsItemsReplace(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -325,8 +308,7 @@ final class OrderlistsTest extends TestCase {
 
     public function testMethodOrderlistsItemsDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -342,8 +324,7 @@ final class OrderlistsTest extends TestCase {
 
     public function testMethodOrderlistsItemsGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -359,8 +340,7 @@ final class OrderlistsTest extends TestCase {
 
     public function testMethodOrderlistsItemsUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

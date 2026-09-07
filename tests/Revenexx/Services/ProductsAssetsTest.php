@@ -34,8 +34,7 @@ final class ProductsAssetsTest extends TestCase {
 
     public function testMethodProductsAssetsCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -51,8 +50,7 @@ final class ProductsAssetsTest extends TestCase {
 
     public function testMethodProductsAssetsDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -67,8 +65,7 @@ final class ProductsAssetsTest extends TestCase {
 
     public function testMethodProductsAssetsGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -83,8 +80,7 @@ final class ProductsAssetsTest extends TestCase {
 
     public function testMethodProductsAssetsUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

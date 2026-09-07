@@ -34,8 +34,7 @@ final class ProductsTest extends TestCase {
 
     public function testMethodProductsCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -64,8 +63,7 @@ final class ProductsTest extends TestCase {
 
     public function testMethodProductsGrid(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -79,8 +77,7 @@ final class ProductsTest extends TestCase {
 
     public function testMethodProductsLabels(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -108,8 +105,7 @@ final class ProductsTest extends TestCase {
 
     public function testMethodProductsProductAssociationsCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -126,8 +122,7 @@ final class ProductsTest extends TestCase {
 
     public function testMethodProductsProductAssociationsDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -142,8 +137,7 @@ final class ProductsTest extends TestCase {
 
     public function testMethodProductsProductAssociationsGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -158,8 +152,7 @@ final class ProductsTest extends TestCase {
 
     public function testMethodProductsProductAssociationsUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -188,8 +181,7 @@ final class ProductsTest extends TestCase {
 
     public function testMethodProductsVocabulariesGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -204,8 +196,7 @@ final class ProductsTest extends TestCase {
 
     public function testMethodProductsDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -220,8 +211,7 @@ final class ProductsTest extends TestCase {
 
     public function testMethodProductsGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -236,8 +226,7 @@ final class ProductsTest extends TestCase {
 
     public function testMethodProductsUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -252,8 +241,7 @@ final class ProductsTest extends TestCase {
 
     public function testMethodProductsCompleteness(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -269,8 +257,7 @@ final class ProductsTest extends TestCase {
 
     public function testMethodProductsFamilyAssign(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

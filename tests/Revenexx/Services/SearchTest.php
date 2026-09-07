@@ -20,7 +20,7 @@ final class SearchTest extends TestCase {
     public function testMethodSearchListCollections(): void {
 
         $data = array(
-            "error" => "");
+            "collections" => array());
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -34,8 +34,7 @@ final class SearchTest extends TestCase {
 
     public function testMethodSearchGetCollection(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -50,8 +49,7 @@ final class SearchTest extends TestCase {
 
     public function testMethodSearchSearchDocumentsGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -66,8 +64,7 @@ final class SearchTest extends TestCase {
 
     public function testMethodSearchSearchDocuments(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -82,8 +79,7 @@ final class SearchTest extends TestCase {
 
     public function testMethodSearchGetDocument(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -114,7 +110,7 @@ final class SearchTest extends TestCase {
     public function testMethodSearchMultiSearch(): void {
 
         $data = array(
-            "error" => "");
+            "results" => array());
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

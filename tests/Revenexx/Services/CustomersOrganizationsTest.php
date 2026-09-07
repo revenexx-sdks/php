@@ -34,8 +34,7 @@ final class CustomersOrganizationsTest extends TestCase {
 
     public function testMethodCustomersAddressesCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -53,8 +52,7 @@ final class CustomersOrganizationsTest extends TestCase {
 
     public function testMethodCustomersAddressesDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -69,8 +67,7 @@ final class CustomersOrganizationsTest extends TestCase {
 
     public function testMethodCustomersAddressesGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -85,8 +82,7 @@ final class CustomersOrganizationsTest extends TestCase {
 
     public function testMethodCustomersAddressesUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -129,8 +125,7 @@ final class CustomersOrganizationsTest extends TestCase {
 
     public function testMethodCustomersOrganizationMetricsRefresh(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -144,8 +139,7 @@ final class CustomersOrganizationsTest extends TestCase {
 
     public function testMethodCustomersOrganizationMetricsGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -174,8 +168,7 @@ final class CustomersOrganizationsTest extends TestCase {
 
     public function testMethodCustomersOrganizationsCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -190,8 +183,7 @@ final class CustomersOrganizationsTest extends TestCase {
 
     public function testMethodCustomersOrganizationsDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -206,8 +198,7 @@ final class CustomersOrganizationsTest extends TestCase {
 
     public function testMethodCustomersOrganizationsGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -222,8 +213,7 @@ final class CustomersOrganizationsTest extends TestCase {
 
     public function testMethodCustomersOrganizationsUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

@@ -36,8 +36,7 @@ final class PaymentsLedgerTest extends TestCase {
 
     public function testMethodPaymentsCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -81,8 +80,7 @@ final class PaymentsLedgerTest extends TestCase {
 
     public function testMethodPaymentsOrdersCapture(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -111,8 +109,7 @@ final class PaymentsLedgerTest extends TestCase {
 
     public function testMethodPaymentsVocabulariesGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -127,8 +124,7 @@ final class PaymentsLedgerTest extends TestCase {
 
     public function testMethodPaymentsWebhooksIngest(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -143,8 +139,7 @@ final class PaymentsLedgerTest extends TestCase {
 
     public function testMethodPaymentsGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -159,8 +154,7 @@ final class PaymentsLedgerTest extends TestCase {
 
     public function testMethodPaymentsCancel(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -175,8 +169,7 @@ final class PaymentsLedgerTest extends TestCase {
 
     public function testMethodPaymentsCapture(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -191,8 +184,7 @@ final class PaymentsLedgerTest extends TestCase {
 
     public function testMethodPaymentsConfirm(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -207,8 +199,7 @@ final class PaymentsLedgerTest extends TestCase {
 
     public function testMethodPaymentsRefund(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

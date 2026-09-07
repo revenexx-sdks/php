@@ -23,8 +23,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodAuditIndex(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -38,8 +37,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodBindingIndex(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -53,8 +51,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodBindingStore(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -72,8 +69,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodBindingDestroy(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -88,8 +84,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodBindingShow(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -104,8 +99,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodBindingUpdatePatch(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -120,8 +114,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodBindingUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -136,8 +129,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodChannelCredentialIndex(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -151,8 +143,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodChannelCredentialDestroy(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -167,8 +158,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodChannelCredentialUpdatePatch(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -183,8 +173,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodChannelCredentialUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -199,8 +188,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodChannelCredentialVerify(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -215,8 +203,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodChannelIndex(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -230,8 +217,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodConfigShow(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -245,8 +231,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodConfigUpdatePatch(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -260,8 +245,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodConfigUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -275,8 +259,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodLayoutIndex(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -290,8 +273,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodLayoutStore(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -305,8 +287,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodLayoutDestroy(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -321,8 +302,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodLayoutShow(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -337,8 +317,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodLayoutUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -353,8 +332,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodLibraryIndex(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -368,8 +346,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodMessageIndex(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -383,8 +360,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodMessageShow(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -399,8 +375,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodSendPreview(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -416,8 +391,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodErasureStore(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -433,8 +407,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodPushSubscriptionDestroy(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -449,8 +422,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodPushSubscriptionIndex(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -465,8 +437,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodPushSubscriptionStore(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -483,8 +454,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodSendSend(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -501,8 +471,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodStatsIndex(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -516,8 +485,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodSuppressionIndex(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -531,8 +499,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodSuppressionStore(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -549,8 +516,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodSuppressionDestroy(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -565,8 +531,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodSuppressionShow(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -581,8 +546,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodTemplateIndex(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -596,8 +560,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodTemplateStore(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -613,8 +576,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodTemplateDestroy(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -629,8 +591,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodTemplateShow(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -645,8 +606,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodTemplateUpdatePatch(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -661,8 +621,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodTemplateUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -677,8 +636,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodTemplateVersionStore(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -693,8 +651,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodTemplateVersionIndex(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -709,8 +666,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodTemplateVersionShow(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -726,8 +682,7 @@ final class MessagingTest extends TestCase {
 
     public function testMethodTemplateVersionRestore(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

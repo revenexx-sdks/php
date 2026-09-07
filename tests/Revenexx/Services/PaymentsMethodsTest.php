@@ -34,8 +34,7 @@ final class PaymentsMethodsTest extends TestCase {
 
     public function testMethodPaymentsMethodsCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -79,8 +78,7 @@ final class PaymentsMethodsTest extends TestCase {
 
     public function testMethodPaymentsMethodsDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -95,8 +93,7 @@ final class PaymentsMethodsTest extends TestCase {
 
     public function testMethodPaymentsMethodsGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -111,8 +108,7 @@ final class PaymentsMethodsTest extends TestCase {
 
     public function testMethodPaymentsMethodsUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

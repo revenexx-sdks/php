@@ -32,8 +32,7 @@ final class PagesDeliveryTest extends TestCase {
 
     public function testMethodPagesDeliveryPage(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -61,8 +60,7 @@ final class PagesDeliveryTest extends TestCase {
 
     public function testMethodPagesDeliveryPreview(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

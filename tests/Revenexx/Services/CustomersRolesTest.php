@@ -32,8 +32,7 @@ final class CustomersRolesTest extends TestCase {
 
     public function testMethodCustomersRolesDefaults(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -48,8 +47,7 @@ final class CustomersRolesTest extends TestCase {
 
     public function testMethodCustomersRolesPermissionsReplace(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

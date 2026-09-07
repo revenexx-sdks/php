@@ -22,8 +22,7 @@ final class ChannelsTest extends TestCase {
 
     public function testMethodChannelsList(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -37,8 +36,7 @@ final class ChannelsTest extends TestCase {
 
     public function testMethodChannelsCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -68,8 +66,7 @@ final class ChannelsTest extends TestCase {
 
     public function testMethodChannelsDefaults(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -97,8 +94,7 @@ final class ChannelsTest extends TestCase {
 
     public function testMethodChannelsTypesCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -114,8 +110,7 @@ final class ChannelsTest extends TestCase {
 
     public function testMethodChannelsTypesDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -130,8 +125,7 @@ final class ChannelsTest extends TestCase {
 
     public function testMethodChannelsTypesGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -146,8 +140,7 @@ final class ChannelsTest extends TestCase {
 
     public function testMethodChannelsTypesUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -162,8 +155,7 @@ final class ChannelsTest extends TestCase {
 
     public function testMethodChannelsVisibility(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -192,8 +184,7 @@ final class ChannelsTest extends TestCase {
 
     public function testMethodChannelsVocabulariesGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -208,8 +199,7 @@ final class ChannelsTest extends TestCase {
 
     public function testMethodChannelsDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -224,8 +214,7 @@ final class ChannelsTest extends TestCase {
 
     public function testMethodChannelsGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -240,8 +229,7 @@ final class ChannelsTest extends TestCase {
 
     public function testMethodChannelsUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

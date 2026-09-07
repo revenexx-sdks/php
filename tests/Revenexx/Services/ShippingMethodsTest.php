@@ -21,8 +21,7 @@ final class ShippingMethodsTest extends TestCase {
 
     public function testMethodShippingMethodsList(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -36,8 +35,7 @@ final class ShippingMethodsTest extends TestCase {
 
     public function testMethodShippingMethodsCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -67,8 +65,7 @@ final class ShippingMethodsTest extends TestCase {
 
     public function testMethodShippingMethodsDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -83,8 +80,7 @@ final class ShippingMethodsTest extends TestCase {
 
     public function testMethodShippingMethodsGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -99,8 +95,7 @@ final class ShippingMethodsTest extends TestCase {
 
     public function testMethodShippingMethodsUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -115,8 +110,7 @@ final class ShippingMethodsTest extends TestCase {
 
     public function testMethodShippingTiersList(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -131,8 +125,7 @@ final class ShippingMethodsTest extends TestCase {
 
     public function testMethodShippingTiersCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -147,8 +140,7 @@ final class ShippingMethodsTest extends TestCase {
 
     public function testMethodShippingTiersReplace(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -164,8 +156,7 @@ final class ShippingMethodsTest extends TestCase {
 
     public function testMethodShippingTiersLadder(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -183,8 +174,7 @@ final class ShippingMethodsTest extends TestCase {
 
     public function testMethodShippingTiersDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -200,8 +190,7 @@ final class ShippingMethodsTest extends TestCase {
 
     public function testMethodShippingTiersGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -217,8 +206,7 @@ final class ShippingMethodsTest extends TestCase {
 
     public function testMethodShippingTiersUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -234,8 +222,7 @@ final class ShippingMethodsTest extends TestCase {
 
     public function testMethodShippingRates(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

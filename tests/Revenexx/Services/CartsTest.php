@@ -21,8 +21,7 @@ final class CartsTest extends TestCase {
 
     public function testMethodCartsList(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -36,8 +35,7 @@ final class CartsTest extends TestCase {
 
     public function testMethodCartsCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -51,8 +49,7 @@ final class CartsTest extends TestCase {
 
     public function testMethodCartsClaim(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -82,8 +79,7 @@ final class CartsTest extends TestCase {
 
     public function testMethodCartsMerge(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -113,8 +109,7 @@ final class CartsTest extends TestCase {
 
     public function testMethodCartsVocabulariesGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -129,8 +124,7 @@ final class CartsTest extends TestCase {
 
     public function testMethodCartsDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -145,8 +139,7 @@ final class CartsTest extends TestCase {
 
     public function testMethodCartsGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -161,8 +154,7 @@ final class CartsTest extends TestCase {
 
     public function testMethodCartsUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -177,8 +169,7 @@ final class CartsTest extends TestCase {
 
     public function testMethodCartsAbandon(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -193,8 +184,7 @@ final class CartsTest extends TestCase {
 
     public function testMethodCartsActivate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -209,8 +199,7 @@ final class CartsTest extends TestCase {
 
     public function testMethodCartsMergeInto(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -226,8 +215,7 @@ final class CartsTest extends TestCase {
 
     public function testMethodCartsOrder(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -242,8 +230,7 @@ final class CartsTest extends TestCase {
 
     public function testMethodCartsReopen(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

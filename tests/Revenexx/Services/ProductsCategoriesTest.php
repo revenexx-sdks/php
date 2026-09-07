@@ -37,8 +37,7 @@ final class ProductsCategoriesTest extends TestCase {
 
     public function testMethodProductsCategoriesCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -53,8 +52,7 @@ final class ProductsCategoriesTest extends TestCase {
 
     public function testMethodProductsCategoriesRulesRecomputeAll(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -69,8 +67,7 @@ final class ProductsCategoriesTest extends TestCase {
 
     public function testMethodProductsCategoriesRulesPreview(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -86,8 +83,7 @@ final class ProductsCategoriesTest extends TestCase {
 
     public function testMethodProductsCategoriesRulesRecompute(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -102,8 +98,7 @@ final class ProductsCategoriesTest extends TestCase {
 
     public function testMethodProductsCategoriesDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -118,8 +113,7 @@ final class ProductsCategoriesTest extends TestCase {
 
     public function testMethodProductsCategoriesGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -134,8 +128,7 @@ final class ProductsCategoriesTest extends TestCase {
 
     public function testMethodProductsCategoriesUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -164,8 +157,7 @@ final class ProductsCategoriesTest extends TestCase {
 
     public function testMethodProductsProductCategoriesCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -181,8 +173,7 @@ final class ProductsCategoriesTest extends TestCase {
 
     public function testMethodProductsProductCategoriesDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -197,8 +188,7 @@ final class ProductsCategoriesTest extends TestCase {
 
     public function testMethodProductsProductCategoriesGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -213,8 +203,7 @@ final class ProductsCategoriesTest extends TestCase {
 
     public function testMethodProductsProductCategoriesUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -229,8 +218,7 @@ final class ProductsCategoriesTest extends TestCase {
 
     public function testMethodProductsCategoriesAssign(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

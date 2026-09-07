@@ -33,8 +33,7 @@ final class PagesEditorTest extends TestCase {
 
     public function testMethodPagesEditorTranslate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -155,8 +154,7 @@ final class PagesEditorTest extends TestCase {
 
     public function testMethodPagesEditorPublish(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -186,8 +184,7 @@ final class PagesEditorTest extends TestCase {
 
     public function testMethodPagesEditorSchedule(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -234,7 +231,35 @@ final class PagesEditorTest extends TestCase {
     public function testMethodPagesEditorTemplatesCreate(): void {
 
         $data = array(
-            "error" => "");
+            "body_html" => "",
+            "body_text" => "",
+            "channel" => "",
+            "content_sid" => "",
+            "created_at" => "2026-01-01T12:00:00Z",
+            "design" => array(),
+            "enabled" => true,
+            "has_unpublished_changes" => "",
+            "id" => "",
+            "is_published" => "",
+            "key" => "",
+            "layout_id" => "",
+            "lifecycle_state" => "",
+            "locale" => "",
+            "markets" => array(),
+            "message_class" => "",
+            "published_version_id" => "",
+            "source_library_key" => "",
+            "subject" => "",
+            "tenant_id" => "",
+            "test_mode" => true,
+            "title" => "",
+            "updated_at" => "2026-01-01T12:00:00Z",
+            "uses_raw_html" => "",
+            "valid_from" => "2026-01-01T12:00:00Z",
+            "valid_until" => "2026-01-01T12:00:00Z",
+            "variable_defaults" => array(),
+            "variables" => array(),
+            "whatsapp_category" => "");
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

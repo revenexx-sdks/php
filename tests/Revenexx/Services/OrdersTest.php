@@ -53,8 +53,7 @@ final class OrdersTest extends TestCase {
 
     public function testMethodOrdersNumberRangesCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -83,8 +82,7 @@ final class OrdersTest extends TestCase {
 
     public function testMethodOrdersNumberRangesDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -99,8 +97,7 @@ final class OrdersTest extends TestCase {
 
     public function testMethodOrdersNumberRangesGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -115,8 +112,7 @@ final class OrdersTest extends TestCase {
 
     public function testMethodOrdersNumberRangesUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -131,8 +127,7 @@ final class OrdersTest extends TestCase {
 
     public function testMethodOrdersPlace(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -175,8 +170,7 @@ final class OrdersTest extends TestCase {
 
     public function testMethodOrdersVocabulariesGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -191,8 +185,7 @@ final class OrdersTest extends TestCase {
 
     public function testMethodOrdersGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -207,8 +200,7 @@ final class OrdersTest extends TestCase {
 
     public function testMethodOrdersUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -223,8 +215,7 @@ final class OrdersTest extends TestCase {
 
     public function testMethodOrdersAcknowledge(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -239,8 +230,7 @@ final class OrdersTest extends TestCase {
 
     public function testMethodOrdersCancel(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -255,8 +245,7 @@ final class OrdersTest extends TestCase {
 
     public function testMethodOrdersCommentsList(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -271,8 +260,7 @@ final class OrdersTest extends TestCase {
 
     public function testMethodOrdersCommentsCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -288,8 +276,7 @@ final class OrdersTest extends TestCase {
 
     public function testMethodOrdersComplete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -304,8 +291,7 @@ final class OrdersTest extends TestCase {
 
     public function testMethodOrdersEventsList(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -320,8 +306,7 @@ final class OrdersTest extends TestCase {
 
     public function testMethodOrdersHold(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -336,8 +321,7 @@ final class OrdersTest extends TestCase {
 
     public function testMethodOrdersItemsCancel(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -353,8 +337,7 @@ final class OrdersTest extends TestCase {
 
     public function testMethodOrdersPaymentStatusUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -370,8 +353,7 @@ final class OrdersTest extends TestCase {
 
     public function testMethodOrdersReturn(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -386,8 +368,7 @@ final class OrdersTest extends TestCase {
 
     public function testMethodOrdersReturnsComplete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -403,8 +384,7 @@ final class OrdersTest extends TestCase {
 
     public function testMethodOrdersReturnsReceive(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -421,8 +401,7 @@ final class OrdersTest extends TestCase {
 
     public function testMethodOrdersReturnsReject(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -438,8 +417,7 @@ final class OrdersTest extends TestCase {
 
     public function testMethodOrdersShip(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -454,8 +432,7 @@ final class OrdersTest extends TestCase {
 
     public function testMethodOrdersShippable(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -470,8 +447,7 @@ final class OrdersTest extends TestCase {
 
     public function testMethodOrdersUnhold(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())

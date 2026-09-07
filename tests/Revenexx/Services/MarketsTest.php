@@ -21,8 +21,7 @@ final class MarketsTest extends TestCase {
 
     public function testMethodMarketsList(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -36,8 +35,7 @@ final class MarketsTest extends TestCase {
 
     public function testMethodMarketsCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -81,8 +79,7 @@ final class MarketsTest extends TestCase {
 
     public function testMethodMarketsVocabulary(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -97,8 +94,7 @@ final class MarketsTest extends TestCase {
 
     public function testMethodMarketsDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -113,8 +109,7 @@ final class MarketsTest extends TestCase {
 
     public function testMethodMarketsGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -129,8 +124,7 @@ final class MarketsTest extends TestCase {
 
     public function testMethodMarketsUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -145,8 +139,7 @@ final class MarketsTest extends TestCase {
 
     public function testMethodMarketsBackfill(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -162,8 +155,7 @@ final class MarketsTest extends TestCase {
 
     public function testMethodMarketsClone(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -179,8 +171,7 @@ final class MarketsTest extends TestCase {
 
     public function testMethodMarketsContext(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -195,8 +186,7 @@ final class MarketsTest extends TestCase {
 
     public function testMethodMarketsMakeDefault(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -212,8 +202,7 @@ final class MarketsTest extends TestCase {
 
     public function testMethodMarketsReadiness(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -228,8 +217,7 @@ final class MarketsTest extends TestCase {
 
     public function testMethodMarketsCurrenciesList(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -244,8 +232,7 @@ final class MarketsTest extends TestCase {
 
     public function testMethodMarketsCurrenciesCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -261,8 +248,7 @@ final class MarketsTest extends TestCase {
 
     public function testMethodMarketsCurrenciesDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -278,8 +264,7 @@ final class MarketsTest extends TestCase {
 
     public function testMethodMarketsCurrenciesGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -295,8 +280,7 @@ final class MarketsTest extends TestCase {
 
     public function testMethodMarketsCurrenciesUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -312,8 +296,7 @@ final class MarketsTest extends TestCase {
 
     public function testMethodMarketsLocalesList(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -328,8 +311,7 @@ final class MarketsTest extends TestCase {
 
     public function testMethodMarketsLocalesCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -347,8 +329,7 @@ final class MarketsTest extends TestCase {
 
     public function testMethodMarketsLocalesDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -364,8 +345,7 @@ final class MarketsTest extends TestCase {
 
     public function testMethodMarketsLocalesGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -381,8 +361,7 @@ final class MarketsTest extends TestCase {
 
     public function testMethodMarketsLocalesUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -398,8 +377,7 @@ final class MarketsTest extends TestCase {
 
     public function testMethodMarketsTaxClassesList(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -414,8 +392,7 @@ final class MarketsTest extends TestCase {
 
     public function testMethodMarketsTaxClassesCreate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -432,8 +409,7 @@ final class MarketsTest extends TestCase {
 
     public function testMethodMarketsTaxClassesDelete(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -449,8 +425,7 @@ final class MarketsTest extends TestCase {
 
     public function testMethodMarketsTaxClassesGet(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -466,8 +441,7 @@ final class MarketsTest extends TestCase {
 
     public function testMethodMarketsTaxClassesUpdate(): void {
 
-        $data = array(
-            "error" => "");
+        $data = array();
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
