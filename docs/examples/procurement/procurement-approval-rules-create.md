@@ -20,7 +20,8 @@ $result = $procurement->procurementApprovalRulesCreate(
     effect: Effect::PENDINGORDER(),
     name: '',
     active: true, // optional
-    approverRef: '', // optional
+    approverContactId: '', // optional
+    approverRole: '', // optional
     approverType: ApproverType::CONTACT(), // optional
     conditionParameters: [], // optional
     costCenterId: '', // optional

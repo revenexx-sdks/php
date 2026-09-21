@@ -62,7 +62,8 @@ class Procurement extends Service
      * @param Effect $effect
      * @param string $name
      * @param ?bool $active
-     * @param ?string $approverRef
+     * @param ?string $approverContactId
+     * @param ?string $approverRole
      * @param ?ApproverType $approverType
      * @param ?array $conditionParameters
      * @param ?string $costCenterId
@@ -73,7 +74,7 @@ class Procurement extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function procurementApprovalRulesCreate(Condition $condition, Effect $effect, string $name, ?bool $active = null, ?string $approverRef = null, ?ApproverType $approverType = null, ?array $conditionParameters = null, ?string $costCenterId = null, ?array $effectParameters = null, ?array $metadata = null, ?int $sequence = null, ?bool $showCondition = null): array
+    public function procurementApprovalRulesCreate(Condition $condition, Effect $effect, string $name, ?bool $active = null, ?string $approverContactId = null, ?string $approverRole = null, ?ApproverType $approverType = null, ?array $conditionParameters = null, ?string $costCenterId = null, ?array $effectParameters = null, ?array $metadata = null, ?int $sequence = null, ?bool $showCondition = null): array
     {
         $apiPath = str_replace(
             [],
@@ -89,7 +90,8 @@ class Procurement extends Service
         if (!is_null($active)) {
             $apiParams['active'] = $active;
         }
-        $apiParams['approver_ref'] = $approverRef;
+        $apiParams['approver_contact_id'] = $approverContactId;
+        $apiParams['approver_role'] = $approverRole;
 
         if (!is_null($approverType)) {
             $apiParams['approver_type'] = $approverType;
@@ -173,7 +175,8 @@ class Procurement extends Service
     /**
      * @param string $id
      * @param ?bool $active
-     * @param ?string $approverRef
+     * @param ?string $approverContactId
+     * @param ?string $approverRole
      * @param ?ApproverType $approverType
      * @param ?Condition $condition
      * @param ?array $conditionParameters
@@ -187,7 +190,7 @@ class Procurement extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function procurementApprovalRulesUpdate(string $id, ?bool $active = null, ?string $approverRef = null, ?ApproverType $approverType = null, ?Condition $condition = null, ?array $conditionParameters = null, ?string $costCenterId = null, ?Effect $effect = null, ?array $effectParameters = null, ?array $metadata = null, ?string $name = null, ?int $sequence = null, ?bool $showCondition = null): array
+    public function procurementApprovalRulesUpdate(string $id, ?bool $active = null, ?string $approverContactId = null, ?string $approverRole = null, ?ApproverType $approverType = null, ?Condition $condition = null, ?array $conditionParameters = null, ?string $costCenterId = null, ?Effect $effect = null, ?array $effectParameters = null, ?array $metadata = null, ?string $name = null, ?int $sequence = null, ?bool $showCondition = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -201,7 +204,8 @@ class Procurement extends Service
         if (!is_null($active)) {
             $apiParams['active'] = $active;
         }
-        $apiParams['approver_ref'] = $approverRef;
+        $apiParams['approver_contact_id'] = $approverContactId;
+        $apiParams['approver_role'] = $approverRole;
 
         if (!is_null($approverType)) {
             $apiParams['approver_type'] = $approverType;

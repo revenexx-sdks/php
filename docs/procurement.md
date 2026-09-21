@@ -23,7 +23,8 @@ POST https://api.revenexx.com/v1/procurement/approval-rules
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | active | boolean |  |  |
-| approver_ref | string |  |  |
+| approver_contact_id | string |  |  |
+| approver_role | string |  |  |
 | approver_type | string |  |  |
 | condition | string |  |  |
 | condition_parameters | object |  |  |
@@ -68,7 +69,8 @@ PUT https://api.revenexx.com/v1/procurement/approval-rules/{id}
 | --- | --- | --- | --- |
 | id | string | **Required**  |  |
 | active | boolean |  |  |
-| approver_ref | string |  |  |
+| approver_contact_id | string |  |  |
+| approver_role | string |  |  |
 | approver_type | string |  |  |
 | condition | string |  |  |
 | condition_parameters | object |  |  |

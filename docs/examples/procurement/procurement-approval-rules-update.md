@@ -18,7 +18,8 @@ $procurement = new Procurement($client);
 $result = $procurement->procurementApprovalRulesUpdate(
     id: '',
     active: true, // optional
-    approverRef: '', // optional
+    approverContactId: '', // optional
+    approverRole: '', // optional
     approverType: ApproverType::CONTACT(), // optional
     condition: Condition::ALWAYS(), // optional
     conditionParameters: [], // optional
