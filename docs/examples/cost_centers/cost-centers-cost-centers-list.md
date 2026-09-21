@@ -15,5 +15,6 @@ $costCenters = new CostCenters($client);
 $result = $costCenters->costCentersCostCentersList(
     limit: 1, // optional
     offset: 1, // optional
-    order: '' // optional
+    order: '', // optional
+    punchoutAccountCode: '' // optional
 );```

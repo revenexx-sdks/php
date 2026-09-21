@@ -20,7 +20,6 @@ GET https://api.revenexx.com/v1/carts/{cart_id}/items
 | quantity | number | Exact quantity — equality, so it matches a line of exactly this many, never 'at least'. |  |
 | unit | string | Lines counted in one unit ('pcs', 'm'). |  |
 | unit_price | number | Exact unit price — the lines still sitting at one particular number after a repricing run. |  |
-| currency | string | Lines priced in one currency — normally the cart's, so this earns its place only where a cart mixes them. |  |
 | tax_rate | number | Lines at one VAT rate. |  |
 | line_total | number | Exact line total. Equality only — there is no range form, so this finds `0` and little else. |  |
 | position | integer | The line at one position. |  |
@@ -35,7 +34,7 @@ GET https://api.revenexx.com/v1/carts/{cart_id}/items
 POST https://api.revenexx.com/v1/carts/{cart_id}/items
 ```
 
-** Adds one line to an ACTIVE cart — the add-to-basket call. `name` or `sku` is required (a line sent with only a SKU takes the SKU as its name, so a line always has something to show) and `quantity` must be greater than zero; everything else defaults, including the currency, which falls back to the cart&#039;s. The one thing that surprises a caller: a plain product line with the same product/sku AND the same `unit_price` as a line already in the cart does not open a second row — its quantity is added to that line, and the 201 names a row that already existed. Price is part of that identity on purpose, so a changed price never averages into an old line. A configured or custom line always stands alone. The cart&#039;s `item_count` (the sum of QUANTITIES) and `subtotal` are recomputed before the answer, and `max_items_per_cart` / `max_quantity_per_line` are checked on the RESULT of the merge (422), so ten calls of one piece cannot walk past a limit one call of ten would hit. **
+** Adds one line to an ACTIVE cart — the add-to-basket call. `name` or `sku` is required (a line sent with only a SKU takes the SKU as its name, so a line always has something to show) and `quantity` must be greater than zero; everything else defaults. The line is priced in the CART&#039;s currency and stores none of its own, so a `currency` in the payload may only repeat the cart&#039;s — a different one is a 409. The one thing that surprises a caller: a plain product line with the same product/sku AND the same `unit_price` as a line already in the cart does not open a second row — its quantity is added to that line, and the 201 names a row that already existed. Price is part of that identity on purpose, so a changed price never averages into an old line. A configured or custom line always stands alone. The cart&#039;s `item_count` (the sum of QUANTITIES) and `subtotal` are recomputed before the answer, and `max_items_per_cart` / `max_quantity_per_line` are checked on the RESULT of the merge (422), so ten calls of one piece cannot walk past a limit one call of ten would hit. **
 
 ### Parameters
 
@@ -43,7 +42,7 @@ POST https://api.revenexx.com/v1/carts/{cart_id}/items
 | --- | --- | --- | --- |
 | cart_id | string | **Required** The cart the line belongs to, by its id. An id no cart in this tenant has answers 404 rather than an empty list, so a wrong cart is never mistaken for an empty one. |  |
 | configuration | object | What was configured on this line, in the configurator's own vocabulary — this app stores it and reads nothing out of it. Its mere PRESENCE is behaviour: a line that carries a configuration never merges with another, because two differently configured units of the same article are not one line. Keys are the configurator's; the example is one shape, not the shape. |  |
-| currency | string | ISO 4217 code. Defaults to the cart's currency. |  |
+| currency | string | Optional, and it cannot change anything: a line is read in its CART's currency and stores none of its own. Sending the cart's code (or nothing) is accepted — which is what makes an exported line re-importable — and sending a different one answers 409 `currency_mismatch` rather than being converted or quietly stored. |  |
 | metadata | object | Free-form data the storefront hangs on the line. Stored and returned verbatim; no key in here is read by this app. |  |
 | name | string | What the line reads as on the cart page. Falls back to 'sku' when omitted, so a line always has something to show. |  |
 | position | integer | Sort order within the cart, ascending. Default 0 when adding a line; in a bulk replace the payload order fills it in. |  |
@@ -112,7 +111,7 @@ PUT https://api.revenexx.com/v1/carts/{cart_id}/items/{id}
 | cart_id | string | **Required** The cart the line belongs to, by its id. An id no cart in this tenant has answers 404 rather than an empty list, so a wrong cart is never mistaken for an empty one. |  |
 | id | string | **Required** The line, by its id. The cart in the path is checked too: a line that belongs to a different cart answers 404, so an id guessed from another cart never resolves here. |  |
 | configuration | object | What was configured on this line, in the configurator's own vocabulary — this app stores it and reads nothing out of it. Its mere PRESENCE is behaviour: a line that carries a configuration never merges with another, because two differently configured units of the same article are not one line. Keys are the configurator's; the example is one shape, not the shape. |  |
-| currency | string | ISO 4217 code. Defaults to the cart's currency. |  |
+| currency | string | Optional, and it cannot change anything: a line is read in its CART's currency and stores none of its own. Sending the cart's code (or nothing) is accepted — which is what makes an exported line re-importable — and sending a different one answers 409 `currency_mismatch` rather than being converted or quietly stored. |  |
 | metadata | object | Free-form data the storefront hangs on the line. Stored and returned verbatim; no key in here is read by this app. |  |
 | name | string | What the line reads as on the cart page. Falls back to 'sku' when omitted, so a line always has something to show. |  |
 | position | integer | Sort order within the cart, ascending. Default 0 when adding a line; in a bulk replace the payload order fills it in. |  |

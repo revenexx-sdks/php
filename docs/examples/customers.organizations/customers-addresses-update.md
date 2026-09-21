@@ -18,6 +18,7 @@ $result = $customersOrganizations->customersAddressesUpdate(
     company: 'Beispiel Industrietechnik GmbH', // optional
     contactId: '', // optional
     country: 'DE', // optional
+    externalId: 'R_ADD000005', // optional
     isDefault: true, // optional
     name: 'Anna Berger', // optional
     organizationId: '', // optional

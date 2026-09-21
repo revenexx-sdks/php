@@ -16,6 +16,21 @@ final class CustomersTest extends TestCase {
         $this->customers = new Customers($this->client);
     }
 
+    public function testMethodCustomersAuthHandoff(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customers->customersAuthHandoff(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodCustomersAuthLogin(): void {
 
         $data = array();
@@ -248,7 +263,6 @@ final class CustomersTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->customers->customersPrincipalResolve(
-            ""
         );
 
         $this->assertSame($data, $response);

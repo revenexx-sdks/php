@@ -578,10 +578,11 @@ class CostCenters extends Service
      * @param ?int $limit
      * @param ?int $offset
      * @param ?string $order
+     * @param ?string $punchoutAccountCode
      * @throws RevenexxException
      * @return array
      */
-    public function costCentersCostCentersList(?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function costCentersCostCentersList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $punchoutAccountCode = null): array
     {
         $apiPath = str_replace(
             [],
@@ -601,6 +602,10 @@ class CostCenters extends Service
 
         if (!is_null($order)) {
             $apiParams['order'] = $order;
+        }
+
+        if (!is_null($punchoutAccountCode)) {
+            $apiParams['punchout_account_code'] = $punchoutAccountCode;
         }
 
         $apiHeaders = [];
@@ -808,10 +813,11 @@ class CostCenters extends Service
      * @param ?string $contactId
      * @param ?string $costCenterId
      * @param ?string $currency
+     * @param ?string $punchoutAccountCode
      * @throws RevenexxException
      * @return array
      */
-    public function costCentersEvaluate(float $amount, ?array $conditions = null, ?string $contactId = null, ?string $costCenterId = null, ?string $currency = null): array
+    public function costCentersEvaluate(float $amount, ?array $conditions = null, ?string $contactId = null, ?string $costCenterId = null, ?string $currency = null, ?string $punchoutAccountCode = null): array
     {
         $apiPath = str_replace(
             [],
@@ -831,6 +837,7 @@ class CostCenters extends Service
             $apiParams['cost_center_id'] = $costCenterId;
         }
         $apiParams['currency'] = $currency;
+        $apiParams['punchout_account_code'] = $punchoutAccountCode;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -1091,11 +1098,12 @@ class CostCenters extends Service
      * @param array $lines
      * @param ?string $contactId
      * @param ?string $organizationId
+     * @param ?string $punchoutAccountCode
      * @param ?array $roles
      * @throws RevenexxException
      * @return array
      */
-    public function costCentersUsable(array $lines, ?string $contactId = null, ?string $organizationId = null, ?array $roles = null): array
+    public function costCentersUsable(array $lines, ?string $contactId = null, ?string $organizationId = null, ?string $punchoutAccountCode = null, ?array $roles = null): array
     {
         $apiPath = str_replace(
             [],
@@ -1107,6 +1115,7 @@ class CostCenters extends Service
         $apiParams['lines'] = $lines;
         $apiParams['contact_id'] = $contactId;
         $apiParams['organization_id'] = $organizationId;
+        $apiParams['punchout_account_code'] = $punchoutAccountCode;
 
         if (!is_null($roles)) {
             $apiParams['roles'] = $roles;

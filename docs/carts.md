@@ -36,7 +36,7 @@ GET https://api.revenexx.com/v1/carts
 POST https://api.revenexx.com/v1/carts
 ```
 
-** Opens an empty cart. The one thing it requires is an OWNER — `contact_id` for a signed-in customer or `session_key` for a guest, never neither: that is a database check on the table, and this route refuses it first with a 400 so the caller gets a sentence rather than a constraint name. Everything else is defaulted: the name &#039;Cart&#039;, currency EUR, status &#039;active&#039;, both totals 0. No column of a cart is unique, so one owner may hold as many carts as they like — unless the tenant&#039;s `multi_cart_enabled` is off, in which case a second ACTIVE cart for the same owner answers 409 naming the cart that already exists, because a storefront that hit that wants to fill THAT cart. Send `is_current: true` to have the new cart made current in the same call, which clears the flag on every sibling of the same owner. Lines are added afterwards, one call each or one bulk replace. **
+** Opens an empty cart. The one thing it requires is an OWNER — `contact_id` for a signed-in customer or `session_key` for a guest, never neither: that is a database check on the table, and this route refuses it first with a 400 so the caller gets a sentence rather than a constraint name. Everything else is defaulted: the name &#039;Cart&#039;, status &#039;active&#039;, both totals 0, and the currency from the market&#039;s `default_currency` setting — resolved once and WRITTEN to the cart, so every amount the cart ever holds is read in the code it was opened in. No column of a cart is unique, so one owner may hold as many carts as they like — unless the tenant&#039;s `multi_cart_enabled` is off, in which case a second ACTIVE cart for the same owner answers 409 naming the cart that already exists, because a storefront that hit that wants to fill THAT cart. Send `is_current: true` to have the new cart made current in the same call, which clears the flag on every sibling of the same owner. Lines are added afterwards, one call each or one bulk replace. **
 
 ### Parameters
 
@@ -44,7 +44,7 @@ POST https://api.revenexx.com/v1/carts
 | --- | --- | --- | --- |
 | channel_id | string | The sales channel this cart is being opened in, as a channel of the channels app. Stored for attribution; nothing in this app reads it. |  |
 | contact_id | string | The customer who owns this cart, as a contact of the customers app. Send this OR session_key — a cart with neither owner is refused. |  |
-| currency | string | ISO 4217 code the cart is priced in (default EUR). Lines added without a currency inherit it. |  |
+| currency | string | ISO 4217 code EVERY amount in this cart will be read in, lines included — a line carries no currency of its own. Omit it and the cart is opened in the market's `default_currency` setting (EUR unless a market says otherwise), which is resolved once here and written to the row: changing that setting later never re-denominates a cart that already exists. |  |
 | is_current | boolean | Make this THE current cart of its owner as it is created — the same thing carts.activate does later, and it clears the flag on every sibling cart of the same owner. |  |
 | metadata | object | Free-form data the storefront hangs on the cart. Stored and returned verbatim; no key in here is read by this app, and none is indexed. |  |
 | name | string | What the buyer calls this cart (default 'Cart'). An empty string is legal and lands on the default. |  |
@@ -84,7 +84,7 @@ POST https://api.revenexx.com/v1/carts/maintenance/run
 POST https://api.revenexx.com/v1/carts/merge
 ```
 
-** Which of the two carts survives is the whole question, and the answer is the TARGET: the source&#039;s lines are COPIED into the target, the target keeps every line it already had, its totals are recomputed, and it is the cart the caller goes on using. Nothing is replaced and nothing is moved — the source keeps its own line rows and is closed with status &#039;merged&#039; and `merged_into_cart_id` pointing at the target, so a merged cart stays readable as the record of what went where. On the way in, a plain product line with the same product/sku AND the same `unit_price` as a line already in the target adds its quantity to that line; configured and custom lines always land as new ones. Both carts must be active and must differ, and the tenant&#039;s line limits are enforced on the target as the copies land (422). Reach for carts.merge_into where the caller holds one cart id and not two. **
+** Which of the two carts survives is the whole question, and the answer is the TARGET: the source&#039;s lines are COPIED into the target, the target keeps every line it already had, its totals are recomputed, and it is the cart the caller goes on using. Nothing is replaced and nothing is moved — the source keeps its own line rows and is closed with status &#039;merged&#039; and `merged_into_cart_id` pointing at the target, so a merged cart stays readable as the record of what went where. On the way in, a plain product line with the same product/sku AND the same `unit_price` as a line already in the target adds its quantity to that line; configured and custom lines always land as new ones. Both carts must be active, must differ and must be priced in the same currency — the lines carry their amounts across and nothing converts them (409) — and the tenant&#039;s line limits are enforced on the target as the copies land (422). Reach for carts.merge_into where the caller holds one cart id and not two. **
 
 ### Parameters
 
@@ -144,7 +144,7 @@ GET https://api.revenexx.com/v1/carts/{id}
 PUT https://api.revenexx.com/v1/carts/{id}
 ```
 
-** The four columns a cart&#039;s own editing screen owns, and only those: `name`, `currency`, `channel_id` and `metadata`. Everything else about a cart is either derived or a lifecycle move, and both are deliberately out of reach here — `item_count` and `subtotal` are recomputed from the lines, `status` travels through the action routes (activate, abandon, reopen, order, merge) so that every transition is guarded, and `market_id` is the platform&#039;s scope on the row rather than a column this app writes. A payload carrying none of the four answers 400 rather than storing nothing quietly, so a caller never believes an ignored field was saved. The owner is not updatable either: a guest cart becomes a customer&#039;s through carts.claim. **
+** The four columns a cart&#039;s own editing screen owns, and only those: `name`, `currency`, `channel_id` and `metadata`. Everything else about a cart is either derived or a lifecycle move, and both are deliberately out of reach here — `item_count` and `subtotal` are recomputed from the lines, `status` travels through the action routes (activate, abandon, reopen, order, merge) so that every transition is guarded, and `market_id` is the platform&#039;s scope on the row rather than a column this app writes. A payload carrying none of the four answers 400 rather than storing nothing quietly, so a caller never believes an ignored field was saved. The owner is not updatable either: a guest cart becomes a customer&#039;s through carts.claim. One of the four has a guard behind it: `currency` re-denominates every amount in the cart, lines included, so it is accepted only while the cart holds no money and answers 409 once it does. **
 
 ### Parameters
 
@@ -152,7 +152,7 @@ PUT https://api.revenexx.com/v1/carts/{id}
 | --- | --- | --- | --- |
 | id | string | **Required** The cart, by its id — the `id` every cart answer carries. A uuid: the data plane casts the segment, so a code or a slug is refused before the cart is looked up. |  |
 | channel_id | string | Move the cart to another sales channel. |  |
-| currency | string | ISO 4217 code. Changes what NEW lines inherit; lines already in the cart keep the currency they were added with. |  |
+| currency | string | Re-denominate the cart — which re-denominates every amount in it, because the lines are read in this code and hold none of their own. Only while the cart is still empty of money: a cart whose subtotal or any line price is non-zero answers 409 `currency_mismatch`, since nothing here converts and a changed code would restate a history in a currency it was never in. `null` is refused: a cart is always priced in one. |  |
 | metadata | object | Free-form data the storefront hangs on the cart. Stored and returned verbatim; no key in here is read by this app, and none is indexed. |  |
 | name | string | Rename the cart. Unlike on create, this is written verbatim — `null` and `''` are refused by the database. |  |
 
@@ -187,7 +187,7 @@ POST https://api.revenexx.com/v1/carts/{id}/activate
 POST https://api.revenexx.com/v1/carts/{id}/merge-into
 ```
 
-** Identical to carts.merge, with the SOURCE taken from the path — which is what makes the merge reachable from anything holding one cart and only one: a Cockpit row action, a detail page, a storefront session. The cart in the path is therefore the one that ends: its lines are copied into the `target_cart_id` named in the body, that target keeps its own lines and survives, and the path cart is closed with status &#039;merged&#039; and `merged_into_cart_id` pointing at it. Getting the two the wrong way round is the mistake this route exists to make hard, so read the path id as &quot;the cart I am giving away&quot;. Both carts must be active and must differ. **
+** Identical to carts.merge, with the SOURCE taken from the path — which is what makes the merge reachable from anything holding one cart and only one: a Cockpit row action, a detail page, a storefront session. The cart in the path is therefore the one that ends: its lines are copied into the `target_cart_id` named in the body, that target keeps its own lines and survives, and the path cart is closed with status &#039;merged&#039; and `merged_into_cart_id` pointing at it. Getting the two the wrong way round is the mistake this route exists to make hard, so read the path id as &quot;the cart I am giving away&quot;. Both carts must be active, must differ and must be priced in the same currency. **
 
 ### Parameters
 

@@ -221,6 +221,7 @@ GET https://api.revenexx.com/v1/cost-centers/cost-centers
 | limit | integer | Page size (default 50, max 200). |  |
 | offset | integer | Row offset for pagination (default 0). |  |
 | order | string | Sort as 'column.asc' | 'column.desc', e.g. 'created_at.desc'. |  |
+| punchout_account_code | string | Code of the punchout account the list is read for. Centres a punchout restriction keeps out of reach of that account are left out (and the total counts only what is returned). Omit for the administrative list, which holds nothing back. A value that is not a non-empty string is refused with 400. |  |
 
 
 ```http request
@@ -310,6 +311,7 @@ POST https://api.revenexx.com/v1/cost-centers/evaluate
 | contact_id | string |  |  |
 | cost_center_id | string |  |  |
 | currency | string | ISO 4217 code the amount is stated in. Omit to be read in the cost centre's (or the personal limit's) own currency; a code that differs from it is refused with 409 currency_mismatch. |  |
+| punchout_account_code | string | Code of the punchout account the request is made in. Omit outside a punchout session: a cost centre restricted with mode 'only' is then out of reach, and one restricted with 'except' is offered. A value that is not a non-empty string is refused with 400. |  |
 
 
 ```http request
@@ -417,6 +419,7 @@ POST https://api.revenexx.com/v1/cost-centers/usable
 | contact_id | string |  |  |
 | lines | array |  |  |
 | organization_id | string |  |  |
+| punchout_account_code | string | Code of the punchout account the request is made in. Omit outside a punchout session: a cost centre restricted with mode 'only' is then out of reach, and one restricted with 'except' is offered. A value that is not a non-empty string is refused with 400. |  |
 | roles | array |  |  |
 
 

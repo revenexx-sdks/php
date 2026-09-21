@@ -11,6 +11,7 @@ class CostCenterRestrictionUpdateRequestType implements JsonSerializable
     private static CostCenterRestrictionUpdateRequestType $PRODUCT;
     private static CostCenterRestrictionUpdateRequestType $CATEGORY;
     private static CostCenterRestrictionUpdateRequestType $CATALOG;
+    private static CostCenterRestrictionUpdateRequestType $PUNCHOUT;
 
     private string $value;
 
@@ -63,5 +64,12 @@ class CostCenterRestrictionUpdateRequestType implements JsonSerializable
             self::$CATALOG = new CostCenterRestrictionUpdateRequestType('catalog');
         }
         return self::$CATALOG;
+    }
+    public static function PUNCHOUT(): CostCenterRestrictionUpdateRequestType
+    {
+        if (!isset(self::$PUNCHOUT)) {
+            self::$PUNCHOUT = new CostCenterRestrictionUpdateRequestType('punchout');
+        }
+        return self::$PUNCHOUT;
     }
 }

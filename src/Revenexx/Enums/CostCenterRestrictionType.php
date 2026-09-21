@@ -11,6 +11,7 @@ class CostCenterRestrictionType implements JsonSerializable
     private static CostCenterRestrictionType $PRODUCT;
     private static CostCenterRestrictionType $CATEGORY;
     private static CostCenterRestrictionType $CATALOG;
+    private static CostCenterRestrictionType $PUNCHOUT;
 
     private string $value;
 
@@ -63,5 +64,12 @@ class CostCenterRestrictionType implements JsonSerializable
             self::$CATALOG = new CostCenterRestrictionType('catalog');
         }
         return self::$CATALOG;
+    }
+    public static function PUNCHOUT(): CostCenterRestrictionType
+    {
+        if (!isset(self::$PUNCHOUT)) {
+            self::$PUNCHOUT = new CostCenterRestrictionType('punchout');
+        }
+        return self::$PUNCHOUT;
     }
 }

@@ -16,5 +16,6 @@ $result = $costCenters->costCentersUsable(
     lines: [],
     contactId: '', // optional
     organizationId: '', // optional
+    punchoutAccountCode: '', // optional
     roles: [] // optional
 );```

@@ -15,6 +15,52 @@ class Customers extends Service
      }
 
     /**
+     * The same token `POST /customers/auth/magic-link` mints, answered WITH its
+     * secret instead of mailed — for a buyer another system has already
+     * authenticated and who therefore has no mailbox to check and no link to
+     * click. Punchout is the caller it exists for: an ERP hands its user over,
+     * this app decides whether that buyer may sign in, and the secret is redeemed
+     * through `PUT /customers/auth/magic-link` exactly as a mailed one is. Which
+     * is also why the method checked is the magic-link one: a store with
+     * `login_magic_link` off cannot redeem what this mints. Nothing is delivered,
+     * no account is founded (an address nobody holds is a 404 here, not a
+     * registration) and no `contact_event` is written — signing in is
+     * mechanics, and this app keeps it off the event bus. Not callable from a
+     * browser or a storefront: `handoff_key` is an operations secret configured
+     * on the calling app, and a deployment that has none has this capability
+     * switched off.
+     *
+     * @param string $handoffKey
+     * @param ?string $contactId
+     * @param ?string $email
+     * @throws RevenexxException
+     * @return array
+     */
+    public function customersAuthHandoff(string $handoffKey, ?string $contactId = null, ?string $email = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/customers/auth/handoff'
+        );
+
+        $apiParams = [];
+        $apiParams['handoff_key'] = $handoffKey;
+        $apiParams['contact_id'] = $contactId;
+        $apiParams['email'] = $email;
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
      * An email and a password go in; a session and the CONTACT behind it come
      * back, so a storefront knows in one call both that the buyer is signed in
      * and who they are. The session is minted server-side rather than handed back
@@ -541,20 +587,28 @@ class Customers extends Service
     }
 
     /**
-     * The capability the API gateway calls to turn a caller's
-     * X-Revenexx-Principal assertion into the permission set it forwards to every
-     * other app as X-Revenexx-Permissions. This app is the platform's role
-     * provider (manifest#provides_roles), and this is the hot path of every
-     * attributed storefront request — one contact read plus the tenant's role
-     * map. A blocked or pending contact always resolves with active=false; what
-     * its `permissions` then say is the tenant's blocked_contact_behavior setting
-     * — 'keep' (the default, the role's grants), 'catalog_only' or 'deny_all'.
+     * The capability the API gateway calls to turn whoever is acting into the
+     * permission set it forwards to every other app as X-Revenexx-Permissions.
+     * This app is the platform's role provider (manifest#provides_roles), and
+     * this is the hot path of every attributed request — one contact read plus
+     * the tenant's role map. Send EXACTLY ONE of two references. `contact_id` is
+     * the storefront plane: a BFF holding the tenant API key asserted a contact,
+     * and the gateway is resolving the assertion. `user_id` is the authenticated
+     * plane (RAD-12): the gateway verified a person's own Zitadel token and is
+     * resolving its subject against `contacts.external_user_id`, so the answer
+     * stands on a proven identity rather than a claimed one. The answer is the
+     * same shape either way — which plane a request came from is the gateway's
+     * business, not this app's. A blocked or pending contact always resolves with
+     * active=false; what its `permissions` then say is the tenant's
+     * blocked_contact_behavior setting — 'keep' (the default, the role's
+     * grants), 'catalog_only' or 'deny_all'.
      *
-     * @param string $contactId
+     * @param ?string $contactId
+     * @param ?string $userId
      * @throws RevenexxException
      * @return array
      */
-    public function customersPrincipalResolve(string $contactId): array
+    public function customersPrincipalResolve(?string $contactId = null, ?string $userId = null): array
     {
         $apiPath = str_replace(
             [],
@@ -563,7 +617,14 @@ class Customers extends Service
         );
 
         $apiParams = [];
-        $apiParams['contact_id'] = $contactId;
+
+        if (!is_null($contactId)) {
+            $apiParams['contact_id'] = $contactId;
+        }
+
+        if (!is_null($userId)) {
+            $apiParams['user_id'] = $userId;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';

@@ -25,6 +25,7 @@ GET https://api.revenexx.com/v1/customers/addresses
 | country | string | Filter by ISO 3166-1 alpha-2 country code. |  |
 | phone | string | Filter to rows whose `phone` is exactly this value. Phone number for the carrier to reach at this address — often a different one from the contact's own. |  |
 | is_default | boolean | Filter to the default addresses. With `type` and an owner, this is the one address a checkout should preselect. |  |
+| external_id | string | Filter to rows whose `external_id` is exactly this value. Id of this address in the system it came from — an ERP address number. Nullable and unique per tenant where it is set. It is also the id a line-based order export has to hand back, because the receiving system names a delivery or invoice address by it rather than by its street. |  |
 | created_at | string | Exact timestamp equality — this API has no range filter. To bound a period, sort with `order` and page. When the address was created. |  |
 | updated_at | string | Exact timestamp equality — this API has no range filter. To bound a period, sort with `order` and page. When any column of this row last changed. |  |
 | limit | integer | Page size (default 50, max 200). |  |
@@ -46,6 +47,7 @@ POST https://api.revenexx.com/v1/customers/addresses
 | company | string | Company line on the label. Often the owning organization's name, but not always — a delivery to a construction site carries the site. |  |
 | contact_id | string | Owning person — a personal address only that contact uses. Exactly one of organization_id / contact_id is set. |  |
 | country | string | ISO 3166-1 alpha-2 country code, exactly two letters. Uppercase by convention; it is what shipping and tax both key off. |  |
+| external_id | string | Id of this address in the system it came from — an ERP address number. Nullable and unique per tenant where it is set. It is also the id a line-based order export has to hand back, because the receiving system names a delivery or invoice address by it rather than by its street. Writable, so a record can be adopted or a wrong id corrected — but it is the key a repeated import matches on, so changing it on a row an import owns makes the next run create a second one rather than update this. |  |
 | is_default | boolean | The default address of its owner AND type: one default billing and one default shipping address per owner. Setting it moves the flag off the previous holder. Default false. |  |
 | name | string | Recipient line on the label — the person or department the parcel is addressed to. |  |
 | organization_id | string | Owning company — a company address, shared by everyone in it. Exactly one of organization_id / contact_id is set. |  |
@@ -98,6 +100,7 @@ PUT https://api.revenexx.com/v1/customers/addresses/{id}
 | company | string | Company line on the label. Often the owning organization's name, but not always — a delivery to a construction site carries the site. |  |
 | contact_id | string | Owning person — a personal address only that contact uses. Exactly one of organization_id / contact_id is set. |  |
 | country | string | ISO 3166-1 alpha-2 country code, exactly two letters. Uppercase by convention; it is what shipping and tax both key off. |  |
+| external_id | string | Id of this address in the system it came from — an ERP address number. Nullable and unique per tenant where it is set. It is also the id a line-based order export has to hand back, because the receiving system names a delivery or invoice address by it rather than by its street. Writable, so a record can be adopted or a wrong id corrected — but it is the key a repeated import matches on, so changing it on a row an import owns makes the next run create a second one rather than update this. |  |
 | is_default | boolean | The default address of its owner AND type: one default billing and one default shipping address per owner. Setting it moves the flag off the previous holder. Default false. |  |
 | name | string | Recipient line on the label — the person or department the parcel is addressed to. |  |
 | organization_id | string | Owning company — a company address, shared by everyone in it. Exactly one of organization_id / contact_id is set. |  |

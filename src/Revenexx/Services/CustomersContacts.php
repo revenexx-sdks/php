@@ -178,6 +178,7 @@ class CustomersContacts extends Service
      * @param ?string $locale
      * @param ?bool $isPrimary
      * @param ?string $externalUserId
+     * @param ?string $externalId
      * @param ?string $createdAt
      * @param ?string $updatedAt
      * @param ?int $limit
@@ -186,7 +187,7 @@ class CustomersContacts extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function customersContactsList(?string $id = null, ?string $organizationId = null, ?string $email = null, ?string $firstName = null, ?string $lastName = null, ?string $phone = null, ?string $jobTitle = null, ?string $role = null, ?Status $status = null, ?float $orderApprovalLimit = null, ?RegistrationStatus $registrationStatus = null, ?string $registrationDecidedAt = null, ?string $registrationDecidedBy = null, ?string $registrationReason = null, ?string $locale = null, ?bool $isPrimary = null, ?string $externalUserId = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function customersContactsList(?string $id = null, ?string $organizationId = null, ?string $email = null, ?string $firstName = null, ?string $lastName = null, ?string $phone = null, ?string $jobTitle = null, ?string $role = null, ?Status $status = null, ?float $orderApprovalLimit = null, ?RegistrationStatus $registrationStatus = null, ?string $registrationDecidedAt = null, ?string $registrationDecidedBy = null, ?string $registrationReason = null, ?string $locale = null, ?bool $isPrimary = null, ?string $externalUserId = null, ?string $externalId = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             [],
@@ -264,6 +265,10 @@ class CustomersContacts extends Service
             $apiParams['external_user_id'] = $externalUserId;
         }
 
+        if (!is_null($externalId)) {
+            $apiParams['external_id'] = $externalId;
+        }
+
         if (!is_null($createdAt)) {
             $apiParams['created_at'] = $createdAt;
         }
@@ -309,6 +314,7 @@ class CustomersContacts extends Service
      * IS NOT NULL).
      *
      * @param string $email
+     * @param ?string $externalId
      * @param ?string $firstName
      * @param ?bool $isPrimary
      * @param ?string $jobTitle
@@ -323,7 +329,7 @@ class CustomersContacts extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function customersContactsCreate(string $email, ?string $firstName = null, ?bool $isPrimary = null, ?string $jobTitle = null, ?string $lastName = null, ?string $locale = null, ?float $orderApprovalLimit = null, ?string $organizationId = null, ?string $phone = null, ?CustomersContactsCreateRegistrationStatus $registrationStatus = null, ?string $role = null, ?ContactStatus $status = null): array
+    public function customersContactsCreate(string $email, ?string $externalId = null, ?string $firstName = null, ?bool $isPrimary = null, ?string $jobTitle = null, ?string $lastName = null, ?string $locale = null, ?float $orderApprovalLimit = null, ?string $organizationId = null, ?string $phone = null, ?CustomersContactsCreateRegistrationStatus $registrationStatus = null, ?string $role = null, ?ContactStatus $status = null): array
     {
         $apiPath = str_replace(
             [],
@@ -333,6 +339,7 @@ class CustomersContacts extends Service
 
         $apiParams = [];
         $apiParams['email'] = $email;
+        $apiParams['external_id'] = $externalId;
         $apiParams['first_name'] = $firstName;
 
         if (!is_null($isPrimary)) {
@@ -644,6 +651,7 @@ class CustomersContacts extends Service
      *
      * @param string $id
      * @param ?string $email
+     * @param ?string $externalId
      * @param ?string $firstName
      * @param ?bool $isPrimary
      * @param ?string $jobTitle
@@ -658,7 +666,7 @@ class CustomersContacts extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function customersContactsUpdate(string $id, ?string $email = null, ?string $firstName = null, ?bool $isPrimary = null, ?string $jobTitle = null, ?string $lastName = null, ?string $locale = null, ?float $orderApprovalLimit = null, ?string $organizationId = null, ?string $phone = null, ?CustomersContactsCreateRegistrationStatus $registrationStatus = null, ?string $role = null, ?ContactStatus $status = null): array
+    public function customersContactsUpdate(string $id, ?string $email = null, ?string $externalId = null, ?string $firstName = null, ?bool $isPrimary = null, ?string $jobTitle = null, ?string $lastName = null, ?string $locale = null, ?float $orderApprovalLimit = null, ?string $organizationId = null, ?string $phone = null, ?CustomersContactsCreateRegistrationStatus $registrationStatus = null, ?string $role = null, ?ContactStatus $status = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -672,6 +680,7 @@ class CustomersContacts extends Service
         if (!is_null($email)) {
             $apiParams['email'] = $email;
         }
+        $apiParams['external_id'] = $externalId;
         $apiParams['first_name'] = $firstName;
 
         if (!is_null($isPrimary)) {

@@ -40,6 +40,7 @@ class CustomersOrganizations extends Service
      * @param ?string $country
      * @param ?string $phone
      * @param ?bool $isDefault
+     * @param ?string $externalId
      * @param ?string $createdAt
      * @param ?string $updatedAt
      * @param ?int $limit
@@ -48,7 +49,7 @@ class CustomersOrganizations extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function customersAddressesList(?string $id = null, ?string $organizationId = null, ?string $contactId = null, ?string $type = null, ?string $company = null, ?string $name = null, ?string $street = null, ?string $street2 = null, ?string $zip = null, ?string $city = null, ?string $region = null, ?string $country = null, ?string $phone = null, ?bool $isDefault = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function customersAddressesList(?string $id = null, ?string $organizationId = null, ?string $contactId = null, ?string $type = null, ?string $company = null, ?string $name = null, ?string $street = null, ?string $street2 = null, ?string $zip = null, ?string $city = null, ?string $region = null, ?string $country = null, ?string $phone = null, ?bool $isDefault = null, ?string $externalId = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             [],
@@ -114,6 +115,10 @@ class CustomersOrganizations extends Service
             $apiParams['is_default'] = $isDefault;
         }
 
+        if (!is_null($externalId)) {
+            $apiParams['external_id'] = $externalId;
+        }
+
         if (!is_null($createdAt)) {
             $apiParams['created_at'] = $createdAt;
         }
@@ -162,6 +167,7 @@ class CustomersOrganizations extends Service
      * @param string $zip
      * @param ?string $company
      * @param ?string $contactId
+     * @param ?string $externalId
      * @param ?bool $isDefault
      * @param ?string $name
      * @param ?string $organizationId
@@ -172,7 +178,7 @@ class CustomersOrganizations extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function customersAddressesCreate(string $city, string $country, string $street, string $zip, ?string $company = null, ?string $contactId = null, ?bool $isDefault = null, ?string $name = null, ?string $organizationId = null, ?string $phone = null, ?string $region = null, ?string $street2 = null, ?string $type = null): array
+    public function customersAddressesCreate(string $city, string $country, string $street, string $zip, ?string $company = null, ?string $contactId = null, ?string $externalId = null, ?bool $isDefault = null, ?string $name = null, ?string $organizationId = null, ?string $phone = null, ?string $region = null, ?string $street2 = null, ?string $type = null): array
     {
         $apiPath = str_replace(
             [],
@@ -187,6 +193,7 @@ class CustomersOrganizations extends Service
         $apiParams['zip'] = $zip;
         $apiParams['company'] = $company;
         $apiParams['contact_id'] = $contactId;
+        $apiParams['external_id'] = $externalId;
 
         if (!is_null($isDefault)) {
             $apiParams['is_default'] = $isDefault;
@@ -292,6 +299,7 @@ class CustomersOrganizations extends Service
      * @param ?string $company
      * @param ?string $contactId
      * @param ?string $country
+     * @param ?string $externalId
      * @param ?bool $isDefault
      * @param ?string $name
      * @param ?string $organizationId
@@ -304,7 +312,7 @@ class CustomersOrganizations extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function customersAddressesUpdate(string $id, ?string $city = null, ?string $company = null, ?string $contactId = null, ?string $country = null, ?bool $isDefault = null, ?string $name = null, ?string $organizationId = null, ?string $phone = null, ?string $region = null, ?string $street = null, ?string $street2 = null, ?string $type = null, ?string $zip = null): array
+    public function customersAddressesUpdate(string $id, ?string $city = null, ?string $company = null, ?string $contactId = null, ?string $country = null, ?string $externalId = null, ?bool $isDefault = null, ?string $name = null, ?string $organizationId = null, ?string $phone = null, ?string $region = null, ?string $street = null, ?string $street2 = null, ?string $type = null, ?string $zip = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -324,6 +332,7 @@ class CustomersOrganizations extends Service
         if (!is_null($country)) {
             $apiParams['country'] = $country;
         }
+        $apiParams['external_id'] = $externalId;
 
         if (!is_null($isDefault)) {
             $apiParams['is_default'] = $isDefault;

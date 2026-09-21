@@ -1,3 +1,6 @@
+## v0.1.3
+- Regenerated from the latest API specification
+
 ## v0.1.2
 - Regenerated from the latest API specification
 

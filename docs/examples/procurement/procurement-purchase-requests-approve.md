@@ -14,6 +14,5 @@ $procurement = new Procurement($client);
 
 $result = $procurement->procurementPurchaseRequestsApprove(
     id: '',
-    by: '', // optional
     reason: '' // optional
 );```

@@ -218,18 +218,26 @@ class PaymentsMethods extends Service
      * server-side before any PSP is involved, so the storefront never renders a
      * method the create would then refuse with 422. It evaluates the buyer
      * context against every configured method: disabled, a country outside
-     * `countries`, an amount outside `min_order_value`/`max_order_value`.
-     * Restriction dimensions are ANDed and entries within one are ORed, and an
-     * empty dimension means unrestricted. Eligible methods come back sorted by
-     * `position` with their fee already computed for this amount; everything else
-     * lands in `excluded` with the reason in words, which is what makes a support
-     * question answerable. It reads only — nothing is written and no provider
-     * is called. Two things it does NOT check: whether the method's PSP is
-     * configured and enabled (a method whose provider is switched off is still
-     * offered here and fails at POST /payments — a provider a method names can
-     * no longer be deleted, which closes the other half of the same gap), and
-     * anything about the buyer beyond country and amount. A context that matches
-     * nothing is 200 with an empty `methods` list, never 404.
+     * `countries`, a currency other than the method's own `fee_currency`, an
+     * amount outside `min_order_value`/`max_order_value`. The currency dimension
+     * is ADR-0106 D5a: a method is configured for the money it charges in, its
+     * two thresholds are read in that currency, and an order in another one is
+     * filtered out rather than compared against a bound it is not denominated in.
+     * It is reported before the thresholds, because a merchant told "amount below
+     * minimum 10" about a CHF order against a EUR method goes looking at the
+     * wrong number. Each eligible method carries the currency its own fee is in,
+     * never the order's. Restriction dimensions are ANDed and entries within one
+     * are ORed, and an empty dimension means unrestricted. Eligible methods come
+     * back sorted by `position` with their fee already computed for this amount;
+     * everything else lands in `excluded` with the reason in words, which is what
+     * makes a support question answerable. It reads only — nothing is written
+     * and no provider is called. Two things it does NOT check: whether the
+     * method's PSP is configured and enabled (a method whose provider is switched
+     * off is still offered here and fails at POST /payments — a provider a
+     * method names can no longer be deleted, which closes the other half of the
+     * same gap), and anything about the buyer beyond country and amount. A
+     * context that matches nothing is 200 with an empty `methods` list, never
+     * 404.
      *
      * @param ?float $amount
      * @param ?string $country

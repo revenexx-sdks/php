@@ -114,7 +114,6 @@ POST https://api.revenexx.com/v1/procurement/pending-approvals/{id}/approve
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required**  |  |
-| by | string | Who acted (contact id / ref); recorded as resolved_by. |  |
 | reason | string | Free-text note (decline/cancel reason, approval remark). |  |
 
 
@@ -127,7 +126,6 @@ POST https://api.revenexx.com/v1/procurement/pending-approvals/{id}/decline
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required**  |  |
-| by | string | Who acted (contact id / ref); recorded as resolved_by. |  |
 | reason | string | Free-text note (decline/cancel reason, approval remark). |  |
 
 
@@ -311,7 +309,6 @@ POST https://api.revenexx.com/v1/procurement/purchase-requests/{id}/approve
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required**  |  |
-| by | string | Who acted (contact id / ref); recorded as resolved_by. |  |
 | reason | string | Free-text note (decline/cancel reason, approval remark). |  |
 
 
@@ -324,7 +321,6 @@ POST https://api.revenexx.com/v1/procurement/purchase-requests/{id}/cancel
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required**  |  |
-| by | string | Who acted (contact id / ref); recorded as resolved_by. |  |
 | reason | string | Free-text note (decline/cancel reason, approval remark). |  |
 
 

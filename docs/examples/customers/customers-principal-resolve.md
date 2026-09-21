@@ -13,5 +13,6 @@ $client = (new Client())
 $customers = new Customers($client);
 
 $result = $customers->customersPrincipalResolve(
-    contactId: ''
+    contactId: '', // optional
+    userId: '284392058374652910' // optional
 );```

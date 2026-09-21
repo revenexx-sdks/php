@@ -31,7 +31,6 @@ class CartsItems extends Service
      * @param ?float $quantity
      * @param ?string $unit
      * @param ?float $unitPrice
-     * @param ?string $currency
      * @param ?float $taxRate
      * @param ?float $lineTotal
      * @param ?int $position
@@ -43,7 +42,7 @@ class CartsItems extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function cartsItemsList(string $cartId, ?string $id = null, ?CartItemType $type = null, ?string $productId = null, ?string $sku = null, ?string $name = null, ?float $quantity = null, ?string $unit = null, ?float $unitPrice = null, ?string $currency = null, ?float $taxRate = null, ?float $lineTotal = null, ?int $position = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function cartsItemsList(string $cartId, ?string $id = null, ?CartItemType $type = null, ?string $productId = null, ?string $sku = null, ?string $name = null, ?float $quantity = null, ?string $unit = null, ?float $unitPrice = null, ?float $taxRate = null, ?float $lineTotal = null, ?int $position = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             ['{cart_id}'],
@@ -84,10 +83,6 @@ class CartsItems extends Service
 
         if (!is_null($unitPrice)) {
             $apiParams['unit_price'] = $unitPrice;
-        }
-
-        if (!is_null($currency)) {
-            $apiParams['currency'] = $currency;
         }
 
         if (!is_null($taxRate)) {
@@ -136,17 +131,18 @@ class CartsItems extends Service
      * Adds one line to an ACTIVE cart — the add-to-basket call. `name` or `sku`
      * is required (a line sent with only a SKU takes the SKU as its name, so a
      * line always has something to show) and `quantity` must be greater than
-     * zero; everything else defaults, including the currency, which falls back to
-     * the cart's. The one thing that surprises a caller: a plain product line
-     * with the same product/sku AND the same `unit_price` as a line already in
-     * the cart does not open a second row — its quantity is added to that line,
-     * and the 201 names a row that already existed. Price is part of that
-     * identity on purpose, so a changed price never averages into an old line. A
-     * configured or custom line always stands alone. The cart's `item_count` (the
-     * sum of QUANTITIES) and `subtotal` are recomputed before the answer, and
-     * `max_items_per_cart` / `max_quantity_per_line` are checked on the RESULT of
-     * the merge (422), so ten calls of one piece cannot walk past a limit one
-     * call of ten would hit.
+     * zero; everything else defaults. The line is priced in the CART's currency
+     * and stores none of its own, so a `currency` in the payload may only repeat
+     * the cart's — a different one is a 409. The one thing that surprises a
+     * caller: a plain product line with the same product/sku AND the same
+     * `unit_price` as a line already in the cart does not open a second row —
+     * its quantity is added to that line, and the 201 names a row that already
+     * existed. Price is part of that identity on purpose, so a changed price
+     * never averages into an old line. A configured or custom line always stands
+     * alone. The cart's `item_count` (the sum of QUANTITIES) and `subtotal` are
+     * recomputed before the answer, and `max_items_per_cart` /
+     * `max_quantity_per_line` are checked on the RESULT of the merge (422), so
+     * ten calls of one piece cannot walk past a limit one call of ten would hit.
      *
      * @param string $cartId
      * @param ?array $configuration

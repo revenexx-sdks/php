@@ -23,7 +23,6 @@ $result = $cartsItems->cartsItemsList(
     quantity: 100, // optional
     unit: 'pcs', // optional
     unitPrice: 0.12, // optional
-    currency: 'EUR', // optional
     taxRate: 19, // optional
     lineTotal: 12, // optional
     position: 0, // optional

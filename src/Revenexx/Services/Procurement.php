@@ -309,12 +309,11 @@ class Procurement extends Service
 
     /**
      * @param string $id
-     * @param ?string $by
      * @param ?string $reason
      * @throws RevenexxException
      * @return array
      */
-    public function procurementPendingApprovalsApprove(string $id, ?string $by = null, ?string $reason = null): array
+    public function procurementPendingApprovalsApprove(string $id, ?string $reason = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -324,7 +323,6 @@ class Procurement extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
-        $apiParams['by'] = $by;
         $apiParams['reason'] = $reason;
 
         $apiHeaders = [];
@@ -340,12 +338,11 @@ class Procurement extends Service
 
     /**
      * @param string $id
-     * @param ?string $by
      * @param ?string $reason
      * @throws RevenexxException
      * @return array
      */
-    public function procurementPendingApprovalsDecline(string $id, ?string $by = null, ?string $reason = null): array
+    public function procurementPendingApprovalsDecline(string $id, ?string $reason = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -355,7 +352,6 @@ class Procurement extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
-        $apiParams['by'] = $by;
         $apiParams['reason'] = $reason;
 
         $apiHeaders = [];
@@ -849,12 +845,11 @@ class Procurement extends Service
 
     /**
      * @param string $id
-     * @param ?string $by
      * @param ?string $reason
      * @throws RevenexxException
      * @return array
      */
-    public function procurementPurchaseRequestsApprove(string $id, ?string $by = null, ?string $reason = null): array
+    public function procurementPurchaseRequestsApprove(string $id, ?string $reason = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -864,7 +859,6 @@ class Procurement extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
-        $apiParams['by'] = $by;
         $apiParams['reason'] = $reason;
 
         $apiHeaders = [];
@@ -880,12 +874,11 @@ class Procurement extends Service
 
     /**
      * @param string $id
-     * @param ?string $by
      * @param ?string $reason
      * @throws RevenexxException
      * @return array
      */
-    public function procurementPurchaseRequestsCancel(string $id, ?string $by = null, ?string $reason = null): array
+    public function procurementPurchaseRequestsCancel(string $id, ?string $reason = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -895,7 +888,6 @@ class Procurement extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
-        $apiParams['by'] = $by;
         $apiParams['reason'] = $reason;
 
         $apiHeaders = [];

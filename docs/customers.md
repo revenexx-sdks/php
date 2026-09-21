@@ -2,6 +2,21 @@
 
 
 ```http request
+POST https://api.revenexx.com/v1/customers/auth/handoff
+```
+
+** The same token `POST /customers/auth/magic-link` mints, answered WITH its secret instead of mailed — for a buyer another system has already authenticated and who therefore has no mailbox to check and no link to click. Punchout is the caller it exists for: an ERP hands its user over, this app decides whether that buyer may sign in, and the secret is redeemed through `PUT /customers/auth/magic-link` exactly as a mailed one is. Which is also why the method checked is the magic-link one: a store with `login_magic_link` off cannot redeem what this mints. Nothing is delivered, no account is founded (an address nobody holds is a 404 here, not a registration) and no `contact_event` is written — signing in is mechanics, and this app keeps it off the event bus. Not callable from a browser or a storefront: `handoff_key` is an operations secret configured on the calling app, and a deployment that has none has this capability switched off. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| contact_id | string | The buyer to sign in, as this app knows them. Exactly one of this and `email` is sent — this one when the caller already resolved the external name to a contact. |  |
+| email | string | The buyer to sign in, by address, when the caller holds no contact id. Exactly one of this and `contact_id` is sent. An address nobody holds is a 404 — this route never registers. |  |
+| handoff_key | string | The operations secret that makes the caller a trusted in-cluster app. Configured on both functions; never a value a browser or a storefront holds. In the body rather than a header because the gateway forwards a fixed header set, the same reason session material travels this way. |  |
+
+
+```http request
 POST https://api.revenexx.com/v1/customers/auth/login
 ```
 
@@ -211,11 +226,12 @@ PUT https://api.revenexx.com/v1/customers/auth/verification
 POST https://api.revenexx.com/v1/customers/principal/resolve
 ```
 
-** The capability the API gateway calls to turn a caller&#039;s X-Revenexx-Principal assertion into the permission set it forwards to every other app as X-Revenexx-Permissions. This app is the platform&#039;s role provider (manifest#provides_roles), and this is the hot path of every attributed storefront request — one contact read plus the tenant&#039;s role map. A blocked or pending contact always resolves with active=false; what its `permissions` then say is the tenant&#039;s blocked_contact_behavior setting — &#039;keep&#039; (the default, the role&#039;s grants), &#039;catalog_only&#039; or &#039;deny_all&#039;. **
+** The capability the API gateway calls to turn whoever is acting into the permission set it forwards to every other app as X-Revenexx-Permissions. This app is the platform&#039;s role provider (manifest#provides_roles), and this is the hot path of every attributed request — one contact read plus the tenant&#039;s role map. Send EXACTLY ONE of two references. `contact_id` is the storefront plane: a BFF holding the tenant API key asserted a contact, and the gateway is resolving the assertion. `user_id` is the authenticated plane (RAD-12): the gateway verified a person&#039;s own Zitadel token and is resolving its subject against `contacts.external_user_id`, so the answer stands on a proven identity rather than a claimed one. The answer is the same shape either way — which plane a request came from is the gateway&#039;s business, not this app&#039;s. A blocked or pending contact always resolves with active=false; what its `permissions` then say is the tenant&#039;s blocked_contact_behavior setting — &#039;keep&#039; (the default, the role&#039;s grants), &#039;catalog_only&#039; or &#039;deny_all&#039;. **
 
 ### Parameters
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
-| contact_id | string | The contact the caller is acting for. |  |
+| contact_id | string | The contact the caller asserted it is acting for. |  |
+| user_id | string | The platform login the gateway authenticated, matched against `contacts.external_user_id` — the identity mirror this app maintains when it registers or invites a contact. Not a uuid: it is whatever the identity service issues as a subject. |  |
 

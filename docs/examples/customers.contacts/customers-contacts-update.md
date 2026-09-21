@@ -17,6 +17,7 @@ $customersContacts = new CustomersContacts($client);
 $result = $customersContacts->customersContactsUpdate(
     id: '',
     email: 'einkauf@example.com', // optional
+    externalId: 'ASP000047', // optional
     firstName: 'Anna', // optional
     isPrimary: true, // optional
     jobTitle: 'Einkaufsleitung', // optional

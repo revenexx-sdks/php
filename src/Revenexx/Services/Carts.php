@@ -153,14 +153,16 @@ class Carts extends Service
      * for a signed-in customer or `session_key` for a guest, never neither: that
      * is a database check on the table, and this route refuses it first with a
      * 400 so the caller gets a sentence rather than a constraint name. Everything
-     * else is defaulted: the name 'Cart', currency EUR, status 'active', both
-     * totals 0. No column of a cart is unique, so one owner may hold as many
-     * carts as they like — unless the tenant's `multi_cart_enabled` is off, in
-     * which case a second ACTIVE cart for the same owner answers 409 naming the
-     * cart that already exists, because a storefront that hit that wants to fill
-     * THAT cart. Send `is_current: true` to have the new cart made current in the
-     * same call, which clears the flag on every sibling of the same owner. Lines
-     * are added afterwards, one call each or one bulk replace.
+     * else is defaulted: the name 'Cart', status 'active', both totals 0, and the
+     * currency from the market's `default_currency` setting — resolved once and
+     * WRITTEN to the cart, so every amount the cart ever holds is read in the
+     * code it was opened in. No column of a cart is unique, so one owner may hold
+     * as many carts as they like — unless the tenant's `multi_cart_enabled` is
+     * off, in which case a second ACTIVE cart for the same owner answers 409
+     * naming the cart that already exists, because a storefront that hit that
+     * wants to fill THAT cart. Send `is_current: true` to have the new cart made
+     * current in the same call, which clears the flag on every sibling of the
+     * same owner. Lines are added afterwards, one call each or one bulk replace.
      *
      * @param ?string $channelId
      * @param ?string $contactId
@@ -296,9 +298,11 @@ class Carts extends Service
      * readable as the record of what went where. On the way in, a plain product
      * line with the same product/sku AND the same `unit_price` as a line already
      * in the target adds its quantity to that line; configured and custom lines
-     * always land as new ones. Both carts must be active and must differ, and the
-     * tenant's line limits are enforced on the target as the copies land (422).
-     * Reach for carts.merge_into where the caller holds one cart id and not two.
+     * always land as new ones. Both carts must be active, must differ and must be
+     * priced in the same currency — the lines carry their amounts across and
+     * nothing converts them (409) — and the tenant's line limits are enforced
+     * on the target as the copies land (422). Reach for carts.merge_into where
+     * the caller holds one cart id and not two.
      *
      * @param string $sourceCartId
      * @param string $targetCartId
@@ -494,6 +498,9 @@ class Carts extends Service
      * carrying none of the four answers 400 rather than storing nothing quietly,
      * so a caller never believes an ignored field was saved. The owner is not
      * updatable either: a guest cart becomes a customer's through carts.claim.
+     * One of the four has a guard behind it: `currency` re-denominates every
+     * amount in the cart, lines included, so it is accepted only while the cart
+     * holds no money and answers 409 once it does.
      *
      * @param string $id
      * @param ?string $channelId
@@ -514,7 +521,10 @@ class Carts extends Service
         $apiParams = [];
         $apiParams['id'] = $id;
         $apiParams['channel_id'] = $channelId;
-        $apiParams['currency'] = $currency;
+
+        if (!is_null($currency)) {
+            $apiParams['currency'] = $currency;
+        }
         $apiParams['metadata'] = $metadata;
 
         if (!is_null($name)) {
@@ -613,7 +623,8 @@ class Carts extends Service
      * survives, and the path cart is closed with status 'merged' and
      * `merged_into_cart_id` pointing at it. Getting the two the wrong way round
      * is the mistake this route exists to make hard, so read the path id as "the
-     * cart I am giving away". Both carts must be active and must differ.
+     * cart I am giving away". Both carts must be active, must differ and must be
+     * priced in the same currency.
      *
      * @param string $id
      * @param string $targetCartId
