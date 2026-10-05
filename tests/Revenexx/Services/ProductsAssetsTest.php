@@ -6,7 +6,7 @@ use Revenexx\Client;
 use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
-use Revenexx\Enums\ProductsAssetsListSource;
+use Revenexx\Enums\DocumentsDocumentsListSource;
 use Revenexx\Enums\AssetsSource;
 
 final class ProductsAssetsTest extends TestCase {

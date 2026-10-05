@@ -7,7 +7,7 @@ use Revenexx\Client;
 use Revenexx\Service;
 use Revenexx\InputFile;
 use Revenexx\Enums\EntityType;
-use Revenexx\Enums\Kind;
+use Revenexx\Enums\ProductsListKind;
 
 class ProductsDataModel extends Service
 {
@@ -306,10 +306,11 @@ class ProductsDataModel extends Service
      * @param ?bool $isQuantified
      * @param ?string $labels
      * @param ?string $createdAt
+     * @param ?string $updatedAt
      * @throws RevenexxException
      * @return array
      */
-    public function productsAssociationTypesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?bool $isTwoWay = null, ?bool $isQuantified = null, ?string $labels = null, ?string $createdAt = null): array
+    public function productsAssociationTypesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?bool $isTwoWay = null, ?bool $isQuantified = null, ?string $labels = null, ?string $createdAt = null, ?string $updatedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -353,6 +354,10 @@ class ProductsDataModel extends Service
 
         if (!is_null($createdAt)) {
             $apiParams['created_at'] = $createdAt;
+        }
+
+        if (!is_null($updatedAt)) {
+            $apiParams['updated_at'] = $updatedAt;
         }
 
         $apiHeaders = [];
@@ -578,11 +583,11 @@ class ProductsDataModel extends Service
      * @param ?string $entityRef
      * @param ?string $locale
      * @param ?string $channel
-     * @param ?Kind $kind
+     * @param ?ProductsListKind $kind
      * @throws RevenexxException
      * @return array
      */
-    public function productsAttributeSchema(?string $familyId = null, ?string $familyCode = null, ?EntityType $entityType = null, ?string $entityRef = null, ?string $locale = null, ?string $channel = null, ?Kind $kind = null): array
+    public function productsAttributeSchema(?string $familyId = null, ?string $familyCode = null, ?EntityType $entityType = null, ?string $entityRef = null, ?string $locale = null, ?string $channel = null, ?ProductsListKind $kind = null): array
     {
         $apiPath = str_replace(
             [],
@@ -658,12 +663,17 @@ class ProductsDataModel extends Service
      * @param ?string $code
      * @param ?int $position
      * @param ?string $labels
+     * @param ?string $externalId
+     * @param ?string $externalRefs
+     * @param ?string $sourceSyncedAt
+     * @param ?string $sourceData
+     * @param ?string $metadata
      * @param ?string $createdAt
      * @param ?string $updatedAt
      * @throws RevenexxException
      * @return array
      */
-    public function productsAttributeGroupsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?int $position = null, ?string $labels = null, ?string $createdAt = null, ?string $updatedAt = null): array
+    public function productsAttributeGroupsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?int $position = null, ?string $labels = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $metadata = null, ?string $createdAt = null, ?string $updatedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -699,6 +709,26 @@ class ProductsDataModel extends Service
 
         if (!is_null($labels)) {
             $apiParams['labels'] = $labels;
+        }
+
+        if (!is_null($externalId)) {
+            $apiParams['external_id'] = $externalId;
+        }
+
+        if (!is_null($externalRefs)) {
+            $apiParams['external_refs'] = $externalRefs;
+        }
+
+        if (!is_null($sourceSyncedAt)) {
+            $apiParams['source_synced_at'] = $sourceSyncedAt;
+        }
+
+        if (!is_null($sourceData)) {
+            $apiParams['source_data'] = $sourceData;
+        }
+
+        if (!is_null($metadata)) {
+            $apiParams['metadata'] = $metadata;
         }
 
         if (!is_null($createdAt)) {
@@ -737,12 +767,17 @@ class ProductsDataModel extends Service
      * answers 409.
      *
      * @param string $code
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?array $labels
+     * @param ?array $metadata
      * @param ?int $position
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @throws RevenexxException
      * @return array
      */
-    public function productsAttributeGroupsCreate(string $code, ?array $labels = null, ?int $position = null): array
+    public function productsAttributeGroupsCreate(string $code, ?string $externalId = null, ?array $externalRefs = null, ?array $labels = null, ?array $metadata = null, ?int $position = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -752,11 +787,16 @@ class ProductsDataModel extends Service
 
         $apiParams = [];
         $apiParams['code'] = $code;
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
         $apiParams['labels'] = $labels;
+        $apiParams['metadata'] = $metadata;
 
         if (!is_null($position)) {
             $apiParams['position'] = $position;
         }
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -871,12 +911,17 @@ class ProductsDataModel extends Service
      *
      * @param string $id
      * @param ?string $code
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?array $labels
+     * @param ?array $metadata
      * @param ?int $position
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @throws RevenexxException
      * @return array
      */
-    public function productsAttributeGroupsUpdate(string $id, ?string $code = null, ?array $labels = null, ?int $position = null): array
+    public function productsAttributeGroupsUpdate(string $id, ?string $code = null, ?string $externalId = null, ?array $externalRefs = null, ?array $labels = null, ?array $metadata = null, ?int $position = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -890,11 +935,16 @@ class ProductsDataModel extends Service
         if (!is_null($code)) {
             $apiParams['code'] = $code;
         }
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
         $apiParams['labels'] = $labels;
+        $apiParams['metadata'] = $metadata;
 
         if (!is_null($position)) {
             $apiParams['position'] = $position;
         }
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -936,11 +986,17 @@ class ProductsDataModel extends Service
      * @param ?int $position
      * @param ?string $swatch
      * @param ?string $labels
+     * @param ?string $externalId
+     * @param ?string $externalRefs
+     * @param ?string $sourceSyncedAt
+     * @param ?string $sourceData
+     * @param ?string $metadata
      * @param ?string $createdAt
+     * @param ?string $updatedAt
      * @throws RevenexxException
      * @return array
      */
-    public function productsAttributeOptionsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $attributeId = null, ?string $code = null, ?int $position = null, ?string $swatch = null, ?string $labels = null, ?string $createdAt = null): array
+    public function productsAttributeOptionsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $attributeId = null, ?string $code = null, ?int $position = null, ?string $swatch = null, ?string $labels = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $metadata = null, ?string $createdAt = null, ?string $updatedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -986,8 +1042,32 @@ class ProductsDataModel extends Service
             $apiParams['labels'] = $labels;
         }
 
+        if (!is_null($externalId)) {
+            $apiParams['external_id'] = $externalId;
+        }
+
+        if (!is_null($externalRefs)) {
+            $apiParams['external_refs'] = $externalRefs;
+        }
+
+        if (!is_null($sourceSyncedAt)) {
+            $apiParams['source_synced_at'] = $sourceSyncedAt;
+        }
+
+        if (!is_null($sourceData)) {
+            $apiParams['source_data'] = $sourceData;
+        }
+
+        if (!is_null($metadata)) {
+            $apiParams['metadata'] = $metadata;
+        }
+
         if (!is_null($createdAt)) {
             $apiParams['created_at'] = $createdAt;
+        }
+
+        if (!is_null($updatedAt)) {
+            $apiParams['updated_at'] = $updatedAt;
         }
 
         $apiHeaders = [];
@@ -1018,13 +1098,18 @@ class ProductsDataModel extends Service
      *
      * @param string $attributeId
      * @param string $code
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?array $labels
+     * @param ?array $metadata
      * @param ?int $position
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @param ?array $swatch
      * @throws RevenexxException
      * @return array
      */
-    public function productsAttributeOptionsCreate(string $attributeId, string $code, ?array $labels = null, ?int $position = null, ?array $swatch = null): array
+    public function productsAttributeOptionsCreate(string $attributeId, string $code, ?string $externalId = null, ?array $externalRefs = null, ?array $labels = null, ?array $metadata = null, ?int $position = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?array $swatch = null): array
     {
         $apiPath = str_replace(
             [],
@@ -1035,11 +1120,16 @@ class ProductsDataModel extends Service
         $apiParams = [];
         $apiParams['attribute_id'] = $attributeId;
         $apiParams['code'] = $code;
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
         $apiParams['labels'] = $labels;
+        $apiParams['metadata'] = $metadata;
 
         if (!is_null($position)) {
             $apiParams['position'] = $position;
         }
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
         $apiParams['swatch'] = $swatch;
 
         $apiHeaders = [];
@@ -1153,13 +1243,18 @@ class ProductsDataModel extends Service
      * @param string $id
      * @param ?string $attributeId
      * @param ?string $code
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?array $labels
+     * @param ?array $metadata
      * @param ?int $position
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @param ?array $swatch
      * @throws RevenexxException
      * @return array
      */
-    public function productsAttributeOptionsUpdate(string $id, ?string $attributeId = null, ?string $code = null, ?array $labels = null, ?int $position = null, ?array $swatch = null): array
+    public function productsAttributeOptionsUpdate(string $id, ?string $attributeId = null, ?string $code = null, ?string $externalId = null, ?array $externalRefs = null, ?array $labels = null, ?array $metadata = null, ?int $position = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?array $swatch = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -1177,11 +1272,16 @@ class ProductsDataModel extends Service
         if (!is_null($code)) {
             $apiParams['code'] = $code;
         }
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
         $apiParams['labels'] = $labels;
+        $apiParams['metadata'] = $metadata;
 
         if (!is_null($position)) {
             $apiParams['position'] = $position;
         }
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
         $apiParams['swatch'] = $swatch;
 
         $apiHeaders = [];
@@ -1235,12 +1335,17 @@ class ProductsDataModel extends Service
      * @param ?string $config
      * @param ?string $labels
      * @param ?int $position
+     * @param ?string $externalId
+     * @param ?string $externalRefs
+     * @param ?string $sourceSyncedAt
+     * @param ?string $sourceData
+     * @param ?string $metadata
      * @param ?string $createdAt
      * @param ?string $updatedAt
      * @throws RevenexxException
      * @return array
      */
-    public function productsAttributesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?string $entityType = null, ?string $entityRef = null, ?string $type = null, ?string $groupId = null, ?bool $localizable = null, ?bool $scopable = null, ?bool $isUnique = null, ?bool $isFilterable = null, ?bool $usableInGrid = null, ?string $validation = null, ?string $config = null, ?string $labels = null, ?int $position = null, ?string $createdAt = null, ?string $updatedAt = null): array
+    public function productsAttributesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?string $entityType = null, ?string $entityRef = null, ?string $type = null, ?string $groupId = null, ?bool $localizable = null, ?bool $scopable = null, ?bool $isUnique = null, ?bool $isFilterable = null, ?bool $usableInGrid = null, ?string $validation = null, ?string $config = null, ?string $labels = null, ?int $position = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $metadata = null, ?string $createdAt = null, ?string $updatedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -1322,6 +1427,26 @@ class ProductsDataModel extends Service
             $apiParams['position'] = $position;
         }
 
+        if (!is_null($externalId)) {
+            $apiParams['external_id'] = $externalId;
+        }
+
+        if (!is_null($externalRefs)) {
+            $apiParams['external_refs'] = $externalRefs;
+        }
+
+        if (!is_null($sourceSyncedAt)) {
+            $apiParams['source_synced_at'] = $sourceSyncedAt;
+        }
+
+        if (!is_null($sourceData)) {
+            $apiParams['source_data'] = $sourceData;
+        }
+
+        if (!is_null($metadata)) {
+            $apiParams['metadata'] = $metadata;
+        }
+
         if (!is_null($createdAt)) {
             $apiParams['created_at'] = $createdAt;
         }
@@ -1363,19 +1488,24 @@ class ProductsDataModel extends Service
      * @param ?array $config
      * @param ?string $entityRef
      * @param ?string $entityType
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?string $groupId
      * @param ?bool $isFilterable
      * @param ?bool $isUnique
      * @param ?array $labels
      * @param ?bool $localizable
+     * @param ?array $metadata
      * @param ?int $position
      * @param ?bool $scopable
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @param ?bool $usableInGrid
      * @param ?array $validation
      * @throws RevenexxException
      * @return array
      */
-    public function productsAttributesCreate(string $code, string $type, ?array $config = null, ?string $entityRef = null, ?string $entityType = null, ?string $groupId = null, ?bool $isFilterable = null, ?bool $isUnique = null, ?array $labels = null, ?bool $localizable = null, ?int $position = null, ?bool $scopable = null, ?bool $usableInGrid = null, ?array $validation = null): array
+    public function productsAttributesCreate(string $code, string $type, ?array $config = null, ?string $entityRef = null, ?string $entityType = null, ?string $externalId = null, ?array $externalRefs = null, ?string $groupId = null, ?bool $isFilterable = null, ?bool $isUnique = null, ?array $labels = null, ?bool $localizable = null, ?array $metadata = null, ?int $position = null, ?bool $scopable = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?bool $usableInGrid = null, ?array $validation = null): array
     {
         $apiPath = str_replace(
             [],
@@ -1392,6 +1522,8 @@ class ProductsDataModel extends Service
         if (!is_null($entityType)) {
             $apiParams['entity_type'] = $entityType;
         }
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
         $apiParams['group_id'] = $groupId;
 
         if (!is_null($isFilterable)) {
@@ -1406,6 +1538,7 @@ class ProductsDataModel extends Service
         if (!is_null($localizable)) {
             $apiParams['localizable'] = $localizable;
         }
+        $apiParams['metadata'] = $metadata;
 
         if (!is_null($position)) {
             $apiParams['position'] = $position;
@@ -1414,6 +1547,8 @@ class ProductsDataModel extends Service
         if (!is_null($scopable)) {
             $apiParams['scopable'] = $scopable;
         }
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
 
         if (!is_null($usableInGrid)) {
             $apiParams['usable_in_grid'] = $usableInGrid;
@@ -1538,20 +1673,25 @@ class ProductsDataModel extends Service
      * @param ?array $config
      * @param ?string $entityRef
      * @param ?string $entityType
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?string $groupId
      * @param ?bool $isFilterable
      * @param ?bool $isUnique
      * @param ?array $labels
      * @param ?bool $localizable
+     * @param ?array $metadata
      * @param ?int $position
      * @param ?bool $scopable
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @param ?string $type
      * @param ?bool $usableInGrid
      * @param ?array $validation
      * @throws RevenexxException
      * @return array
      */
-    public function productsAttributesUpdate(string $id, ?string $code = null, ?array $config = null, ?string $entityRef = null, ?string $entityType = null, ?string $groupId = null, ?bool $isFilterable = null, ?bool $isUnique = null, ?array $labels = null, ?bool $localizable = null, ?int $position = null, ?bool $scopable = null, ?string $type = null, ?bool $usableInGrid = null, ?array $validation = null): array
+    public function productsAttributesUpdate(string $id, ?string $code = null, ?array $config = null, ?string $entityRef = null, ?string $entityType = null, ?string $externalId = null, ?array $externalRefs = null, ?string $groupId = null, ?bool $isFilterable = null, ?bool $isUnique = null, ?array $labels = null, ?bool $localizable = null, ?array $metadata = null, ?int $position = null, ?bool $scopable = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $type = null, ?bool $usableInGrid = null, ?array $validation = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -1571,6 +1711,8 @@ class ProductsDataModel extends Service
         if (!is_null($entityType)) {
             $apiParams['entity_type'] = $entityType;
         }
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
         $apiParams['group_id'] = $groupId;
 
         if (!is_null($isFilterable)) {
@@ -1585,6 +1727,7 @@ class ProductsDataModel extends Service
         if (!is_null($localizable)) {
             $apiParams['localizable'] = $localizable;
         }
+        $apiParams['metadata'] = $metadata;
 
         if (!is_null($position)) {
             $apiParams['position'] = $position;
@@ -1593,6 +1736,8 @@ class ProductsDataModel extends Service
         if (!is_null($scopable)) {
             $apiParams['scopable'] = $scopable;
         }
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
 
         if (!is_null($type)) {
             $apiParams['type'] = $type;
@@ -1642,12 +1787,17 @@ class ProductsDataModel extends Service
      * @param ?string $labelAttribute
      * @param ?string $imageAttribute
      * @param ?string $labels
+     * @param ?string $externalId
+     * @param ?string $externalRefs
+     * @param ?string $sourceSyncedAt
+     * @param ?string $sourceData
+     * @param ?string $metadata
      * @param ?string $createdAt
      * @param ?string $updatedAt
      * @throws RevenexxException
      * @return array
      */
-    public function productsFamiliesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?string $labelAttribute = null, ?string $imageAttribute = null, ?string $labels = null, ?string $createdAt = null, ?string $updatedAt = null): array
+    public function productsFamiliesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?string $labelAttribute = null, ?string $imageAttribute = null, ?string $labels = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $metadata = null, ?string $createdAt = null, ?string $updatedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -1689,6 +1839,26 @@ class ProductsDataModel extends Service
             $apiParams['labels'] = $labels;
         }
 
+        if (!is_null($externalId)) {
+            $apiParams['external_id'] = $externalId;
+        }
+
+        if (!is_null($externalRefs)) {
+            $apiParams['external_refs'] = $externalRefs;
+        }
+
+        if (!is_null($sourceSyncedAt)) {
+            $apiParams['source_synced_at'] = $sourceSyncedAt;
+        }
+
+        if (!is_null($sourceData)) {
+            $apiParams['source_data'] = $sourceData;
+        }
+
+        if (!is_null($metadata)) {
+            $apiParams['metadata'] = $metadata;
+        }
+
         if (!is_null($createdAt)) {
             $apiParams['created_at'] = $createdAt;
         }
@@ -1725,13 +1895,18 @@ class ProductsDataModel extends Service
      * answers 409.
      *
      * @param string $code
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?string $imageAttribute
      * @param ?string $labelAttribute
      * @param ?array $labels
+     * @param ?array $metadata
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @throws RevenexxException
      * @return array
      */
-    public function productsFamiliesCreate(string $code, ?string $imageAttribute = null, ?string $labelAttribute = null, ?array $labels = null): array
+    public function productsFamiliesCreate(string $code, ?string $externalId = null, ?array $externalRefs = null, ?string $imageAttribute = null, ?string $labelAttribute = null, ?array $labels = null, ?array $metadata = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -1741,9 +1916,14 @@ class ProductsDataModel extends Service
 
         $apiParams = [];
         $apiParams['code'] = $code;
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
         $apiParams['image_attribute'] = $imageAttribute;
         $apiParams['label_attribute'] = $labelAttribute;
         $apiParams['labels'] = $labels;
+        $apiParams['metadata'] = $metadata;
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -1859,13 +2039,18 @@ class ProductsDataModel extends Service
      *
      * @param string $id
      * @param ?string $code
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?string $imageAttribute
      * @param ?string $labelAttribute
      * @param ?array $labels
+     * @param ?array $metadata
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @throws RevenexxException
      * @return array
      */
-    public function productsFamiliesUpdate(string $id, ?string $code = null, ?string $imageAttribute = null, ?string $labelAttribute = null, ?array $labels = null): array
+    public function productsFamiliesUpdate(string $id, ?string $code = null, ?string $externalId = null, ?array $externalRefs = null, ?string $imageAttribute = null, ?string $labelAttribute = null, ?array $labels = null, ?array $metadata = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -1879,9 +2064,14 @@ class ProductsDataModel extends Service
         if (!is_null($code)) {
             $apiParams['code'] = $code;
         }
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
         $apiParams['image_attribute'] = $imageAttribute;
         $apiParams['label_attribute'] = $labelAttribute;
         $apiParams['labels'] = $labels;
+        $apiParams['metadata'] = $metadata;
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -1924,10 +2114,11 @@ class ProductsDataModel extends Service
      * @param ?bool $isRequired
      * @param ?string $requiredChannels
      * @param ?string $createdAt
+     * @param ?string $updatedAt
      * @throws RevenexxException
      * @return array
      */
-    public function productsFamilyAttributesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $familyId = null, ?string $attributeId = null, ?int $position = null, ?bool $isRequired = null, ?string $requiredChannels = null, ?string $createdAt = null): array
+    public function productsFamilyAttributesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $familyId = null, ?string $attributeId = null, ?int $position = null, ?bool $isRequired = null, ?string $requiredChannels = null, ?string $createdAt = null, ?string $updatedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -1975,6 +2166,10 @@ class ProductsDataModel extends Service
 
         if (!is_null($createdAt)) {
             $apiParams['created_at'] = $createdAt;
+        }
+
+        if (!is_null($updatedAt)) {
+            $apiParams['updated_at'] = $updatedAt;
         }
 
         $apiHeaders = [];
@@ -2217,12 +2412,17 @@ class ProductsDataModel extends Service
      * @param ?string $code
      * @param ?string $labels
      * @param ?string $axes
+     * @param ?string $externalId
+     * @param ?string $externalRefs
+     * @param ?string $sourceSyncedAt
+     * @param ?string $sourceData
+     * @param ?string $metadata
      * @param ?string $createdAt
      * @param ?string $updatedAt
      * @throws RevenexxException
      * @return array
      */
-    public function productsFamilyVariantsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $familyId = null, ?string $code = null, ?string $labels = null, ?string $axes = null, ?string $createdAt = null, ?string $updatedAt = null): array
+    public function productsFamilyVariantsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $familyId = null, ?string $code = null, ?string $labels = null, ?string $axes = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $metadata = null, ?string $createdAt = null, ?string $updatedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -2264,6 +2464,26 @@ class ProductsDataModel extends Service
             $apiParams['axes'] = $axes;
         }
 
+        if (!is_null($externalId)) {
+            $apiParams['external_id'] = $externalId;
+        }
+
+        if (!is_null($externalRefs)) {
+            $apiParams['external_refs'] = $externalRefs;
+        }
+
+        if (!is_null($sourceSyncedAt)) {
+            $apiParams['source_synced_at'] = $sourceSyncedAt;
+        }
+
+        if (!is_null($sourceData)) {
+            $apiParams['source_data'] = $sourceData;
+        }
+
+        if (!is_null($metadata)) {
+            $apiParams['metadata'] = $metadata;
+        }
+
         if (!is_null($createdAt)) {
             $apiParams['created_at'] = $createdAt;
         }
@@ -2302,11 +2522,16 @@ class ProductsDataModel extends Service
      * @param string $code
      * @param string $familyId
      * @param ?array $axes
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?array $labels
+     * @param ?array $metadata
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @throws RevenexxException
      * @return array
      */
-    public function productsFamilyVariantsCreate(string $code, string $familyId, ?array $axes = null, ?array $labels = null): array
+    public function productsFamilyVariantsCreate(string $code, string $familyId, ?array $axes = null, ?string $externalId = null, ?array $externalRefs = null, ?array $labels = null, ?array $metadata = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -2318,7 +2543,12 @@ class ProductsDataModel extends Service
         $apiParams['code'] = $code;
         $apiParams['family_id'] = $familyId;
         $apiParams['axes'] = $axes;
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
         $apiParams['labels'] = $labels;
+        $apiParams['metadata'] = $metadata;
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -2434,12 +2664,17 @@ class ProductsDataModel extends Service
      * @param string $id
      * @param ?array $axes
      * @param ?string $code
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?string $familyId
      * @param ?array $labels
+     * @param ?array $metadata
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @throws RevenexxException
      * @return array
      */
-    public function productsFamilyVariantsUpdate(string $id, ?array $axes = null, ?string $code = null, ?string $familyId = null, ?array $labels = null): array
+    public function productsFamilyVariantsUpdate(string $id, ?array $axes = null, ?string $code = null, ?string $externalId = null, ?array $externalRefs = null, ?string $familyId = null, ?array $labels = null, ?array $metadata = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -2454,11 +2689,16 @@ class ProductsDataModel extends Service
         if (!is_null($code)) {
             $apiParams['code'] = $code;
         }
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
 
         if (!is_null($familyId)) {
             $apiParams['family_id'] = $familyId;
         }
         $apiParams['labels'] = $labels;
+        $apiParams['metadata'] = $metadata;
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';

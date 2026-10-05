@@ -6,8 +6,10 @@ use Revenexx\Client;
 use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
+use Revenexx\Enums\BudgetType;
 use Revenexx\Enums\Conditions;
 use Revenexx\Enums\CostCentersRestrictionsCreateType;
+use Revenexx\Enums\CostCentersVocabularyName;
 
 final class CostCentersTest extends TestCase {
     private $client;
@@ -146,8 +148,7 @@ final class CostCentersTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->costCenters->costCentersCommit(
-            array(),
-            ""
+            array()
         );
 
         $this->assertSame($data, $response);
@@ -348,6 +349,22 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodCostCentersRelease(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->costCenters->costCentersRelease(
+            "",
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodCostCentersReserve(): void {
 
         $data = array();
@@ -357,8 +374,7 @@ final class CostCentersTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->costCenters->costCentersReserve(
-            array(),
-            ""
+            array()
         );
 
         $this->assertSame($data, $response);
@@ -466,6 +482,35 @@ final class CostCentersTest extends TestCase {
 
         $response = $this->costCenters->costCentersUsable(
             array()
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCostCentersVocabularies(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->costCenters->costCentersVocabularies(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCostCentersVocabulary(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->costCenters->costCentersVocabulary(
+            CostCentersVocabularyName::BUDGETCHANGEREASONS()
         );
 
         $this->assertSame($data, $response);

@@ -12,12 +12,12 @@ GET https://api.revenexx.com/v1/markets
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | Exact match on `id`. Primary key. Note that OTHER apps do not store this: the market scope dimension is keyed on `code` (manifest `provides_scopes.slug_source = markets.code`), so a row elsewhere that is "in this market" carries the code, not this uuid. It is the item routes and /context that want this value. |  |
-| code | string | Exact match on `code`. Market code, unique per tenant, and the single most load-bearing string in this app: it IS the market scope slug. The Entity Scoping Engine publishes it as the `market` dimension (`scope_context.market` in the JWT), and every other commerce app — products, prices, orders, customers — stores THIS value to say which market a row belongs to. Renaming it re-keys that scope for everyone, so treat it as permanent. Accepted in place of the uuid on /readiness, /clone, /backfill and /make-default — but not on the item routes or /context, which take a uuid only. |  |
+| code | string | Exact match on `code`. Market code, unique per tenant, and the single most load-bearing string in this app: it IS the market scope slug. The Entity Scoping Engine publishes it as the `market` dimension (`scope_context.market` in the JWT), and every other commerce app — products, prices, orders, customers — stores THIS value to say which market a row belongs to. Renaming it would re-key that scope for everyone, so it is fixed once the market exists (an update that changes it is a 409). Accepted in place of the uuid on /readiness, /clone, /backfill and /make-default — but not on the item routes or /context, which take a uuid only. |  |
 | name | string | Exact match on `name`. Display name, in the operator's own language. Cockpit copy only — nothing resolves a market by it. |  |
 | labels | string | Exact match on `labels`. Exact whole-document equality on the jsonb: the value is a whole JSON document and has to match every key, so this is not a path or a containment query. Key order and whitespace are irrelevant — the comparison is semantic. A value that does not parse as JSON is refused with 400 `invalid_value` rather than answered with zero rows. Localized display names for storefronts, keyed by locale: a flat {locale: label} map, one level deep, string values. WHICH key to write is not free — GET /markets/{id}/context returns `locale_policy`, whose `write` is the key this tenant keys by (a full locale under regional granularity, a bare language under language granularity) and whose `read` is the order to try. Null means nothing is translated and `name` is all there is. |  |
 | currency | string | Exact match on `currency`. Base currency this market quotes in — ISO 4217, and schema.json's own default is 'EUR'. This is the single currency prices are STATED in; the currencies collection under the market is the wider set it accepts. A base currency missing from that collection is a blocking readiness failure. |  |
 | status | string | Exact match on `status`. Default 'active'. Only an active market serves a storefront; 'inactive' keeps the market and all its configuration but takes it out of service. Readiness reports an active market that cannot trade as `serving: true, ready: false` — live and broken. |  |
-| is_default | boolean | Exact match on `is_default`. The tenant default market — what a call naming no market falls back to. Exactly one market holds it; move it with POST /markets/{id}/make-default rather than by writing this flag, which does not demote the market that currently holds it. |  |
+| is_default | boolean | Exact match on `is_default`. The tenant default market — what a call naming no market falls back to. Exactly one market holds it, and it is moved only with POST /markets/{id}/make-default: a create may set it only while the tenant has none, and an update cannot change it. |  |
 | position | integer | Exact match on `position`. Sort position among the tenant's markets, ascending, default 0. Presentation only — it decides the order the Cockpit and a market picker list them in, and nothing resolves a market by it. |  |
 | created_at | string | Exact match on `created_at`. When the market row was inserted. Set by the database; never writable. |  |
 | updated_at | string | Exact match on `updated_at`. When the market row was last written. Set by the database on every update; never writable. |  |
@@ -30,15 +30,15 @@ GET https://api.revenexx.com/v1/markets
 POST https://api.revenexx.com/v1/markets
 ```
 
-** A market needs a &#039;code&#039; and a &#039;name&#039; — currency defaults to EUR, status to active. To get a market that can actually trade, clone an existing one instead: POST /markets/{id}/clone. **
+** A market needs a 'code' and a 'name' — currency defaults to EUR, status to active. To get a market that can actually trade, clone an existing one instead: POST /markets/{id}/clone. **
 
 ### Parameters
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
-| code | string | Market code, unique per tenant, and the single most load-bearing string in this app: it IS the market scope slug. The Entity Scoping Engine publishes it as the `market` dimension (`scope_context.market` in the JWT), and every other commerce app — products, prices, orders, customers — stores THIS value to say which market a row belongs to. Renaming it re-keys that scope for everyone, so treat it as permanent. Accepted in place of the uuid on /readiness, /clone, /backfill and /make-default — but not on the item routes or /context, which take a uuid only. |  |
-| currency | string | Base currency this market quotes in — ISO 4217, and schema.json's own default is 'EUR'. This is the single currency prices are STATED in; the currencies collection under the market is the wider set it accepts. A base currency missing from that collection is a blocking readiness failure. |  |
-| is_default | boolean | The tenant default market — what a call naming no market falls back to. Exactly one market holds it; move it with POST /markets/{id}/make-default rather than by writing this flag, which does not demote the market that currently holds it. |  |
+| code | string | Market code — the market scope slug every other app stores. Lowercase letters, digits and underscores, starting with a letter, at most 63 characters (400 `invalid_market_code`). Fixed once the market exists: an update that changes it is refused with 409 `code_immutable`; the same value sent back is accepted and ignored. |  |
+| currency | string | Base currency, upper-case ISO 4217 (400 `invalid_currency` otherwise — it is not uppercased for you). Defaults to EUR. |  |
+| is_default | boolean | The tenant default flag. On a create, `true` is accepted only while the tenant has no default market (409 `default_exists` otherwise). On an update it cannot change — move it with POST /markets/{id}/make-default (400 `default_via_make_default`); the current value sent back is accepted and ignored. |  |
 | labels | object | Localized display names for storefronts, keyed by locale: a flat {locale: label} map, one level deep, string values. WHICH key to write is not free — GET /markets/{id}/context returns `locale_policy`, whose `write` is the key this tenant keys by (a full locale under regional granularity, a bare language under language granularity) and whose `read` is the order to try. Null means nothing is translated and `name` is all there is. |  |
 | name | string | Display name, in the operator's own language. Cockpit copy only — nothing resolves a market by it. |  |
 | position | integer | Sort position among the tenant's markets, ascending, default 0. Presentation only — it decides the order the Cockpit and a market picker list them in, and nothing resolves a market by it. |  |
@@ -49,21 +49,21 @@ POST https://api.revenexx.com/v1/markets
 GET https://api.revenexx.com/v1/markets/locale-policy
 ```
 
-** How this tenant keys its translations, resolved for a surface that stands in no market at all. The Cockpit edits a tenant BASELINE when no market is selected, and a baseline value has to be readable by every market — so the locale set answered here is the UNION of every market&#039;s locales, each one already resolved to the key it is written under, not one market&#039;s list and not a pair of setting names to re-implement. Each entry names the markets that asked for that locale: an editor listing six inputs without saying who needs them invites translations nobody will ever read. Write/read keys follow the same two settings as the per-market answer, so a baseline and a market value can never be keyed differently. **
+** How this tenant keys its translations, resolved for a surface that stands in no market at all. The Cockpit edits a tenant BASELINE when no market is selected, and a baseline value has to be readable by every market — so the locale set answered here is the UNION of every market's locales, each one already resolved to the key it is written under, not one market's list and not a pair of setting names to re-implement. Each entry names the markets that asked for that locale: an editor listing six inputs without saying who needs them invites translations nobody will ever read. Write/read keys follow the same two settings as the per-market answer, so a baseline and a market value can never be keyed differently. **
 
 
 ```http request
 GET https://api.revenexx.com/v1/markets/vocabularies
 ```
 
-** Every closed value set this app owns, listed by name with its title and its description but WITHOUT its values — enough to build a menu of them, and a name to fetch one by when a select box actually needs the values. Static per app version; nothing about a tenant changes it. It reads no table and takes no parameter, so 200 is the only answer it has beyond the gateway&#039;s own. **
+** Every closed value set this app owns, listed by name with its title and its description but WITHOUT its values — enough to build a menu of them, and a name to fetch one by when a select box actually needs the values. Static per app version; nothing about a tenant changes it. It reads no table and takes no parameter, so 200 is the only answer it has beyond the gateway's own. **
 
 
 ```http request
 GET https://api.revenexx.com/v1/markets/vocabularies/{name}
 ```
 
-** One value set in full: every value the column may hold, in the order it may hold them, with the copy and the badge tone a client renders each one as. The values are not kept in a list beside the database, they are parsed out of the CHECK constraint in this app&#039;s own schema.json — so the set served here IS the set enforced on a write, and a select box built from it cannot offer a value the write would then refuse. A name outside the declared enum is a 404 rather than an empty list — an empty vocabulary and an unknown one mean different things to a select box. **
+** One value set in full: every value the column may hold, in the order it may hold them, with the copy and the badge tone a client renders each one as. The values are not kept in a list beside the database, they are parsed out of the CHECK constraint in this app's own schema.json — so the set served here IS the set enforced on a write, and a select box built from it cannot offer a value the write would then refuse. A name outside the declared enum is a 404 rather than an empty list — an empty vocabulary and an unknown one mean different things to a select box. **
 
 ### Parameters
 
@@ -76,7 +76,7 @@ GET https://api.revenexx.com/v1/markets/vocabularies/{name}
 DELETE https://api.revenexx.com/v1/markets/{id}
 ```
 
-** Deleting a market takes its locales, currencies and tax classes with it: all three carry an ON DELETE CASCADE onto markets.id, so this is never refused for having children. **
+** Deleting a market takes its locales, currencies and tax classes with it: all three carry an ON DELETE CASCADE onto markets.id, so this is never refused for having children. The tenant's default market is not deleted (409 `default_market`) — move the flag first. **
 
 ### Parameters
 
@@ -109,9 +109,9 @@ PUT https://api.revenexx.com/v1/markets/{id}
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The market, by its primary key. A uuid — this route does not resolve a market code, so a segment that will not cast is a 400 before any row is read. |  |
-| code | string | Market code, unique per tenant, and the single most load-bearing string in this app: it IS the market scope slug. The Entity Scoping Engine publishes it as the `market` dimension (`scope_context.market` in the JWT), and every other commerce app — products, prices, orders, customers — stores THIS value to say which market a row belongs to. Renaming it re-keys that scope for everyone, so treat it as permanent. Accepted in place of the uuid on /readiness, /clone, /backfill and /make-default — but not on the item routes or /context, which take a uuid only. |  |
-| currency | string | Base currency this market quotes in — ISO 4217, and schema.json's own default is 'EUR'. This is the single currency prices are STATED in; the currencies collection under the market is the wider set it accepts. A base currency missing from that collection is a blocking readiness failure. |  |
-| is_default | boolean | The tenant default market — what a call naming no market falls back to. Exactly one market holds it; move it with POST /markets/{id}/make-default rather than by writing this flag, which does not demote the market that currently holds it. |  |
+| code | string | Market code — the market scope slug every other app stores. Lowercase letters, digits and underscores, starting with a letter, at most 63 characters (400 `invalid_market_code`). Fixed once the market exists: an update that changes it is refused with 409 `code_immutable`; the same value sent back is accepted and ignored. |  |
+| currency | string | Base currency, upper-case ISO 4217 (400 `invalid_currency` otherwise — it is not uppercased for you). Defaults to EUR. |  |
+| is_default | boolean | The tenant default flag. On a create, `true` is accepted only while the tenant has no default market (409 `default_exists` otherwise). On an update it cannot change — move it with POST /markets/{id}/make-default (400 `default_via_make_default`); the current value sent back is accepted and ignored. |  |
 | labels | object | Localized display names for storefronts, keyed by locale: a flat {locale: label} map, one level deep, string values. WHICH key to write is not free — GET /markets/{id}/context returns `locale_policy`, whose `write` is the key this tenant keys by (a full locale under regional granularity, a bare language under language granularity) and whose `read` is the order to try. Null means nothing is translated and `name` is all there is. |  |
 | name | string | Display name, in the operator's own language. Cockpit copy only — nothing resolves a market by it. |  |
 | position | integer | Sort position among the tenant's markets, ascending, default 0. Presentation only — it decides the order the Cockpit and a market picker list them in, and nothing resolves a market by it. |  |
@@ -146,11 +146,11 @@ POST https://api.revenexx.com/v1/markets/{id}/clone
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The SOURCE market to copy — a uuid or a market code. |  |
-| code | string | Code of the NEW market (unique per tenant). |  |
+| code | string | Code of the NEW market (unique per tenant). Lowercase letters, digits and underscores, starting with a letter, at most 63 characters (400 `invalid_market_code`). |  |
 | copy_currencies | boolean | Copy the source's traded currencies. Default true. The new market's own base currency is registered and marked default either way. |  |
 | copy_locales | boolean | Copy the source's locales. Default true. False leaves the new market with no language of its own, so the tenant fallback_locale is seeded instead — it is never left with none. |  |
 | copy_tax_classes | boolean | Copy the source's tax classes, rates and all. Default true. False leaves the market unable to tax anything, which readiness reports as blocking. |  |
-| currency | string | Base currency of the new market (ISO 4217). Defaults to the source market's, and is registered and marked default on the new one either way. |  |
+| currency | string | Base currency of the new market, upper-case ISO 4217 (400 `invalid_currency` — it is not uppercased for you). Defaults to the source market's, and is registered and marked default on the new one either way. |  |
 | name | string | Display name of the new market. Defaults to its code. |  |
 | status | string | Status of the new market. Defaults to 'active'; clone it 'inactive' to build it out before it serves anyone. |  |
 
@@ -208,12 +208,13 @@ GET https://api.revenexx.com/v1/markets/{market_id}/currencies
 | market_id | string | **Required** The owning market. A uuid — this route does not accept a market code. An unknown market lists empty rather than 404. |  |
 | id | string | Exact match on `id`. Primary key of this currency registration. The currency is named by `code` everywhere else. |  |
 | code | string | Exact match on `code`. ISO 4217 code, unique per market — one entry in the set of currencies this market TRADES in, as opposed to the single base currency on the market row that its prices are quoted in. The base currency must appear here or the market cannot serve; clone and backfill register it for you. |  |
-| is_default | boolean | Exact match on `is_default`. The currency offered first to a buyer who states no preference. At most one per market, and it should be the market's base currency — readiness reports it as a warning when it is not. |  |
+| is_default | boolean | Exact match on `is_default`. The currency offered first to a buyer who states no preference. At most one per market — a write flagging one takes it from the others — and it should be the market's base currency — readiness reports it as a warning when it is not. |  |
 | position | integer | Exact match on `position`. Sort position among this market's currencies, ascending, default 0 — the order a currency switcher lists them in. |  |
 | created_at | string | Exact match on `created_at`. When the currency was registered on this market. Set by the database; never writable. |  |
+| updated_at | string | Exact match on `updated_at`. When the currency registration was last written. Set by the database on every update; never writable. A currency is changed in place — its default flag and its position move — so this is the column that says when that last happened. |  |
 | limit | integer | Page size (default 50, max 200). Out of range is CLAMPED, not refused — ?limit=999 answers 200 with 200 rows, and `page.limit` says so. |  |
 | offset | integer | Row offset for pagination (default 0). A negative offset is clamped to 0 rather than refused. |  |
-| order | string | Sort as 'column' | 'column.asc' | 'column.desc'. The direction is lower case, and the column has to exist: id, market_id, code, is_default, position, created_at. |  |
+| order | string | Sort as 'column' | 'column.asc' | 'column.desc'. The direction is lower case, and the column has to exist: id, market_id, code, is_default, position, created_at, updated_at. |  |
 
 
 ```http request
@@ -227,8 +228,8 @@ POST https://api.revenexx.com/v1/markets/{market_id}/currencies
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | market_id | string | **Required** The owning market. A uuid — this route does not accept a market code. An unknown market lists empty rather than 404. |  |
-| code | string | ISO 4217 code, unique per market — one entry in the set of currencies this market TRADES in, as opposed to the single base currency on the market row that its prices are quoted in. The base currency must appear here or the market cannot serve; clone and backfill register it for you. |  |
-| is_default | boolean | The currency offered first to a buyer who states no preference. At most one per market, and it should be the market's base currency — readiness reports it as a warning when it is not. |  |
+| code | string | Upper-case ISO 4217 code (400 `invalid_currency` otherwise — it is not uppercased for you). Unique per market. |  |
+| is_default | boolean | Flag this currency as the market's default. The flag MOVES: every other currency of the market loses it in the same call. |  |
 | position | integer | Sort position among this market's currencies, ascending, default 0 — the order a currency switcher lists them in. |  |
 
 
@@ -272,8 +273,8 @@ PUT https://api.revenexx.com/v1/markets/{market_id}/currencies/{id}
 | --- | --- | --- | --- |
 | market_id | string | **Required** The owning market. A uuid — this route does not accept a market code. An unknown market lists empty rather than 404. |  |
 | id | string | **Required** The currency of a market, by its primary key. A uuid — this route does not resolve a code, so a segment that will not cast is a 400 before any row is read. |  |
-| code | string | ISO 4217 code, unique per market — one entry in the set of currencies this market TRADES in, as opposed to the single base currency on the market row that its prices are quoted in. The base currency must appear here or the market cannot serve; clone and backfill register it for you. |  |
-| is_default | boolean | The currency offered first to a buyer who states no preference. At most one per market, and it should be the market's base currency — readiness reports it as a warning when it is not. |  |
+| code | string | Upper-case ISO 4217 code (400 `invalid_currency` otherwise — it is not uppercased for you). Unique per market. |  |
+| is_default | boolean | Flag this currency as the market's default. The flag MOVES: every other currency of the market loses it in the same call. |  |
 | position | integer | Sort position among this market's currencies, ascending, default 0 — the order a currency switcher lists them in. |  |
 
 
@@ -292,12 +293,13 @@ GET https://api.revenexx.com/v1/markets/{market_id}/locales
 | code | string | Exact match on `code`. Locale code, language-COUNTRY — the language a storefront renders this market in, and the key a translation is stored under. Unique per market. The app's own seeded value is the tenant's `fallback_locale` setting, whose declared default is de-DE. |  |
 | language | string | Exact match on `language`. ISO 639-1 language code — the language half of `code`, stored separately so a client can group markets by language without parsing. |  |
 | country | string | Exact match on `country`. ISO 3166-1 alpha-2 country code — the region half of `code`. It is a spelling of the language, not a shipping destination: a market may register de-AT without trading in Austria. |  |
-| is_default | boolean | Exact match on `is_default`. The locale a storefront renders this market in when the request asks for none. At most one per market; where none carries the flag the first by position is used, and `default_locale.source` on the context says which of the two happened. |  |
+| is_default | boolean | Exact match on `is_default`. The locale a storefront renders this market in when the request asks for none. At most one per market — a write flagging one takes it from the others; where none carries the flag the first by position is used, and `default_locale.source` on the context says which of the two happened. |  |
 | position | integer | Exact match on `position`. Sort position among this market's locales, ascending, default 0 — and the tie-break that picks a default when no locale is flagged. |  |
 | created_at | string | Exact match on `created_at`. When the locale was registered on this market. Set by the database; never writable. |  |
+| updated_at | string | Exact match on `updated_at`. When the locale registration was last written. Set by the database on every update; never writable. A locale is changed in place — its default flag and its position move — so this is the column that says when that last happened. |  |
 | limit | integer | Page size (default 50, max 200). Out of range is CLAMPED, not refused — ?limit=999 answers 200 with 200 rows, and `page.limit` says so. |  |
 | offset | integer | Row offset for pagination (default 0). A negative offset is clamped to 0 rather than refused. |  |
-| order | string | Sort as 'column' | 'column.asc' | 'column.desc'. The direction is lower case, and the column has to exist: id, market_id, code, language, country, is_default, position, created_at. |  |
+| order | string | Sort as 'column' | 'column.asc' | 'column.desc'. The direction is lower case, and the column has to exist: id, market_id, code, language, country, is_default, position, created_at, updated_at. |  |
 
 
 ```http request
@@ -311,10 +313,10 @@ POST https://api.revenexx.com/v1/markets/{market_id}/locales
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | market_id | string | **Required** The owning market. A uuid — this route does not accept a market code. An unknown market lists empty rather than 404. |  |
-| code | string | Locale code, language-COUNTRY — the language a storefront renders this market in, and the key a translation is stored under. Unique per market. The app's own seeded value is the tenant's `fallback_locale` setting, whose declared default is de-DE. |  |
-| country | string | ISO 3166-1 alpha-2 country code — the region half of `code`. It is a spelling of the language, not a shipping destination: a market may register de-AT without trading in Austria. |  |
-| is_default | boolean | The locale a storefront renders this market in when the request asks for none. At most one per market; where none carries the flag the first by position is used, and `default_locale.source` on the context says which of the two happened. |  |
-| language | string | ISO 639-1 language code — the language half of `code`, stored separately so a client can group markets by language without parsing. |  |
+| code | string | Locale code, language-COUNTRY: ISO 639-1 lower case, a hyphen, ISO 3166-1 upper case — `de-DE` (400 `invalid_locale_code`). Unique per market. |  |
+| country | string | The country half of `code`. Omit it and it is derived from the code; state it and it must agree (400 `locale_code_mismatch`). |  |
+| is_default | boolean | Flag this locale as the market's default. The flag MOVES: every other locale of the market loses it in the same call. |  |
+| language | string | The language half of `code`. Omit it and it is derived from the code; state it and it must agree (400 `locale_code_mismatch`). |  |
 | position | integer | Sort position among this market's locales, ascending, default 0 — and the tie-break that picks a default when no locale is flagged. |  |
 
 
@@ -358,10 +360,10 @@ PUT https://api.revenexx.com/v1/markets/{market_id}/locales/{id}
 | --- | --- | --- | --- |
 | market_id | string | **Required** The owning market. A uuid — this route does not accept a market code. An unknown market lists empty rather than 404. |  |
 | id | string | **Required** The locale of a market, by its primary key. A uuid — this route does not resolve a code, so a segment that will not cast is a 400 before any row is read. |  |
-| code | string | Locale code, language-COUNTRY — the language a storefront renders this market in, and the key a translation is stored under. Unique per market. The app's own seeded value is the tenant's `fallback_locale` setting, whose declared default is de-DE. |  |
-| country | string | ISO 3166-1 alpha-2 country code — the region half of `code`. It is a spelling of the language, not a shipping destination: a market may register de-AT without trading in Austria. |  |
-| is_default | boolean | The locale a storefront renders this market in when the request asks for none. At most one per market; where none carries the flag the first by position is used, and `default_locale.source` on the context says which of the two happened. |  |
-| language | string | ISO 639-1 language code — the language half of `code`, stored separately so a client can group markets by language without parsing. |  |
+| code | string | Locale code, language-COUNTRY: ISO 639-1 lower case, a hyphen, ISO 3166-1 upper case — `de-DE` (400 `invalid_locale_code`). Unique per market. |  |
+| country | string | The country half of `code`. Omit it and it is derived from the code; state it and it must agree (400 `locale_code_mismatch`). |  |
+| is_default | boolean | Flag this locale as the market's default. The flag MOVES: every other locale of the market loses it in the same call. |  |
+| language | string | The language half of `code`. Omit it and it is derived from the code; state it and it must agree (400 `locale_code_mismatch`). |  |
 | position | integer | Sort position among this market's locales, ascending, default 0 — and the tie-break that picks a default when no locale is flagged. |  |
 
 
@@ -381,7 +383,7 @@ GET https://api.revenexx.com/v1/markets/{market_id}/tax_classes
 | name | string | Exact match on `name`. Display name of the rate bucket, in the operator's own language. |  |
 | labels | string | Exact match on `labels`. Exact whole-document equality on the jsonb: the value is a whole JSON document and has to match every key, so this is not a path or a containment query. Key order and whitespace are irrelevant — the comparison is semantic. A value that does not parse as JSON is refused with 400 `invalid_value` rather than answered with zero rows. Localized display names for storefronts and invoices, keyed by locale: a flat {locale: label} map, one level deep, string values. The key to write is the `locale_policy.write` from GET /markets/{id}/context, exactly as for a market's labels. Null means nothing is translated and `name` is all there is. |  |
 | rate | number | Exact match on `rate`. Tax rate in PERCENT, 0–100 (default 0) — 20 means 20 %, not 0.2. Whether a stored price already contains it is a separate question, answered per market by `pricing.tax_basis` on the context. |  |
-| is_default | boolean | Exact match on `is_default`. The class applied to a line that names none. At most one per market. A market that stores GROSS prices and marks no default cannot break those prices back down into net, which is why readiness turns that combination from a warning into a blocking failure. |  |
+| is_default | boolean | Exact match on `is_default`. The class applied to a line that names none. At most one per market — a write flagging one takes it from the others. A market that stores GROSS prices and marks no default cannot break those prices back down into net, which is why readiness turns that combination from a warning into a blocking failure. |  |
 | position | integer | Exact match on `position`. Sort position among this market's tax classes, ascending, default 0 — and the tie-break that picks a class when none is flagged default. |  |
 | created_at | string | Exact match on `created_at`. When the tax class was created on this market. Set by the database; never writable. |  |
 | updated_at | string | Exact match on `updated_at`. When the tax class was last written. Set by the database on every update; never writable. |  |
@@ -402,7 +404,7 @@ POST https://api.revenexx.com/v1/markets/{market_id}/tax_classes
 | --- | --- | --- | --- |
 | market_id | string | **Required** The owning market. A uuid — this route does not accept a market code. An unknown market lists empty rather than 404. |  |
 | code | string | Tax class code, unique per market — the rate bucket a product or a shipping method is assigned to ('standard', 'reduced', 'zero'). Other apps name a class by THIS and by nothing else: there is no foreign key behind it and there cannot be (ADR-0055), which is why the delete route asks the shipping app what still points at the code before removing it. |  |
-| is_default | boolean | The class applied to a line that names none. At most one per market. A market that stores GROSS prices and marks no default cannot break those prices back down into net, which is why readiness turns that combination from a warning into a blocking failure. |  |
+| is_default | boolean | Flag this class as the market's default. The flag MOVES: every other tax class of the market loses it in the same call. |  |
 | labels | object | Localized display names for storefronts and invoices, keyed by locale: a flat {locale: label} map, one level deep, string values. The key to write is the `locale_policy.write` from GET /markets/{id}/context, exactly as for a market's labels. Null means nothing is translated and `name` is all there is. |  |
 | name | string | Display name of the rate bucket, in the operator's own language. |  |
 | position | integer | Sort position among this market's tax classes, ascending, default 0 — and the tie-break that picks a class when none is flagged default. |  |
@@ -413,7 +415,7 @@ POST https://api.revenexx.com/v1/markets/{market_id}/tax_classes
 DELETE https://api.revenexx.com/v1/markets/{market_id}/tax_classes/{id}
 ```
 
-** Refused with a 409 for as long as another app still points at this tax class by its code. A tax class is the source of record for a rate, and other apps name it by CODE with no foreign key behind it — a cross-app FK is what ADR-0055 forbids. So this asks the shipping app what still uses the code (shipping.tax-classes.usage) and answers 409 with the count and the first few names rather than leaving methods quoting a rate nobody defines. The check FAILS OPEN: a tenant without the shipping app, or an unreachable one, deletes as before, and the answer says which happened in &#039;usage_checked&#039;. Matched on the code, which is shared across markets — the refusal message says so. **
+** Refused with a 409 for as long as another app still points at this tax class by its code. A tax class is the source of record for a rate, and other apps name it by CODE with no foreign key behind it — a cross-app FK is what ADR-0055 forbids. So this asks the shipping app what still uses the code (shipping.tax-classes.usage) and answers 409 with the count and the first few names rather than leaving methods quoting a rate nobody defines. The check FAILS OPEN: a tenant without the shipping app, or an unreachable one, deletes as before, and the answer says which happened in 'usage_checked'. Matched on the code, which is shared across markets — the refusal message says so. **
 
 ### Parameters
 
@@ -450,7 +452,7 @@ PUT https://api.revenexx.com/v1/markets/{market_id}/tax_classes/{id}
 | market_id | string | **Required** The owning market. A uuid — this route does not accept a market code. An unknown market lists empty rather than 404. |  |
 | id | string | **Required** The tax class of a market, by its primary key. A uuid — this route does not resolve a code, so a segment that will not cast is a 400 before any row is read. |  |
 | code | string | Tax class code, unique per market — the rate bucket a product or a shipping method is assigned to ('standard', 'reduced', 'zero'). Other apps name a class by THIS and by nothing else: there is no foreign key behind it and there cannot be (ADR-0055), which is why the delete route asks the shipping app what still points at the code before removing it. |  |
-| is_default | boolean | The class applied to a line that names none. At most one per market. A market that stores GROSS prices and marks no default cannot break those prices back down into net, which is why readiness turns that combination from a warning into a blocking failure. |  |
+| is_default | boolean | Flag this class as the market's default. The flag MOVES: every other tax class of the market loses it in the same call. |  |
 | labels | object | Localized display names for storefronts and invoices, keyed by locale: a flat {locale: label} map, one level deep, string values. The key to write is the `locale_policy.write` from GET /markets/{id}/context, exactly as for a market's labels. Null means nothing is translated and `name` is all there is. |  |
 | name | string | Display name of the rate bucket, in the operator's own language. |  |
 | position | integer | Sort position among this market's tax classes, ascending, default 0 — and the tie-break that picks a class when none is flagged default. |  |

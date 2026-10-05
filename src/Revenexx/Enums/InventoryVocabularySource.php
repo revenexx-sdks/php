@@ -7,6 +7,7 @@ use JsonSerializable;
 class InventoryVocabularySource implements JsonSerializable
 {
     private static InventoryVocabularySource $SCHEMA;
+    private static InventoryVocabularySource $TABLE;
 
     private string $value;
 
@@ -31,5 +32,12 @@ class InventoryVocabularySource implements JsonSerializable
             self::$SCHEMA = new InventoryVocabularySource('schema');
         }
         return self::$SCHEMA;
+    }
+    public static function TABLE(): InventoryVocabularySource
+    {
+        if (!isset(self::$TABLE)) {
+            self::$TABLE = new InventoryVocabularySource('table');
+        }
+        return self::$TABLE;
     }
 }

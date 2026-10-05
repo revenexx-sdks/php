@@ -14,5 +14,5 @@ $client = (new Client())
 $inventoriesStock = new InventoriesStock($client);
 
 $result = $inventoriesStock->inventoriesVocabulariesGet(
-    name: InventoriesVocabulariesGetName::LOCATIONTYPES()
+    name: InventoriesVocabulariesGetName::AVAILABILITYSTATES()
 );```

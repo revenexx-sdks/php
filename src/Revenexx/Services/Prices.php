@@ -50,18 +50,21 @@ class Prices extends Service
      * @param ?bool $requiresAuth
      * @param ?string $contactId
      * @param ?string $organizationId
+     * @param ?string $segmentCode
      * @param ?string $channelId
      * @param ?string $validFrom
      * @param ?string $validUntil
      * @param ?string $createdAt
      * @param ?string $updatedAt
+     * @param ?string $externalId
+     * @param ?string $sourceSyncedAt
      * @param ?int $limit
      * @param ?int $offset
      * @param ?string $order
      * @throws RevenexxException
      * @return array
      */
-    public function pricesListsList(?string $id = null, ?string $code = null, ?string $name = null, ?string $description = null, ?string $currency = null, ?PriceListStatus $status = null, ?int $priority = null, ?bool $isDefault = null, ?PriceListTaxBasis $taxBasis = null, ?bool $taxIncluded = null, ?bool $requiresAuth = null, ?string $contactId = null, ?string $organizationId = null, ?string $channelId = null, ?string $validFrom = null, ?string $validUntil = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function pricesListsList(?string $id = null, ?string $code = null, ?string $name = null, ?string $description = null, ?string $currency = null, ?PriceListStatus $status = null, ?int $priority = null, ?bool $isDefault = null, ?PriceListTaxBasis $taxBasis = null, ?bool $taxIncluded = null, ?bool $requiresAuth = null, ?string $contactId = null, ?string $organizationId = null, ?string $segmentCode = null, ?string $channelId = null, ?string $validFrom = null, ?string $validUntil = null, ?string $createdAt = null, ?string $updatedAt = null, ?string $externalId = null, ?string $sourceSyncedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             [],
@@ -123,6 +126,10 @@ class Prices extends Service
             $apiParams['organization_id'] = $organizationId;
         }
 
+        if (!is_null($segmentCode)) {
+            $apiParams['segment_code'] = $segmentCode;
+        }
+
         if (!is_null($channelId)) {
             $apiParams['channel_id'] = $channelId;
         }
@@ -141,6 +148,14 @@ class Prices extends Service
 
         if (!is_null($updatedAt)) {
             $apiParams['updated_at'] = $updatedAt;
+        }
+
+        if (!is_null($externalId)) {
+            $apiParams['external_id'] = $externalId;
+        }
+
+        if (!is_null($sourceSyncedAt)) {
+            $apiParams['source_synced_at'] = $sourceSyncedAt;
         }
 
         if (!is_null($limit)) {
@@ -184,10 +199,12 @@ class Prices extends Service
      * tenant's `tax_inclusive_default` — state net or gross here and the answer
      * stops depending on a tenant setting somebody may change later.
      * 
-     * `is_default: true` here does NOT demote the list that currently holds the
-     * flag: you end up with two defaults, and which of them prices an item is
-     * left to the tenant's tie-break. Create the list, then move the flag with
-     * `POST /prices/lists/{list_id}/make-default`.
+     * `is_default: true` is taken only while no list of the tenant carries the
+     * flag — the first list, the seed. Once a default exists the create is
+     * refused with 409 `default_exists`: create the list without the flag, then
+     * move it with `POST /prices/lists/{list_id}/make-default`, which demotes the
+     * incumbent in the same call. That is what keeps the flag on exactly one
+     * list.
      * 
      * A new list prices nothing at all until it has entries, so it is inert until
      * you add them — which makes it safe to create one ahead of the prices that
@@ -205,6 +222,7 @@ class Prices extends Service
      * @param ?string $organizationId
      * @param ?int $priority
      * @param ?bool $requiresAuth
+     * @param ?string $segmentCode
      * @param ?PriceListStatus $status
      * @param ?PriceListTaxBasis $taxBasis
      * @param ?bool $taxIncluded
@@ -213,7 +231,7 @@ class Prices extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function pricesListsCreate(string $code, string $name, ?string $channelId = null, ?string $contactId = null, ?string $currency = null, ?string $description = null, ?bool $isDefault = null, ?array $labels = null, ?array $metadata = null, ?string $organizationId = null, ?int $priority = null, ?bool $requiresAuth = null, ?PriceListStatus $status = null, ?PriceListTaxBasis $taxBasis = null, ?bool $taxIncluded = null, ?string $validFrom = null, ?string $validUntil = null): array
+    public function pricesListsCreate(string $code, string $name, ?string $channelId = null, ?string $contactId = null, ?string $currency = null, ?string $description = null, ?bool $isDefault = null, ?array $labels = null, ?array $metadata = null, ?string $organizationId = null, ?int $priority = null, ?bool $requiresAuth = null, ?string $segmentCode = null, ?PriceListStatus $status = null, ?PriceListTaxBasis $taxBasis = null, ?bool $taxIncluded = null, ?string $validFrom = null, ?string $validUntil = null): array
     {
         $apiPath = str_replace(
             [],
@@ -246,6 +264,7 @@ class Prices extends Service
         if (!is_null($requiresAuth)) {
             $apiParams['requires_auth'] = $requiresAuth;
         }
+        $apiParams['segment_code'] = $segmentCode;
 
         if (!is_null($status)) {
             $apiParams['status'] = $status;
@@ -323,10 +342,10 @@ class Prices extends Service
      * What that means while a storefront is quoting: from the next resolve call
      * the items this list priced fall through to the next candidate list, and
      * where there is none the answer is `on_request` — "price on request" for
-     * something that had a price a second ago, never €0. If the deleted list
-     * held the default flag the tenant has no default until one is moved onto
-     * another list; re-running `POST /prices/lists/defaults` recreates the
-     * standard list only while no other default exists.
+     * something that had a price a second ago, never €0. The default list
+     * itself is never deleted: move the flag with `POST
+     * /prices/lists/{list_id}/make-default` first, otherwise the delete answers
+     * 409 `default_price_list`.
      * 
      * This is not the way to take a list out of circulation. `status: "inactive"`
      * does that immediately and reversibly and keeps the prices; deleting is for
@@ -408,9 +427,11 @@ class Prices extends Service
      * and integrations address the list by, and a code another list already holds
      * is a 409.
      * 
-     * `is_default` behaves here exactly as it does on create: setting it true
-     * leaves the incumbent default in place, so use `POST
-     * /prices/lists/{list_id}/make-default`, which demotes in the same call.
+     * `is_default` may be restated as it stands, never changed: a change that
+     * sets or clears it is refused with 400 `default_via_make_default`. `POST
+     * /prices/lists/{list_id}/make-default` moves the flag and demotes in the
+     * same call. On every write rule a change is checked only where a value
+     * changes, so a list stored before a rule existed can be saved back as it is.
      *
      * @param string $id
      * @param ?string $channelId
@@ -425,6 +446,7 @@ class Prices extends Service
      * @param ?string $organizationId
      * @param ?int $priority
      * @param ?bool $requiresAuth
+     * @param ?string $segmentCode
      * @param ?PriceListStatus $status
      * @param ?PriceListTaxBasis $taxBasis
      * @param ?bool $taxIncluded
@@ -433,7 +455,7 @@ class Prices extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function pricesListsUpdate(string $id, ?string $channelId = null, ?string $code = null, ?string $contactId = null, ?string $currency = null, ?string $description = null, ?bool $isDefault = null, ?array $labels = null, ?array $metadata = null, ?string $name = null, ?string $organizationId = null, ?int $priority = null, ?bool $requiresAuth = null, ?PriceListStatus $status = null, ?PriceListTaxBasis $taxBasis = null, ?bool $taxIncluded = null, ?string $validFrom = null, ?string $validUntil = null): array
+    public function pricesListsUpdate(string $id, ?string $channelId = null, ?string $code = null, ?string $contactId = null, ?string $currency = null, ?string $description = null, ?bool $isDefault = null, ?array $labels = null, ?array $metadata = null, ?string $name = null, ?string $organizationId = null, ?int $priority = null, ?bool $requiresAuth = null, ?string $segmentCode = null, ?PriceListStatus $status = null, ?PriceListTaxBasis $taxBasis = null, ?bool $taxIncluded = null, ?string $validFrom = null, ?string $validUntil = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -473,6 +495,7 @@ class Prices extends Service
         if (!is_null($requiresAuth)) {
             $apiParams['requires_auth'] = $requiresAuth;
         }
+        $apiParams['segment_code'] = $segmentCode;
 
         if (!is_null($status)) {
             $apiParams['status'] = $status;
@@ -519,17 +542,23 @@ class Prices extends Service
      * @param ?float $quantityMin
      * @param ?float $unitPrice
      * @param ?string $unit
+     * @param ?float $priceQuantity
+     * @param ?string $priceQuantityUnit
+     * @param ?float $discountPercent
+     * @param ?string $description
      * @param ?string $validFrom
      * @param ?string $validUntil
      * @param ?string $createdAt
      * @param ?string $updatedAt
+     * @param ?string $externalId
+     * @param ?string $sourceSyncedAt
      * @param ?int $limit
      * @param ?int $offset
      * @param ?string $order
      * @throws RevenexxException
      * @return array
      */
-    public function pricesEntriesList(string $listId, ?string $id = null, ?string $productId = null, ?string $sku = null, ?PriceEntryType $priceType = null, ?float $quantityMin = null, ?float $unitPrice = null, ?string $unit = null, ?string $validFrom = null, ?string $validUntil = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function pricesEntriesList(string $listId, ?string $id = null, ?string $productId = null, ?string $sku = null, ?PriceEntryType $priceType = null, ?float $quantityMin = null, ?float $unitPrice = null, ?string $unit = null, ?float $priceQuantity = null, ?string $priceQuantityUnit = null, ?float $discountPercent = null, ?string $description = null, ?string $validFrom = null, ?string $validUntil = null, ?string $createdAt = null, ?string $updatedAt = null, ?string $externalId = null, ?string $sourceSyncedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             ['{list_id}'],
@@ -568,6 +597,22 @@ class Prices extends Service
             $apiParams['unit'] = $unit;
         }
 
+        if (!is_null($priceQuantity)) {
+            $apiParams['price_quantity'] = $priceQuantity;
+        }
+
+        if (!is_null($priceQuantityUnit)) {
+            $apiParams['price_quantity_unit'] = $priceQuantityUnit;
+        }
+
+        if (!is_null($discountPercent)) {
+            $apiParams['discount_percent'] = $discountPercent;
+        }
+
+        if (!is_null($description)) {
+            $apiParams['description'] = $description;
+        }
+
         if (!is_null($validFrom)) {
             $apiParams['valid_from'] = $validFrom;
         }
@@ -582,6 +627,14 @@ class Prices extends Service
 
         if (!is_null($updatedAt)) {
             $apiParams['updated_at'] = $updatedAt;
+        }
+
+        if (!is_null($externalId)) {
+            $apiParams['external_id'] = $externalId;
+        }
+
+        if (!is_null($sourceSyncedAt)) {
+            $apiParams['source_synced_at'] = $sourceSyncedAt;
         }
 
         if (!is_null($limit)) {
@@ -621,10 +674,12 @@ class Prices extends Service
      * (entries carry none) and on the LIST's tax basis, as a decimal in major
      * units — 19.90, never 1990.
      * 
-     * Nothing enforces one rung per (item, quantity): create the same
-     * `quantity_min` twice and both rows come back in the resolved `tiers`, with
-     * the last of them setting the price — an ambiguous ladder no error ever
-     * mentions. `quantity_min` defaults to 1 and `price_type` to `standard`.
+     * Nothing enforces one rung per (item, quantity) on this route: create the
+     * same `quantity_min` twice and both rows come back in the resolved `tiers`,
+     * with the last of them setting the price — an ambiguous ladder no error
+     * ever mentions (a replace or an import refuses such a payload as
+     * `duplicate_tier`). `quantity_min` defaults to 1 and `price_type` to
+     * `standard`.
      * 
      * This route is for a rung at a time. A whole ladder in one call is `POST
      * …/entries/ladder`, an import is `POST …/entries/bulk`, and a complete
@@ -632,7 +687,11 @@ class Prices extends Service
      * rather than attaching a price to nothing.
      *
      * @param string $listId
+     * @param ?string $description
+     * @param ?float $discountPercent
      * @param ?array $metadata
+     * @param ?float $priceQuantity
+     * @param ?string $priceQuantityUnit
      * @param ?PriceEntryType $priceType
      * @param ?string $productId
      * @param ?float $quantityMin
@@ -644,7 +703,7 @@ class Prices extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function pricesEntriesCreate(string $listId, ?array $metadata = null, ?PriceEntryType $priceType = null, ?string $productId = null, ?float $quantityMin = null, ?string $sku = null, ?string $unit = null, ?float $unitPrice = null, ?string $validFrom = null, ?string $validUntil = null): array
+    public function pricesEntriesCreate(string $listId, ?string $description = null, ?float $discountPercent = null, ?array $metadata = null, ?float $priceQuantity = null, ?string $priceQuantityUnit = null, ?PriceEntryType $priceType = null, ?string $productId = null, ?float $quantityMin = null, ?string $sku = null, ?string $unit = null, ?float $unitPrice = null, ?string $validFrom = null, ?string $validUntil = null): array
     {
         $apiPath = str_replace(
             ['{list_id}'],
@@ -654,7 +713,11 @@ class Prices extends Service
 
         $apiParams = [];
         $apiParams['list_id'] = $listId;
+        $apiParams['description'] = $description;
+        $apiParams['discount_percent'] = $discountPercent;
         $apiParams['metadata'] = $metadata;
+        $apiParams['price_quantity'] = $priceQuantity;
+        $apiParams['price_quantity_unit'] = $priceQuantityUnit;
 
         if (!is_null($priceType)) {
             $apiParams['price_type'] = $priceType;
@@ -693,13 +756,13 @@ class Prices extends Service
      * priced then resolve from the next candidate list, or come back
      * `on_request`.
      * 
-     * Two consequences of "delete, then insert". Every row is inserted fresh, so
+     * Two consequences of "insert, then delete". Every row is inserted fresh, so
      * all entry ids change and anything holding one is stale afterwards. And it
-     * is not a transaction: the deletes go out before the inserts, so a payload
-     * that fails part-way through leaves the list holding the rows that landed
-     * and none of the ones it had. What protects you is that the whole payload is
-     * normalized and validated BEFORE the first delete — a malformed row is a
-     * 400 with the list untouched.
+     * is not a transaction: the new rows go out in bulk first and the old ones
+     * are removed after, so a write the store refuses leaves the list as it was,
+     * and a failure between the two leaves both sets — repeat the call. The
+     * whole payload is normalized and validated BEFORE the first write — a
+     * malformed row is a 400 with the list untouched.
      * 
      * For a book of any size, or for adding to one you want to keep, use `POST
      * …/entries/bulk`: it upserts in chunks and never wipes.
@@ -982,7 +1045,11 @@ class Prices extends Service
      *
      * @param string $listId
      * @param string $id
+     * @param ?string $description
+     * @param ?float $discountPercent
      * @param ?array $metadata
+     * @param ?float $priceQuantity
+     * @param ?string $priceQuantityUnit
      * @param ?PriceEntryType $priceType
      * @param ?string $productId
      * @param ?float $quantityMin
@@ -994,7 +1061,7 @@ class Prices extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function pricesEntriesUpdate(string $listId, string $id, ?array $metadata = null, ?PriceEntryType $priceType = null, ?string $productId = null, ?float $quantityMin = null, ?string $sku = null, ?string $unit = null, ?float $unitPrice = null, ?string $validFrom = null, ?string $validUntil = null): array
+    public function pricesEntriesUpdate(string $listId, string $id, ?string $description = null, ?float $discountPercent = null, ?array $metadata = null, ?float $priceQuantity = null, ?string $priceQuantityUnit = null, ?PriceEntryType $priceType = null, ?string $productId = null, ?float $quantityMin = null, ?string $sku = null, ?string $unit = null, ?float $unitPrice = null, ?string $validFrom = null, ?string $validUntil = null): array
     {
         $apiPath = str_replace(
             ['{list_id}', '{id}'],
@@ -1005,7 +1072,11 @@ class Prices extends Service
         $apiParams = [];
         $apiParams['list_id'] = $listId;
         $apiParams['id'] = $id;
+        $apiParams['description'] = $description;
+        $apiParams['discount_percent'] = $discountPercent;
         $apiParams['metadata'] = $metadata;
+        $apiParams['price_quantity'] = $priceQuantity;
+        $apiParams['price_quantity_unit'] = $priceQuantityUnit;
 
         if (!is_null($priceType)) {
             $apiParams['price_type'] = $priceType;
@@ -1097,9 +1168,9 @@ class Prices extends Service
      * open. A `requires_auth` list is dropped for a buyer with neither
      * `contact_id` nor `organization_id`.
      * 2. **Specificity decides first, and priority never overrules it.**
-     * contact-scoped (4) beats organization-scoped (3) beats channel-scoped (2)
-     * beats open (0). An organization list at `priority: 0` therefore wins over
-     * an open list at `priority: 100`.
+     * contact-scoped beats organization-scoped beats segment-scoped beats
+     * channel-scoped beats open. An organization list at `priority: 0` therefore
+     * wins over an open list at `priority: 100`.
      * 3. **Within one specificity level:** `priority` descending, then
      * non-default before default — the default list is deliberately last, so it
      * prices only what nothing else did.
@@ -1128,6 +1199,15 @@ class Prices extends Service
      * tenant’s `tax_inclusive_default`; `tax_basis_source` says which of the
      * three. Read `unit_price_net`/`unit_price_gross` where you need an
      * unambiguous number.
+     * 
+     * Whose prices: a request acting for a contact (the gateway resolved the
+     * principal) is priced for THAT contact and its organization, taken from the
+     * platform. The body may restate them; a `contact_id` or `organization_id`
+     * naming anybody else is refused with 400 `buyer_mismatch`, and
+     * `segment_codes` with 400 `segments_not_accepted`, because the platform does
+     * not state segment membership yet. A call acting for no contact — the back
+     * office, another app — states its buyer context in the body. The market
+     * and the channel are the caller's to choose on either plane.
      * 
      * Tax is never guessed. The market comes from the `X-Revenexx-Market` header
      * (a market CODE) or from `market_id` in the body; with several markets whose
@@ -1160,10 +1240,11 @@ class Prices extends Service
      * @param ?string $currency
      * @param ?string $marketId
      * @param ?string $organizationId
+     * @param ?array $segmentCodes
      * @throws RevenexxException
      * @return array
      */
-    public function pricesResolve(array $items, ?string $at = null, ?string $channelId = null, ?string $contactId = null, ?string $currency = null, ?string $marketId = null, ?string $organizationId = null): array
+    public function pricesResolve(array $items, ?string $at = null, ?string $channelId = null, ?string $contactId = null, ?string $currency = null, ?string $marketId = null, ?string $organizationId = null, ?array $segmentCodes = null): array
     {
         $apiPath = str_replace(
             [],
@@ -1179,6 +1260,7 @@ class Prices extends Service
         $apiParams['currency'] = $currency;
         $apiParams['market_id'] = $marketId;
         $apiParams['organization_id'] = $organizationId;
+        $apiParams['segment_codes'] = $segmentCodes;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';

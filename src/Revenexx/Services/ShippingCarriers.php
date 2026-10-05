@@ -29,10 +29,11 @@ class ShippingCarriers extends Service
      * @param ?string $code
      * @param ?ShippingCarriersListStatus $status
      * @param ?string $serviceLevel
+     * @param ?string $externalId
      * @throws RevenexxException
      * @return array
      */
-    public function shippingCarriersList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $code = null, ?ShippingCarriersListStatus $status = null, ?string $serviceLevel = null): array
+    public function shippingCarriersList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $code = null, ?ShippingCarriersListStatus $status = null, ?string $serviceLevel = null, ?string $externalId = null): array
     {
         $apiPath = str_replace(
             [],
@@ -66,6 +67,10 @@ class ShippingCarriers extends Service
             $apiParams['service_level'] = $serviceLevel;
         }
 
+        if (!is_null($externalId)) {
+            $apiParams['external_id'] = $externalId;
+        }
+
         $apiHeaders = [];
 
         return $this->client->call(
@@ -86,8 +91,8 @@ class ShippingCarriers extends Service
      * DACH networks read GET /shipping/carriers/catalog and let POST
      * /shipping/carriers/defaults write them. A create cannot omit `code` and
      * `name`; every other column is optional or defaulted by the database. Two
-     * rows of this tenant may not share `code` — that is the 409.
-     * `service_level` has to name one of the tenant's own levels and
+     * rows of this tenant may not share `code` or `external_id` — that is the
+     * 409. `service_level` has to name one of the tenant's own levels and
      * `cutoff_time` has to be HH:MM in 24-hour UTC — both are refused rather
      * than stored, because a cut-off the estimator cannot read would be dropped
      * in silence and the shop would keep promising a ship date nobody computed.
@@ -101,17 +106,21 @@ class ShippingCarriers extends Service
      * @param ?string $cutoffTime
      * @param ?int $etaDaysMax
      * @param ?int $etaDaysMin
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?int $handlingDays
      * @param ?array $labels
      * @param ?array $metadata
      * @param ?int $position
      * @param ?string $serviceLevel
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @param ?ShippingCarrierStatus $status
      * @param ?string $trackingUrlTemplate
      * @throws RevenexxException
      * @return array
      */
-    public function shippingCarriersCreate(string $code, string $name, ?array $countries = null, ?string $cutoffTime = null, ?int $etaDaysMax = null, ?int $etaDaysMin = null, ?int $handlingDays = null, ?array $labels = null, ?array $metadata = null, ?int $position = null, ?string $serviceLevel = null, ?ShippingCarrierStatus $status = null, ?string $trackingUrlTemplate = null): array
+    public function shippingCarriersCreate(string $code, string $name, ?array $countries = null, ?string $cutoffTime = null, ?int $etaDaysMax = null, ?int $etaDaysMin = null, ?string $externalId = null, ?array $externalRefs = null, ?int $handlingDays = null, ?array $labels = null, ?array $metadata = null, ?int $position = null, ?string $serviceLevel = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?ShippingCarrierStatus $status = null, ?string $trackingUrlTemplate = null): array
     {
         $apiPath = str_replace(
             [],
@@ -126,6 +135,8 @@ class ShippingCarriers extends Service
         $apiParams['cutoff_time'] = $cutoffTime;
         $apiParams['eta_days_max'] = $etaDaysMax;
         $apiParams['eta_days_min'] = $etaDaysMin;
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
         $apiParams['handling_days'] = $handlingDays;
         $apiParams['labels'] = $labels;
         $apiParams['metadata'] = $metadata;
@@ -137,6 +148,8 @@ class ShippingCarriers extends Service
         if (!is_null($serviceLevel)) {
             $apiParams['service_level'] = $serviceLevel;
         }
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
 
         if (!is_null($status)) {
             $apiParams['status'] = $status;
@@ -313,7 +326,7 @@ class ShippingCarriers extends Service
      * days, then one further day when the cut-off has already passed at the
      * instant being evaluated — compared at or after, in UTC, and as calendar
      * days that do not skip a weekend. Two rows of this tenant may not share
-     * `code` — that is the 409.
+     * `code` or `external_id` — that is the 409.
      *
      * @param string $id
      * @param ?string $code
@@ -321,18 +334,22 @@ class ShippingCarriers extends Service
      * @param ?string $cutoffTime
      * @param ?int $etaDaysMax
      * @param ?int $etaDaysMin
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?int $handlingDays
      * @param ?array $labels
      * @param ?array $metadata
      * @param ?string $name
      * @param ?int $position
      * @param ?string $serviceLevel
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @param ?ShippingCarrierStatus $status
      * @param ?string $trackingUrlTemplate
      * @throws RevenexxException
      * @return array
      */
-    public function shippingCarriersUpdate(string $id, ?string $code = null, ?array $countries = null, ?string $cutoffTime = null, ?int $etaDaysMax = null, ?int $etaDaysMin = null, ?int $handlingDays = null, ?array $labels = null, ?array $metadata = null, ?string $name = null, ?int $position = null, ?string $serviceLevel = null, ?ShippingCarrierStatus $status = null, ?string $trackingUrlTemplate = null): array
+    public function shippingCarriersUpdate(string $id, ?string $code = null, ?array $countries = null, ?string $cutoffTime = null, ?int $etaDaysMax = null, ?int $etaDaysMin = null, ?string $externalId = null, ?array $externalRefs = null, ?int $handlingDays = null, ?array $labels = null, ?array $metadata = null, ?string $name = null, ?int $position = null, ?string $serviceLevel = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?ShippingCarrierStatus $status = null, ?string $trackingUrlTemplate = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -350,6 +367,8 @@ class ShippingCarriers extends Service
         $apiParams['cutoff_time'] = $cutoffTime;
         $apiParams['eta_days_max'] = $etaDaysMax;
         $apiParams['eta_days_min'] = $etaDaysMin;
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
         $apiParams['handling_days'] = $handlingDays;
         $apiParams['labels'] = $labels;
         $apiParams['metadata'] = $metadata;
@@ -365,6 +384,8 @@ class ShippingCarriers extends Service
         if (!is_null($serviceLevel)) {
             $apiParams['service_level'] = $serviceLevel;
         }
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
 
         if (!is_null($status)) {
             $apiParams['status'] = $status;

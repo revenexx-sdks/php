@@ -13,6 +13,7 @@ $client = (new Client())
 $customers = new Customers($client);
 
 $result = $customers->customersAuthLogin(
-    email: 'einkauf@example.com',
-    password: ''
+    password: '',
+    email: 'einkauf@example.com', // optional
+    identifier: 'einkauf@example.com' // optional
 );```

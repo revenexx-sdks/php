@@ -5,7 +5,7 @@
 GET https://api.revenexx.com/v1/pages/editor/edit-states
 ```
 
-** The drafts overview — the &quot;what is unpublished right now&quot; list, across every page: who holds it, since when, and whether it is parked for a date. Always newest-first — this route does not read `order`. An edit state whose page has been deleted is dropped from `items` but still counted in `total`. **
+** The drafts overview — the "what is unpublished right now" list, across every page: who holds it, since when, and whether it is parked for a date. Always newest-first — this route does not read `order`. An edit state whose page has been deleted is dropped from `items` but still counted in `total`. **
 
 ### Parameters
 
@@ -20,7 +20,7 @@ GET https://api.revenexx.com/v1/pages/editor/edit-states
 POST https://api.revenexx.com/v1/pages/editor/translate
 ```
 
-** The translation is the tenant&#039;s provider&#039;s, not this app&#039;s, and a tenant that has configured none gets no translation at all. The endpoint comes from the tenant setting `translate_endpoint` (PAGES_TRANSLATE_ENDPOINT remains a fallback). The bearer token does NOT: the gateway masks every setting flagged `sensitive`, so a key stored as one could never be read back — it stays the PAGES_TRANSLATE_KEY function secret. This app does not translate anything itself; it forwards `items` and hands the answer back. **
+** The translation is the tenant's provider's, not this app's, and a tenant that has configured none gets no translation at all. The endpoint comes from the tenant setting `translate_endpoint` (PAGES_TRANSLATE_ENDPOINT remains a fallback). The bearer token does NOT: the gateway masks every setting flagged `sensitive`, so a key stored as one could never be read back — it stays the PAGES_TRANSLATE_KEY function secret. This app does not translate anything itself; it forwards `items` and hands the answer back. **
 
 ### Parameters
 
@@ -33,14 +33,14 @@ POST https://api.revenexx.com/v1/pages/editor/translate
 GET https://api.revenexx.com/v1/pages/editor/user-settings
 ```
 
-** Per-user editor preferences — one row per user, scoped to this app. Not tenant configuration: nothing here changes what the API does, only how one person&#039;s editor looks. **
+** Per-user editor preferences — one row per user, scoped to this app. Not tenant configuration: nothing here changes what the API does, only how one person's editor looks. **
 
 
 ```http request
 PUT https://api.revenexx.com/v1/pages/editor/user-settings
 ```
 
-** Replaces the caller&#039;s preferences wholesale — this is not a merge, so send the whole bag. **
+** Replaces the caller's preferences wholesale — this is not a merge, so send the whole bag. **
 
 ### Parameters
 
@@ -53,7 +53,7 @@ PUT https://api.revenexx.com/v1/pages/editor/user-settings
 POST https://api.revenexx.com/v1/pages/editor/{page_id}/history
 ```
 
-** Undo and redo. The pointer is the edit state&#039;s `current_index`, the position in the mutation log the page is materialized at, and this route is the only thing that moves it — `GET …/state?index=` looks at another position without going there. The log itself is never rewritten — only the pointer moves — so redo stays available until the next change is appended. **
+** Undo and redo. The pointer is the edit state's `current_index`, the position in the mutation log the page is materialized at, and this route is the only thing that moves it — `GET …/state?index=` looks at another position without going there. The log itself is never rewritten — only the pointer moves — so redo stays available until the next change is appended. **
 
 ### Parameters
 
@@ -68,7 +68,7 @@ POST https://api.revenexx.com/v1/pages/editor/{page_id}/history
 GET https://api.revenexx.com/v1/pages/editor/{page_id}/last-changed
 ```
 
-** The cheap poll behind &quot;someone else is editing this page&quot;: one integer, the moment the open edit state last moved, in epoch seconds rather than as a timestamp so a comparison is a subtraction. Compare it with the `updatedAt` you last saw and re-fetch the state only when it moved. **
+** The cheap poll behind "someone else is editing this page": one integer, the moment the open edit state last moved, in epoch seconds rather than as a timestamp so a comparison is a subtraction. Compare it with the `updatedAt` you last saw and re-fetch the state only when it moved. **
 
 ### Parameters
 
@@ -81,7 +81,7 @@ GET https://api.revenexx.com/v1/pages/editor/{page_id}/last-changed
 POST https://api.revenexx.com/v1/pages/editor/{page_id}/mutation-status
 ```
 
-** Take one change out of the replay without deleting it — &quot;what would the page look like without this edit&quot;. The entry stays in the history and can be switched back on. **
+** Take one change out of the replay without deleting it — "what would the page look like without this edit". The entry stays in the history and can be switched back on. **
 
 ### Parameters
 
@@ -113,7 +113,7 @@ POST https://api.revenexx.com/v1/pages/editor/{page_id}/mutations
 POST https://api.revenexx.com/v1/pages/editor/{page_id}/preview-grant
 ```
 
-** Mints a link that shows this page&#039;s current edit state — the UNPUBLISHED one — to somebody without an editor account. The token is the whole credential — anyone holding it sees the page — so it expires, and a new one is cheap. **
+** Mints a link that shows this page's current edit state — the UNPUBLISHED one — to somebody without an editor account. The token is the whole credential — anyone holding it sees the page — so it expires, and a new one is cheap. **
 
 ### Parameters
 
@@ -127,7 +127,7 @@ POST https://api.revenexx.com/v1/pages/editor/{page_id}/preview-grant
 POST https://api.revenexx.com/v1/pages/editor/{page_id}/publish
 ```
 
-** Four things in one call: the mutation log is replayed into a finished block tree, that tree is snapshotted into a new revision, the page&#039;s canonical blocks are replaced by it, and the edit state is archived — so the page comes out of this with nothing unpublished and the working copy behind it closed rather than deleted. The revision is written FIRST and the canonical blocks replaced after, so a failure mid-way leaves the page recoverable. Block uuids survive, which is why comments anchored to a block outlive the publish. **
+** Four things in one call: the mutation log is replayed into a finished block tree, that tree is snapshotted into a new revision, the page's canonical blocks are replaced by it, and the edit state is archived — so the page comes out of this with nothing unpublished and the working copy behind it closed rather than deleted. The revision is written FIRST and the canonical blocks replaced after, so a failure mid-way leaves the page recoverable. Block uuids survive, which is why comments anchored to a block outlive the publish. **
 
 ### Parameters
 
@@ -169,7 +169,7 @@ POST https://api.revenexx.com/v1/pages/editor/{page_id}/schedule
 GET https://api.revenexx.com/v1/pages/editor/{page_id}/state
 ```
 
-** The one call the visual editor boots on, and the only place the UNPUBLISHED page can be seen whole: the canonical blocks with every enabled mutation of the log replayed over them, the resulting field lists, the mutation history itself, who owns the edit state and where the undo pointer sits, and the tenant&#039;s editor feature flags. `langcode` decides which language the props resolve in, falling back to the page&#039;s source language. `index` replays the log up to a given position instead of the current one, which is how the editor previews an undo without performing it — it changes nothing, so it is safe to call at any position. Reading this creates nothing either: a page nobody has opened answers with a null `editState`, an empty history, and the published blocks as they stand. **
+** The one call the visual editor boots on, and the only place the UNPUBLISHED page can be seen whole: the canonical blocks with every enabled mutation of the log replayed over them, the resulting field lists, the mutation history itself, who owns the edit state and where the undo pointer sits, and the tenant's editor feature flags. `langcode` decides which language the props resolve in, falling back to the page's source language. `index` replays the log up to a given position instead of the current one, which is how the editor previews an undo without performing it — it changes nothing, so it is safe to call at any position. Reading this creates nothing either: a page nobody has opened answers with a null `editState`, an empty history, and the published blocks as they stand. **
 
 ### Parameters
 
@@ -197,7 +197,7 @@ POST https://api.revenexx.com/v1/pages/editor/{page_id}/take-ownership
 POST https://api.revenexx.com/v1/pages/editor/{page_id}/templates
 ```
 
-** Freezes a selection into a reusable starting point. The blocks are read out of the page&#039;s CURRENT edit state rather than out of what is published, so a template can be cut from work in progress and the uuids you send are the ones the editor is showing. Unlike making a block reusable, this COPIES: pages later made from the template are independent of it and of each other. **
+** Freezes a selection into a reusable starting point. The blocks are read out of the page's CURRENT edit state rather than out of what is published, so a template can be cut from work in progress and the uuids you send are the ones the editor is showing. Unlike making a block reusable, this COPIES: pages later made from the template are independent of it and of each other. **
 
 ### Parameters
 

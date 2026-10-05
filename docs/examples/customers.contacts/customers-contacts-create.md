@@ -3,6 +3,7 @@
 
 use Revenexx\Client;
 use Revenexx\Services\CustomersContacts;
+use Revenexx\Enums\OrderApprovalMode;
 use Revenexx\Enums\CustomersContactsCreateRegistrationStatus;
 use Revenexx\Enums\ContactStatus;
 
@@ -16,6 +17,7 @@ $customersContacts = new CustomersContacts($client);
 
 $result = $customersContacts->customersContactsCreate(
     email: 'einkauf@example.com',
+    createdAt: '2026-01-01T12:00:00Z', // optional
     externalId: 'ASP000047', // optional
     firstName: 'Anna', // optional
     isPrimary: true, // optional
@@ -23,6 +25,7 @@ $result = $customersContacts->customersContactsCreate(
     lastName: 'Berger', // optional
     locale: 'de-DE', // optional
     orderApprovalLimit: 25000, // optional
+    orderApprovalMode: OrderApprovalMode::LIMITED(), // optional
     organizationId: '', // optional
     phone: '+49 30 5550123', // optional
     registrationStatus: CustomersContactsCreateRegistrationStatus::PENDING(), // optional

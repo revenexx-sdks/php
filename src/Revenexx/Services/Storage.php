@@ -6,7 +6,7 @@ use Revenexx\RevenexxException;
 use Revenexx\Client;
 use Revenexx\Service;
 use Revenexx\InputFile;
-use Revenexx\Enums\Visibility;
+use Revenexx\Enums\AssetStoreVisibility;
 
 class Storage extends Service
 {
@@ -78,11 +78,11 @@ class Storage extends Service
      * @param ?bool $keepArchive
      * @param ?array $tags
      * @param ?bool $unpack
-     * @param ?Visibility $visibility
+     * @param ?AssetStoreVisibility $visibility
      * @throws RevenexxException
      * @return array
      */
-    public function assetStore(InputFile $file, ?string $altText = null, ?string $description = null, ?string $displayName = null, ?string $folderId = null, ?bool $keepArchive = null, ?array $tags = null, ?bool $unpack = null, ?Visibility $visibility = null, ?callable $onProgress = null): array
+    public function assetStore(InputFile $file, ?string $altText = null, ?string $description = null, ?string $displayName = null, ?string $folderId = null, ?bool $keepArchive = null, ?array $tags = null, ?bool $unpack = null, ?AssetStoreVisibility $visibility = null, ?callable $onProgress = null): array
     {
         $apiPath = str_replace(
             [],
@@ -270,11 +270,11 @@ class Storage extends Service
      * @param ?string $folderId
      * @param ?string $name
      * @param ?array $tags
-     * @param ?Visibility $visibility
+     * @param ?AssetStoreVisibility $visibility
      * @throws RevenexxException
      * @return array
      */
-    public function assetUpdate(string $id, ?string $altText = null, ?string $description = null, ?string $displayName = null, ?string $folderId = null, ?string $name = null, ?array $tags = null, ?Visibility $visibility = null): array
+    public function assetUpdate(string $id, ?string $altText = null, ?string $description = null, ?string $displayName = null, ?string $folderId = null, ?string $name = null, ?array $tags = null, ?AssetStoreVisibility $visibility = null): array
     {
         $apiPath = str_replace(
             ['{id}'],

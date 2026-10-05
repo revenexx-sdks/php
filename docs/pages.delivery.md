@@ -20,7 +20,7 @@ GET https://api.revenexx.com/v1/pages/delivery/menus
 GET https://api.revenexx.com/v1/pages/delivery/page
 ```
 
-** What a storefront calls to render a URL: `GET /pages/delivery/page?slug=about-us&amp;langcode=de`. Send exactly one selector — `slug` or `id`. `slug` is matched against the page and then against its translations, so a localized URL resolves to its page. Only the PUBLISHED revision is served, so an edit in progress never leaks. What comes back is finished rather than raw: `langcode` is resolved field by field with the page&#039;s source language behind it, blocks whose publish window has not opened or has already closed are left out, and every library reference is expanded into the subtree it points at — so a renderer walks the tree it is given and makes no second call for any of it. **
+** What a storefront calls to render a URL: `GET /pages/delivery/page?slug=about-us&langcode=de`. Send exactly one selector — `slug` or `id`. `slug` is matched against the page and then against its translations, so a localized URL resolves to its page. Only the PUBLISHED revision is served, so an edit in progress never leaks. What comes back is finished rather than raw: `langcode` is resolved field by field with the page's source language behind it, blocks whose publish window has not opened or has already closed are left out, and every library reference is expanded into the subtree it points at — so a renderer walks the tree it is given and makes no second call for any of it. **
 
 ### Parameters
 
@@ -59,4 +59,25 @@ GET https://api.revenexx.com/v1/pages/delivery/preview/{token}
 | --- | --- | --- | --- |
 | token | string | **Required** The token handed out by POST /pages/editor/{page_id}/preview-grant. |  |
 | langcode | string | Language to resolve the tree for. Falls back to the page's source language, per field. |  |
+
+
+```http request
+GET https://api.revenexx.com/v1/pages/delivery/site-settings
+```
+
+** What a theme styles the whole storefront with, in one object keyed by setting name. `appearance`, `design` and `customCss` are always present — `null` when the tenant has not set them, which is the theme's cue to use its own default — and any other key the tenant set is answered alongside them. **
+
+
+```http request
+GET https://api.revenexx.com/v1/pages/delivery/template
+```
+
+** Which page a product or a category renders with: `GET /pages/delivery/template?type=product&id=5137` answers `{ "slug": "product-detail" }`, and the theme then renders that page through `GET /pages/delivery/page`. 404 means "use the default template" — no page is assigned, or the one assigned is hidden or not published, so a visitor is never sent to a page delivery would refuse. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| type | string | The kind of record: `product`, `category`, … |  |
+| id | string | The record's id in the app that owns it. |  |
 

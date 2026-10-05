@@ -321,6 +321,13 @@ class Forms extends Service
      * raises about a submission. A call that is refused therefore leaves no trace
      * anywhere: no row, and no automation that ever hears about it.
      * 
+     * Only a `live` form accepts submissions: a draft is still being built and an
+     * archived form is no longer offered, so either is a 422 and nothing is
+     * stored. A submission arrives `new` — or `spam` when the honeypot caught
+     * it — and is filed under its form's own slug; a body that names a `status`
+     * or a `form_slug` is not refused, and neither is read. Triage is the
+     * inbox's, and which form collected a lead is the form's.
+     * 
      * It is also the only moment anything is known about a submission, so the
      * tenant's policy is applied here. If honeypot_field names a decoy and the
      * submission filled it in, the field is stripped — it is a trap, not an
@@ -337,14 +344,12 @@ class Forms extends Service
      *
      * @param array $data
      * @param string $formId
-     * @param ?string $formSlug
      * @param ?array $metadata
      * @param ?string $source
-     * @param ?FormSubmissionStatus $status
      * @throws RevenexxException
      * @return array
      */
-    public function formsSubmissionsCreate(array $data, string $formId, ?string $formSlug = null, ?array $metadata = null, ?string $source = null, ?FormSubmissionStatus $status = null): array
+    public function formsSubmissionsCreate(array $data, string $formId, ?array $metadata = null, ?string $source = null): array
     {
         $apiPath = str_replace(
             [],
@@ -355,16 +360,8 @@ class Forms extends Service
         $apiParams = [];
         $apiParams['data'] = $data;
         $apiParams['form_id'] = $formId;
-
-        if (!is_null($formSlug)) {
-            $apiParams['form_slug'] = $formSlug;
-        }
         $apiParams['metadata'] = $metadata;
         $apiParams['source'] = $source;
-
-        if (!is_null($status)) {
-            $apiParams['status'] = $status;
-        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';

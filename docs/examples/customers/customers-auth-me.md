@@ -13,6 +13,6 @@ $client = (new Client())
 $customers = new Customers($client);
 
 $result = $customers->customersAuthMe(
-    userId: '',
-    sessionId: '' // optional
+    sessionId: '',
+    userId: ''
 );```

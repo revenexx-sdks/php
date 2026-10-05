@@ -3,7 +3,7 @@
 
 use Revenexx\Client;
 use Revenexx\Services\ProductsCategories;
-use Revenexx\Enums\Source;
+use Revenexx\Enums\ProductsProductCategoriesListSource;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -21,6 +21,7 @@ $result = $productsCategories->productsProductCategoriesList(
     productId: '', // optional
     categoryId: '', // optional
     position: 1, // optional
-    source: Source::MANUAL(), // optional
-    createdAt: '2026-01-01T12:00:00Z' // optional
+    source: ProductsProductCategoriesListSource::MANUAL(), // optional
+    createdAt: '2026-01-01T12:00:00Z', // optional
+    updatedAt: '2026-01-01T12:00:00Z' // optional
 );```

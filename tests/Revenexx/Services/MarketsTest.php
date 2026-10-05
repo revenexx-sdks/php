@@ -163,7 +163,7 @@ final class MarketsTest extends TestCase {
 
         $response = $this->markets->marketsClone(
             "northwind",
-            "northwind-b2b"
+            "northwind_b2b"
         );
 
         $this->assertSame($data, $response);
@@ -319,9 +319,7 @@ final class MarketsTest extends TestCase {
 
         $response = $this->markets->marketsLocalesCreate(
             "",
-            "de-DE",
-            "DE",
-            "de"
+            "de-DE"
         );
 
         $this->assertSame($data, $response);

@@ -5,7 +5,7 @@
 GET https://api.revenexx.com/v1/sites
 ```
 
-** Get a list of all the project&#039;s sites. You can use the query params to filter your results. **
+** Get a list of all the project's sites. You can use the query params to filter your results. **
 
 ### Parameters
 
@@ -134,7 +134,7 @@ PATCH https://api.revenexx.com/v1/sites/{siteId}/deployment
 GET https://api.revenexx.com/v1/sites/{siteId}/deployments
 ```
 
-** Get a list of all the site&#039;s code deployments. You can use the query params to filter your results. **
+** Get a list of all the site's code deployments. You can use the query params to filter your results. **
 
 ### Parameters
 
@@ -150,7 +150,7 @@ GET https://api.revenexx.com/v1/sites/{siteId}/deployments
 POST https://api.revenexx.com/v1/sites/{siteId}/deployments
 ```
 
-** Create a new site code deployment. Use this endpoint to upload a new version of your site code. To activate your newly uploaded code, you&#039;ll need to update the site&#039;s deployment to use your new deployment ID. **
+** Create a new site code deployment. Use this endpoint to upload a new version of your site code. To activate your newly uploaded code, you'll need to update the site's deployment to use your new deployment ID. **
 
 ### Parameters
 
@@ -168,7 +168,7 @@ POST https://api.revenexx.com/v1/sites/{siteId}/deployments
 POST https://api.revenexx.com/v1/sites/{siteId}/deployments/duplicate
 ```
 
-** Create a new build for an existing site deployment. This endpoint allows you to rebuild a deployment with the updated site configuration, including its commands and output directory if they have been modified. The build process will be queued and executed asynchronously. The original deployment&#039;s code will be preserved and used for the new build. **
+** Create a new build for an existing site deployment. This endpoint allows you to rebuild a deployment with the updated site configuration, including its commands and output directory if they have been modified. The build process will be queued and executed asynchronously. The original deployment's code will be preserved and used for the new build. **
 
 ### Parameters
 
@@ -184,7 +184,7 @@ POST https://api.revenexx.com/v1/sites/{siteId}/deployments/template
 
 ** Create a deployment based on a template.
 
-Unlike app templates, site templates have no listing on this API — that catalogue is the vendor&#039;s and is not reproduced here. Take `repository`, `owner`, `rootDirectory` and `reference` from wherever the template is published. **
+Unlike app templates, site templates have no listing on this API — that catalogue is the vendor's and is not reproduced here. Take `repository`, `owner`, `rootDirectory` and `reference` from wherever the template is published. **
 
 ### Parameters
 
@@ -249,7 +249,7 @@ GET https://api.revenexx.com/v1/sites/{siteId}/deployments/{deploymentId}
 GET https://api.revenexx.com/v1/sites/{siteId}/deployments/{deploymentId}/download
 ```
 
-** Get a site deployment content by its unique ID. The endpoint response return with a &#039;Content-Disposition: attachment&#039; header that tells the browser to start downloading the file to user downloads directory. **
+** Get a site deployment content by its unique ID. The endpoint response return with a 'Content-Disposition: attachment' header that tells the browser to start downloading the file to user downloads directory. **
 
 ### Parameters
 
@@ -264,7 +264,7 @@ GET https://api.revenexx.com/v1/sites/{siteId}/deployments/{deploymentId}/downlo
 PATCH https://api.revenexx.com/v1/sites/{siteId}/deployments/{deploymentId}/status
 ```
 
-** Cancel an ongoing site deployment build. If the build is already in progress, it will be stopped and marked as canceled. If the build hasn&#039;t started yet, it will be marked as canceled without executing. You cannot cancel builds that have already completed (status &#039;ready&#039;) or failed. The response includes the final build status and details. **
+** Cancel an ongoing site deployment build. If the build is already in progress, it will be stopped and marked as canceled. If the build hasn't started yet, it will be marked as canceled without executing. You cannot cancel builds that have already completed (status 'ready') or failed. The response includes the final build status and details. **
 
 ### Parameters
 

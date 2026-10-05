@@ -41,12 +41,17 @@ class ProductsReferences extends Service
      * @param ?string $code
      * @param ?string $labels
      * @param ?string $image
+     * @param ?string $externalId
+     * @param ?string $externalRefs
+     * @param ?string $sourceSyncedAt
+     * @param ?string $sourceData
+     * @param ?string $metadata
      * @param ?string $createdAt
      * @param ?string $updatedAt
      * @throws RevenexxException
      * @return array
      */
-    public function productsReferenceEntitiesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?string $labels = null, ?string $image = null, ?string $createdAt = null, ?string $updatedAt = null): array
+    public function productsReferenceEntitiesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?string $labels = null, ?string $image = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $metadata = null, ?string $createdAt = null, ?string $updatedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -84,6 +89,26 @@ class ProductsReferences extends Service
             $apiParams['image'] = $image;
         }
 
+        if (!is_null($externalId)) {
+            $apiParams['external_id'] = $externalId;
+        }
+
+        if (!is_null($externalRefs)) {
+            $apiParams['external_refs'] = $externalRefs;
+        }
+
+        if (!is_null($sourceSyncedAt)) {
+            $apiParams['source_synced_at'] = $sourceSyncedAt;
+        }
+
+        if (!is_null($sourceData)) {
+            $apiParams['source_data'] = $sourceData;
+        }
+
+        if (!is_null($metadata)) {
+            $apiParams['metadata'] = $metadata;
+        }
+
         if (!is_null($createdAt)) {
             $apiParams['created_at'] = $createdAt;
         }
@@ -119,12 +144,17 @@ class ProductsReferences extends Service
      * answers 409.
      *
      * @param string $code
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?string $image
      * @param ?array $labels
+     * @param ?array $metadata
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @throws RevenexxException
      * @return array
      */
-    public function productsReferenceEntitiesCreate(string $code, ?string $image = null, ?array $labels = null): array
+    public function productsReferenceEntitiesCreate(string $code, ?string $externalId = null, ?array $externalRefs = null, ?string $image = null, ?array $labels = null, ?array $metadata = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -134,8 +164,13 @@ class ProductsReferences extends Service
 
         $apiParams = [];
         $apiParams['code'] = $code;
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
         $apiParams['image'] = $image;
         $apiParams['labels'] = $labels;
+        $apiParams['metadata'] = $metadata;
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -248,12 +283,17 @@ class ProductsReferences extends Service
      *
      * @param string $id
      * @param ?string $code
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?string $image
      * @param ?array $labels
+     * @param ?array $metadata
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @throws RevenexxException
      * @return array
      */
-    public function productsReferenceEntitiesUpdate(string $id, ?string $code = null, ?string $image = null, ?array $labels = null): array
+    public function productsReferenceEntitiesUpdate(string $id, ?string $code = null, ?string $externalId = null, ?array $externalRefs = null, ?string $image = null, ?array $labels = null, ?array $metadata = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -267,8 +307,13 @@ class ProductsReferences extends Service
         if (!is_null($code)) {
             $apiParams['code'] = $code;
         }
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
         $apiParams['image'] = $image;
         $apiParams['labels'] = $labels;
+        $apiParams['metadata'] = $metadata;
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -309,12 +354,16 @@ class ProductsReferences extends Service
      * @param ?string $code
      * @param ?string $labels
      * @param ?string $attributeValues
+     * @param ?string $externalId
+     * @param ?string $externalRefs
+     * @param ?string $sourceSyncedAt
+     * @param ?string $sourceData
      * @param ?string $createdAt
      * @param ?string $updatedAt
      * @throws RevenexxException
      * @return array
      */
-    public function productsReferenceEntityRecordsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $referenceEntityId = null, ?string $code = null, ?string $labels = null, ?string $attributeValues = null, ?string $createdAt = null, ?string $updatedAt = null): array
+    public function productsReferenceEntityRecordsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $referenceEntityId = null, ?string $code = null, ?string $labels = null, ?string $attributeValues = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $createdAt = null, ?string $updatedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -356,6 +405,22 @@ class ProductsReferences extends Service
             $apiParams['attribute_values'] = $attributeValues;
         }
 
+        if (!is_null($externalId)) {
+            $apiParams['external_id'] = $externalId;
+        }
+
+        if (!is_null($externalRefs)) {
+            $apiParams['external_refs'] = $externalRefs;
+        }
+
+        if (!is_null($sourceSyncedAt)) {
+            $apiParams['source_synced_at'] = $sourceSyncedAt;
+        }
+
+        if (!is_null($sourceData)) {
+            $apiParams['source_data'] = $sourceData;
+        }
+
         if (!is_null($createdAt)) {
             $apiParams['created_at'] = $createdAt;
         }
@@ -394,11 +459,15 @@ class ProductsReferences extends Service
      * @param string $code
      * @param string $referenceEntityId
      * @param ?array $attributeValues
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?array $labels
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @throws RevenexxException
      * @return array
      */
-    public function productsReferenceEntityRecordsCreate(string $code, string $referenceEntityId, ?array $attributeValues = null, ?array $labels = null): array
+    public function productsReferenceEntityRecordsCreate(string $code, string $referenceEntityId, ?array $attributeValues = null, ?string $externalId = null, ?array $externalRefs = null, ?array $labels = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -413,7 +482,11 @@ class ProductsReferences extends Service
         if (!is_null($attributeValues)) {
             $apiParams['attribute_values'] = $attributeValues;
         }
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
         $apiParams['labels'] = $labels;
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -527,12 +600,16 @@ class ProductsReferences extends Service
      * @param string $id
      * @param ?array $attributeValues
      * @param ?string $code
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?array $labels
      * @param ?string $referenceEntityId
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @throws RevenexxException
      * @return array
      */
-    public function productsReferenceEntityRecordsUpdate(string $id, ?array $attributeValues = null, ?string $code = null, ?array $labels = null, ?string $referenceEntityId = null): array
+    public function productsReferenceEntityRecordsUpdate(string $id, ?array $attributeValues = null, ?string $code = null, ?string $externalId = null, ?array $externalRefs = null, ?array $labels = null, ?string $referenceEntityId = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -550,11 +627,15 @@ class ProductsReferences extends Service
         if (!is_null($code)) {
             $apiParams['code'] = $code;
         }
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
         $apiParams['labels'] = $labels;
 
         if (!is_null($referenceEntityId)) {
             $apiParams['reference_entity_id'] = $referenceEntityId;
         }
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';

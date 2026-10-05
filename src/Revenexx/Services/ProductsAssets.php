@@ -6,7 +6,7 @@ use Revenexx\RevenexxException;
 use Revenexx\Client;
 use Revenexx\Service;
 use Revenexx\InputFile;
-use Revenexx\Enums\ProductsAssetsListSource;
+use Revenexx\Enums\DocumentsDocumentsListSource;
 use Revenexx\Enums\AssetsSource;
 
 class ProductsAssets extends Service
@@ -41,17 +41,21 @@ class ProductsAssets extends Service
      * @param ?string $id
      * @param ?string $assetFamilyId
      * @param ?string $code
-     * @param ?ProductsAssetsListSource $source
+     * @param ?DocumentsDocumentsListSource $source
      * @param ?string $storageAssetId
      * @param ?string $deliveryPath
      * @param ?string $externalUrl
      * @param ?string $attributeValues
+     * @param ?string $externalId
+     * @param ?string $externalRefs
+     * @param ?string $sourceSyncedAt
+     * @param ?string $sourceData
      * @param ?string $createdAt
      * @param ?string $updatedAt
      * @throws RevenexxException
      * @return array
      */
-    public function productsAssetsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $assetFamilyId = null, ?string $code = null, ?ProductsAssetsListSource $source = null, ?string $storageAssetId = null, ?string $deliveryPath = null, ?string $externalUrl = null, ?string $attributeValues = null, ?string $createdAt = null, ?string $updatedAt = null): array
+    public function productsAssetsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $assetFamilyId = null, ?string $code = null, ?DocumentsDocumentsListSource $source = null, ?string $storageAssetId = null, ?string $deliveryPath = null, ?string $externalUrl = null, ?string $attributeValues = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $createdAt = null, ?string $updatedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -105,6 +109,22 @@ class ProductsAssets extends Service
             $apiParams['attribute_values'] = $attributeValues;
         }
 
+        if (!is_null($externalId)) {
+            $apiParams['external_id'] = $externalId;
+        }
+
+        if (!is_null($externalRefs)) {
+            $apiParams['external_refs'] = $externalRefs;
+        }
+
+        if (!is_null($sourceSyncedAt)) {
+            $apiParams['source_synced_at'] = $sourceSyncedAt;
+        }
+
+        if (!is_null($sourceData)) {
+            $apiParams['source_data'] = $sourceData;
+        }
+
         if (!is_null($createdAt)) {
             $apiParams['created_at'] = $createdAt;
         }
@@ -147,13 +167,17 @@ class ProductsAssets extends Service
      * @param string $code
      * @param ?array $attributeValues
      * @param ?string $deliveryPath
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?string $externalUrl
      * @param ?AssetsSource $source
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @param ?string $storageAssetId
      * @throws RevenexxException
      * @return array
      */
-    public function productsAssetsCreate(string $assetFamilyId, string $code, ?array $attributeValues = null, ?string $deliveryPath = null, ?string $externalUrl = null, ?AssetsSource $source = null, ?string $storageAssetId = null): array
+    public function productsAssetsCreate(string $assetFamilyId, string $code, ?array $attributeValues = null, ?string $deliveryPath = null, ?string $externalId = null, ?array $externalRefs = null, ?string $externalUrl = null, ?AssetsSource $source = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $storageAssetId = null): array
     {
         $apiPath = str_replace(
             [],
@@ -169,11 +193,15 @@ class ProductsAssets extends Service
             $apiParams['attribute_values'] = $attributeValues;
         }
         $apiParams['delivery_path'] = $deliveryPath;
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
         $apiParams['external_url'] = $externalUrl;
 
         if (!is_null($source)) {
             $apiParams['source'] = $source;
         }
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
         $apiParams['storage_asset_id'] = $storageAssetId;
 
         $apiHeaders = [];
@@ -287,13 +315,17 @@ class ProductsAssets extends Service
      * @param ?array $attributeValues
      * @param ?string $code
      * @param ?string $deliveryPath
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?string $externalUrl
      * @param ?AssetsSource $source
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @param ?string $storageAssetId
      * @throws RevenexxException
      * @return array
      */
-    public function productsAssetsUpdate(string $id, ?string $assetFamilyId = null, ?array $attributeValues = null, ?string $code = null, ?string $deliveryPath = null, ?string $externalUrl = null, ?AssetsSource $source = null, ?string $storageAssetId = null): array
+    public function productsAssetsUpdate(string $id, ?string $assetFamilyId = null, ?array $attributeValues = null, ?string $code = null, ?string $deliveryPath = null, ?string $externalId = null, ?array $externalRefs = null, ?string $externalUrl = null, ?AssetsSource $source = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $storageAssetId = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -316,11 +348,15 @@ class ProductsAssets extends Service
             $apiParams['code'] = $code;
         }
         $apiParams['delivery_path'] = $deliveryPath;
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
         $apiParams['external_url'] = $externalUrl;
 
         if (!is_null($source)) {
             $apiParams['source'] = $source;
         }
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
         $apiParams['storage_asset_id'] = $storageAssetId;
 
         $apiHeaders = [];

@@ -21,11 +21,14 @@ $result = $paymentsLedger->paymentsList(
     order: 'created_at.desc', // optional
     cartId: '', // optional
     contactId: '', // optional
+    orderId: '', // optional
     status: PaymentStatus::CREATED(), // optional
     orderRef: 'ORD-10042', // optional
     methodCode: 'invoice', // optional
     kind: PaymentMethodKind::SELFMANAGED(), // optional
     provider: 'stripe', // optional
     dunningStage: PaymentDunningStage::NONE(), // optional
-    idempotencyKey: 'checkout-2f9c41' // optional
+    idempotencyKey: 'checkout-2f9c41', // optional
+    externalId: 'ZAHL-4711', // optional
+    sourceSyncedAt: '2026-01-01T12:00:00Z' // optional
 );```

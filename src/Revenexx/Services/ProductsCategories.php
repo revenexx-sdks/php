@@ -9,7 +9,7 @@ use Revenexx\InputFile;
 use Revenexx\Enums\RuleMatch;
 use Revenexx\Enums\CategoriesRuleMatch;
 use Revenexx\Enums\CategoryRuleMatch;
-use Revenexx\Enums\Source;
+use Revenexx\Enums\ProductsProductCategoriesListSource;
 use Revenexx\Enums\ProductCategoriesSource;
 
 class ProductsCategories extends Service
@@ -53,12 +53,17 @@ class ProductsCategories extends Service
      * @param ?string $rules
      * @param ?RuleMatch $ruleMatch
      * @param ?string $rulesComputedAt
+     * @param ?string $externalId
+     * @param ?string $externalRefs
+     * @param ?string $sourceSyncedAt
+     * @param ?string $sourceData
+     * @param ?string $metadata
      * @param ?string $createdAt
      * @param ?string $updatedAt
      * @throws RevenexxException
      * @return array
      */
-    public function productsCategoriesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?string $parentId = null, ?string $xpath = null, ?int $position = null, ?string $labels = null, ?string $values = null, ?string $rules = null, ?RuleMatch $ruleMatch = null, ?string $rulesComputedAt = null, ?string $createdAt = null, ?string $updatedAt = null): array
+    public function productsCategoriesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?string $parentId = null, ?string $xpath = null, ?int $position = null, ?string $labels = null, ?string $values = null, ?string $rules = null, ?RuleMatch $ruleMatch = null, ?string $rulesComputedAt = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $metadata = null, ?string $createdAt = null, ?string $updatedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -120,6 +125,26 @@ class ProductsCategories extends Service
             $apiParams['rules_computed_at'] = $rulesComputedAt;
         }
 
+        if (!is_null($externalId)) {
+            $apiParams['external_id'] = $externalId;
+        }
+
+        if (!is_null($externalRefs)) {
+            $apiParams['external_refs'] = $externalRefs;
+        }
+
+        if (!is_null($sourceSyncedAt)) {
+            $apiParams['source_synced_at'] = $sourceSyncedAt;
+        }
+
+        if (!is_null($sourceData)) {
+            $apiParams['source_data'] = $sourceData;
+        }
+
+        if (!is_null($metadata)) {
+            $apiParams['metadata'] = $metadata;
+        }
+
         if (!is_null($createdAt)) {
             $apiParams['created_at'] = $createdAt;
         }
@@ -156,18 +181,23 @@ class ProductsCategories extends Service
      * answers 409.
      *
      * @param string $code
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?array $labels
+     * @param ?array $metadata
      * @param ?string $parentId
      * @param ?string $xpath
      * @param ?int $position
      * @param ?CategoriesRuleMatch $ruleMatch
      * @param ?array $rules
      * @param ?string $rulesComputedAt
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @param ?array $values
      * @throws RevenexxException
      * @return array
      */
-    public function productsCategoriesCreate(string $code, ?array $labels = null, ?string $parentId = null, ?string $xpath = null, ?int $position = null, ?CategoriesRuleMatch $ruleMatch = null, ?array $rules = null, ?string $rulesComputedAt = null, ?array $values = null): array
+    public function productsCategoriesCreate(string $code, ?string $externalId = null, ?array $externalRefs = null, ?array $labels = null, ?array $metadata = null, ?string $parentId = null, ?string $xpath = null, ?int $position = null, ?CategoriesRuleMatch $ruleMatch = null, ?array $rules = null, ?string $rulesComputedAt = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?array $values = null): array
     {
         $apiPath = str_replace(
             [],
@@ -177,7 +207,10 @@ class ProductsCategories extends Service
 
         $apiParams = [];
         $apiParams['code'] = $code;
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
         $apiParams['labels'] = $labels;
+        $apiParams['metadata'] = $metadata;
         $apiParams['parent_id'] = $parentId;
         $apiParams['path'] = $xpath;
 
@@ -187,6 +220,8 @@ class ProductsCategories extends Service
         $apiParams['rule_match'] = $ruleMatch;
         $apiParams['rules'] = $rules;
         $apiParams['rules_computed_at'] = $rulesComputedAt;
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
         $apiParams['values'] = $values;
 
         $apiHeaders = [];
@@ -419,18 +454,23 @@ class ProductsCategories extends Service
      *
      * @param string $id
      * @param ?string $code
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?array $labels
+     * @param ?array $metadata
      * @param ?string $parentId
      * @param ?string $xpath
      * @param ?int $position
      * @param ?CategoriesRuleMatch $ruleMatch
      * @param ?array $rules
      * @param ?string $rulesComputedAt
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @param ?array $values
      * @throws RevenexxException
      * @return array
      */
-    public function productsCategoriesUpdate(string $id, ?string $code = null, ?array $labels = null, ?string $parentId = null, ?string $xpath = null, ?int $position = null, ?CategoriesRuleMatch $ruleMatch = null, ?array $rules = null, ?string $rulesComputedAt = null, ?array $values = null): array
+    public function productsCategoriesUpdate(string $id, ?string $code = null, ?string $externalId = null, ?array $externalRefs = null, ?array $labels = null, ?array $metadata = null, ?string $parentId = null, ?string $xpath = null, ?int $position = null, ?CategoriesRuleMatch $ruleMatch = null, ?array $rules = null, ?string $rulesComputedAt = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?array $values = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -444,7 +484,10 @@ class ProductsCategories extends Service
         if (!is_null($code)) {
             $apiParams['code'] = $code;
         }
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
         $apiParams['labels'] = $labels;
+        $apiParams['metadata'] = $metadata;
         $apiParams['parent_id'] = $parentId;
         $apiParams['path'] = $xpath;
 
@@ -454,6 +497,8 @@ class ProductsCategories extends Service
         $apiParams['rule_match'] = $ruleMatch;
         $apiParams['rules'] = $rules;
         $apiParams['rules_computed_at'] = $rulesComputedAt;
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
         $apiParams['values'] = $values;
 
         $apiHeaders = [];
@@ -495,12 +540,13 @@ class ProductsCategories extends Service
      * @param ?string $productId
      * @param ?string $categoryId
      * @param ?int $position
-     * @param ?Source $source
+     * @param ?ProductsProductCategoriesListSource $source
      * @param ?string $createdAt
+     * @param ?string $updatedAt
      * @throws RevenexxException
      * @return array
      */
-    public function productsProductCategoriesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $productId = null, ?string $categoryId = null, ?int $position = null, ?Source $source = null, ?string $createdAt = null): array
+    public function productsProductCategoriesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $productId = null, ?string $categoryId = null, ?int $position = null, ?ProductsProductCategoriesListSource $source = null, ?string $createdAt = null, ?string $updatedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -544,6 +590,10 @@ class ProductsCategories extends Service
 
         if (!is_null($createdAt)) {
             $apiParams['created_at'] = $createdAt;
+        }
+
+        if (!is_null($updatedAt)) {
+            $apiParams['updated_at'] = $updatedAt;
         }
 
         $apiHeaders = [];

@@ -16,5 +16,6 @@ $result = $pages->pagesLibraryUpdate(
     id: '',
     bundle: 'teaser', // optional
     label: 'Newsletter teaser', // optional
+    metadata: [], // optional
     tree: [] // optional
 );```

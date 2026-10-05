@@ -3,6 +3,8 @@
 
 use Revenexx\Client;
 use Revenexx\Services\CustomersOrganizations;
+use Revenexx\Enums\CreditLimitMode;
+use Revenexx\Enums\ShippingAdvice;
 use Revenexx\Enums\OrganizationStatus;
 
 $client = (new Client())
@@ -15,11 +17,15 @@ $customersOrganizations = new CustomersOrganizations($client);
 
 $result = $customersOrganizations->customersOrganizationsUpdate(
     id: '',
+    balance: 12450.75, // optional
+    balanceDue: 320, // optional
     branche: 'Maschinenbau', // optional
     creditLimit: 5000, // optional
+    creditLimitMode: CreditLimitMode::LIMITED(), // optional
     customerNumber: 'K-10042', // optional
     deliveryBlock: true, // optional
     lifecycleStage: 'customer', // optional
+    locationCode: 'DE-NORD', // optional
     name: 'Beispiel Industrietechnik GmbH', // optional
     paymentTerms: 'net_30', // optional
     priceList: 'standard', // optional
@@ -28,6 +34,7 @@ $result = $customersOrganizations->customersOrganizationsUpdate(
         'delivery_tour' => 'tuesday',
         'self_pickup' => true
     ], // optional
+    shippingAdvice: ShippingAdvice::PARTIAL(), // optional
     status: OrganizationStatus::ACTIVE(), // optional
     vatId: 'DE123456789' // optional
 );```

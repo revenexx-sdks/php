@@ -8,9 +8,16 @@ class OrderVocabularySummaryName implements JsonSerializable
 {
     private static OrderVocabularySummaryName $CANCELLATIONSCOPES;
     private static OrderVocabularySummaryName $COMMENTVISIBILITIES;
+    private static OrderVocabularySummaryName $DISCOUNTAPPLIESTO;
+    private static OrderVocabularySummaryName $DISCOUNTEFFECTKINDS;
+    private static OrderVocabularySummaryName $DISCOUNTPLACEMENTS;
+    private static OrderVocabularySummaryName $DISCOUNTSOURCES;
+    private static OrderVocabularySummaryName $DISCOUNTVALUETYPES;
     private static OrderVocabularySummaryName $FULFILLMENTSTATUSES;
     private static OrderVocabularySummaryName $ITEMTYPES;
     private static OrderVocabularySummaryName $PAYMENTSTATUSES;
+    private static OrderVocabularySummaryName $REFUNDMODES;
+    private static OrderVocabularySummaryName $RETURNREASONTONES;
     private static OrderVocabularySummaryName $RETURNRESOLUTIONS;
     private static OrderVocabularySummaryName $RETURNSTATUSES;
     private static OrderVocabularySummaryName $STATUSES;
@@ -46,6 +53,41 @@ class OrderVocabularySummaryName implements JsonSerializable
         }
         return self::$COMMENTVISIBILITIES;
     }
+    public static function DISCOUNTAPPLIESTO(): OrderVocabularySummaryName
+    {
+        if (!isset(self::$DISCOUNTAPPLIESTO)) {
+            self::$DISCOUNTAPPLIESTO = new OrderVocabularySummaryName('discount-applies-to');
+        }
+        return self::$DISCOUNTAPPLIESTO;
+    }
+    public static function DISCOUNTEFFECTKINDS(): OrderVocabularySummaryName
+    {
+        if (!isset(self::$DISCOUNTEFFECTKINDS)) {
+            self::$DISCOUNTEFFECTKINDS = new OrderVocabularySummaryName('discount-effect-kinds');
+        }
+        return self::$DISCOUNTEFFECTKINDS;
+    }
+    public static function DISCOUNTPLACEMENTS(): OrderVocabularySummaryName
+    {
+        if (!isset(self::$DISCOUNTPLACEMENTS)) {
+            self::$DISCOUNTPLACEMENTS = new OrderVocabularySummaryName('discount-placements');
+        }
+        return self::$DISCOUNTPLACEMENTS;
+    }
+    public static function DISCOUNTSOURCES(): OrderVocabularySummaryName
+    {
+        if (!isset(self::$DISCOUNTSOURCES)) {
+            self::$DISCOUNTSOURCES = new OrderVocabularySummaryName('discount-sources');
+        }
+        return self::$DISCOUNTSOURCES;
+    }
+    public static function DISCOUNTVALUETYPES(): OrderVocabularySummaryName
+    {
+        if (!isset(self::$DISCOUNTVALUETYPES)) {
+            self::$DISCOUNTVALUETYPES = new OrderVocabularySummaryName('discount-value-types');
+        }
+        return self::$DISCOUNTVALUETYPES;
+    }
     public static function FULFILLMENTSTATUSES(): OrderVocabularySummaryName
     {
         if (!isset(self::$FULFILLMENTSTATUSES)) {
@@ -66,6 +108,20 @@ class OrderVocabularySummaryName implements JsonSerializable
             self::$PAYMENTSTATUSES = new OrderVocabularySummaryName('payment-statuses');
         }
         return self::$PAYMENTSTATUSES;
+    }
+    public static function REFUNDMODES(): OrderVocabularySummaryName
+    {
+        if (!isset(self::$REFUNDMODES)) {
+            self::$REFUNDMODES = new OrderVocabularySummaryName('refund-modes');
+        }
+        return self::$REFUNDMODES;
+    }
+    public static function RETURNREASONTONES(): OrderVocabularySummaryName
+    {
+        if (!isset(self::$RETURNREASONTONES)) {
+            self::$RETURNREASONTONES = new OrderVocabularySummaryName('return-reason-tones');
+        }
+        return self::$RETURNREASONTONES;
     }
     public static function RETURNRESOLUTIONS(): OrderVocabularySummaryName
     {

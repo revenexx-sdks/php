@@ -7,6 +7,7 @@ use JsonSerializable;
 class CostCenterBudgetType implements JsonSerializable
 {
     private static CostCenterBudgetType $MONETARY;
+    private static CostCenterBudgetType $TRACKINGONLY;
 
     private string $value;
 
@@ -31,5 +32,12 @@ class CostCenterBudgetType implements JsonSerializable
             self::$MONETARY = new CostCenterBudgetType('monetary');
         }
         return self::$MONETARY;
+    }
+    public static function TRACKINGONLY(): CostCenterBudgetType
+    {
+        if (!isset(self::$TRACKINGONLY)) {
+            self::$TRACKINGONLY = new CostCenterBudgetType('tracking_only');
+        }
+        return self::$TRACKINGONLY;
     }
 }

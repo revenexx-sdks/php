@@ -13,6 +13,7 @@ $client = (new Client())
 $products = new Products($client);
 
 $result = $products->productsBatch(
+    full: true, // optional
     ids: [], // optional
     skus: [] // optional
 );```

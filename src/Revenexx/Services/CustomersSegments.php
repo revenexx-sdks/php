@@ -104,11 +104,12 @@ class CustomersSegments extends Service
      *
      * @param string $organizationId
      * @param string $segmentId
+     * @param ?string $createdAt
      * @param ?SegmentMemberSource $source
      * @throws RevenexxException
      * @return array
      */
-    public function customersSegmentMembersCreate(string $organizationId, string $segmentId, ?SegmentMemberSource $source = null): array
+    public function customersSegmentMembersCreate(string $organizationId, string $segmentId, ?string $createdAt = null, ?SegmentMemberSource $source = null): array
     {
         $apiPath = str_replace(
             [],
@@ -119,6 +120,10 @@ class CustomersSegments extends Service
         $apiParams = [];
         $apiParams['organization_id'] = $organizationId;
         $apiParams['segment_id'] = $segmentId;
+
+        if (!is_null($createdAt)) {
+            $apiParams['created_at'] = $createdAt;
+        }
 
         if (!is_null($source)) {
             $apiParams['source'] = $source;
@@ -267,6 +272,8 @@ class CustomersSegments extends Service
      * @param ?int $position
      * @param ?RuleMatch $ruleMatch
      * @param ?string $rulesComputedAt
+     * @param ?string $externalId
+     * @param ?string $sourceSyncedAt
      * @param ?string $createdAt
      * @param ?string $updatedAt
      * @param ?int $limit
@@ -275,7 +282,7 @@ class CustomersSegments extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function customersSegmentsList(?string $id = null, ?string $code = null, ?int $position = null, ?RuleMatch $ruleMatch = null, ?string $rulesComputedAt = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function customersSegmentsList(?string $id = null, ?string $code = null, ?int $position = null, ?RuleMatch $ruleMatch = null, ?string $rulesComputedAt = null, ?string $externalId = null, ?string $sourceSyncedAt = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             [],
@@ -303,6 +310,14 @@ class CustomersSegments extends Service
 
         if (!is_null($rulesComputedAt)) {
             $apiParams['rules_computed_at'] = $rulesComputedAt;
+        }
+
+        if (!is_null($externalId)) {
+            $apiParams['external_id'] = $externalId;
+        }
+
+        if (!is_null($sourceSyncedAt)) {
+            $apiParams['source_synced_at'] = $sourceSyncedAt;
         }
 
         if (!is_null($createdAt)) {
@@ -344,9 +359,10 @@ class CustomersSegments extends Service
      * membership up to date. The `code` is what other apps point at, so pick it
      * deliberately. `code` is the only field a create cannot omit; everything
      * else is optional or defaulted by the database. Two rows of this tenant may
-     * not share `code`.
+     * not share `code` or `external_id` (while external_id IS NOT NULL).
      *
      * @param string $code
+     * @param ?string $createdAt
      * @param ?array $labels
      * @param ?int $position
      * @param ?SegmentRuleMatch $ruleMatch
@@ -354,7 +370,7 @@ class CustomersSegments extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function customersSegmentsCreate(string $code, ?array $labels = null, ?int $position = null, ?SegmentRuleMatch $ruleMatch = null, ?array $rules = null): array
+    public function customersSegmentsCreate(string $code, ?string $createdAt = null, ?array $labels = null, ?int $position = null, ?SegmentRuleMatch $ruleMatch = null, ?array $rules = null): array
     {
         $apiPath = str_replace(
             [],
@@ -364,6 +380,10 @@ class CustomersSegments extends Service
 
         $apiParams = [];
         $apiParams['code'] = $code;
+
+        if (!is_null($createdAt)) {
+            $apiParams['created_at'] = $createdAt;
+        }
         $apiParams['labels'] = $labels;
 
         if (!is_null($position)) {
@@ -495,7 +515,7 @@ class CustomersSegments extends Service
      * NOT re-evaluate them: that is `POST
      * /customers/segments/{segment_id}/rules/recompute`, so a half-typed rule
      * never silently empties a live segment. Two rows of this tenant may not
-     * share `code`.
+     * share `code` or `external_id` (while external_id IS NOT NULL).
      *
      * @param string $id
      * @param ?string $code

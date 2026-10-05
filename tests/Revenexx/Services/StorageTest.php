@@ -6,7 +6,7 @@ use Revenexx\Client;
 use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
-use Revenexx\Enums\Visibility;
+use Revenexx\Enums\AssetStoreVisibility;
 
 final class StorageTest extends TestCase {
     private $client;

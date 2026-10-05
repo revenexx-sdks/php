@@ -15,10 +15,14 @@ $prices = new Prices($client);
 
 $result = $prices->pricesEntriesCreate(
     listId: '',
+    description: 'Cable, per 100 m, alloy surcharge included', // optional
+    discountPercent: 9.99, // optional
     metadata: [
         'imported_batch' => '2026-02-14',
         'source_system' => 'erp'
     ], // optional
+    priceQuantity: 9.99, // optional
+    priceQuantityUnit: 'm', // optional
     priceType: PriceEntryType::STANDARD(), // optional
     productId: '', // optional
     quantityMin: 9.99, // optional

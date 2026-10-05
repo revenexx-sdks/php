@@ -43,12 +43,16 @@ class InventoriesLocations extends Service
      * @param ?bool $enabled
      * @param ?string $address
      * @param ?string $metadata
+     * @param ?string $externalId
+     * @param ?string $externalRefs
+     * @param ?string $sourceSyncedAt
+     * @param ?string $sourceData
      * @param ?string $createdAt
      * @param ?string $updatedAt
      * @throws RevenexxException
      * @return array
      */
-    public function inventoriesLocationsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?string $name = null, ?string $labels = null, ?InventoriesLocationsListType $type = null, ?int $priority = null, ?bool $enabled = null, ?string $address = null, ?string $metadata = null, ?string $createdAt = null, ?string $updatedAt = null): array
+    public function inventoriesLocationsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?string $name = null, ?string $labels = null, ?InventoriesLocationsListType $type = null, ?int $priority = null, ?bool $enabled = null, ?string $address = null, ?string $metadata = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $createdAt = null, ?string $updatedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -106,6 +110,22 @@ class InventoriesLocations extends Service
             $apiParams['metadata'] = $metadata;
         }
 
+        if (!is_null($externalId)) {
+            $apiParams['external_id'] = $externalId;
+        }
+
+        if (!is_null($externalRefs)) {
+            $apiParams['external_refs'] = $externalRefs;
+        }
+
+        if (!is_null($sourceSyncedAt)) {
+            $apiParams['source_synced_at'] = $sourceSyncedAt;
+        }
+
+        if (!is_null($sourceData)) {
+            $apiParams['source_data'] = $sourceData;
+        }
+
         if (!is_null($createdAt)) {
             $apiParams['created_at'] = $createdAt;
         }
@@ -131,16 +151,16 @@ class InventoriesLocations extends Service
      * only tracks, or a virtual bucket that is not a building at all —
      * pre-orders, consignment, a quarantine shelf. A create cannot omit `code`
      * and `name`; every other column is optional or defaulted by the database.
-     * Two rows of this tenant may not share `code` — that is the 409, and it
-     * answers an update that moves a row onto a sibling's value exactly as it
-     * answers a second insert. A new location starts EMPTY and creating one moves
-     * nothing: stock arrives through POST /inventories/receive, or is transferred
-     * by two adjustments, one negative at the old location and one positive here.
-     * Mind the two columns that are not decoration — `priority` decides where a
-     * reservation is served from before `type` ever does (nothing branches on
-     * `type`), and `enabled` defaults to true, so a location created for a
-     * warehouse that has not opened yet starts being offered by availability and
-     * reserve immediately.
+     * Two rows of this tenant may not share `code` and `external_id` — that is
+     * the 409, and it answers an update that moves a row onto a sibling's value
+     * exactly as it answers a second insert. A new location starts EMPTY and
+     * creating one moves nothing: stock arrives through POST
+     * /inventories/receive, or is transferred by two adjustments, one negative at
+     * the old location and one positive here. Mind the two columns that are not
+     * decoration — `priority` decides where a reservation is served from before
+     * `type` ever does (nothing branches on `type`), and `enabled` defaults to
+     * true, so a location created for a warehouse that has not opened yet starts
+     * being offered by availability and reserve immediately.
      *
      * @param string $code
      * @param string $name
@@ -192,16 +212,20 @@ class InventoriesLocations extends Service
     }
 
     /**
-     * Gives a tenant its first location, `main`, so the stock calls have
-     * somewhere to book into: `receive`, `adjust` and `restock` fall back to the
-     * `default_location_code` setting when a caller names no `location_code`, and
-     * a tenant with no location at all answers 400 on its first receipt. The
-     * platform already runs this on `app.installed`, so calling it by hand is the
-     * repair for an install that predates the event or a `main` somebody deleted.
-     * Idempotent by CODE, not by contents: a location already carrying that code
-     * is reported under `existing` and is NOT touched, so a renamed or disabled
-     * `main` stays renamed and disabled. It creates nothing else and never
-     * removes a location.
+     * Gives a tenant the two sets it cannot start without. First its first
+     * location, `main`, so the stock calls have somewhere to book into:
+     * `receive`, `adjust` and `restock` fall back to the `default_location_code`
+     * setting when a caller names no `location_code`, and a tenant with no
+     * location at all answers 400 on its first receipt. Then the four
+     * availability states this app ships with, reported under
+     * `availability_states` and kept out of the two lists above because a state
+     * is not a location. The platform already runs this on `app.installed`, so
+     * calling it by hand is the repair for an install that predates the event or
+     * a `main` somebody deleted. Idempotent by CODE, not by contents: a row
+     * already carrying that code is reported under `existing` and is NOT touched,
+     * so a renamed or disabled `main` stays renamed and disabled and a state
+     * whose `orderable` a merchant corrected keeps the correction. It creates
+     * nothing else and never removes anything.
      *
      * @throws RevenexxException
      * @return array
@@ -328,9 +352,9 @@ class InventoriesLocations extends Service
      * not reversible at all. Changing `code` is the other sharp edge: rows keep
      * their `location_id` so nothing moves, but every caller that names the old
      * code in `location_code` starts getting 400 "unknown location". Two rows of
-     * this tenant may not share `code` — that is the 409, and it answers an
-     * update that moves a row onto a sibling's value exactly as it answers a
-     * second insert.
+     * this tenant may not share `code` and `external_id` — that is the 409, and
+     * it answers an update that moves a row onto a sibling's value exactly as it
+     * answers a second insert.
      *
      * @param string $id
      * @param ?array $address

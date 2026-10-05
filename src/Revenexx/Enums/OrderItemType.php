@@ -9,6 +9,7 @@ class OrderItemType implements JsonSerializable
     private static OrderItemType $PRODUCT;
     private static OrderItemType $CONFIGURATION;
     private static OrderItemType $CUSTOM;
+    private static OrderItemType $DISCOUNT;
 
     private string $value;
 
@@ -47,5 +48,12 @@ class OrderItemType implements JsonSerializable
             self::$CUSTOM = new OrderItemType('custom');
         }
         return self::$CUSTOM;
+    }
+    public static function DISCOUNT(): OrderItemType
+    {
+        if (!isset(self::$DISCOUNT)) {
+            self::$DISCOUNT = new OrderItemType('discount');
+        }
+        return self::$DISCOUNT;
     }
 }

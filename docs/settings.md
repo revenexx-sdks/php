@@ -5,7 +5,7 @@
 GET https://api.revenexx.com/v1/settings/apps/{app}
 ```
 
-** The tenant&#039;s effective settings for the app — the declared schema&#039;s defaults merged with stored tenant/market values. Sensitive settings are masked (listed in `masked`, omitted from `settings`). **
+** The tenant's effective settings for the app — the declared schema's defaults merged with stored tenant/market values. Sensitive settings are masked (listed in `masked`, omitted from `settings`). **
 
 ### Parameters
 

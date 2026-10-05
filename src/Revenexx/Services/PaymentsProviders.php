@@ -58,7 +58,10 @@ class PaymentsProviders extends Service
      * on create/update, stored for the drivers, and never returned by any route
      * — the responses carry the public columns only (id, provider, name,
      * enabled, test_mode, options, timestamps). To rotate a secret, write the new
-     * value; there is no way to read the current one back.
+     * value; there is no way to read the current one back. Only the public
+     * columns, `limit`, `offset` and `order` are query parameters; anything else
+     * — a secret column included — answers 400 `unknown_filter`, whatever its
+     * value.
      *
      * @param ?int $limit
      * @param ?int $offset

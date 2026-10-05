@@ -6,6 +6,8 @@ use Revenexx\Client;
 use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
+use Revenexx\Enums\Tone;
+use Revenexx\Enums\AvailabilityStateTone;
 use Revenexx\Enums\InventoriesMovementsListType;
 use Revenexx\Enums\InventoriesVocabulariesGetName;
 
@@ -41,6 +43,81 @@ final class InventoriesStockTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->inventoriesStock->inventoriesAvailability(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodInventoriesAvailabilityStatesList(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->inventoriesStock->inventoriesAvailabilityStatesList(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodInventoriesAvailabilityStatesCreate(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->inventoriesStock->inventoriesAvailabilityStatesCreate(
+            "on_order",
+            "On order"
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodInventoriesAvailabilityStatesDelete(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->inventoriesStock->inventoriesAvailabilityStatesDelete(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodInventoriesAvailabilityStatesGet(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->inventoriesStock->inventoriesAvailabilityStatesGet(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodInventoriesAvailabilityStatesUpdate(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->inventoriesStock->inventoriesAvailabilityStatesUpdate(
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -248,7 +325,7 @@ final class InventoriesStockTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->inventoriesStock->inventoriesVocabulariesGet(
-            InventoriesVocabulariesGetName::LOCATIONTYPES()
+            InventoriesVocabulariesGetName::AVAILABILITYSTATES()
         );
 
         $this->assertSame($data, $response);

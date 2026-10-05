@@ -8,6 +8,7 @@ class SegmentMemberSource implements JsonSerializable
 {
     private static SegmentMemberSource $MANUAL;
     private static SegmentMemberSource $RULE;
+    private static SegmentMemberSource $SYNC;
 
     private string $value;
 
@@ -39,5 +40,12 @@ class SegmentMemberSource implements JsonSerializable
             self::$RULE = new SegmentMemberSource('rule');
         }
         return self::$RULE;
+    }
+    public static function SYNC(): SegmentMemberSource
+    {
+        if (!isset(self::$SYNC)) {
+            self::$SYNC = new SegmentMemberSource('sync');
+        }
+        return self::$SYNC;
     }
 }

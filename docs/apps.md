@@ -67,7 +67,7 @@ GET https://api.revenexx.com/v1/apps/marketplace
 POST https://api.revenexx.com/v1/apps/marketplace/install
 ```
 
-** Install a Marketplace app on the calling project&#039;s tenant. Body: { owner, name }. **
+** Install a Marketplace app on the calling project's tenant. Body: { owner, name }. **
 
 ### Parameters
 
@@ -278,7 +278,7 @@ POST https://api.revenexx.com/v1/apps/{functionId}/deployments/template
 POST https://api.revenexx.com/v1/apps/{functionId}/deployments/vcs
 ```
 
-** Trigger a new deployment from the App&#039;s connected Git repository. **
+** Trigger a new deployment from the App's connected Git repository. **
 
 ### Parameters
 
@@ -337,7 +337,7 @@ GET https://api.revenexx.com/v1/apps/{functionId}/deployments/{deploymentId}/dow
 PATCH https://api.revenexx.com/v1/apps/{functionId}/deployments/{deploymentId}/status
 ```
 
-** Cancel an in-progress deployment build. Used by the Cockpit &quot;Cancel build&quot; affordance. **
+** Cancel an in-progress deployment build. Used by the Cockpit "Cancel build" affordance. **
 
 ### Parameters
 
@@ -413,7 +413,7 @@ GET https://api.revenexx.com/v1/apps/{functionId}/executions/{executionId}
 GET https://api.revenexx.com/v1/apps/{functionId}/marketplace-status
 ```
 
-** Read-through view of the App&#039;s App Registry row — visibility + Marketplace publish flag. Used by Cockpit to render the Publish/Unpublish button correctly on cold load. **
+** Read-through view of the App's App Registry row — visibility + Marketplace publish flag. Used by Cockpit to render the Publish/Unpublish button correctly on cold load. **
 
 ### Parameters
 

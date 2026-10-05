@@ -14,8 +14,9 @@ $costCenters = new CostCenters($client);
 
 $result = $costCenters->costCentersReserve(
     allocations: [],
-    purchaseRequestId: '',
     contactId: '', // optional
     currency: '', // optional
-    note: '' // optional
+    dryRun: true, // optional
+    note: '', // optional
+    purchaseRequestId: '' // optional
 );```

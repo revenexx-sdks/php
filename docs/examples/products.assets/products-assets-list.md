@@ -3,7 +3,7 @@
 
 use Revenexx\Client;
 use Revenexx\Services\ProductsAssets;
-use Revenexx\Enums\ProductsAssetsListSource;
+use Revenexx\Enums\DocumentsDocumentsListSource;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -20,11 +20,15 @@ $result = $productsAssets->productsAssetsList(
     id: '', // optional
     assetFamilyId: '', // optional
     code: 'acme-4711-blk_packshot_1', // optional
-    source: ProductsAssetsListSource::STORAGE(), // optional
+    source: DocumentsDocumentsListSource::STORAGE(), // optional
     storageAssetId: 'ast_01J8ZQ0000000000000000', // optional
     deliveryPath: 'packshots/acme-4711-blk_1.jpg', // optional
     externalUrl: 'https://cdn.example.com/packshots/acme-4711-blk_1.jpg', // optional
     attributeValues: '{}', // optional
+    externalId: 'DAM-88231', // optional
+    externalRefs: '{}', // optional
+    sourceSyncedAt: '2026-01-01T12:00:00Z', // optional
+    sourceData: '{}', // optional
     createdAt: '2026-01-01T12:00:00Z', // optional
     updatedAt: '2026-01-01T12:00:00Z' // optional
 );```

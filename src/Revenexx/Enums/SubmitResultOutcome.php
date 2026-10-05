@@ -11,6 +11,7 @@ class SubmitResultOutcome implements JsonSerializable
     private static SubmitResultOutcome $PREVENT;
     private static SubmitResultOutcome $DECIDED;
     private static SubmitResultOutcome $CURRENCYMISMATCH;
+    private static SubmitResultOutcome $NOBUDGET;
 
     private string $value;
 
@@ -63,5 +64,12 @@ class SubmitResultOutcome implements JsonSerializable
             self::$CURRENCYMISMATCH = new SubmitResultOutcome('currency_mismatch');
         }
         return self::$CURRENCYMISMATCH;
+    }
+    public static function NOBUDGET(): SubmitResultOutcome
+    {
+        if (!isset(self::$NOBUDGET)) {
+            self::$NOBUDGET = new SubmitResultOutcome('no_budget');
+        }
+        return self::$NOBUDGET;
     }
 }

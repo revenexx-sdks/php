@@ -6,6 +6,7 @@ use Revenexx\RevenexxException;
 use Revenexx\Client;
 use Revenexx\Service;
 use Revenexx\InputFile;
+use Revenexx\Enums\Factor;
 
 class Customers extends Service
 {
@@ -61,7 +62,8 @@ class Customers extends Service
     }
 
     /**
-     * An email and a password go in; a session and the CONTACT behind it come
+     * An identifier — email address, username or customer number, as the shop
+     * allows — and a password go in; a session and the CONTACT behind it come
      * back, so a storefront knows in one call both that the buyer is signed in
      * and who they are. The session is minted server-side rather than handed back
      * from the credential check, because the account route hides the session
@@ -69,12 +71,13 @@ class Customers extends Service
      * `permissions` carries the buyer's effective grants, so a BFF does not need
      * a second call to decide what to render.
      *
-     * @param string $email
      * @param string $password
+     * @param ?string $email
+     * @param ?string $identifier
      * @throws RevenexxException
      * @return array
      */
-    public function customersAuthLogin(string $email, string $password): array
+    public function customersAuthLogin(string $password, ?string $email = null, ?string $identifier = null): array
     {
         $apiPath = str_replace(
             [],
@@ -83,8 +86,15 @@ class Customers extends Service
         );
 
         $apiParams = [];
-        $apiParams['email'] = $email;
         $apiParams['password'] = $password;
+
+        if (!is_null($email)) {
+            $apiParams['email'] = $email;
+        }
+
+        if (!is_null($identifier)) {
+            $apiParams['identifier'] = $identifier;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -136,11 +146,14 @@ class Customers extends Service
 
     /**
      * Sign in without a password: a link goes to the address, and `PUT
-     * /customers/auth/magic-link` turns it into a session. Creates the account
-     * when the address is new, which makes this a registration path as much as a
-     * sign-in one — and why an address nobody holds is not distinguished in the
-     * answer. The mail is this shop's own template through the messaging service;
-     * the secret is not in this response, only in the link.
+     * /customers/auth/magic-link` turns it into a session. Only a buyer this shop
+     * holds, with a login, who may sign in is sent one. For anybody else — an
+     * address nobody holds, a contact with no login, a blocked buyer or company,
+     * an undecided application — nothing is created and nothing is sent, and
+     * the answer is the same 201 in the same shape, so it cannot be used to find
+     * out who is a customer. It never founds an account. The mail is this shop's
+     * own template through the messaging service; the secret is not in this
+     * response, only in the link.
      *
      * @param string $email
      * @param string $url
@@ -212,12 +225,12 @@ class Customers extends Service
      * here on every call rather than returned from anywhere they could be cached,
      * so a role changed a second ago is already reflected.
      *
+     * @param string $sessionId
      * @param string $userId
-     * @param ?string $sessionId
      * @throws RevenexxException
      * @return array
      */
-    public function customersAuthMe(string $userId, ?string $sessionId = null): array
+    public function customersAuthMe(string $sessionId, string $userId): array
     {
         $apiPath = str_replace(
             [],
@@ -226,8 +239,8 @@ class Customers extends Service
         );
 
         $apiParams = [];
-        $apiParams['user_id'] = $userId;
         $apiParams['session_id'] = $sessionId;
+        $apiParams['user_id'] = $userId;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -250,11 +263,11 @@ class Customers extends Service
      * to send, and the call answers 502 rather than mailing an empty challenge.
      *
      * @param string $userId
-     * @param ?string $factor
+     * @param ?Factor $factor
      * @throws RevenexxException
      * @return array
      */
-    public function customersAuthMfaChallenge(string $userId, ?string $factor = null): array
+    public function customersAuthMfaChallenge(string $userId, ?Factor $factor = null): array
     {
         $apiPath = str_replace(
             [],
@@ -317,7 +330,9 @@ class Customers extends Service
      * The same token as the sign-in link, delivered as a short code instead —
      * for a buyer on a phone, where leaving for a mail client and coming back
      * loses the checkout they were in the middle of. Redeemed with `PUT
-     * /customers/auth/otp`.
+     * /customers/auth/otp`. Sent under the same rule as the link: only to a buyer
+     * who may sign in, and for anybody else nothing is created or sent while the
+     * answer looks exactly the same.
      *
      * @param string $email
      * @throws RevenexxException
@@ -387,8 +402,12 @@ class Customers extends Service
      * tenant's template, layout, language and sending domain, through the
      * messaging service. The secret is NOT in this answer: it exists only inside
      * the mailed link, which is the whole point of the two-step shape, and
-     * echoing it here would make the mail decorative. Nothing about the contact
-     * changes; the password only moves in step two.
+     * echoing it here would make the mail decorative. One thing about the contact
+     * CAN change: a buyer this shop holds who carries no platform login — an
+     * address written straight into the record by an import — is given one
+     * here, because the alternative is telling the one person who cannot help
+     * themselves that no account exists, with no other way in. Nothing else about
+     * the contact moves, and the password only moves in step two.
      *
      * @param string $email
      * @param string $url

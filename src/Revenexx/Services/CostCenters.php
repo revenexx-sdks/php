@@ -6,8 +6,10 @@ use Revenexx\RevenexxException;
 use Revenexx\Client;
 use Revenexx\Service;
 use Revenexx\InputFile;
+use Revenexx\Enums\BudgetType;
 use Revenexx\Enums\Conditions;
 use Revenexx\Enums\CostCentersRestrictionsCreateType;
+use Revenexx\Enums\CostCentersVocabularyName;
 
 class CostCenters extends Service
 {
@@ -334,14 +336,15 @@ class CostCenters extends Service
 
     /**
      * @param array $allocations
-     * @param string $orderId
      * @param ?string $contactId
      * @param ?string $currency
+     * @param ?bool $dryRun
      * @param ?string $note
+     * @param ?string $orderId
      * @throws RevenexxException
      * @return array
      */
-    public function costCentersCommit(array $allocations, string $orderId, ?string $contactId = null, ?string $currency = null, ?string $note = null): array
+    public function costCentersCommit(array $allocations, ?string $contactId = null, ?string $currency = null, ?bool $dryRun = null, ?string $note = null, ?string $orderId = null): array
     {
         $apiPath = str_replace(
             [],
@@ -351,10 +354,14 @@ class CostCenters extends Service
 
         $apiParams = [];
         $apiParams['allocations'] = $allocations;
-        $apiParams['order_id'] = $orderId;
         $apiParams['contact_id'] = $contactId;
         $apiParams['currency'] = $currency;
+
+        if (!is_null($dryRun)) {
+            $apiParams['dry_run'] = $dryRun;
+        }
         $apiParams['note'] = $note;
+        $apiParams['order_id'] = $orderId;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -369,13 +376,14 @@ class CostCenters extends Service
 
     /**
      * @param string $purchaseRequestId
+     * @param ?array $allocations
      * @param ?string $currency
      * @param ?string $note
      * @param ?string $orderId
      * @throws RevenexxException
      * @return array
      */
-    public function costCentersConfirm(string $purchaseRequestId, ?string $currency = null, ?string $note = null, ?string $orderId = null): array
+    public function costCentersConfirm(string $purchaseRequestId, ?array $allocations = null, ?string $currency = null, ?string $note = null, ?string $orderId = null): array
     {
         $apiPath = str_replace(
             [],
@@ -385,6 +393,10 @@ class CostCenters extends Service
 
         $apiParams = [];
         $apiParams['purchase_request_id'] = $purchaseRequestId;
+
+        if (!is_null($allocations)) {
+            $apiParams['allocations'] = $allocations;
+        }
         $apiParams['currency'] = $currency;
         $apiParams['note'] = $note;
         $apiParams['order_id'] = $orderId;
@@ -579,10 +591,11 @@ class CostCenters extends Service
      * @param ?int $offset
      * @param ?string $order
      * @param ?string $punchoutAccountCode
+     * @param ?string $externalId
      * @throws RevenexxException
      * @return array
      */
-    public function costCentersCostCentersList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $punchoutAccountCode = null): array
+    public function costCentersCostCentersList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $punchoutAccountCode = null, ?string $externalId = null): array
     {
         $apiPath = str_replace(
             [],
@@ -608,6 +621,10 @@ class CostCenters extends Service
             $apiParams['punchout_account_code'] = $punchoutAccountCode;
         }
 
+        if (!is_null($externalId)) {
+            $apiParams['external_id'] = $externalId;
+        }
+
         $apiHeaders = [];
 
         return $this->client->call(
@@ -623,13 +640,18 @@ class CostCenters extends Service
      * @param string $name
      * @param ?string $accountableContactId
      * @param ?bool $active
+     * @param ?BudgetType $budgetType
      * @param ?string $currency
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?array $metadata
      * @param ?string $organizationId
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @throws RevenexxException
      * @return array
      */
-    public function costCentersCostCentersCreate(string $code, string $name, ?string $accountableContactId = null, ?bool $active = null, ?string $currency = null, ?array $metadata = null, ?string $organizationId = null): array
+    public function costCentersCostCentersCreate(string $code, string $name, ?string $accountableContactId = null, ?bool $active = null, ?BudgetType $budgetType = null, ?string $currency = null, ?string $externalId = null, ?array $externalRefs = null, ?array $metadata = null, ?string $organizationId = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -646,11 +668,19 @@ class CostCenters extends Service
             $apiParams['active'] = $active;
         }
 
+        if (!is_null($budgetType)) {
+            $apiParams['budget_type'] = $budgetType;
+        }
+
         if (!is_null($currency)) {
             $apiParams['currency'] = $currency;
         }
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
         $apiParams['metadata'] = $metadata;
         $apiParams['organization_id'] = $organizationId;
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -719,15 +749,20 @@ class CostCenters extends Service
      * @param string $id
      * @param ?string $accountableContactId
      * @param ?bool $active
+     * @param ?BudgetType $budgetType
      * @param ?string $code
      * @param ?string $currency
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?array $metadata
      * @param ?string $name
      * @param ?string $organizationId
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @throws RevenexxException
      * @return array
      */
-    public function costCentersCostCentersUpdate(string $id, ?string $accountableContactId = null, ?bool $active = null, ?string $code = null, ?string $currency = null, ?array $metadata = null, ?string $name = null, ?string $organizationId = null): array
+    public function costCentersCostCentersUpdate(string $id, ?string $accountableContactId = null, ?bool $active = null, ?BudgetType $budgetType = null, ?string $code = null, ?string $currency = null, ?string $externalId = null, ?array $externalRefs = null, ?array $metadata = null, ?string $name = null, ?string $organizationId = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -743,6 +778,10 @@ class CostCenters extends Service
             $apiParams['active'] = $active;
         }
 
+        if (!is_null($budgetType)) {
+            $apiParams['budget_type'] = $budgetType;
+        }
+
         if (!is_null($code)) {
             $apiParams['code'] = $code;
         }
@@ -750,12 +789,16 @@ class CostCenters extends Service
         if (!is_null($currency)) {
             $apiParams['currency'] = $currency;
         }
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
         $apiParams['metadata'] = $metadata;
 
         if (!is_null($name)) {
             $apiParams['name'] = $name;
         }
         $apiParams['organization_id'] = $organizationId;
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -851,15 +894,56 @@ class CostCenters extends Service
     }
 
     /**
-     * @param array $allocations
-     * @param string $purchaseRequestId
+     * @param string $key
+     * @param string $orderId
+     * @param ?array $allocations
      * @param ?string $contactId
      * @param ?string $currency
      * @param ?string $note
      * @throws RevenexxException
      * @return array
      */
-    public function costCentersReserve(array $allocations, string $purchaseRequestId, ?string $contactId = null, ?string $currency = null, ?string $note = null): array
+    public function costCentersRelease(string $key, string $orderId, ?array $allocations = null, ?string $contactId = null, ?string $currency = null, ?string $note = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/cost-centers/release'
+        );
+
+        $apiParams = [];
+        $apiParams['key'] = $key;
+        $apiParams['order_id'] = $orderId;
+
+        if (!is_null($allocations)) {
+            $apiParams['allocations'] = $allocations;
+        }
+        $apiParams['contact_id'] = $contactId;
+        $apiParams['currency'] = $currency;
+        $apiParams['note'] = $note;
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * @param array $allocations
+     * @param ?string $contactId
+     * @param ?string $currency
+     * @param ?bool $dryRun
+     * @param ?string $note
+     * @param ?string $purchaseRequestId
+     * @throws RevenexxException
+     * @return array
+     */
+    public function costCentersReserve(array $allocations, ?string $contactId = null, ?string $currency = null, ?bool $dryRun = null, ?string $note = null, ?string $purchaseRequestId = null): array
     {
         $apiPath = str_replace(
             [],
@@ -869,10 +953,14 @@ class CostCenters extends Service
 
         $apiParams = [];
         $apiParams['allocations'] = $allocations;
-        $apiParams['purchase_request_id'] = $purchaseRequestId;
         $apiParams['contact_id'] = $contactId;
         $apiParams['currency'] = $currency;
+
+        if (!is_null($dryRun)) {
+            $apiParams['dry_run'] = $dryRun;
+        }
         $apiParams['note'] = $note;
+        $apiParams['purchase_request_id'] = $purchaseRequestId;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -1133,13 +1221,64 @@ class CostCenters extends Service
     }
 
     /**
+     * @throws RevenexxException
+     * @return array
+     */
+    public function costCentersVocabularies(): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/cost-centers/vocabularies'
+        );
+
+        $apiParams = [];
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * @param CostCentersVocabularyName $name
+     * @throws RevenexxException
+     * @return array
+     */
+    public function costCentersVocabulary(CostCentersVocabularyName $name): array
+    {
+        $apiPath = str_replace(
+            ['{name}'],
+            [$name],
+            '/v1/cost-centers/vocabularies/{name}'
+        );
+
+        $apiParams = [];
+        $apiParams['name'] = $name;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
      * @param string $purchaseRequestId
+     * @param ?array $allocations
      * @param ?string $currency
      * @param ?string $note
      * @throws RevenexxException
      * @return array
      */
-    public function costCentersWithdraw(string $purchaseRequestId, ?string $currency = null, ?string $note = null): array
+    public function costCentersWithdraw(string $purchaseRequestId, ?array $allocations = null, ?string $currency = null, ?string $note = null): array
     {
         $apiPath = str_replace(
             [],
@@ -1149,6 +1288,10 @@ class CostCenters extends Service
 
         $apiParams = [];
         $apiParams['purchase_request_id'] = $purchaseRequestId;
+
+        if (!is_null($allocations)) {
+            $apiParams['allocations'] = $allocations;
+        }
         $apiParams['currency'] = $currency;
         $apiParams['note'] = $note;
 

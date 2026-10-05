@@ -10,6 +10,7 @@ use Revenexx\Enums\Condition;
 use Revenexx\Enums\Effect;
 use Revenexx\Enums\ApproverType;
 use Revenexx\Enums\ProcurementPurchaseRequestItemsCreateType;
+use Revenexx\Enums\ProcurementVocabulariesGetName;
 
 class Procurement extends Service
 {
@@ -240,6 +241,246 @@ class Procurement extends Service
 
         return $this->client->call(
             Client::METHOD_PUT,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * @param ?int $limit
+     * @param ?int $offset
+     * @param ?string $order
+     * @throws RevenexxException
+     * @return array
+     */
+    public function procurementBudgetReleasesList(?int $limit = null, ?int $offset = null, ?string $order = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/procurement/budget-releases'
+        );
+
+        $apiParams = [];
+
+        if (!is_null($limit)) {
+            $apiParams['limit'] = $limit;
+        }
+
+        if (!is_null($offset)) {
+            $apiParams['offset'] = $offset;
+        }
+
+        if (!is_null($order)) {
+            $apiParams['order'] = $order;
+        }
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * @param string $id
+     * @throws RevenexxException
+     * @return array
+     */
+    public function procurementBudgetReleasesGet(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/procurement/budget-releases/{id}'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * @param string $id
+     * @throws RevenexxException
+     * @return array
+     */
+    public function procurementBudgetReleasesRetry(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/procurement/budget-releases/{id}/retry'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * @param string $id
+     * @param string $note
+     * @throws RevenexxException
+     * @return array
+     */
+    public function procurementBudgetReleasesSettle(string $id, string $note): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/procurement/budget-releases/{id}/settle'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+        $apiParams['note'] = $note;
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * @param ?int $limit
+     * @param ?int $offset
+     * @param ?string $order
+     * @throws RevenexxException
+     * @return array
+     */
+    public function procurementDirectOrdersList(?int $limit = null, ?int $offset = null, ?string $order = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/procurement/direct-orders'
+        );
+
+        $apiParams = [];
+
+        if (!is_null($limit)) {
+            $apiParams['limit'] = $limit;
+        }
+
+        if (!is_null($offset)) {
+            $apiParams['offset'] = $offset;
+        }
+
+        if (!is_null($order)) {
+            $apiParams['order'] = $order;
+        }
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * @param string $id
+     * @throws RevenexxException
+     * @return array
+     */
+    public function procurementDirectOrdersGet(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/procurement/direct-orders/{id}'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * @param string $id
+     * @throws RevenexxException
+     * @return array
+     */
+    public function procurementDirectOrdersCommit(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/procurement/direct-orders/{id}/commit'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * @param string $id
+     * @param string $note
+     * @throws RevenexxException
+     * @return array
+     */
+    public function procurementDirectOrdersSettle(string $id, string $note): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/procurement/direct-orders/{id}/settle'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+        $apiParams['note'] = $note;
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
             $apiPath,
             $apiHeaders,
             $apiParams
@@ -1013,6 +1254,56 @@ class Procurement extends Service
 
         return $this->client->call(
             Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * @throws RevenexxException
+     * @return array
+     */
+    public function procurementVocabulariesList(): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/procurement/vocabularies'
+        );
+
+        $apiParams = [];
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * @param ProcurementVocabulariesGetName $name
+     * @throws RevenexxException
+     * @return array
+     */
+    public function procurementVocabulariesGet(ProcurementVocabulariesGetName $name): array
+    {
+        $apiPath = str_replace(
+            ['{name}'],
+            [$name],
+            '/v1/procurement/vocabularies/{name}'
+        );
+
+        $apiParams = [];
+        $apiParams['name'] = $name;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
             $apiPath,
             $apiHeaders,
             $apiParams

@@ -73,4 +73,32 @@ final class PagesDeliveryTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodPagesDeliverySiteSettings(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->pagesDelivery->pagesDeliverySiteSettings(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPagesDeliveryTemplate(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->pagesDelivery->pagesDeliveryTemplate(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
 }

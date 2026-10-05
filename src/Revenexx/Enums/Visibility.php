@@ -6,8 +6,8 @@ use JsonSerializable;
 
 class Visibility implements JsonSerializable
 {
-    private static Visibility $PUBLIC;
-    private static Visibility $PRIVATE;
+    private static Visibility $INTERNAL;
+    private static Visibility $CUSTOMER;
 
     private string $value;
 
@@ -26,18 +26,18 @@ class Visibility implements JsonSerializable
         return $this->value;
     }
 
-    public static function PUBLIC(): Visibility
+    public static function INTERNAL(): Visibility
     {
-        if (!isset(self::$PUBLIC)) {
-            self::$PUBLIC = new Visibility('public');
+        if (!isset(self::$INTERNAL)) {
+            self::$INTERNAL = new Visibility('internal');
         }
-        return self::$PUBLIC;
+        return self::$INTERNAL;
     }
-    public static function PRIVATE(): Visibility
+    public static function CUSTOMER(): Visibility
     {
-        if (!isset(self::$PRIVATE)) {
-            self::$PRIVATE = new Visibility('private');
+        if (!isset(self::$CUSTOMER)) {
+            self::$CUSTOMER = new Visibility('customer');
         }
-        return self::$PRIVATE;
+        return self::$CUSTOMER;
     }
 }

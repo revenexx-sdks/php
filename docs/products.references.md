@@ -5,11 +5,11 @@
 GET https://api.revenexx.com/v1/products/reference_entities
 ```
 
-** A domain of records the catalog POINTS AT instead of duplicating — brands, manufacturers, care instructions. Declaring one is how a brand comes to be edited in one place rather than on nine thousand products. A reference entity has attributes of its own (`attributes` rows with `entity_type: &quot;reference_entity&quot;` and this entity&#039;s code as `entity_ref`), which is what makes its records more than a label.
+** A domain of records the catalog POINTS AT instead of duplicating — brands, manufacturers, care instructions. Declaring one is how a brand comes to be edited in one place rather than on nine thousand products. A reference entity has attributes of its own (`attributes` rows with `entity_type: "reference_entity"` and this entity's code as `entity_ref`), which is what makes its records more than a label.
 
 Every column of `reference_entities` is an exact-match query parameter, `order` sorts by one column, and `limit`/`offset` page through `page.total`. A query key that is NOT a column is dropped rather than refused, and the `filter` object echoes the ones that were understood — that echo is the only way to tell an unfiltered answer from an empty one. It reads rows exactly as they are stored: no join is resolved, no jsonb value is unpacked.
 
-Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
+Answered from the gateway's tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
 
 ### Parameters
 
@@ -22,6 +22,11 @@ Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped t
 | code | string | Exact match on `code`. The entity's stable identifier — a domain of records the catalog POINTS AT instead of duplicating, so a brand is edited once and not on nine thousand products. Unique per tenant. |  |
 | labels | string | Exact match on `labels`. What the entity is called, per language tag — the heading over its record list. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
 | image | string | Exact match on `image`. A delivery path or URL for the entity's own icon. Cosmetic — nothing in this app resolves it. |  |
+| external_id | string | Exact match on `external_id`. The key this domain has in the system that owns it — the register a brand or manufacturer list is maintained in. Unique per tenant where set. |  |
+| external_refs | string | Exact match on `external_refs`. Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
+| source_synced_at | string | Exact match on `source_synced_at`. When this row was last CONFIRMED against its source — not when it last changed. A delta run asks for everything it has not seen since its last pass, and over 25 000 products that is the difference between an index scan and reading the whole catalog, which is the reason the column is indexed. An edit made here leaves it alone, so a value that has stopped moving says the feed has gone quiet, not that nobody works the record. Null for a row no source owns. |  |
+| source_data | string | Exact match on `source_data`. What the source said about this row, kept as it said it: `{"system": …, "etag": …, "raw": {…}}`. The `etag` is what a write-back has to hand back in `If-Match`, and between two runs there is nowhere else to keep it. `raw` carries the source fields this app does not model, so they survive a round trip instead of being lost the first time somebody edits here. Written by whatever imports the row; nothing in this app reads or maintains it. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
+| metadata | string | Exact match on `metadata`. Free-form jsonb this tenant owns, for anything about a reference domain this app does not model. Nothing here reads it. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
 | created_at | string | Exact match on `created_at`. When the row was created. Server-set — it is not part of any request body. |  |
 | updated_at | string | Exact match on `updated_at`. When the row was last written. Server-set — it is not part of any request body. |  |
 
@@ -32,7 +37,7 @@ POST https://api.revenexx.com/v1/products/reference_entities
 
 ** Creates one reference entity and answers 201 with the stored row, including the id and the timestamps the database filled in — a client never sends an id, it reads one back and uses it in the path of every later call.
 
-A domain of records the catalog POINTS AT instead of duplicating — brands, manufacturers, care instructions. Declaring one is how a brand comes to be edited in one place rather than on nine thousand products. A reference entity has attributes of its own (`attributes` rows with `entity_type: &quot;reference_entity&quot;` and this entity&#039;s code as `entity_ref`), which is what makes its records more than a label.
+A domain of records the catalog POINTS AT instead of duplicating — brands, manufacturers, care instructions. Declaring one is how a brand comes to be edited in one place rather than on nine thousand products. A reference entity has attributes of its own (`attributes` rows with `entity_type: "reference_entity"` and this entity's code as `entity_ref`), which is what makes its records more than a label.
 
 `code` is the only column the database refuses the row without; everything else has a default or is nullable. A second row with the same `code` answers 409. **
 
@@ -41,8 +46,13 @@ A domain of records the catalog POINTS AT instead of duplicating — brands, man
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | code | string | The entity's stable identifier — a domain of records the catalog POINTS AT instead of duplicating, so a brand is edited once and not on nine thousand products. Unique per tenant. |  |
+| external_id | string | The key this domain has in the system that owns it — the register a brand or manufacturer list is maintained in. Unique per tenant where set. |  |
+| external_refs | object | Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. |  |
 | image | string | A delivery path or URL for the entity's own icon. Cosmetic — nothing in this app resolves it. |  |
 | labels | object | What the entity is called, per language tag — the heading over its record list. |  |
+| metadata | object | Free-form jsonb this tenant owns, for anything about a reference domain this app does not model. Nothing here reads it. |  |
+| source_data | object | What the source said about this row, kept as it said it: `{"system": …, "etag": …, "raw": {…}}`. The `etag` is what a write-back has to hand back in `If-Match`, and between two runs there is nowhere else to keep it. `raw` carries the source fields this app does not model, so they survive a round trip instead of being lost the first time somebody edits here. Written by whatever imports the row; nothing in this app reads or maintains it. |  |
+| source_synced_at | string | When this row was last CONFIRMED against its source — not when it last changed. A delta run asks for everything it has not seen since its last pass, and over 25 000 products that is the difference between an index scan and reading the whole catalog, which is the reason the column is indexed. An edit made here leaves it alone, so a value that has stopped moving says the feed has gone quiet, not that nobody works the record. Null for a row no source owns. |  |
 
 
 ```http request
@@ -68,11 +78,11 @@ GET https://api.revenexx.com/v1/products/reference_entities/{id}
 
 ** Reads one reference entity by its id — the whole row, every column, as it is stored.
 
-A domain of records the catalog POINTS AT instead of duplicating — brands, manufacturers, care instructions. Declaring one is how a brand comes to be edited in one place rather than on nine thousand products. A reference entity has attributes of its own (`attributes` rows with `entity_type: &quot;reference_entity&quot;` and this entity&#039;s code as `entity_ref`), which is what makes its records more than a label.
+A domain of records the catalog POINTS AT instead of duplicating — brands, manufacturers, care instructions. Declaring one is how a brand comes to be edited in one place rather than on nine thousand products. A reference entity has attributes of its own (`attributes` rows with `entity_type: "reference_entity"` and this entity's code as `entity_ref`), which is what makes its records more than a label.
 
 An id no reference entity of this tenant carries answers 404, and so does one belonging to another tenant: row-level security makes that row invisible rather than forbidden. A malformed id answers 400 before the route is reached.
 
-Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
+Answered from the gateway's tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
 
 ### Parameters
 
@@ -87,7 +97,7 @@ PUT https://api.revenexx.com/v1/products/reference_entities/{id}
 
 ** Updates one reference entity by id. A partial patch: the body names only the columns to change and every column it leaves out keeps its current value, so there is no read-modify-write and no way to blank a field by forgetting it.
 
-A domain of records the catalog POINTS AT instead of duplicating — brands, manufacturers, care instructions. Declaring one is how a brand comes to be edited in one place rather than on nine thousand products. A reference entity has attributes of its own (`attributes` rows with `entity_type: &quot;reference_entity&quot;` and this entity&#039;s code as `entity_ref`), which is what makes its records more than a label.
+A domain of records the catalog POINTS AT instead of duplicating — brands, manufacturers, care instructions. Declaring one is how a brand comes to be edited in one place rather than on nine thousand products. A reference entity has attributes of its own (`attributes` rows with `entity_type: "reference_entity"` and this entity's code as `entity_ref`), which is what makes its records more than a label.
 
 A body that names nothing writable is refused with 400 rather than answered as a no-op, an id nobody carries answers 404, and a value that collides on `code` answers 409. **
 
@@ -97,19 +107,24 @@ A body that names nothing writable is refused with 400 rather than answered as a
 | --- | --- | --- | --- |
 | id | string | **Required** The `reference_entities` row to address, by id. It names a row THIS TENANT holds, so no example is published — a uuid this app invented would document a call that answers 404, and a real one would be another tenant's data. Read one from `GET /v1/products/reference_entities`. An id no reference entitie of this tenant carries answers 404; a malformed one answers 400 before the route is reached. |  |
 | code | string | The entity's stable identifier — a domain of records the catalog POINTS AT instead of duplicating, so a brand is edited once and not on nine thousand products. Unique per tenant. |  |
+| external_id | string | The key this domain has in the system that owns it — the register a brand or manufacturer list is maintained in. Unique per tenant where set. |  |
+| external_refs | object | Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. |  |
 | image | string | A delivery path or URL for the entity's own icon. Cosmetic — nothing in this app resolves it. |  |
 | labels | object | What the entity is called, per language tag — the heading over its record list. |  |
+| metadata | object | Free-form jsonb this tenant owns, for anything about a reference domain this app does not model. Nothing here reads it. |  |
+| source_data | object | What the source said about this row, kept as it said it: `{"system": …, "etag": …, "raw": {…}}`. The `etag` is what a write-back has to hand back in `If-Match`, and between two runs there is nowhere else to keep it. `raw` carries the source fields this app does not model, so they survive a round trip instead of being lost the first time somebody edits here. Written by whatever imports the row; nothing in this app reads or maintains it. |  |
+| source_synced_at | string | When this row was last CONFIRMED against its source — not when it last changed. A delta run asks for everything it has not seen since its last pass, and over 25 000 products that is the difference between an index scan and reading the whole catalog, which is the reason the column is indexed. An edit made here leaves it alone, so a value that has stopped moving says the feed has gone quiet, not that nobody works the record. Null for a row no source owns. |  |
 
 
 ```http request
 GET https://api.revenexx.com/v1/products/reference_entity_records
 ```
 
-** One record of a reference entity — one brand, one manufacturer. A product that points at it stores this record&#039;s CODE, exactly the way a select stores an option code, and the record&#039;s own properties live in its scoped `attribute_values` document. `GET /products/attribute-schema` offers these records as the `options` of any attribute that points at their entity, so a picker needs no second call.
+** One record of a reference entity — one brand, one manufacturer. A product that points at it stores this record's CODE, exactly the way a select stores an option code, and the record's own properties live in its scoped `attribute_values` document. `GET /products/attribute-schema` offers these records as the `options` of any attribute that points at their entity, so a picker needs no second call.
 
 Every column of `reference_entity_records` is an exact-match query parameter, `order` sorts by one column, and `limit`/`offset` page through `page.total`. A query key that is NOT a column is dropped rather than refused, and the `filter` object echoes the ones that were understood — that echo is the only way to tell an unfiltered answer from an empty one. It reads rows exactly as they are stored: no join is resolved, no jsonb value is unpacked.
 
-Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
+Answered from the gateway's tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
 
 ### Parameters
 
@@ -123,6 +138,10 @@ Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped t
 | code | string | Exact match on `code`. The record's stable identifier — the value a product stores when it points at this record, the same way a select stores an option code. Unique within the entity. |  |
 | labels | string | Exact match on `labels`. What the record is called, per language tag — the text a picker shows while the code is what gets written. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
 | attribute_values | string | Exact match on `attribute_values`. Every attribute value the record carries, in ONE jsonb document — the core of an attribute-driven PIM. A record's properties are not columns here: they are rows in `attributes`, selected per family by `family_attributes`, and their values live under their attribute CODE inside this object. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
+| external_id | string | Exact match on `external_id`. The key this record has in the system that owns it — a manufacturer number in the ERP, a supplier row keyed by GLN, a brand id in the PIM. Unique per tenant where set, so a brand list re-imports without founding a second Acme. Distinct from `code`, which is the value a product stores when it points here. |  |
+| external_refs | string | Exact match on `external_refs`. Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
+| source_synced_at | string | Exact match on `source_synced_at`. When this row was last CONFIRMED against its source — not when it last changed. A delta run asks for everything it has not seen since its last pass, and over 25 000 products that is the difference between an index scan and reading the whole catalog, which is the reason the column is indexed. An edit made here leaves it alone, so a value that has stopped moving says the feed has gone quiet, not that nobody works the record. Null for a row no source owns. |  |
+| source_data | string | Exact match on `source_data`. What the source said about this row, kept as it said it: `{"system": …, "etag": …, "raw": {…}}`. The `etag` is what a write-back has to hand back in `If-Match`, and between two runs there is nowhere else to keep it. `raw` carries the source fields this app does not model, so they survive a round trip instead of being lost the first time somebody edits here. Written by whatever imports the row; nothing in this app reads or maintains it. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
 | created_at | string | Exact match on `created_at`. When the row was created. Server-set — it is not part of any request body. |  |
 | updated_at | string | Exact match on `updated_at`. When the row was last written. Server-set — it is not part of any request body. |  |
 
@@ -133,7 +152,7 @@ POST https://api.revenexx.com/v1/products/reference_entity_records
 
 ** Creates one reference entity record and answers 201 with the stored row, including the id and the timestamps the database filled in — a client never sends an id, it reads one back and uses it in the path of every later call.
 
-One record of a reference entity — one brand, one manufacturer. A product that points at it stores this record&#039;s CODE, exactly the way a select stores an option code, and the record&#039;s own properties live in its scoped `attribute_values` document. `GET /products/attribute-schema` offers these records as the `options` of any attribute that points at their entity, so a picker needs no second call.
+One record of a reference entity — one brand, one manufacturer. A product that points at it stores this record's CODE, exactly the way a select stores an option code, and the record's own properties live in its scoped `attribute_values` document. `GET /products/attribute-schema` offers these records as the `options` of any attribute that points at their entity, so a picker needs no second call.
 
 `reference_entity_id` and `code` are the only columns the database refuses the row without; everything else has a default or is nullable. A second row with the same `reference_entity_id` and `code` answers 409. **
 
@@ -162,8 +181,12 @@ Defaults to `{}`, and an empty object is a normal state — a record nobody has 
 
 Which attributes a record of this entity has comes from `attributes` rows with `entity_type: "reference_entity"` and `entity_ref` equal to the entity's code — `GET /products/attribute-schema?entity_type=reference_entity&entity_ref=brand` answers it in one call. |  |
 | code | string | The record's stable identifier — the value a product stores when it points at this record, the same way a select stores an option code. Unique within the entity. |  |
+| external_id | string | The key this record has in the system that owns it — a manufacturer number in the ERP, a supplier row keyed by GLN, a brand id in the PIM. Unique per tenant where set, so a brand list re-imports without founding a second Acme. Distinct from `code`, which is the value a product stores when it points here. |  |
+| external_refs | object | Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. |  |
 | labels | object | What the record is called, per language tag — the text a picker shows while the code is what gets written. |  |
 | reference_entity_id | string | Which reference entity this record belongs to. |  |
+| source_data | object | What the source said about this row, kept as it said it: `{"system": …, "etag": …, "raw": {…}}`. The `etag` is what a write-back has to hand back in `If-Match`, and between two runs there is nowhere else to keep it. `raw` carries the source fields this app does not model, so they survive a round trip instead of being lost the first time somebody edits here. Written by whatever imports the row; nothing in this app reads or maintains it. |  |
+| source_synced_at | string | When this row was last CONFIRMED against its source — not when it last changed. A delta run asks for everything it has not seen since its last pass, and over 25 000 products that is the difference between an index scan and reading the whole catalog, which is the reason the column is indexed. An edit made here leaves it alone, so a value that has stopped moving says the feed has gone quiet, not that nobody works the record. Null for a row no source owns. |  |
 
 
 ```http request
@@ -189,11 +212,11 @@ GET https://api.revenexx.com/v1/products/reference_entity_records/{id}
 
 ** Reads one reference entity record by its id — the whole row, every column, as it is stored.
 
-One record of a reference entity — one brand, one manufacturer. A product that points at it stores this record&#039;s CODE, exactly the way a select stores an option code, and the record&#039;s own properties live in its scoped `attribute_values` document. `GET /products/attribute-schema` offers these records as the `options` of any attribute that points at their entity, so a picker needs no second call.
+One record of a reference entity — one brand, one manufacturer. A product that points at it stores this record's CODE, exactly the way a select stores an option code, and the record's own properties live in its scoped `attribute_values` document. `GET /products/attribute-schema` offers these records as the `options` of any attribute that points at their entity, so a picker needs no second call.
 
 An id no reference entity record of this tenant carries answers 404, and so does one belonging to another tenant: row-level security makes that row invisible rather than forbidden. A malformed id answers 400 before the route is reached.
 
-Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
+Answered from the gateway's tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
 
 ### Parameters
 
@@ -208,7 +231,7 @@ PUT https://api.revenexx.com/v1/products/reference_entity_records/{id}
 
 ** Updates one reference entity record by id. A partial patch: the body names only the columns to change and every column it leaves out keeps its current value, so there is no read-modify-write and no way to blank a field by forgetting it.
 
-One record of a reference entity — one brand, one manufacturer. A product that points at it stores this record&#039;s CODE, exactly the way a select stores an option code, and the record&#039;s own properties live in its scoped `attribute_values` document. `GET /products/attribute-schema` offers these records as the `options` of any attribute that points at their entity, so a picker needs no second call.
+One record of a reference entity — one brand, one manufacturer. A product that points at it stores this record's CODE, exactly the way a select stores an option code, and the record's own properties live in its scoped `attribute_values` document. `GET /products/attribute-schema` offers these records as the `options` of any attribute that points at their entity, so a picker needs no second call.
 
 A body that names nothing writable is refused with 400 rather than answered as a no-op, an id nobody carries answers 404, and a value that collides on `reference_entity_id` and `code` answers 409. **
 
@@ -238,6 +261,10 @@ Defaults to `{}`, and an empty object is a normal state — a record nobody has 
 
 Which attributes a record of this entity has comes from `attributes` rows with `entity_type: "reference_entity"` and `entity_ref` equal to the entity's code — `GET /products/attribute-schema?entity_type=reference_entity&entity_ref=brand` answers it in one call. |  |
 | code | string | The record's stable identifier — the value a product stores when it points at this record, the same way a select stores an option code. Unique within the entity. |  |
+| external_id | string | The key this record has in the system that owns it — a manufacturer number in the ERP, a supplier row keyed by GLN, a brand id in the PIM. Unique per tenant where set, so a brand list re-imports without founding a second Acme. Distinct from `code`, which is the value a product stores when it points here. |  |
+| external_refs | object | Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. |  |
 | labels | object | What the record is called, per language tag — the text a picker shows while the code is what gets written. |  |
 | reference_entity_id | string | Which reference entity this record belongs to. |  |
+| source_data | object | What the source said about this row, kept as it said it: `{"system": …, "etag": …, "raw": {…}}`. The `etag` is what a write-back has to hand back in `If-Match`, and between two runs there is nowhere else to keep it. `raw` carries the source fields this app does not model, so they survive a round trip instead of being lost the first time somebody edits here. Written by whatever imports the row; nothing in this app reads or maintains it. |  |
+| source_synced_at | string | When this row was last CONFIRMED against its source — not when it last changed. A delta run asks for everything it has not seen since its last pass, and over 25 000 products that is the difference between an index scan and reading the whole catalog, which is the reason the column is indexed. An edit made here leaves it alone, so a value that has stopped moving says the feed has gone quiet, not that nobody works the record. Null for a row no source owns. |  |
 

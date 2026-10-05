@@ -10,6 +10,7 @@ class BudgetMovementResultStatus implements JsonSerializable
     private static BudgetMovementResultStatus $CONFIRMED;
     private static BudgetMovementResultStatus $WITHDRAWN;
     private static BudgetMovementResultStatus $COMMITTED;
+    private static BudgetMovementResultStatus $RELEASED;
 
     private string $value;
 
@@ -55,5 +56,12 @@ class BudgetMovementResultStatus implements JsonSerializable
             self::$COMMITTED = new BudgetMovementResultStatus('committed');
         }
         return self::$COMMITTED;
+    }
+    public static function RELEASED(): BudgetMovementResultStatus
+    {
+        if (!isset(self::$RELEASED)) {
+            self::$RELEASED = new BudgetMovementResultStatus('released');
+        }
+        return self::$RELEASED;
     }
 }

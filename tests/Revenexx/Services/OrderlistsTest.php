@@ -244,21 +244,6 @@ final class OrderlistsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrderlistsToOrder(): void {
-
-        $data = array();
-
-        $this->client
-            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
-            ->andReturn($data);
-
-        $response = $this->orderlists->orderlistsToOrder(
-            ""
-        );
-
-        $this->assertSame($data, $response);
-    }
-
     public function testMethodOrderlistsItemsList(): void {
 
         $data = array();

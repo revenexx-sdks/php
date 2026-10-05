@@ -10,6 +10,7 @@ class ShippingTaxUnresolvedReason implements JsonSerializable
     private static ShippingTaxUnresolvedReason $NOMARKETS;
     private static ShippingTaxUnresolvedReason $NOTAXCLASSES;
     private static ShippingTaxUnresolvedReason $LOOKUPFAILED;
+    private static ShippingTaxUnresolvedReason $UNKNOWNMARKET;
 
     private string $value;
 
@@ -55,5 +56,12 @@ class ShippingTaxUnresolvedReason implements JsonSerializable
             self::$LOOKUPFAILED = new ShippingTaxUnresolvedReason('lookup_failed');
         }
         return self::$LOOKUPFAILED;
+    }
+    public static function UNKNOWNMARKET(): ShippingTaxUnresolvedReason
+    {
+        if (!isset(self::$UNKNOWNMARKET)) {
+            self::$UNKNOWNMARKET = new ShippingTaxUnresolvedReason('unknown_market');
+        }
+        return self::$UNKNOWNMARKET;
     }
 }

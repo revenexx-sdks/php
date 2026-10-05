@@ -8,15 +8,19 @@ class CustomersVocabulariesGetName implements JsonSerializable
 {
     private static CustomersVocabulariesGetName $ADDRESSTYPES;
     private static CustomersVocabulariesGetName $CONTACTEVENTKINDS;
+    private static CustomersVocabulariesGetName $CONTACTPOINTKINDS;
     private static CustomersVocabulariesGetName $CONTACTSTATUSES;
+    private static CustomersVocabulariesGetName $CREDITLIMITMODES;
     private static CustomersVocabulariesGetName $LIFECYCLESTAGES;
     private static CustomersVocabulariesGetName $LOCALES;
+    private static CustomersVocabulariesGetName $ORDERAPPROVALMODES;
     private static CustomersVocabulariesGetName $ORGANIZATIONSTATUSES;
     private static CustomersVocabulariesGetName $PAYMENTTERMS;
     private static CustomersVocabulariesGetName $REGISTRATIONSTATUSES;
     private static CustomersVocabulariesGetName $ROLES;
     private static CustomersVocabulariesGetName $RULEMATCHES;
     private static CustomersVocabulariesGetName $SEGMENTSOURCES;
+    private static CustomersVocabulariesGetName $SHIPPINGADVICE;
 
     private string $value;
 
@@ -49,12 +53,26 @@ class CustomersVocabulariesGetName implements JsonSerializable
         }
         return self::$CONTACTEVENTKINDS;
     }
+    public static function CONTACTPOINTKINDS(): CustomersVocabulariesGetName
+    {
+        if (!isset(self::$CONTACTPOINTKINDS)) {
+            self::$CONTACTPOINTKINDS = new CustomersVocabulariesGetName('contact-point-kinds');
+        }
+        return self::$CONTACTPOINTKINDS;
+    }
     public static function CONTACTSTATUSES(): CustomersVocabulariesGetName
     {
         if (!isset(self::$CONTACTSTATUSES)) {
             self::$CONTACTSTATUSES = new CustomersVocabulariesGetName('contact-statuses');
         }
         return self::$CONTACTSTATUSES;
+    }
+    public static function CREDITLIMITMODES(): CustomersVocabulariesGetName
+    {
+        if (!isset(self::$CREDITLIMITMODES)) {
+            self::$CREDITLIMITMODES = new CustomersVocabulariesGetName('credit-limit-modes');
+        }
+        return self::$CREDITLIMITMODES;
     }
     public static function LIFECYCLESTAGES(): CustomersVocabulariesGetName
     {
@@ -69,6 +87,13 @@ class CustomersVocabulariesGetName implements JsonSerializable
             self::$LOCALES = new CustomersVocabulariesGetName('locales');
         }
         return self::$LOCALES;
+    }
+    public static function ORDERAPPROVALMODES(): CustomersVocabulariesGetName
+    {
+        if (!isset(self::$ORDERAPPROVALMODES)) {
+            self::$ORDERAPPROVALMODES = new CustomersVocabulariesGetName('order-approval-modes');
+        }
+        return self::$ORDERAPPROVALMODES;
     }
     public static function ORGANIZATIONSTATUSES(): CustomersVocabulariesGetName
     {
@@ -111,5 +136,12 @@ class CustomersVocabulariesGetName implements JsonSerializable
             self::$SEGMENTSOURCES = new CustomersVocabulariesGetName('segment-sources');
         }
         return self::$SEGMENTSOURCES;
+    }
+    public static function SHIPPINGADVICE(): CustomersVocabulariesGetName
+    {
+        if (!isset(self::$SHIPPINGADVICE)) {
+            self::$SHIPPINGADVICE = new CustomersVocabulariesGetName('shipping-advice');
+        }
+        return self::$SHIPPINGADVICE;
     }
 }

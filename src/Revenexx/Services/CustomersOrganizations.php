@@ -7,6 +7,8 @@ use Revenexx\Client;
 use Revenexx\Service;
 use Revenexx\InputFile;
 use Revenexx\Enums\CustomersOrganizationsListStatus;
+use Revenexx\Enums\CreditLimitMode;
+use Revenexx\Enums\ShippingAdvice;
 use Revenexx\Enums\OrganizationStatus;
 
 class CustomersOrganizations extends Service
@@ -32,6 +34,7 @@ class CustomersOrganizations extends Service
      * @param ?string $type
      * @param ?string $company
      * @param ?string $name
+     * @param ?string $name2
      * @param ?string $street
      * @param ?string $street2
      * @param ?string $zip
@@ -41,6 +44,7 @@ class CustomersOrganizations extends Service
      * @param ?string $phone
      * @param ?bool $isDefault
      * @param ?string $externalId
+     * @param ?string $sourceSyncedAt
      * @param ?string $createdAt
      * @param ?string $updatedAt
      * @param ?int $limit
@@ -49,7 +53,7 @@ class CustomersOrganizations extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function customersAddressesList(?string $id = null, ?string $organizationId = null, ?string $contactId = null, ?string $type = null, ?string $company = null, ?string $name = null, ?string $street = null, ?string $street2 = null, ?string $zip = null, ?string $city = null, ?string $region = null, ?string $country = null, ?string $phone = null, ?bool $isDefault = null, ?string $externalId = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function customersAddressesList(?string $id = null, ?string $organizationId = null, ?string $contactId = null, ?string $type = null, ?string $company = null, ?string $name = null, ?string $name2 = null, ?string $street = null, ?string $street2 = null, ?string $zip = null, ?string $city = null, ?string $region = null, ?string $country = null, ?string $phone = null, ?bool $isDefault = null, ?string $externalId = null, ?string $sourceSyncedAt = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             [],
@@ -81,6 +85,10 @@ class CustomersOrganizations extends Service
 
         if (!is_null($name)) {
             $apiParams['name'] = $name;
+        }
+
+        if (!is_null($name2)) {
+            $apiParams['name2'] = $name2;
         }
 
         if (!is_null($street)) {
@@ -117,6 +125,10 @@ class CustomersOrganizations extends Service
 
         if (!is_null($externalId)) {
             $apiParams['external_id'] = $externalId;
+        }
+
+        if (!is_null($sourceSyncedAt)) {
+            $apiParams['source_synced_at'] = $sourceSyncedAt;
         }
 
         if (!is_null($createdAt)) {
@@ -158,27 +170,30 @@ class CustomersOrganizations extends Service
      * and shipping are seeded, and a merchant may add a works entrance or a
      * central accounts office without a release of this app. `is_default` picks
      * the one a checkout should preselect for that owner and that type. A create
-     * cannot omit `street`, `zip`, `city` and `country`; everything else is
-     * optional or defaulted by the database.
+     * cannot omit `zip`, `city` and `country`; everything else is optional or
+     * defaulted by the database. Two rows of this tenant may not share
+     * `external_id` (while external_id IS NOT NULL).
      *
      * @param string $city
      * @param string $country
-     * @param string $street
      * @param string $zip
      * @param ?string $company
      * @param ?string $contactId
+     * @param ?string $createdAt
      * @param ?string $externalId
      * @param ?bool $isDefault
      * @param ?string $name
+     * @param ?string $name2
      * @param ?string $organizationId
      * @param ?string $phone
      * @param ?string $region
+     * @param ?string $street
      * @param ?string $street2
      * @param ?string $type
      * @throws RevenexxException
      * @return array
      */
-    public function customersAddressesCreate(string $city, string $country, string $street, string $zip, ?string $company = null, ?string $contactId = null, ?string $externalId = null, ?bool $isDefault = null, ?string $name = null, ?string $organizationId = null, ?string $phone = null, ?string $region = null, ?string $street2 = null, ?string $type = null): array
+    public function customersAddressesCreate(string $city, string $country, string $zip, ?string $company = null, ?string $contactId = null, ?string $createdAt = null, ?string $externalId = null, ?bool $isDefault = null, ?string $name = null, ?string $name2 = null, ?string $organizationId = null, ?string $phone = null, ?string $region = null, ?string $street = null, ?string $street2 = null, ?string $type = null): array
     {
         $apiPath = str_replace(
             [],
@@ -189,19 +204,27 @@ class CustomersOrganizations extends Service
         $apiParams = [];
         $apiParams['city'] = $city;
         $apiParams['country'] = $country;
-        $apiParams['street'] = $street;
         $apiParams['zip'] = $zip;
         $apiParams['company'] = $company;
         $apiParams['contact_id'] = $contactId;
+
+        if (!is_null($createdAt)) {
+            $apiParams['created_at'] = $createdAt;
+        }
         $apiParams['external_id'] = $externalId;
 
         if (!is_null($isDefault)) {
             $apiParams['is_default'] = $isDefault;
         }
         $apiParams['name'] = $name;
+        $apiParams['name2'] = $name2;
         $apiParams['organization_id'] = $organizationId;
         $apiParams['phone'] = $phone;
         $apiParams['region'] = $region;
+
+        if (!is_null($street)) {
+            $apiParams['street'] = $street;
+        }
         $apiParams['street2'] = $street2;
 
         if (!is_null($type)) {
@@ -225,8 +248,9 @@ class CustomersOrganizations extends Service
      * use) or a contact (a private one only that person uses). Both owner columns
      * are nullable and exactly one is set — sending both, or neither, is
      * refused. Removes the address. Orders already placed keep the address they
-     * were placed with; nothing in this app reaches back. Nothing else in this
-     * app points at it, so nothing else goes with it.
+     * were placed with; nothing in this app reaches back. Deleting one takes
+     * every `contact_points` row that points at it with it — the foreign keys
+     * decide, not this route.
      *
      * @param string $id
      * @throws RevenexxException
@@ -292,7 +316,8 @@ class CustomersOrganizations extends Service
      * are nullable and exactly one is set — sending both, or neither, is
      * refused. A partial update — send only what changes. An empty body is
      * refused rather than answered as a no-op, so a client that built the wrong
-     * patch finds out.
+     * patch finds out. Two rows of this tenant may not share `external_id` (while
+     * external_id IS NOT NULL).
      *
      * @param string $id
      * @param ?string $city
@@ -302,6 +327,7 @@ class CustomersOrganizations extends Service
      * @param ?string $externalId
      * @param ?bool $isDefault
      * @param ?string $name
+     * @param ?string $name2
      * @param ?string $organizationId
      * @param ?string $phone
      * @param ?string $region
@@ -312,7 +338,7 @@ class CustomersOrganizations extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function customersAddressesUpdate(string $id, ?string $city = null, ?string $company = null, ?string $contactId = null, ?string $country = null, ?string $externalId = null, ?bool $isDefault = null, ?string $name = null, ?string $organizationId = null, ?string $phone = null, ?string $region = null, ?string $street = null, ?string $street2 = null, ?string $type = null, ?string $zip = null): array
+    public function customersAddressesUpdate(string $id, ?string $city = null, ?string $company = null, ?string $contactId = null, ?string $country = null, ?string $externalId = null, ?bool $isDefault = null, ?string $name = null, ?string $name2 = null, ?string $organizationId = null, ?string $phone = null, ?string $region = null, ?string $street = null, ?string $street2 = null, ?string $type = null, ?string $zip = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -338,6 +364,7 @@ class CustomersOrganizations extends Service
             $apiParams['is_default'] = $isDefault;
         }
         $apiParams['name'] = $name;
+        $apiParams['name2'] = $name2;
         $apiParams['organization_id'] = $organizationId;
         $apiParams['phone'] = $phone;
         $apiParams['region'] = $region;
@@ -353,6 +380,332 @@ class CustomersOrganizations extends Service
 
         if (!is_null($zip)) {
             $apiParams['zip'] = $zip;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_PUT,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * A contact point is WHERE one kind of document goes for one company: the
+     * invoice to accounts payable, the order confirmation to the buyer who placed
+     * it, the shipping notice to goods-in, the dunning letter to whoever settles
+     * it. An ERP keeps these as four separate addresses per debtor and they had
+     * nowhere to land here — `addresses` carries a `phone` column and has never
+     * had an `email` one — so these rows create a home rather than moving one.
+     * Exactly one point per company and kind is flagged as the one to use. Every
+     * contact point this tenant holds, filtered by `organization_id` for one
+     * company, by `kind` for one kind of document, by `is_primary` for the ones
+     * actually in use. `?organization_id=…&kind=invoice&is_primary=true` is the
+     * single read behind "where does this company's invoice go" — and it
+     * answers at most one row, because this app keeps the flag single. The page
+     * is `limit`/`offset`/`order`.
+     *
+     * @param ?string $id
+     * @param ?string $organizationId
+     * @param ?string $addressId
+     * @param ?string $kind
+     * @param ?string $email
+     * @param ?string $phone
+     * @param ?bool $isPrimary
+     * @param ?int $position
+     * @param ?string $externalId
+     * @param ?string $sourceSyncedAt
+     * @param ?string $createdAt
+     * @param ?string $updatedAt
+     * @param ?int $limit
+     * @param ?int $offset
+     * @param ?string $order
+     * @throws RevenexxException
+     * @return array
+     */
+    public function customersContactPointsList(?string $id = null, ?string $organizationId = null, ?string $addressId = null, ?string $kind = null, ?string $email = null, ?string $phone = null, ?bool $isPrimary = null, ?int $position = null, ?string $externalId = null, ?string $sourceSyncedAt = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/customers/contact_points'
+        );
+
+        $apiParams = [];
+
+        if (!is_null($id)) {
+            $apiParams['id'] = $id;
+        }
+
+        if (!is_null($organizationId)) {
+            $apiParams['organization_id'] = $organizationId;
+        }
+
+        if (!is_null($addressId)) {
+            $apiParams['address_id'] = $addressId;
+        }
+
+        if (!is_null($kind)) {
+            $apiParams['kind'] = $kind;
+        }
+
+        if (!is_null($email)) {
+            $apiParams['email'] = $email;
+        }
+
+        if (!is_null($phone)) {
+            $apiParams['phone'] = $phone;
+        }
+
+        if (!is_null($isPrimary)) {
+            $apiParams['is_primary'] = $isPrimary;
+        }
+
+        if (!is_null($position)) {
+            $apiParams['position'] = $position;
+        }
+
+        if (!is_null($externalId)) {
+            $apiParams['external_id'] = $externalId;
+        }
+
+        if (!is_null($sourceSyncedAt)) {
+            $apiParams['source_synced_at'] = $sourceSyncedAt;
+        }
+
+        if (!is_null($createdAt)) {
+            $apiParams['created_at'] = $createdAt;
+        }
+
+        if (!is_null($updatedAt)) {
+            $apiParams['updated_at'] = $updatedAt;
+        }
+
+        if (!is_null($limit)) {
+            $apiParams['limit'] = $limit;
+        }
+
+        if (!is_null($offset)) {
+            $apiParams['offset'] = $offset;
+        }
+
+        if (!is_null($order)) {
+            $apiParams['order'] = $order;
+        }
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * A contact point is WHERE one kind of document goes for one company: the
+     * invoice to accounts payable, the order confirmation to the buyer who placed
+     * it, the shipping notice to goods-in, the dunning letter to whoever settles
+     * it. An ERP keeps these as four separate addresses per debtor and they had
+     * nowhere to land here — `addresses` carries a `phone` column and has never
+     * had an `email` one — so these rows create a home rather than moving one.
+     * Exactly one point per company and kind is flagged as the one to use. `kind`
+     * is required and names one of this tenant's own document recipient types —
+     * nothing is defaulted, because a point filed as the wrong document is worse
+     * than a point refused. A point needs an `email` or a `phone`, since one with
+     * neither delivers nothing. The FIRST point of a kind becomes the one to use
+     * on its own; a later one takes over only when it is sent as `is_primary`,
+     * which demotes the incumbent in the same call. A create cannot omit
+     * `organization_id` and `kind`; everything else is optional or defaulted by
+     * the database. Two rows of this tenant may not share the combination of
+     * `organization_id` + `kind` (while is_primary) or `external_id` (while
+     * external_id IS NOT NULL).
+     *
+     * @param string $kind
+     * @param string $organizationId
+     * @param ?string $addressId
+     * @param ?string $createdAt
+     * @param ?string $email
+     * @param ?string $externalId
+     * @param ?bool $isPrimary
+     * @param ?string $phone
+     * @param ?int $position
+     * @throws RevenexxException
+     * @return array
+     */
+    public function customersContactPointsCreate(string $kind, string $organizationId, ?string $addressId = null, ?string $createdAt = null, ?string $email = null, ?string $externalId = null, ?bool $isPrimary = null, ?string $phone = null, ?int $position = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/customers/contact_points'
+        );
+
+        $apiParams = [];
+        $apiParams['kind'] = $kind;
+        $apiParams['organization_id'] = $organizationId;
+        $apiParams['address_id'] = $addressId;
+
+        if (!is_null($createdAt)) {
+            $apiParams['created_at'] = $createdAt;
+        }
+        $apiParams['email'] = $email;
+        $apiParams['external_id'] = $externalId;
+
+        if (!is_null($isPrimary)) {
+            $apiParams['is_primary'] = $isPrimary;
+        }
+        $apiParams['phone'] = $phone;
+
+        if (!is_null($position)) {
+            $apiParams['position'] = $position;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * A contact point is WHERE one kind of document goes for one company: the
+     * invoice to accounts payable, the order confirmation to the buyer who placed
+     * it, the shipping notice to goods-in, the dunning letter to whoever settles
+     * it. An ERP keeps these as four separate addresses per debtor and they had
+     * nowhere to land here — `addresses` carries a `phone` column and has never
+     * had an `email` one — so these rows create a home rather than moving one.
+     * Exactly one point per company and kind is flagged as the one to use.
+     * Removes the point. If it was the flagged one, the next point of that kind
+     * takes over — so the kind keeps an answer for as long as it has any point
+     * at all, and the company is left with none only once the last one goes.
+     * Nothing else in this app points at it, so nothing else goes with it.
+     *
+     * @param string $id
+     * @throws RevenexxException
+     * @return array
+     */
+    public function customersContactPointsDelete(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/customers/contact_points/{id}'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_DELETE,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * A contact point is WHERE one kind of document goes for one company: the
+     * invoice to accounts payable, the order confirmation to the buyer who placed
+     * it, the shipping notice to goods-in, the dunning letter to whoever settles
+     * it. An ERP keeps these as four separate addresses per debtor and they had
+     * nowhere to land here — `addresses` carries a `phone` column and has never
+     * had an `email` one — so these rows create a home rather than moving one.
+     * Exactly one point per company and kind is flagged as the one to use. One
+     * contact point by id.
+     *
+     * @param string $id
+     * @throws RevenexxException
+     * @return array
+     */
+    public function customersContactPointsGet(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/customers/contact_points/{id}'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * A contact point is WHERE one kind of document goes for one company: the
+     * invoice to accounts payable, the order confirmation to the buyer who placed
+     * it, the shipping notice to goods-in, the dunning letter to whoever settles
+     * it. An ERP keeps these as four separate addresses per debtor and they had
+     * nowhere to land here — `addresses` carries a `phone` column and has never
+     * had an `email` one — so these rows create a home rather than moving one.
+     * Exactly one point per company and kind is flagged as the one to use. A
+     * partial update — send only what changes. The owning company is fixed (the
+     * flag is scoped by it, so moving a point between companies would move an
+     * invariant with it) and an empty body is refused. A flag MOVES rather than
+     * switching off: send `is_primary` on the point that should take over,
+     * because a kind with points and no flag is a question with no answer. Two
+     * rows of this tenant may not share the combination of `organization_id` +
+     * `kind` (while is_primary) or `external_id` (while external_id IS NOT NULL).
+     *
+     * @param string $id
+     * @param ?string $addressId
+     * @param ?string $email
+     * @param ?string $externalId
+     * @param ?bool $isPrimary
+     * @param ?string $kind
+     * @param ?string $organizationId
+     * @param ?string $phone
+     * @param ?int $position
+     * @throws RevenexxException
+     * @return array
+     */
+    public function customersContactPointsUpdate(string $id, ?string $addressId = null, ?string $email = null, ?string $externalId = null, ?bool $isPrimary = null, ?string $kind = null, ?string $organizationId = null, ?string $phone = null, ?int $position = null): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/customers/contact_points/{id}'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+        $apiParams['address_id'] = $addressId;
+        $apiParams['email'] = $email;
+        $apiParams['external_id'] = $externalId;
+
+        if (!is_null($isPrimary)) {
+            $apiParams['is_primary'] = $isPrimary;
+        }
+
+        if (!is_null($kind)) {
+            $apiParams['kind'] = $kind;
+        }
+
+        if (!is_null($organizationId)) {
+            $apiParams['organization_id'] = $organizationId;
+        }
+        $apiParams['phone'] = $phone;
+
+        if (!is_null($position)) {
+            $apiParams['position'] = $position;
         }
 
         $apiHeaders = [];
@@ -650,10 +1003,17 @@ class CustomersOrganizations extends Service
      * @param ?CustomersOrganizationsListStatus $status
      * @param ?string $lifecycleStage
      * @param ?string $paymentTerms
+     * @param ?CreditLimitMode $creditLimitMode
      * @param ?float $creditLimit
+     * @param ?float $balance
+     * @param ?float $balanceDue
      * @param ?string $priceList
+     * @param ?ShippingAdvice $shippingAdvice
+     * @param ?string $locationCode
      * @param ?bool $deliveryBlock
      * @param ?string $externalTeamId
+     * @param ?string $externalId
+     * @param ?string $sourceSyncedAt
      * @param ?string $createdAt
      * @param ?string $updatedAt
      * @param ?int $limit
@@ -662,7 +1022,7 @@ class CustomersOrganizations extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function customersOrganizationsList(?string $id = null, ?string $name = null, ?string $vatId = null, ?string $branche = null, ?string $customerNumber = null, ?CustomersOrganizationsListStatus $status = null, ?string $lifecycleStage = null, ?string $paymentTerms = null, ?float $creditLimit = null, ?string $priceList = null, ?bool $deliveryBlock = null, ?string $externalTeamId = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function customersOrganizationsList(?string $id = null, ?string $name = null, ?string $vatId = null, ?string $branche = null, ?string $customerNumber = null, ?CustomersOrganizationsListStatus $status = null, ?string $lifecycleStage = null, ?string $paymentTerms = null, ?CreditLimitMode $creditLimitMode = null, ?float $creditLimit = null, ?float $balance = null, ?float $balanceDue = null, ?string $priceList = null, ?ShippingAdvice $shippingAdvice = null, ?string $locationCode = null, ?bool $deliveryBlock = null, ?string $externalTeamId = null, ?string $externalId = null, ?string $sourceSyncedAt = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             [],
@@ -704,12 +1064,32 @@ class CustomersOrganizations extends Service
             $apiParams['payment_terms'] = $paymentTerms;
         }
 
+        if (!is_null($creditLimitMode)) {
+            $apiParams['credit_limit_mode'] = $creditLimitMode;
+        }
+
         if (!is_null($creditLimit)) {
             $apiParams['credit_limit'] = $creditLimit;
         }
 
+        if (!is_null($balance)) {
+            $apiParams['balance'] = $balance;
+        }
+
+        if (!is_null($balanceDue)) {
+            $apiParams['balance_due'] = $balanceDue;
+        }
+
         if (!is_null($priceList)) {
             $apiParams['price_list'] = $priceList;
+        }
+
+        if (!is_null($shippingAdvice)) {
+            $apiParams['shipping_advice'] = $shippingAdvice;
+        }
+
+        if (!is_null($locationCode)) {
+            $apiParams['location_code'] = $locationCode;
         }
 
         if (!is_null($deliveryBlock)) {
@@ -718,6 +1098,14 @@ class CustomersOrganizations extends Service
 
         if (!is_null($externalTeamId)) {
             $apiParams['external_team_id'] = $externalTeamId;
+        }
+
+        if (!is_null($externalId)) {
+            $apiParams['external_id'] = $externalId;
+        }
+
+        if (!is_null($sourceSyncedAt)) {
+            $apiParams['source_synced_at'] = $sourceSyncedAt;
         }
 
         if (!is_null($createdAt)) {
@@ -764,24 +1152,31 @@ class CustomersOrganizations extends Service
      * inherits the tenant's `default_payment_terms` / `default_credit_limit`
      * where the merchant set them. `name` is the only field a create cannot omit;
      * everything else is optional or defaulted by the database. Two rows of this
-     * tenant may not share `customer_number` (while customer_number IS NOT NULL)
-     * or `external_team_id` (while external_team_id IS NOT NULL).
+     * tenant may not share `customer_number` (while customer_number IS NOT NULL),
+     * `external_team_id` (while external_team_id IS NOT NULL) or `external_id`
+     * (while external_id IS NOT NULL).
      *
      * @param string $name
+     * @param ?float $balance
+     * @param ?float $balanceDue
      * @param ?string $branche
+     * @param ?string $createdAt
      * @param ?float $creditLimit
+     * @param ?CreditLimitMode $creditLimitMode
      * @param ?string $customerNumber
      * @param ?bool $deliveryBlock
      * @param ?string $lifecycleStage
+     * @param ?string $locationCode
      * @param ?string $paymentTerms
      * @param ?string $priceList
      * @param ?array $settings
+     * @param ?ShippingAdvice $shippingAdvice
      * @param ?OrganizationStatus $status
      * @param ?string $vatId
      * @throws RevenexxException
      * @return array
      */
-    public function customersOrganizationsCreate(string $name, ?string $branche = null, ?float $creditLimit = null, ?string $customerNumber = null, ?bool $deliveryBlock = null, ?string $lifecycleStage = null, ?string $paymentTerms = null, ?string $priceList = null, ?array $settings = null, ?OrganizationStatus $status = null, ?string $vatId = null): array
+    public function customersOrganizationsCreate(string $name, ?float $balance = null, ?float $balanceDue = null, ?string $branche = null, ?string $createdAt = null, ?float $creditLimit = null, ?CreditLimitMode $creditLimitMode = null, ?string $customerNumber = null, ?bool $deliveryBlock = null, ?string $lifecycleStage = null, ?string $locationCode = null, ?string $paymentTerms = null, ?string $priceList = null, ?array $settings = null, ?ShippingAdvice $shippingAdvice = null, ?OrganizationStatus $status = null, ?string $vatId = null): array
     {
         $apiPath = str_replace(
             [],
@@ -791,8 +1186,18 @@ class CustomersOrganizations extends Service
 
         $apiParams = [];
         $apiParams['name'] = $name;
+        $apiParams['balance'] = $balance;
+        $apiParams['balance_due'] = $balanceDue;
         $apiParams['branche'] = $branche;
+
+        if (!is_null($createdAt)) {
+            $apiParams['created_at'] = $createdAt;
+        }
         $apiParams['credit_limit'] = $creditLimit;
+
+        if (!is_null($creditLimitMode)) {
+            $apiParams['credit_limit_mode'] = $creditLimitMode;
+        }
         $apiParams['customer_number'] = $customerNumber;
 
         if (!is_null($deliveryBlock)) {
@@ -802,9 +1207,11 @@ class CustomersOrganizations extends Service
         if (!is_null($lifecycleStage)) {
             $apiParams['lifecycle_stage'] = $lifecycleStage;
         }
+        $apiParams['location_code'] = $locationCode;
         $apiParams['payment_terms'] = $paymentTerms;
         $apiParams['price_list'] = $priceList;
         $apiParams['settings'] = $settings;
+        $apiParams['shipping_advice'] = $shippingAdvice;
 
         if (!is_null($status)) {
             $apiParams['status'] = $status;
@@ -832,10 +1239,10 @@ class CustomersOrganizations extends Service
      * company and its mirrored team. Its people are NOT deleted: they become
      * standalone buyers who can still sign in and still order, which is the
      * behaviour a merchant winding down a subsidiary wants. Deleting one takes
-     * every `contact_events`, `addresses`, `organization_metrics` and
-     * `segment_members` row that points at it with it and clears
-     * `contacts.organization_id` rather than deleting those rows — the foreign
-     * keys decide, not this route.
+     * every `contact_events`, `addresses`, `contact_points`,
+     * `organization_metrics` and `segment_members` row that points at it with it
+     * and clears `contacts.organization_id` rather than deleting those rows —
+     * the foreign keys decide, not this route.
      *
      * @param string $id
      * @throws RevenexxException
@@ -909,25 +1316,30 @@ class CustomersOrganizations extends Service
      * ignored if sent. Blocking a company here is what stops it trading; moving
      * it through the pipeline is `lifecycle_stage`, and the two are independent.
      * Two rows of this tenant may not share `customer_number` (while
-     * customer_number IS NOT NULL) or `external_team_id` (while external_team_id
-     * IS NOT NULL).
+     * customer_number IS NOT NULL), `external_team_id` (while external_team_id IS
+     * NOT NULL) or `external_id` (while external_id IS NOT NULL).
      *
      * @param string $id
+     * @param ?float $balance
+     * @param ?float $balanceDue
      * @param ?string $branche
      * @param ?float $creditLimit
+     * @param ?CreditLimitMode $creditLimitMode
      * @param ?string $customerNumber
      * @param ?bool $deliveryBlock
      * @param ?string $lifecycleStage
+     * @param ?string $locationCode
      * @param ?string $name
      * @param ?string $paymentTerms
      * @param ?string $priceList
      * @param ?array $settings
+     * @param ?ShippingAdvice $shippingAdvice
      * @param ?OrganizationStatus $status
      * @param ?string $vatId
      * @throws RevenexxException
      * @return array
      */
-    public function customersOrganizationsUpdate(string $id, ?string $branche = null, ?float $creditLimit = null, ?string $customerNumber = null, ?bool $deliveryBlock = null, ?string $lifecycleStage = null, ?string $name = null, ?string $paymentTerms = null, ?string $priceList = null, ?array $settings = null, ?OrganizationStatus $status = null, ?string $vatId = null): array
+    public function customersOrganizationsUpdate(string $id, ?float $balance = null, ?float $balanceDue = null, ?string $branche = null, ?float $creditLimit = null, ?CreditLimitMode $creditLimitMode = null, ?string $customerNumber = null, ?bool $deliveryBlock = null, ?string $lifecycleStage = null, ?string $locationCode = null, ?string $name = null, ?string $paymentTerms = null, ?string $priceList = null, ?array $settings = null, ?ShippingAdvice $shippingAdvice = null, ?OrganizationStatus $status = null, ?string $vatId = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -937,8 +1349,14 @@ class CustomersOrganizations extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+        $apiParams['balance'] = $balance;
+        $apiParams['balance_due'] = $balanceDue;
         $apiParams['branche'] = $branche;
         $apiParams['credit_limit'] = $creditLimit;
+
+        if (!is_null($creditLimitMode)) {
+            $apiParams['credit_limit_mode'] = $creditLimitMode;
+        }
         $apiParams['customer_number'] = $customerNumber;
 
         if (!is_null($deliveryBlock)) {
@@ -948,6 +1366,7 @@ class CustomersOrganizations extends Service
         if (!is_null($lifecycleStage)) {
             $apiParams['lifecycle_stage'] = $lifecycleStage;
         }
+        $apiParams['location_code'] = $locationCode;
 
         if (!is_null($name)) {
             $apiParams['name'] = $name;
@@ -955,6 +1374,7 @@ class CustomersOrganizations extends Service
         $apiParams['payment_terms'] = $paymentTerms;
         $apiParams['price_list'] = $priceList;
         $apiParams['settings'] = $settings;
+        $apiParams['shipping_advice'] = $shippingAdvice;
 
         if (!is_null($status)) {
             $apiParams['status'] = $status;

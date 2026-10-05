@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\RuleMatch;
 use Revenexx\Enums\CategoriesRuleMatch;
 use Revenexx\Enums\CategoryRuleMatch;
-use Revenexx\Enums\Source;
+use Revenexx\Enums\ProductsProductCategoriesListSource;
 use Revenexx\Enums\ProductCategoriesSource;
 
 final class ProductsCategoriesTest extends TestCase {

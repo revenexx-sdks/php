@@ -14,6 +14,8 @@ $inventoriesStock = new InventoriesStock($client);
 
 $result = $inventoriesStock->inventoriesStockCreate(
     locationId: '',
+    availabilityCode: 'available', // optional
+    expectedAt: '2026-11-14', // optional
     metadata: [
         'backorder' => true
     ], // optional

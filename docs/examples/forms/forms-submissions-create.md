@@ -3,7 +3,6 @@
 
 use Revenexx\Client;
 use Revenexx\Services\Forms;
-use Revenexx\Enums\FormSubmissionStatus;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -20,8 +19,6 @@ $result = $forms->formsSubmissionsCreate(
         'message' => 'Please quote 200 units of ACME-4711-BLK, delivered to Hamburg.'
     ],
     formId: '',
-    formSlug: 'contact', // optional
     metadata: [], // optional
-    source: '/contact', // optional
-    status: FormSubmissionStatus::NEW() // optional
+    source: '/contact' // optional
 );```

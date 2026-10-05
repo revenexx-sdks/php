@@ -5,7 +5,7 @@
 GET https://api.revenexx.com/v1/carts/{cart_id}/items
 ```
 
-** The array is still called &#039;items&#039;; the response also carries &#039;page&#039; and &#039;filter&#039; like every other list, and an unknown cart_id answers 404 instead of an empty page. A cart with more lines than the page size is not silently truncated — &#039;page.hasMore&#039; says so. Lines come back in position order unless &#039;order&#039; says otherwise. **
+** The array is still called 'items'; the response also carries 'page' and 'filter' like every other list, and an unknown cart_id answers 404 instead of an empty page. A cart with more lines than the page size is not silently truncated — 'page.hasMore' says so. Lines come back in position order unless 'order' says otherwise. **
 
 ### Parameters
 
@@ -34,7 +34,7 @@ GET https://api.revenexx.com/v1/carts/{cart_id}/items
 POST https://api.revenexx.com/v1/carts/{cart_id}/items
 ```
 
-** Adds one line to an ACTIVE cart — the add-to-basket call. `name` or `sku` is required (a line sent with only a SKU takes the SKU as its name, so a line always has something to show) and `quantity` must be greater than zero; everything else defaults. The line is priced in the CART&#039;s currency and stores none of its own, so a `currency` in the payload may only repeat the cart&#039;s — a different one is a 409. The one thing that surprises a caller: a plain product line with the same product/sku AND the same `unit_price` as a line already in the cart does not open a second row — its quantity is added to that line, and the 201 names a row that already existed. Price is part of that identity on purpose, so a changed price never averages into an old line. A configured or custom line always stands alone. The cart&#039;s `item_count` (the sum of QUANTITIES) and `subtotal` are recomputed before the answer, and `max_items_per_cart` / `max_quantity_per_line` are checked on the RESULT of the merge (422), so ten calls of one piece cannot walk past a limit one call of ten would hit. **
+** Adds one line to an ACTIVE cart — the add-to-basket call. `name` or `sku` is required (a line sent with only a SKU takes the SKU as its name, so a line always has something to show) and `quantity` must be greater than zero; everything else defaults. The line is priced in the CART's currency and stores none of its own, so a `currency` in the payload may only repeat the cart's — a different one is a 409. The one thing that surprises a caller: a plain product line with the same product/sku AND the same `unit_price` as a line already in the cart does not open a second row — its quantity is added to that line, and the 201 names a row that already existed. Price is part of that identity on purpose, so a changed price never averages into an old line. A configured or custom line always stands alone. The cart's `item_count` (the sum of QUANTITIES) and `subtotal` are recomputed before the answer, and `max_items_per_cart` / `max_quantity_per_line` are checked on the RESULT of the merge (422), so ten calls of one piece cannot walk past a limit one call of ten would hit. **
 
 ### Parameters
 
@@ -74,7 +74,7 @@ PUT https://api.revenexx.com/v1/carts/{cart_id}/items
 DELETE https://api.revenexx.com/v1/carts/{cart_id}/items/{id}
 ```
 
-** Removes one line from an ACTIVE cart and recomputes the owning cart&#039;s `item_count` and `subtotal` before answering. This is how a quantity reaches zero: `quantity` is constrained to be greater than zero, so &quot;none of it&quot; is a DELETE and never an update to 0. The cart in the path is part of the address — a line belonging to a different cart answers 404 and is left where it is. Deleting the last line leaves an empty cart, not a deleted one; the cart itself goes through carts.delete, which takes every line with it in one call. **
+** Removes one line from an ACTIVE cart and recomputes the owning cart's `item_count` and `subtotal` before answering. This is how a quantity reaches zero: `quantity` is constrained to be greater than zero, so "none of it" is a DELETE and never an update to 0. The cart in the path is part of the address — a line belonging to a different cart answers 404 and is left where it is. Deleting the last line leaves an empty cart, not a deleted one; the cart itself goes through carts.delete, which takes every line with it in one call. **
 
 ### Parameters
 
@@ -88,7 +88,7 @@ DELETE https://api.revenexx.com/v1/carts/{cart_id}/items/{id}
 GET https://api.revenexx.com/v1/carts/{cart_id}/items/{id}
 ```
 
-** One line, addressed through the cart that owns it. Both ids are checked, not just the line&#039;s: a line that exists but belongs to a different cart answers 404 rather than the row, so an id copied out of another cart never resolves here and a caller can trust that what came back is a line of the cart they asked about. The line carries both of its prices — the working `unit_price`, which a resync or a repricing job may have moved, and the `snapshot` the buyer was shown when the line was added — and its own `line_total`, which is always quantity × unit_price and never what a payload claimed. To read a whole cart&#039;s lines, list them: this route is for one known line. **
+** One line, addressed through the cart that owns it. Both ids are checked, not just the line's: a line that exists but belongs to a different cart answers 404 rather than the row, so an id copied out of another cart never resolves here and a caller can trust that what came back is a line of the cart they asked about. The line carries both of its prices — the working `unit_price`, which a resync or a repricing job may have moved, and the `snapshot` the buyer was shown when the line was added — and its own `line_total`, which is always quantity × unit_price and never what a payload claimed. To read a whole cart's lines, list them: this route is for one known line. **
 
 ### Parameters
 
@@ -102,7 +102,7 @@ GET https://api.revenexx.com/v1/carts/{cart_id}/items/{id}
 PUT https://api.revenexx.com/v1/carts/{cart_id}/items/{id}
 ```
 
-** Changes one line of an ACTIVE cart — the quantity stepper on the cart page, and the route a repricing job writes through. The fields sent are merged onto the stored line and the whole line is validated again, so `quantity` must still be greater than zero and `type` still one of the three. `line_total` is not settable: it is recomputed as quantity × unit_price, and the cart&#039;s `item_count` and `subtotal` follow before the answer. What it will NOT do is merge — only carts.items.create folds one line into another, so giving this line the same product and price as a sibling leaves two rows standing, and the next add joins whichever it matches. `max_quantity_per_line` is enforced on the result (422). A quantity of zero is not the way to remove a line; the delete is. **
+** Changes one line of an ACTIVE cart — the quantity stepper on the cart page, and the route a repricing job writes through. The fields sent are merged onto the stored line and the whole line is validated again, so `quantity` must still be greater than zero and `type` still one of the three. `line_total` is not settable: it is recomputed as quantity × unit_price, and the cart's `item_count` and `subtotal` follow before the answer. What it will NOT do is merge — only carts.items.create folds one line into another, so giving this line the same product and price as a sibling leaves two rows standing, and the next add joins whichever it matches. `max_quantity_per_line` is enforced on the result (422). A quantity of zero is not the way to remove a line; the delete is. **
 
 ### Parameters
 

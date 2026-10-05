@@ -6,7 +6,7 @@ use Revenexx\RevenexxException;
 use Revenexx\Client;
 use Revenexx\Service;
 use Revenexx\InputFile;
-use Revenexx\Enums\Collection;
+use Revenexx\Enums\Collection as CollectionEnum;
 
 class Search extends Service
 {
@@ -48,11 +48,11 @@ class Search extends Service
      * Returns the Typesense collection definition (fields, defaults, document
      * count). Requires the `collections:read` action.
      *
-     * @param Collection $collection
+     * @param CollectionEnum $collection
      * @throws RevenexxException
      * @return array
      */
-    public function searchGetCollection(Collection $collection): array
+    public function searchGetCollection(CollectionEnum $collection): array
     {
         $apiPath = str_replace(
             ['{collection}'],
@@ -78,7 +78,7 @@ class Search extends Service
      * passed through verbatim as the query string, so parameters not listed here
      * still reach Typesense. Requires the `documents:search` action.
      *
-     * @param Collection $collection
+     * @param CollectionEnum $collection
      * @param ?string $q
      * @param ?string $queryBy
      * @param ?string $filterBy
@@ -96,7 +96,7 @@ class Search extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function searchSearchDocumentsGet(Collection $collection, ?string $q = null, ?string $queryBy = null, ?string $filterBy = null, ?string $sortBy = null, ?string $facetBy = null, ?int $maxFacetValues = null, ?string $groupBy = null, ?string $includeFields = null, ?string $excludeFields = null, ?string $highlightFullFields = null, ?int $numTypos = null, ?string $prefix = null, ?int $page = null, ?int $perPage = null): array
+    public function searchSearchDocumentsGet(CollectionEnum $collection, ?string $q = null, ?string $queryBy = null, ?string $filterBy = null, ?string $sortBy = null, ?string $facetBy = null, ?int $maxFacetValues = null, ?string $groupBy = null, ?string $includeFields = null, ?string $excludeFields = null, ?string $highlightFullFields = null, ?int $numTypos = null, ?string $prefix = null, ?int $page = null, ?int $perPage = null): array
     {
         $apiPath = str_replace(
             ['{collection}'],
@@ -177,7 +177,7 @@ class Search extends Service
      * Full-text search within one collection, with the Typesense search
      * parameters in the body. Requires the `documents:search` action.
      *
-     * @param Collection $collection
+     * @param CollectionEnum $collection
      * @param ?string $excludeFields
      * @param ?string $facetBy
      * @param ?string $filterBy
@@ -195,7 +195,7 @@ class Search extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function searchSearchDocuments(Collection $collection, ?string $excludeFields = null, ?string $facetBy = null, ?string $filterBy = null, ?string $groupBy = null, ?string $highlightFullFields = null, ?string $includeFields = null, ?int $maxFacetValues = null, ?int $numTypos = null, ?int $page = null, ?int $perPage = null, ?string $prefix = null, ?string $q = null, ?string $queryBy = null, ?string $sortBy = null): array
+    public function searchSearchDocuments(CollectionEnum $collection, ?string $excludeFields = null, ?string $facetBy = null, ?string $filterBy = null, ?string $groupBy = null, ?string $highlightFullFields = null, ?string $includeFields = null, ?int $maxFacetValues = null, ?int $numTypos = null, ?int $page = null, ?int $perPage = null, ?string $prefix = null, ?string $q = null, ?string $queryBy = null, ?string $sortBy = null): array
     {
         $apiPath = str_replace(
             ['{collection}'],
@@ -278,12 +278,12 @@ class Search extends Service
      * schema, so it is described as a free-form object. Requires the
      * `documents:get` action.
      *
-     * @param Collection $collection
+     * @param CollectionEnum $collection
      * @param string $documentId
      * @throws RevenexxException
      * @return array
      */
-    public function searchGetDocument(Collection $collection, string $documentId): array
+    public function searchGetDocument(CollectionEnum $collection, string $documentId): array
     {
         $apiPath = str_replace(
             ['{collection}', '{documentId}'],

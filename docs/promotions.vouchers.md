@@ -5,7 +5,7 @@
 GET https://api.revenexx.com/v1/promotions/batches
 ```
 
-** The unit a mailing is accounted for by. &quot;How many of the spring codes have been used&quot; is a question about a batch, not about fifty thousand rows. **
+** The unit a mailing is accounted for by. "How many of the spring codes have been used" is a question about a batch, not about fifty thousand rows. **
 
 ### Parameters
 

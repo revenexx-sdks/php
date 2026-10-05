@@ -6,6 +6,8 @@ use Revenexx\RevenexxException;
 use Revenexx\Client;
 use Revenexx\Service;
 use Revenexx\InputFile;
+use Revenexx\Enums\Tone;
+use Revenexx\Enums\AvailabilityStateTone;
 use Revenexx\Enums\InventoriesMovementsListType;
 use Revenexx\Enums\InventoriesVocabulariesGetName;
 
@@ -23,8 +25,11 @@ class InventoriesStock extends Service
      * written onto the row directly. Each item is booked into the movements
      * ledger as an `adjustment` and the balance follows, so a correction leaves a
      * record of who changed what and why instead of a number that silently
-     * differs from yesterday's. A reason is mandatory unless
-     * movement_reason_required is 'none'.
+     * differs from yesterday's. A batch is all-or-nothing: every item is judged
+     * against both guards before the first is booked, and a refusal books
+     * nothing. An item is named once with its whole correction; two lines for one
+     * item are refused. A reason is mandatory unless movement_reason_required is
+     * 'none'.
      *
      * @param ?array $items
      * @param ?string $locationCode
@@ -72,15 +77,21 @@ class InventoriesStock extends Service
      * locations in scope and broken down per location, plus `orderable` —
      * whether this much of it can be promised at this moment. An item this app
      * has never seen is NOT an error: it comes back tracked:false, and the
-     * storefront decides whether an untracked item sells freely. It is also the
-     * most customised surface this product has in the field. A tenant whose stock
-     * really lives in an ERP — SAP live stock is the ordinary case, not the
-     * exotic one — replaces exactly this one capability, 1:1, with a custom app
-     * through the gateway's capability override, while every other route here
-     * keeps doing the stock-keeping CRUD unchanged. That is why the request and
-     * response shapes below read as a contract to be implemented rather than as
-     * an implementation detail: whatever ends up answering this path has to
-     * answer in these terms.
+     * storefront decides whether an untracked item sells freely. It answers the
+     * two facts a buyer would otherwise telephone sales about, per location and
+     * rolled up for the item: `expected_at`, when it is due back, and
+     * `availability_code`, what the source system says about it as one of the
+     * codes this tenant keeps — and `orderable` weighs that code's `orderable`
+     * policy as well as the quantity, with `unorderable_reason` saying which of
+     * the two said no. It is also the most customised surface this product has in
+     * the field. A tenant whose stock really lives in an ERP — SAP live stock
+     * is the ordinary case, not the exotic one — replaces exactly this one
+     * capability, 1:1, with a custom app through the gateway's capability
+     * override, while every other route here keeps doing the stock-keeping CRUD
+     * unchanged. That is why the request and response shapes below read as a
+     * contract to be implemented rather than as an implementation detail:
+     * whatever ends up answering this path has to answer in these terms, these
+     * six fields included.
      *
      * @param ?array $items
      * @param ?string $locationCode
@@ -113,6 +124,390 @@ class InventoriesStock extends Service
 
         return $this->client->call(
             Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * An availability state is one of the codes THIS TENANT keeps for what a
+     * source system says about an article: a stock row stores one in
+     * `availability_code`, and the row's `expected_at` says when the article is
+     * due back. The set is a table rather than a fixed list because the number a
+     * source system delivers for availability is that system's number and what it
+     * means is the merchant's to state. Each value carries `orderable` —
+     * whether an item in this state may still be ordered — which is the fact a
+     * storefront needs in order to offer or withhold the order button without
+     * keeping a list of its own. This is the operator's view of the set — the
+     * rows, filterable and paged, in whatever order you ask for. A CLIENT that
+     * only wants to render a code does not want this route: GET
+     * /inventories/vocabularies/availability-states answers the same set keyed by
+     * code, ordered by `position`, with the titles per language and the
+     * `orderable` flag already merged, and it is the shape every other vocabulary
+     * in this platform is read in. A tenant who has never been seeded reads an
+     * EMPTY list here, because the seed runs on install and on POST
+     * /inventories/locations/defaults; the vocabulary route seeds on an empty
+     * read and this one does not.
+     *
+     * @param ?int $limit
+     * @param ?int $offset
+     * @param ?string $order
+     * @param ?string $id
+     * @param ?string $code
+     * @param ?string $title
+     * @param ?string $description
+     * @param ?string $labels
+     * @param ?string $descriptions
+     * @param ?bool $orderable
+     * @param ?bool $isDefault
+     * @param ?Tone $tone
+     * @param ?int $position
+     * @param ?bool $isSystem
+     * @param ?string $createdAt
+     * @param ?string $updatedAt
+     * @throws RevenexxException
+     * @return array
+     */
+    public function inventoriesAvailabilityStatesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?string $title = null, ?string $description = null, ?string $labels = null, ?string $descriptions = null, ?bool $orderable = null, ?bool $isDefault = null, ?Tone $tone = null, ?int $position = null, ?bool $isSystem = null, ?string $createdAt = null, ?string $updatedAt = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/inventories/availability-states'
+        );
+
+        $apiParams = [];
+
+        if (!is_null($limit)) {
+            $apiParams['limit'] = $limit;
+        }
+
+        if (!is_null($offset)) {
+            $apiParams['offset'] = $offset;
+        }
+
+        if (!is_null($order)) {
+            $apiParams['order'] = $order;
+        }
+
+        if (!is_null($id)) {
+            $apiParams['id'] = $id;
+        }
+
+        if (!is_null($code)) {
+            $apiParams['code'] = $code;
+        }
+
+        if (!is_null($title)) {
+            $apiParams['title'] = $title;
+        }
+
+        if (!is_null($description)) {
+            $apiParams['description'] = $description;
+        }
+
+        if (!is_null($labels)) {
+            $apiParams['labels'] = $labels;
+        }
+
+        if (!is_null($descriptions)) {
+            $apiParams['descriptions'] = $descriptions;
+        }
+
+        if (!is_null($orderable)) {
+            $apiParams['orderable'] = $orderable;
+        }
+
+        if (!is_null($isDefault)) {
+            $apiParams['is_default'] = $isDefault;
+        }
+
+        if (!is_null($tone)) {
+            $apiParams['tone'] = $tone;
+        }
+
+        if (!is_null($position)) {
+            $apiParams['position'] = $position;
+        }
+
+        if (!is_null($isSystem)) {
+            $apiParams['is_system'] = $isSystem;
+        }
+
+        if (!is_null($createdAt)) {
+            $apiParams['created_at'] = $createdAt;
+        }
+
+        if (!is_null($updatedAt)) {
+            $apiParams['updated_at'] = $updatedAt;
+        }
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * An availability state is one of the codes THIS TENANT keeps for what a
+     * source system says about an article: a stock row stores one in
+     * `availability_code`, and the row's `expected_at` says when the article is
+     * due back. The set is a table rather than a fixed list because the number a
+     * source system delivers for availability is that system's number and what it
+     * means is the merchant's to state. Each value carries `orderable` —
+     * whether an item in this state may still be ordered — which is the fact a
+     * storefront needs in order to offer or withhold the order button without
+     * keeping a list of its own. Reach for this when a source system
+     * distinguishes something the four seeded states do not — a partial
+     * delivery, a made-to-order line, a stock held for one customer. A create
+     * cannot omit `code` and `title`; every other column is optional or defaulted
+     * by the database. Two rows of this tenant may not share `code` — that is
+     * the 409, and it answers an update that moves a row onto a sibling's value
+     * exactly as it answers a second insert. Two fields decide what the state
+     * DOES rather than how it reads: `orderable`, which defaults to true and is
+     * what a shop acts on, and `code`, which is what a stock row stores and
+     * should be treated as permanent — nothing points at it, so renaming it
+     * later leaves every row carrying the old one. Creating a state changes
+     * nothing on its own: a stock row has to carry its code before it means
+     * anything, and the mapping from a source system's own values onto these
+     * codes is made where the import runs.
+     *
+     * @param string $code
+     * @param string $title
+     * @param ?string $description
+     * @param ?array $descriptions
+     * @param ?bool $isDefault
+     * @param ?bool $isSystem
+     * @param ?array $labels
+     * @param ?bool $orderable
+     * @param ?int $position
+     * @param ?AvailabilityStateTone $tone
+     * @throws RevenexxException
+     * @return array
+     */
+    public function inventoriesAvailabilityStatesCreate(string $code, string $title, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?bool $isSystem = null, ?array $labels = null, ?bool $orderable = null, ?int $position = null, ?AvailabilityStateTone $tone = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/inventories/availability-states'
+        );
+
+        $apiParams = [];
+        $apiParams['code'] = $code;
+        $apiParams['title'] = $title;
+        $apiParams['description'] = $description;
+        $apiParams['descriptions'] = $descriptions;
+
+        if (!is_null($isDefault)) {
+            $apiParams['is_default'] = $isDefault;
+        }
+
+        if (!is_null($isSystem)) {
+            $apiParams['is_system'] = $isSystem;
+        }
+        $apiParams['labels'] = $labels;
+
+        if (!is_null($orderable)) {
+            $apiParams['orderable'] = $orderable;
+        }
+
+        if (!is_null($position)) {
+            $apiParams['position'] = $position;
+        }
+
+        if (!is_null($tone)) {
+            $apiParams['tone'] = $tone;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Removes one of the tenant's availability codes. An availability state is
+     * one of the codes THIS TENANT keeps for what a source system says about an
+     * article: a stock row stores one in `availability_code`, and the row's
+     * `expected_at` says when the article is due back. The set is a table rather
+     * than a fixed list because the number a source system delivers for
+     * availability is that system's number and what it means is the merchant's to
+     * state. Each value carries `orderable` — whether an item in this state may
+     * still be ordered — which is the fact a storefront needs in order to offer
+     * or withhold the order button without keeping a list of its own. Nothing
+     * points at it by foreign key, so the database takes nothing else with it.
+     * Read that carefully before calling it, because the thing that is NOT
+     * checked is the thing that matters: a stock row stores the CODE and not this
+     * id, so nothing refuses the delete while rows still carry it, and those rows
+     * keep a code the vocabulary no longer resolves. The vocabulary is `closed`,
+     * so a client reads such a value as stale data rather than as a missing label
+     * — but it reads no `orderable` for it either, and a shop that was
+     * withholding the order button on that state stops knowing to. Move the rows
+     * onto another code first (PUT /inventories/stock/{id}), or leave the state
+     * in place and give it a `title` that says it is retired. Deleting all of
+     * them is undone by the next read of GET
+     * /inventories/vocabularies/availability-states, which seeds the shipped set
+     * back into an empty table.
+     *
+     * @param string $id
+     * @throws RevenexxException
+     * @return array
+     */
+    public function inventoriesAvailabilityStatesDelete(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/inventories/availability-states/{id}'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_DELETE,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * An availability state is one of the codes THIS TENANT keeps for what a
+     * source system says about an article: a stock row stores one in
+     * `availability_code`, and the row's `expected_at` says when the article is
+     * due back. The set is a table rather than a fixed list because the number a
+     * source system delivers for availability is that system's number and what it
+     * means is the merchant's to state. Each value carries `orderable` —
+     * whether an item in this state may still be ordered — which is the fact a
+     * storefront needs in order to offer or withhold the order button without
+     * keeping a list of its own. This reads one of them by ROW ID, which is what
+     * an editor holds after listing the set and is not what anything else stores:
+     * a stock row carries the CODE. A caller holding a code cannot use this route
+     * — filter the collection with `?code=`, or read GET
+     * /inventories/vocabularies/availability-states, which is keyed the way the
+     * rest of the platform refers to these values.
+     *
+     * @param string $id
+     * @throws RevenexxException
+     * @return array
+     */
+    public function inventoriesAvailabilityStatesGet(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/inventories/availability-states/{id}'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Partial update: send the fields that change. An availability state is one
+     * of the codes THIS TENANT keeps for what a source system says about an
+     * article: a stock row stores one in `availability_code`, and the row's
+     * `expected_at` says when the article is due back. The set is a table rather
+     * than a fixed list because the number a source system delivers for
+     * availability is that system's number and what it means is the merchant's to
+     * state. Each value carries `orderable` — whether an item in this state may
+     * still be ordered — which is the fact a storefront needs in order to offer
+     * or withhold the order button without keeping a list of its own. The safe
+     * edits are the readable ones — `title`, `labels`, `description`,
+     * `descriptions`, `tone`, `position` — and they reach every screen at once,
+     * which is the point of the set living here. `orderable` is the consequential
+     * one: flipping it to false takes the order button away from every article in
+     * this state on the next read, with no stock row touched and no movement
+     * booked. `code` is the one to leave alone — a stock row stores the code,
+     * nothing in the database points at it, so moving it orphans every row that
+     * names the old value. Two rows of this tenant may not share `code` — that
+     * is the 409, and it answers an update that moves a row onto a sibling's
+     * value exactly as it answers a second insert.
+     *
+     * @param string $id
+     * @param ?string $code
+     * @param ?string $description
+     * @param ?array $descriptions
+     * @param ?bool $isDefault
+     * @param ?bool $isSystem
+     * @param ?array $labels
+     * @param ?bool $orderable
+     * @param ?int $position
+     * @param ?string $title
+     * @param ?AvailabilityStateTone $tone
+     * @throws RevenexxException
+     * @return array
+     */
+    public function inventoriesAvailabilityStatesUpdate(string $id, ?string $code = null, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?bool $isSystem = null, ?array $labels = null, ?bool $orderable = null, ?int $position = null, ?string $title = null, ?AvailabilityStateTone $tone = null): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/inventories/availability-states/{id}'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        if (!is_null($code)) {
+            $apiParams['code'] = $code;
+        }
+        $apiParams['description'] = $description;
+        $apiParams['descriptions'] = $descriptions;
+
+        if (!is_null($isDefault)) {
+            $apiParams['is_default'] = $isDefault;
+        }
+
+        if (!is_null($isSystem)) {
+            $apiParams['is_system'] = $isSystem;
+        }
+        $apiParams['labels'] = $labels;
+
+        if (!is_null($orderable)) {
+            $apiParams['orderable'] = $orderable;
+        }
+
+        if (!is_null($position)) {
+            $apiParams['position'] = $position;
+        }
+
+        if (!is_null($title)) {
+            $apiParams['title'] = $title;
+        }
+
+        if (!is_null($tone)) {
+            $apiParams['tone'] = $tone;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_PUT,
             $apiPath,
             $apiHeaders,
             $apiParams
@@ -453,13 +848,19 @@ class InventoriesStock extends Service
      * @param ?float $onHand
      * @param ?float $reserved
      * @param ?float $reorderPoint
+     * @param ?string $expectedAt
+     * @param ?string $availabilityCode
      * @param ?string $metadata
+     * @param ?string $externalId
+     * @param ?string $externalRefs
+     * @param ?string $sourceSyncedAt
+     * @param ?string $sourceData
      * @param ?string $createdAt
      * @param ?string $updatedAt
      * @throws RevenexxException
      * @return array
      */
-    public function inventoriesStockList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $locationId = null, ?string $productId = null, ?string $sku = null, ?float $onHand = null, ?float $reserved = null, ?float $reorderPoint = null, ?string $metadata = null, ?string $createdAt = null, ?string $updatedAt = null): array
+    public function inventoriesStockList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $locationId = null, ?string $productId = null, ?string $sku = null, ?float $onHand = null, ?float $reserved = null, ?float $reorderPoint = null, ?string $expectedAt = null, ?string $availabilityCode = null, ?string $metadata = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $createdAt = null, ?string $updatedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -509,8 +910,32 @@ class InventoriesStock extends Service
             $apiParams['reorder_point'] = $reorderPoint;
         }
 
+        if (!is_null($expectedAt)) {
+            $apiParams['expected_at'] = $expectedAt;
+        }
+
+        if (!is_null($availabilityCode)) {
+            $apiParams['availability_code'] = $availabilityCode;
+        }
+
         if (!is_null($metadata)) {
             $apiParams['metadata'] = $metadata;
+        }
+
+        if (!is_null($externalId)) {
+            $apiParams['external_id'] = $externalId;
+        }
+
+        if (!is_null($externalRefs)) {
+            $apiParams['external_refs'] = $externalRefs;
+        }
+
+        if (!is_null($sourceSyncedAt)) {
+            $apiParams['source_synced_at'] = $sourceSyncedAt;
+        }
+
+        if (!is_null($sourceData)) {
+            $apiParams['source_data'] = $sourceData;
         }
 
         if (!is_null($createdAt)) {
@@ -552,6 +977,8 @@ class InventoriesStock extends Service
      * between two simultaneous creates.
      *
      * @param string $locationId
+     * @param ?string $availabilityCode
+     * @param ?string $expectedAt
      * @param ?array $metadata
      * @param ?string $productId
      * @param ?float $reorderPoint
@@ -559,7 +986,7 @@ class InventoriesStock extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function inventoriesStockCreate(string $locationId, ?array $metadata = null, ?string $productId = null, ?float $reorderPoint = null, ?string $sku = null): array
+    public function inventoriesStockCreate(string $locationId, ?string $availabilityCode = null, ?string $expectedAt = null, ?array $metadata = null, ?string $productId = null, ?float $reorderPoint = null, ?string $sku = null): array
     {
         $apiPath = str_replace(
             [],
@@ -569,6 +996,8 @@ class InventoriesStock extends Service
 
         $apiParams = [];
         $apiParams['location_id'] = $locationId;
+        $apiParams['availability_code'] = $availabilityCode;
+        $apiParams['expected_at'] = $expectedAt;
         $apiParams['metadata'] = $metadata;
         $apiParams['product_id'] = $productId;
         $apiParams['reorder_point'] = $reorderPoint;
@@ -688,6 +1117,8 @@ class InventoriesStock extends Service
      * /inventories/stock/{id}/adjust).
      *
      * @param string $id
+     * @param ?string $availabilityCode
+     * @param ?string $expectedAt
      * @param ?string $locationId
      * @param ?array $metadata
      * @param ?string $productId
@@ -696,7 +1127,7 @@ class InventoriesStock extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function inventoriesStockUpdate(string $id, ?string $locationId = null, ?array $metadata = null, ?string $productId = null, ?float $reorderPoint = null, ?string $sku = null): array
+    public function inventoriesStockUpdate(string $id, ?string $availabilityCode = null, ?string $expectedAt = null, ?string $locationId = null, ?array $metadata = null, ?string $productId = null, ?float $reorderPoint = null, ?string $sku = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -706,6 +1137,8 @@ class InventoriesStock extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+        $apiParams['availability_code'] = $availabilityCode;
+        $apiParams['expected_at'] = $expectedAt;
 
         if (!is_null($locationId)) {
             $apiParams['location_id'] = $locationId;
@@ -771,9 +1204,10 @@ class InventoriesStock extends Service
      * Discovery for the vocabulary routes: the enums this app publishes, each
      * with its name, its title and its description and deliberately WITHOUT its
      * values, so finding out what exists costs one small call and not one per
-     * vocabulary. Names: location-types, movement-types, reservation-statuses.
-     * Fetch one with GET /inventories/vocabularies/{name}; a client holding the
-     * qualified pair 'inventories.<name>' builds that URL from the pair alone.
+     * vocabulary. Names: availability-states, location-types, movement-types,
+     * reservation-statuses. Fetch one with GET /inventories/vocabularies/{name};
+     * a client holding the qualified pair 'inventories.<name>' builds that URL
+     * from the pair alone.
      *
      * @throws RevenexxException
      * @return array
@@ -802,13 +1236,19 @@ class InventoriesStock extends Service
      * One vocabulary in full: every permitted value, each carrying the title and
      * description a person reads for it and the badge tone a UI colours it with,
      * so a client renders a status or a movement type without a hard-coded table
-     * of its own. The values are read out of the column's CHECK constraint, so
-     * the served set IS the enforced set and the two cannot drift — a value
-     * added to the constraint appears here even before anyone labels it, titled
-     * from its own key. Values come back in constraint order, which is lifecycle
-     * order for a status. 'closed' says the set is exhaustive, so a value outside
-     * it is stale data rather than a missing label. Names: location-types,
-     * movement-types, reservation-statuses.
+     * of its own. `source` says who OWNS the set. 'schema' — the values are
+     * read out of the column's CHECK constraint, so the served set IS the
+     * enforced set and the two cannot drift; a value added to the constraint
+     * appears here even before anyone labels it, titled from its own key, and
+     * they come back in constraint order, which is lifecycle order for a status.
+     * 'table' — the values are the TENANT's own rows, read per request and
+     * ordered by the position they gave them, so a merchant extends the set
+     * without waiting for a release of this app; those values carry `orderable`,
+     * `is_default`, `is_system` and their per-language labels as well, and
+     * reading the set is what seeds the shipped one into a tenant that has never
+     * had it. 'closed' is true either way: the set is exhaustive at this moment,
+     * so a value outside it is stale data rather than a missing label. Names:
+     * availability-states, location-types, movement-types, reservation-statuses.
      *
      * @param InventoriesVocabulariesGetName $name
      * @throws RevenexxException

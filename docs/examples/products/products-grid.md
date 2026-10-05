@@ -3,7 +3,7 @@
 
 use Revenexx\Client;
 use Revenexx\Services\Products;
-use Revenexx\Enums\Kind;
+use Revenexx\Enums\ProductsListKind;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -18,7 +18,7 @@ $result = $products->productsGrid(
     offset: 1, // optional
     order: 'created_at.desc', // optional
     q: 'cordless drill', // optional
-    kind: Kind::SIMPLE(), // optional
+    kind: ProductsListKind::SIMPLE(), // optional
     enabled: true, // optional
     familyId: '' // optional
 );```

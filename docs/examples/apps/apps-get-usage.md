@@ -15,5 +15,5 @@ $apps = new Apps($client);
 
 $result = $apps->appsGetUsage(
     functionId: '',
-    range: Range::24H() // optional
+    range: Range::_24H() // optional
 );```

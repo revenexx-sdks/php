@@ -7,6 +7,7 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\Status;
+use Revenexx\Enums\OrderApprovalMode;
 use Revenexx\Enums\RegistrationStatus;
 use Revenexx\Enums\CustomersContactsCreateRegistrationStatus;
 use Revenexx\Enums\ContactStatus;
@@ -90,6 +91,21 @@ final class CustomersContactsTest extends TestCase {
         $response = $this->customersContacts->customersContactsEventsCreate(
             "",
             "Called about the annual requirement"
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersContactsIdentity(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersContacts->customersContactsIdentity(
+            ""
         );
 
         $this->assertSame($data, $response);

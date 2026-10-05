@@ -22,5 +22,6 @@ $result = $products->productsProductAssociationsList(
     targetProductId: '', // optional
     quantity: 9.99, // optional
     position: 1, // optional
-    createdAt: '2026-01-01T12:00:00Z' // optional
+    createdAt: '2026-01-01T12:00:00Z', // optional
+    updatedAt: '2026-01-01T12:00:00Z' // optional
 );```

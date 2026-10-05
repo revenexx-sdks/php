@@ -4,6 +4,7 @@
 use Revenexx\Client;
 use Revenexx\Services\Pages;
 use Revenexx\Enums\PageStatus;
+use Revenexx\Enums\Deleted;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -19,5 +20,6 @@ $result = $pages->pagesPagesList(
     order: 'created_at.desc', // optional
     bundle: 'standard', // optional
     status: PageStatus::DRAFT(), // optional
-    q: 'contact' // optional
+    q: 'contact', // optional
+    deleted: Deleted::ONLY() // optional
 );```

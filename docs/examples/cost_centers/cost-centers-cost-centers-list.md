@@ -16,5 +16,6 @@ $result = $costCenters->costCentersCostCentersList(
     limit: 1, // optional
     offset: 1, // optional
     order: '', // optional
-    punchoutAccountCode: '' // optional
+    punchoutAccountCode: '', // optional
+    externalId: 'KOSTENSTELLE-4711' // optional
 );```

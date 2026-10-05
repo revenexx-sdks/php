@@ -43,13 +43,14 @@ class Orderlists extends Service
      * @param ?string $ownerId
      * @param ?string $organizationId
      * @param ?string $kind
+     * @param ?string $externalId
      * @param ?int $limit
      * @param ?int $offset
      * @param ?string $order
      * @throws RevenexxException
      * @return array
      */
-    public function orderlistsList(?string $ownerId = null, ?string $organizationId = null, ?string $kind = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function orderlistsList(?string $ownerId = null, ?string $organizationId = null, ?string $kind = null, ?string $externalId = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             [],
@@ -69,6 +70,10 @@ class Orderlists extends Service
 
         if (!is_null($kind)) {
             $apiParams['kind'] = $kind;
+        }
+
+        if (!is_null($externalId)) {
+            $apiParams['external_id'] = $externalId;
         }
 
         if (!is_null($limit)) {
@@ -96,35 +101,46 @@ class Orderlists extends Service
     /**
      * Three fields are required, and they are exactly the columns the database
      * will not fill in: `name`, `owner_id` and `owner_name`. Everything else has
-     * an answer already — `kind` resolves to the caller's value, else the
-     * market's `default_kind` setting, else the kind the tenant flagged; `shared`
-     * is false; `organization_id` is null, which makes `shared` meaningless
-     * because there is then nobody to share with. Nothing about a list is unique:
-     * one owner may keep two lists with the same name, and the same article may
-     * appear in as many lists as the buyer wants. The list may be created empty
-     * or pre-filled in the same call: an optional `items` array is written as the
-     * list's positions with the row, so a twenty-line list is one request rather
-     * than a create followed by twenty adds, and the array order is the position
-     * order. Those initial `items` are normalized and article-checked BEFORE the
-     * list row is written, and both caps are checked first as well — the
-     * tenant's `max_items_per_list` against the array, and its
-     * `max_lists_per_owner` against what this contact already keeps — so a
-     * rejected position never leaves an empty list behind and a contact at their
-     * limit is refused before anything is inserted. The owner is set once — no
-     * route moves a list to another contact.
+     * an answer already — `kind` resolves to the caller's value (which must be
+     * a kind the tenant keeps: an unknown one is a 400, never a silent
+     * fall-back), else the market's `default_kind` setting, else the kind the
+     * tenant flagged; `shared` is false; `organization_id` is null, which makes
+     * `shared` meaningless because there is then nobody to share with. Nothing
+     * about a list is unique: one owner may keep two lists with the same name,
+     * and the same article may appear in as many lists as the buyer wants. The
+     * list may be created empty or pre-filled in the same call: an optional
+     * `items` array is written as the list's positions with the row, so a
+     * twenty-line list is one request rather than a create followed by twenty
+     * adds, and the array order is the position order. Those initial `items` are
+     * normalized and article-checked BEFORE the list row is written, and both
+     * caps are checked first as well — the tenant's `max_items_per_list`
+     * against the array, and its `max_lists_per_owner` against what this contact
+     * already keeps — so a rejected position never leaves an empty list behind
+     * and a contact at their limit is refused before anything is inserted. The
+     * owner is set once — no route moves a list to another contact. With an
+     * acting contact (a storefront buyer) the list is theirs: `owner_id` must
+     * name that contact and `organization_id`, when sent, their organization —
+     * anything else is a 400, so a storefront cannot file a list under a
+     * colleague or share it into a foreign organization — and the organization
+     * is always the acting contact's. A back-office caller asserts no person and
+     * names both itself.
      *
      * @param string $name
      * @param string $ownerId
      * @param string $ownerName
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?array $items
      * @param ?string $kind
      * @param ?array $metadata
      * @param ?string $organizationId
      * @param ?bool $shared
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @throws RevenexxException
      * @return array
      */
-    public function orderlistsCreate(string $name, string $ownerId, string $ownerName, ?array $items = null, ?string $kind = null, ?array $metadata = null, ?string $organizationId = null, ?bool $shared = null): array
+    public function orderlistsCreate(string $name, string $ownerId, string $ownerName, ?string $externalId = null, ?array $externalRefs = null, ?array $items = null, ?string $kind = null, ?array $metadata = null, ?string $organizationId = null, ?bool $shared = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -136,6 +152,8 @@ class Orderlists extends Service
         $apiParams['name'] = $name;
         $apiParams['owner_id'] = $ownerId;
         $apiParams['owner_name'] = $ownerName;
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
 
         if (!is_null($items)) {
             $apiParams['items'] = $items;
@@ -150,6 +168,8 @@ class Orderlists extends Service
         if (!is_null($shared)) {
             $apiParams['shared'] = $shared;
         }
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -323,7 +343,7 @@ class Orderlists extends Service
      * itself, `?kind=` refuses it with a 400 naming the codes that remain, and
      * the way back is PUT /orderlists/{id} with a kind the tenant keeps. Deleting
      * the flag-holder hands the flag to the first remaining kind. The answer is
-     * the `code`, not the `{deleted, id}` the other deletes here return.
+     * `{deleted, id}`, like every other delete here.
      *
      * @param string $id
      * @throws RevenexxException
@@ -395,11 +415,11 @@ class Orderlists extends Service
      * list that carries it with no foreign key to stop it. So a rename is never
      * how a list comes to name a code nothing defines — only a delete can do
      * that. Renaming the TITLE touches no list, for the same reason. A blank
-     * title is ignored rather than stored; an explicit null clears the
-     * description; `labels` and `descriptions` replace the whole map rather than
-     * merging into it. `is_default: true` makes the same move POST
-     * /orderlists/kinds/{id}/make-default makes on its own. A system kind is
-     * editable like any other.
+     * title, an unknown tone and a body that changes nothing are 400s; an
+     * explicit null clears the description; `labels` and `descriptions` replace
+     * the whole map rather than merging into it. `is_default: true` makes the
+     * same move POST /orderlists/kinds/{id}/make-default makes on its own. A
+     * system kind is editable like any other.
      *
      * @param string $id
      * @param ?string $description
@@ -590,13 +610,13 @@ class Orderlists extends Service
      * soft delete and no undo — and the answer carries no count, so read the
      * list (or its `item_count`) BEFORE the call if you need to know how much
      * went. What it does NOT take is what the list has already produced: a cart
-     * line or an order position built by the conversions carries `order_list_id`,
-     * `order_list_name` and `order_list_item_id` in its snapshot, and those are
-     * jsonb values inside another app rather than foreign keys — ADR-0055
-     * forbids a cross-app FK, so nothing cascades there and nothing is nulled.
-     * The cart and the order are unharmed, because every position was copied as a
-     * snapshot rather than referenced; the provenance link is what dangles,
-     * permanently.
+     * line built by the cart conversion (or an order position built by the order
+     * route removed in 0.23.0) carries `order_list_id`, `order_list_name` and
+     * `order_list_item_id` in its snapshot, and those are jsonb values inside
+     * another app rather than foreign keys — ADR-0055 forbids a cross-app FK,
+     * so nothing cascades there and nothing is nulled. The cart and the order are
+     * unharmed, because every position was copied as a snapshot rather than
+     * referenced; the provenance link is what dangles, permanently.
      *
      * @param string $id
      * @throws RevenexxException
@@ -660,24 +680,31 @@ class Orderlists extends Service
 
     /**
      * Rename, share or reclassify — the whole of what a list says about itself,
-     * plus `metadata`. Positions go through the items routes and the owner cannot
-     * be changed by anything. `shared` is what the column `public` was renamed to
-     * in June 2026; `public` is still on the wire because the provisioner is
-     * additive, is false on every row written since, and says nothing about who
-     * may see the list. One trap: a `kind` this tenant does not keep is IGNORED
-     * rather than refused, so the list quietly keeps the kind it had and a client
-     * that cares must read the answer back. An empty body is a 400 rather than a
-     * no-op.
+     * plus `metadata`. Positions go through the items routes. `owner_id` and
+     * `organization_id` are fixed at create: sending the value the list has is
+     * accepted as no change, any other value is a 400. `shared` is what the
+     * column `public` was renamed to in June 2026; `public` is still on the wire
+     * because the provisioner is additive, is false on every row written since,
+     * and says nothing about who may see the list. A `kind` this tenant does not
+     * keep is a 400, as on the create and the collection filter. An empty body, a
+     * field of the wrong type, and a body that names no field this route changes
+     * are all 400s rather than a no-op that only moves `updated_at`.
      *
      * @param string $id
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?string $kind
      * @param ?array $metadata
      * @param ?string $name
+     * @param ?string $organizationId
+     * @param ?string $ownerId
      * @param ?bool $shared
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @throws RevenexxException
      * @return array
      */
-    public function orderlistsUpdate(string $id, ?string $kind = null, ?array $metadata = null, ?string $name = null, ?bool $shared = null): array
+    public function orderlistsUpdate(string $id, ?string $externalId = null, ?array $externalRefs = null, ?string $kind = null, ?array $metadata = null, ?string $name = null, ?string $organizationId = null, ?string $ownerId = null, ?bool $shared = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -687,6 +714,8 @@ class Orderlists extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
 
         if (!is_null($kind)) {
             $apiParams['kind'] = $kind;
@@ -696,10 +725,17 @@ class Orderlists extends Service
         if (!is_null($name)) {
             $apiParams['name'] = $name;
         }
+        $apiParams['organization_id'] = $organizationId;
+
+        if (!is_null($ownerId)) {
+            $apiParams['owner_id'] = $ownerId;
+        }
 
         if (!is_null($shared)) {
             $apiParams['shared'] = $shared;
         }
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -715,29 +751,52 @@ class Orderlists extends Service
     /**
      * The reason a buyer keeps a list at all: every position of the list goes
      * into a cart in one call. The cart is either one the caller names or one
-     * this call makes. Sending 'cart_id' adds to that existing cart; omitting it
-     * creates a cart for the LIST'S OWNER — not for whoever called — names it
-     * after the list, and makes it that owner's current cart, because a cart the
-     * buyer cannot see is not 'added to cart'. Which of the two happened is not
-     * left to be inferred: `cart_created` says so and `cart_id` names the cart
-     * either way. 'append' (the default, tenant-configurable through
-     * `cart_merge_mode`) lets the carts app merge each line by product and price
-     * so quantities accumulate, and is sent one line at a time precisely because
-     * that merge happens on add; 'replace' makes the list the cart's whole
-     * contents in one call. What the cart has no column for — cost centre,
-     * custom SKU, position texts — rides in each line's snapshot together with
-     * the list it came from. The list itself is never touched: it is read, not
-     * emptied, so the same list converts again next month. Cross-app:
-     * carts.create, carts.items.create, carts.items.replace.
+     * this call makes. Sending 'cart_id' adds to that existing cart — whose
+     * cart it is, is the carts app's rule, not checked here; omitting it creates
+     * a cart named after the list for the BUYER. With an acting contact (a
+     * storefront buyer) that is the acting contact — a colleague converting a
+     * shared list gets the cart, not the list's owner — and it becomes their
+     * current cart, because a cart the buyer cannot see is not 'added to cart';
+     * without one (a back-office caller) the cart is the list owner's and is not
+     * made current, so staff never displace the cart the customer is working in.
+     * Which of the two happened is not left to be inferred: `cart_created` says
+     * so and `cart_id` names the cart either way. 'append' (the default,
+     * tenant-configurable through `cart_merge_mode`) lets the carts app merge
+     * each line by product and price so quantities accumulate, and is sent one
+     * line at a time precisely because that merge happens on add; 'replace' makes
+     * the list the cart's whole contents in one call. Every line is priced NOW:
+     * the positions go to the prices app first (one prices.resolve call per 200
+     * positions, for the acting contact or else the list's owner and
+     * organization, in `currency` when given), and each line carries the unit
+     * price and tax rate it quotes — always the current ones. When the prices
+     * app cannot tax the call (`tax.resolved: false`: several markets and none
+     * named, an unknown market, no markets or tax classes set up) the conversion
+     * is refused before any cart write, never sent at the saved rate or without
+     * one (which the carts app reads as 0 %). Name the market with `market` where
+     * the caller has no market header; it is sent to the prices app and to every
+     * carts call, so the cart sits in the market its lines were priced for. The
+     * price a position was saved with is informational and rides in the snapshot
+     * as `saved_price`, never as the line's price: a line the prices app cannot
+     * price (on request) is left out and named in `skipped` with reason
+     * `no_current_price` — or, when `on_missing_article` is 'fail', the call is
+     * refused. A prices app that fails is a 502, never a silent fall-back to the
+     * saved price. What the cart has no column for — cost centre, custom SKU,
+     * position texts — rides in each line's snapshot together with the list it
+     * came from. The list itself is never touched: it is read, not emptied, so
+     * the same list converts again next month. There is no direct list → order
+     * route: the cart goes through the normal checkout, where approval and the
+     * cost-centre budget apply. Cross-app: prices.resolve, carts.create,
+     * carts.items.create, carts.items.replace.
      *
      * @param string $id
      * @param ?string $cartId
      * @param ?string $currency
+     * @param ?string $market
      * @param ?OrderListCartMode $mode
      * @throws RevenexxException
      * @return array
      */
-    public function orderlistsToCart(string $id, ?string $cartId = null, ?string $currency = null, ?OrderListCartMode $mode = null): array
+    public function orderlistsToCart(string $id, ?string $cartId = null, ?string $currency = null, ?string $market = null, ?OrderListCartMode $mode = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -749,6 +808,7 @@ class Orderlists extends Service
         $apiParams['id'] = $id;
         $apiParams['cart_id'] = $cartId;
         $apiParams['currency'] = $currency;
+        $apiParams['market'] = $market;
 
         if (!is_null($mode)) {
             $apiParams['mode'] = $mode;
@@ -766,62 +826,17 @@ class Orderlists extends Service
     }
 
     /**
-     * The other half of the reason a list exists — and it is the ORDERS app
-     * that does it, over the gateway rather than over a shared table, so
-     * everything an order means is that app's answer and not this one's. Places
-     * the list's positions as an order: buyer and organization come from the
-     * list, the cost centre and the position texts land on the order's own
-     * columns, and the list is left exactly as it stands so it can be ordered
-     * again next month. The acting contact is re-asserted on the call, so the
-     * orders app applies ITS rules to the BUYER rather than to this app — a
-     * contact holding only orders.request, or an order above the tenant's
-     * approval threshold, comes back with status 'pending' and no placed_at
-     * instead of being refused. That pending order is the platform's nearest
-     * thing to a draft; the orders app owns the state and this one cannot
-     * override it, which is why `status` is reported rather than chosen and why
-     * the created order is handed back verbatim under `order` beside the three
-     * fields lifted out of it. Cross-app: orders.place.
-     *
-     * @param string $id
-     * @param ?string $currency
-     * @param ?string $customerOrderNumber
-     * @throws RevenexxException
-     * @return array
-     */
-    public function orderlistsToOrder(string $id, ?string $currency = null, ?string $customerOrderNumber = null): array
-    {
-        $apiPath = str_replace(
-            ['{id}'],
-            [$id],
-            '/v1/orderlists/{id}/order'
-        );
-
-        $apiParams = [];
-        $apiParams['id'] = $id;
-        $apiParams['currency'] = $currency;
-        $apiParams['customer_order_number'] = $customerOrderNumber;
-
-        $apiHeaders = [];
-        $apiHeaders['content-type'] = 'application/json';
-
-        return $this->client->call(
-            Client::METHOD_POST,
-            $apiPath,
-            $apiHeaders,
-            $apiParams
-        );
-    }
-
-    /**
      * Every column of a position is an exact-match filter — eighteen of them,
      * which is the whole row — and they combine as AND. `list_id` is not among
      * them: it comes from the path and overwrites anything the query says. The
-     * default sort is `position.asc`, and `position` is neither dense nor unique:
-     * removing a position leaves its number behind while the next add takes the
-     * list's current COUNT, so a delete from the middle followed by an add
-     * produces two rows sharing a number and the tie falls to whatever the
-     * database returns first. Sort by `created_at` where the order has to be
-     * unambiguous.
+     * list must be one the caller may READ — a colleague's private list answers
+     * 404 here exactly as it does on GET /orderlists/{id}, so an acting contact
+     * cannot reach its positions through this collection. The default sort is
+     * `position.asc`, and `position` is neither dense nor unique: removing a
+     * position leaves its number behind while the next add takes the list's
+     * current COUNT, so a delete from the middle followed by an add produces two
+     * rows sharing a number and the tie falls to whatever the database returns
+     * first. Sort by `created_at` where the order has to be unambiguous.
      *
      * @param string $listId
      * @param ?string $id
@@ -840,6 +855,10 @@ class Orderlists extends Service
      * @param ?string $subcategorySlug
      * @param ?int $position
      * @param ?string $metadata
+     * @param ?string $externalId
+     * @param ?string $externalRefs
+     * @param ?string $sourceSyncedAt
+     * @param ?string $sourceData
      * @param ?string $createdAt
      * @param ?string $updatedAt
      * @param ?int $limit
@@ -848,7 +867,7 @@ class Orderlists extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function orderlistsItemsList(string $listId, ?string $id = null, ?string $productId = null, ?string $sku = null, ?string $name = null, ?string $image = null, ?float $quantity = null, ?string $unit = null, ?float $price = null, ?float $taxRate = null, ?string $costCenterId = null, ?string $positionTexts = null, ?string $customSku = null, ?string $categorySlug = null, ?string $subcategorySlug = null, ?int $position = null, ?string $metadata = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function orderlistsItemsList(string $listId, ?string $id = null, ?string $productId = null, ?string $sku = null, ?string $name = null, ?string $image = null, ?float $quantity = null, ?string $unit = null, ?float $price = null, ?float $taxRate = null, ?string $costCenterId = null, ?string $positionTexts = null, ?string $customSku = null, ?string $categorySlug = null, ?string $subcategorySlug = null, ?int $position = null, ?string $metadata = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             ['{list_id}'],
@@ -923,6 +942,22 @@ class Orderlists extends Service
             $apiParams['metadata'] = $metadata;
         }
 
+        if (!is_null($externalId)) {
+            $apiParams['external_id'] = $externalId;
+        }
+
+        if (!is_null($externalRefs)) {
+            $apiParams['external_refs'] = $externalRefs;
+        }
+
+        if (!is_null($sourceSyncedAt)) {
+            $apiParams['source_synced_at'] = $sourceSyncedAt;
+        }
+
+        if (!is_null($sourceData)) {
+            $apiParams['source_data'] = $sourceData;
+        }
+
         if (!is_null($createdAt)) {
             $apiParams['created_at'] = $createdAt;
         }
@@ -970,6 +1005,8 @@ class Orderlists extends Service
      * @param ?string $categorySlug
      * @param ?string $costCenterId
      * @param ?string $customSku
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?string $image
      * @param ?array $metadata
      * @param ?int $position
@@ -978,13 +1015,15 @@ class Orderlists extends Service
      * @param ?string $productId
      * @param ?float $quantity
      * @param ?string $sku
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @param ?string $subcategorySlug
      * @param ?float $taxRate
      * @param ?string $unit
      * @throws RevenexxException
      * @return array
      */
-    public function orderlistsItemsCreate(string $listId, string $name, ?string $categorySlug = null, ?string $costCenterId = null, ?string $customSku = null, ?string $image = null, ?array $metadata = null, ?int $position = null, ?array $positionTexts = null, ?float $price = null, ?string $productId = null, ?float $quantity = null, ?string $sku = null, ?string $subcategorySlug = null, ?float $taxRate = null, ?string $unit = null): array
+    public function orderlistsItemsCreate(string $listId, string $name, ?string $categorySlug = null, ?string $costCenterId = null, ?string $customSku = null, ?string $externalId = null, ?array $externalRefs = null, ?string $image = null, ?array $metadata = null, ?int $position = null, ?array $positionTexts = null, ?float $price = null, ?string $productId = null, ?float $quantity = null, ?string $sku = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $subcategorySlug = null, ?float $taxRate = null, ?string $unit = null): array
     {
         $apiPath = str_replace(
             ['{list_id}'],
@@ -998,6 +1037,8 @@ class Orderlists extends Service
         $apiParams['category_slug'] = $categorySlug;
         $apiParams['cost_center_id'] = $costCenterId;
         $apiParams['custom_sku'] = $customSku;
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
         $apiParams['image'] = $image;
         $apiParams['metadata'] = $metadata;
 
@@ -1012,6 +1053,8 @@ class Orderlists extends Service
             $apiParams['quantity'] = $quantity;
         }
         $apiParams['sku'] = $sku;
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
         $apiParams['subcategory_slug'] = $subcategorySlug;
         $apiParams['tax_rate'] = $taxRate;
         $apiParams['unit'] = $unit;
@@ -1164,6 +1207,8 @@ class Orderlists extends Service
      * @param ?string $categorySlug
      * @param ?string $costCenterId
      * @param ?string $customSku
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?string $image
      * @param ?array $metadata
      * @param ?string $name
@@ -1173,13 +1218,15 @@ class Orderlists extends Service
      * @param ?string $productId
      * @param ?float $quantity
      * @param ?string $sku
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @param ?string $subcategorySlug
      * @param ?float $taxRate
      * @param ?string $unit
      * @throws RevenexxException
      * @return array
      */
-    public function orderlistsItemsUpdate(string $listId, string $id, ?string $categorySlug = null, ?string $costCenterId = null, ?string $customSku = null, ?string $image = null, ?array $metadata = null, ?string $name = null, ?int $position = null, ?array $positionTexts = null, ?float $price = null, ?string $productId = null, ?float $quantity = null, ?string $sku = null, ?string $subcategorySlug = null, ?float $taxRate = null, ?string $unit = null): array
+    public function orderlistsItemsUpdate(string $listId, string $id, ?string $categorySlug = null, ?string $costCenterId = null, ?string $customSku = null, ?string $externalId = null, ?array $externalRefs = null, ?string $image = null, ?array $metadata = null, ?string $name = null, ?int $position = null, ?array $positionTexts = null, ?float $price = null, ?string $productId = null, ?float $quantity = null, ?string $sku = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $subcategorySlug = null, ?float $taxRate = null, ?string $unit = null): array
     {
         $apiPath = str_replace(
             ['{list_id}', '{id}'],
@@ -1193,6 +1240,8 @@ class Orderlists extends Service
         $apiParams['category_slug'] = $categorySlug;
         $apiParams['cost_center_id'] = $costCenterId;
         $apiParams['custom_sku'] = $customSku;
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
         $apiParams['image'] = $image;
         $apiParams['metadata'] = $metadata;
 
@@ -1211,6 +1260,8 @@ class Orderlists extends Service
             $apiParams['quantity'] = $quantity;
         }
         $apiParams['sku'] = $sku;
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
         $apiParams['subcategory_slug'] = $subcategorySlug;
         $apiParams['tax_rate'] = $taxRate;
         $apiParams['unit'] = $unit;

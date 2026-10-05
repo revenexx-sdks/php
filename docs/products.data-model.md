@@ -9,7 +9,7 @@ GET https://api.revenexx.com/v1/products/asset_families
 
 Every column of `asset_families` is an exact-match query parameter, `order` sorts by one column, and `limit`/`offset` page through `page.total`. A query key that is NOT a column is dropped rather than refused, and the `filter` object echoes the ones that were understood — that echo is the only way to tell an unfiltered answer from an empty one. It reads rows exactly as they are stored: no join is resolved, no jsonb value is unpacked.
 
-Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
+Answered from the gateway's tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
 
 ### Parameters
 
@@ -72,7 +72,7 @@ A class of media with one shared shape — packshots, datasheets, line drawings.
 
 An id no asset family of this tenant carries answers 404, and so does one belonging to another tenant: row-level security makes that row invisible rather than forbidden. A malformed id answers 400 before the route is reached.
 
-Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
+Answered from the gateway's tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
 
 ### Parameters
 
@@ -109,7 +109,7 @@ GET https://api.revenexx.com/v1/products/association_types
 
 Every column of `association_types` is an exact-match query parameter, `order` sorts by one column, and `limit`/`offset` page through `page.total`. A query key that is NOT a column is dropped rather than refused, and the `filter` object echoes the ones that were understood — that echo is the only way to tell an unfiltered answer from an empty one. It reads rows exactly as they are stored: no join is resolved, no jsonb value is unpacked.
 
-Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
+Answered from the gateway's tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
 
 ### Parameters
 
@@ -124,6 +124,7 @@ Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped t
 | is_quantified | boolean | Exact match on `is_quantified`. Declares that a relation of this kind carries a quantity — a bundle, a bill of materials. `product_associations.quantity` is where that number goes, and it is meaningless without this flag. |  |
 | labels | string | Exact match on `labels`. What the relation is called in a product form, per language tag. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
 | created_at | string | Exact match on `created_at`. When the row was created. Server-set — it is not part of any request body. |  |
+| updated_at | string | Exact match on `updated_at`. When the row was last written. Server-set — it is not part of any request body. |  |
 
 
 ```http request
@@ -173,7 +174,7 @@ The KIND of relation two products can have — cross-sell, accessory, spare part
 
 An id no association type of this tenant carries answers 404, and so does one belonging to another tenant: row-level security makes that row invisible rather than forbidden. A malformed id answers 400 before the route is reached.
 
-Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
+Answered from the gateway's tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
 
 ### Parameters
 
@@ -207,7 +208,7 @@ A body that names nothing writable is refused with 400 rather than answered as a
 GET https://api.revenexx.com/v1/products/attribute-schema
 ```
 
-** Which fields does this family have — one ready-to-render list, not six joined tables. The catalog&#039;s SHAPE is tenant data: a product&#039;s properties are rows in `attributes`, grouped by `attribute_groups`, selected per family by `family_attributes`, with their permitted values in `attribute_options` and their variant axes in `family_variants`. Reading that shape used to mean five reads, a join, and a private `attributes.type` → input mapping in every client — and that mapping is the part that must live here, because the type list carries no CHECK by design and an integrator extends it. Answers one field list instead, ordered by group then by the family&#039;s own ordering. Without a family it answers every attribute declared for `entity_type`/`entity_ref` — the shape of a reference entity&#039;s records or an asset family, which have attributes but no family. Writes nothing. **
+** Which fields does this family have — one ready-to-render list, not six joined tables. The catalog's SHAPE is tenant data: a product's properties are rows in `attributes`, grouped by `attribute_groups`, selected per family by `family_attributes`, with their permitted values in `attribute_options` and their variant axes in `family_variants`. Reading that shape used to mean five reads, a join, and a private `attributes.type` → input mapping in every client — and that mapping is the part that must live here, because the type list carries no CHECK by design and an integrator extends it. Answers one field list instead, ordered by group then by the family's own ordering. Without a family it answers every attribute declared for `entity_type`/`entity_ref` — the shape of a reference entity's records or an asset family, which have attributes but no family. Writes nothing. **
 
 ### Parameters
 
@@ -226,11 +227,11 @@ GET https://api.revenexx.com/v1/products/attribute-schema
 GET https://api.revenexx.com/v1/products/attribute_groups
 ```
 
-** An attribute group is a SECTION of a product form — &quot;Technical attributes&quot;, &quot;Logistics&quot; — and the thing every attribute is filed under. It carries a `position`, which is the order the sections appear in, and per-language `labels`, which is what an operator reads; the `code` is what an attribute joins on and is never shown. `GET /products/attribute-schema` already resolves a group&#039;s heading onto every field it returns, so these routes are for MANAGING the sections, not for rendering a form.
+** An attribute group is a SECTION of a product form — "Technical attributes", "Logistics" — and the thing every attribute is filed under. It carries a `position`, which is the order the sections appear in, and per-language `labels`, which is what an operator reads; the `code` is what an attribute joins on and is never shown. `GET /products/attribute-schema` already resolves a group's heading onto every field it returns, so these routes are for MANAGING the sections, not for rendering a form.
 
 Every column of `attribute_groups` is an exact-match query parameter, `order` sorts by one column, and `limit`/`offset` page through `page.total`. A query key that is NOT a column is dropped rather than refused, and the `filter` object echoes the ones that were understood — that echo is the only way to tell an unfiltered answer from an empty one. It reads rows exactly as they are stored: no join is resolved, no jsonb value is unpacked.
 
-Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
+Answered from the gateway's tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
 
 ### Parameters
 
@@ -243,6 +244,11 @@ Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped t
 | code | string | Exact match on `code`. The group's stable identifier, and the value an `AttributeField` carries as its `group` — a SECTION of the product form, not a label. Unique per tenant and the key an import joins on. |  |
 | position | integer | Exact match on `position`. Where this section sits in a form, ascending. Sections that tie keep the order the database returns them in. |  |
 | labels | string | Exact match on `labels`. The section heading a person sees, keyed by language tag. The code is never shown to an operator; a tag nobody translated falls back to the next filled one, then to English. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
+| external_id | string | Exact match on `external_id`. The key this section has in the system that owns the property model — the block a supplier's data sheet groups its fields under. Unique per tenant where set, and null for a section somebody created here to tidy up a form, which is most of them. |  |
+| external_refs | string | Exact match on `external_refs`. Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
+| source_synced_at | string | Exact match on `source_synced_at`. When this row was last CONFIRMED against its source — not when it last changed. A delta run asks for everything it has not seen since its last pass, and over 25 000 products that is the difference between an index scan and reading the whole catalog, which is the reason the column is indexed. An edit made here leaves it alone, so a value that has stopped moving says the feed has gone quiet, not that nobody works the record. Null for a row no source owns. |  |
+| source_data | string | Exact match on `source_data`. What the source said about this row, kept as it said it: `{"system": …, "etag": …, "raw": {…}}`. The `etag` is what a write-back has to hand back in `If-Match`, and between two runs there is nowhere else to keep it. `raw` carries the source fields this app does not model, so they survive a round trip instead of being lost the first time somebody edits here. Written by whatever imports the row; nothing in this app reads or maintains it. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
+| metadata | string | Exact match on `metadata`. Free-form jsonb this tenant owns — the extension point a section otherwise has none of. `source_data` is what the SOURCE said about the row; this is what you say about it. Nothing in this app reads it. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
 | created_at | string | Exact match on `created_at`. When the row was created. Server-set — it is not part of any request body. |  |
 | updated_at | string | Exact match on `updated_at`. When the row was last written. Server-set — it is not part of any request body. |  |
 
@@ -253,7 +259,7 @@ POST https://api.revenexx.com/v1/products/attribute_groups
 
 ** Creates one attribute group and answers 201 with the stored row, including the id and the timestamps the database filled in — a client never sends an id, it reads one back and uses it in the path of every later call.
 
-An attribute group is a SECTION of a product form — &quot;Technical attributes&quot;, &quot;Logistics&quot; — and the thing every attribute is filed under. It carries a `position`, which is the order the sections appear in, and per-language `labels`, which is what an operator reads; the `code` is what an attribute joins on and is never shown. `GET /products/attribute-schema` already resolves a group&#039;s heading onto every field it returns, so these routes are for MANAGING the sections, not for rendering a form.
+An attribute group is a SECTION of a product form — "Technical attributes", "Logistics" — and the thing every attribute is filed under. It carries a `position`, which is the order the sections appear in, and per-language `labels`, which is what an operator reads; the `code` is what an attribute joins on and is never shown. `GET /products/attribute-schema` already resolves a group's heading onto every field it returns, so these routes are for MANAGING the sections, not for rendering a form.
 
 `code` is the only column the database refuses the row without; everything else has a default or is nullable. A second row with the same `code` answers 409. **
 
@@ -262,8 +268,13 @@ An attribute group is a SECTION of a product form — &quot;Technical attributes
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | code | string | The group's stable identifier, and the value an `AttributeField` carries as its `group` — a SECTION of the product form, not a label. Unique per tenant and the key an import joins on. |  |
+| external_id | string | The key this section has in the system that owns the property model — the block a supplier's data sheet groups its fields under. Unique per tenant where set, and null for a section somebody created here to tidy up a form, which is most of them. |  |
+| external_refs | object | Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. |  |
 | labels | object | The section heading a person sees, keyed by language tag. The code is never shown to an operator; a tag nobody translated falls back to the next filled one, then to English. |  |
+| metadata | object | Free-form jsonb this tenant owns — the extension point a section otherwise has none of. `source_data` is what the SOURCE said about the row; this is what you say about it. Nothing in this app reads it. |  |
 | position | integer | Where this section sits in a form, ascending. Sections that tie keep the order the database returns them in. |  |
+| source_data | object | What the source said about this row, kept as it said it: `{"system": …, "etag": …, "raw": {…}}`. The `etag` is what a write-back has to hand back in `If-Match`, and between two runs there is nowhere else to keep it. `raw` carries the source fields this app does not model, so they survive a round trip instead of being lost the first time somebody edits here. Written by whatever imports the row; nothing in this app reads or maintains it. |  |
+| source_synced_at | string | When this row was last CONFIRMED against its source — not when it last changed. A delta run asks for everything it has not seen since its last pass, and over 25 000 products that is the difference between an index scan and reading the whole catalog, which is the reason the column is indexed. An edit made here leaves it alone, so a value that has stopped moving says the feed has gone quiet, not that nobody works the record. Null for a row no source owns. |  |
 
 
 ```http request
@@ -289,11 +300,11 @@ GET https://api.revenexx.com/v1/products/attribute_groups/{id}
 
 ** Reads one attribute group by its id — the whole row, every column, as it is stored.
 
-An attribute group is a SECTION of a product form — &quot;Technical attributes&quot;, &quot;Logistics&quot; — and the thing every attribute is filed under. It carries a `position`, which is the order the sections appear in, and per-language `labels`, which is what an operator reads; the `code` is what an attribute joins on and is never shown. `GET /products/attribute-schema` already resolves a group&#039;s heading onto every field it returns, so these routes are for MANAGING the sections, not for rendering a form.
+An attribute group is a SECTION of a product form — "Technical attributes", "Logistics" — and the thing every attribute is filed under. It carries a `position`, which is the order the sections appear in, and per-language `labels`, which is what an operator reads; the `code` is what an attribute joins on and is never shown. `GET /products/attribute-schema` already resolves a group's heading onto every field it returns, so these routes are for MANAGING the sections, not for rendering a form.
 
 An id no attribute group of this tenant carries answers 404, and so does one belonging to another tenant: row-level security makes that row invisible rather than forbidden. A malformed id answers 400 before the route is reached.
 
-Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
+Answered from the gateway's tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
 
 ### Parameters
 
@@ -308,7 +319,7 @@ PUT https://api.revenexx.com/v1/products/attribute_groups/{id}
 
 ** Updates one attribute group by id. A partial patch: the body names only the columns to change and every column it leaves out keeps its current value, so there is no read-modify-write and no way to blank a field by forgetting it.
 
-An attribute group is a SECTION of a product form — &quot;Technical attributes&quot;, &quot;Logistics&quot; — and the thing every attribute is filed under. It carries a `position`, which is the order the sections appear in, and per-language `labels`, which is what an operator reads; the `code` is what an attribute joins on and is never shown. `GET /products/attribute-schema` already resolves a group&#039;s heading onto every field it returns, so these routes are for MANAGING the sections, not for rendering a form.
+An attribute group is a SECTION of a product form — "Technical attributes", "Logistics" — and the thing every attribute is filed under. It carries a `position`, which is the order the sections appear in, and per-language `labels`, which is what an operator reads; the `code` is what an attribute joins on and is never shown. `GET /products/attribute-schema` already resolves a group's heading onto every field it returns, so these routes are for MANAGING the sections, not for rendering a form.
 
 A body that names nothing writable is refused with 400 rather than answered as a no-op, an id nobody carries answers 404, and a value that collides on `code` answers 409. **
 
@@ -318,19 +329,24 @@ A body that names nothing writable is refused with 400 rather than answered as a
 | --- | --- | --- | --- |
 | id | string | **Required** The `attribute_groups` row to address, by id. It names a row THIS TENANT holds, so no example is published — a uuid this app invented would document a call that answers 404, and a real one would be another tenant's data. Read one from `GET /v1/products/attribute_groups`. An id no attribute group of this tenant carries answers 404; a malformed one answers 400 before the route is reached. |  |
 | code | string | The group's stable identifier, and the value an `AttributeField` carries as its `group` — a SECTION of the product form, not a label. Unique per tenant and the key an import joins on. |  |
+| external_id | string | The key this section has in the system that owns the property model — the block a supplier's data sheet groups its fields under. Unique per tenant where set, and null for a section somebody created here to tidy up a form, which is most of them. |  |
+| external_refs | object | Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. |  |
 | labels | object | The section heading a person sees, keyed by language tag. The code is never shown to an operator; a tag nobody translated falls back to the next filled one, then to English. |  |
+| metadata | object | Free-form jsonb this tenant owns — the extension point a section otherwise has none of. `source_data` is what the SOURCE said about the row; this is what you say about it. Nothing in this app reads it. |  |
 | position | integer | Where this section sits in a form, ascending. Sections that tie keep the order the database returns them in. |  |
+| source_data | object | What the source said about this row, kept as it said it: `{"system": …, "etag": …, "raw": {…}}`. The `etag` is what a write-back has to hand back in `If-Match`, and between two runs there is nowhere else to keep it. `raw` carries the source fields this app does not model, so they survive a round trip instead of being lost the first time somebody edits here. Written by whatever imports the row; nothing in this app reads or maintains it. |  |
+| source_synced_at | string | When this row was last CONFIRMED against its source — not when it last changed. A delta run asks for everything it has not seen since its last pass, and over 25 000 products that is the difference between an index scan and reading the whole catalog, which is the reason the column is indexed. An edit made here leaves it alone, so a value that has stopped moving says the feed has gone quiet, not that nobody works the record. Null for a row no source owns. |  |
 
 
 ```http request
 GET https://api.revenexx.com/v1/products/attribute_options
 ```
 
-** The permitted values of one select or multi-select attribute. A record stores the option&#039;s CODE and never its label, so renaming an option in every language leaves every product that picked it untouched, and `position` is the order it appears in the dropdown. `GET /products/attribute-schema` republishes these as a field&#039;s `options`, already resolved for a locale.
+** The permitted values of one select or multi-select attribute. A record stores the option's CODE and never its label, so renaming an option in every language leaves every product that picked it untouched, and `position` is the order it appears in the dropdown. `GET /products/attribute-schema` republishes these as a field's `options`, already resolved for a locale.
 
 Every column of `attribute_options` is an exact-match query parameter, `order` sorts by one column, and `limit`/`offset` page through `page.total`. A query key that is NOT a column is dropped rather than refused, and the `filter` object echoes the ones that were understood — that echo is the only way to tell an unfiltered answer from an empty one. It reads rows exactly as they are stored: no join is resolved, no jsonb value is unpacked.
 
-Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
+Answered from the gateway's tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
 
 ### Parameters
 
@@ -345,7 +361,13 @@ Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped t
 | position | integer | Exact match on `position`. Order in the dropdown, ascending. Options that tie keep the order the database returns them in, so give every option a position if the order matters. |  |
 | swatch | string | Exact match on `swatch`. A colour or texture chip for the picker. Null for an option that is not visual. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
 | labels | string | Exact match on `labels`. What the option is called, per language tag. Two tenants may label the same code differently; only the code is ever written into a record. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
+| external_id | string | Exact match on `external_id`. The key this option has in the system that owns the value list — an ETIM value, an eCl@ss value key. Unique per tenant where set. `code` is what a product stores when the option is picked; this is what the source calls the same choice, and holding the two apart is what stops a re-import founding a second option that means the same thing. |  |
+| external_refs | string | Exact match on `external_refs`. Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
+| source_synced_at | string | Exact match on `source_synced_at`. When this row was last CONFIRMED against its source — not when it last changed. A delta run asks for everything it has not seen since its last pass, and over 25 000 products that is the difference between an index scan and reading the whole catalog, which is the reason the column is indexed. An edit made here leaves it alone, so a value that has stopped moving says the feed has gone quiet, not that nobody works the record. Null for a row no source owns. |  |
+| source_data | string | Exact match on `source_data`. What the source said about this row, kept as it said it: `{"system": …, "etag": …, "raw": {…}}`. The `etag` is what a write-back has to hand back in `If-Match`, and between two runs there is nowhere else to keep it. `raw` carries the source fields this app does not model, so they survive a round trip instead of being lost the first time somebody edits here. Written by whatever imports the row; nothing in this app reads or maintains it. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
+| metadata | string | Exact match on `metadata`. Free-form jsonb this tenant owns, for whatever an integration has to remember about an option beyond its code, its label and its swatch. Nothing in this app reads it. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
 | created_at | string | Exact match on `created_at`. When the row was created. Server-set — it is not part of any request body. |  |
+| updated_at | string | Exact match on `updated_at`. When the row was last written. Server-set — it is not part of any request body. |  |
 
 
 ```http request
@@ -354,7 +376,7 @@ POST https://api.revenexx.com/v1/products/attribute_options
 
 ** Creates one attribute option and answers 201 with the stored row, including the id and the timestamps the database filled in — a client never sends an id, it reads one back and uses it in the path of every later call.
 
-The permitted values of one select or multi-select attribute. A record stores the option&#039;s CODE and never its label, so renaming an option in every language leaves every product that picked it untouched, and `position` is the order it appears in the dropdown. `GET /products/attribute-schema` republishes these as a field&#039;s `options`, already resolved for a locale.
+The permitted values of one select or multi-select attribute. A record stores the option's CODE and never its label, so renaming an option in every language leaves every product that picked it untouched, and `position` is the order it appears in the dropdown. `GET /products/attribute-schema` republishes these as a field's `options`, already resolved for a locale.
 
 `attribute_id` and `code` are the only columns the database refuses the row without; everything else has a default or is nullable. A second row with the same `attribute_id` and `code` answers 409. **
 
@@ -364,8 +386,13 @@ The permitted values of one select or multi-select attribute. A record stores th
 | --- | --- | --- | --- |
 | attribute_id | string | The select / multi-select attribute these are the permitted values of. Deleting the attribute deletes its options with it. |  |
 | code | string | The value actually STORED in a record's `attribute_values` when this option is picked — never the label. Unique within the attribute. |  |
+| external_id | string | The key this option has in the system that owns the value list — an ETIM value, an eCl@ss value key. Unique per tenant where set. `code` is what a product stores when the option is picked; this is what the source calls the same choice, and holding the two apart is what stops a re-import founding a second option that means the same thing. |  |
+| external_refs | object | Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. |  |
 | labels | object | What the option is called, per language tag. Two tenants may label the same code differently; only the code is ever written into a record. |  |
+| metadata | object | Free-form jsonb this tenant owns, for whatever an integration has to remember about an option beyond its code, its label and its swatch. Nothing in this app reads it. |  |
 | position | integer | Order in the dropdown, ascending. Options that tie keep the order the database returns them in, so give every option a position if the order matters. |  |
+| source_data | object | What the source said about this row, kept as it said it: `{"system": …, "etag": …, "raw": {…}}`. The `etag` is what a write-back has to hand back in `If-Match`, and between two runs there is nowhere else to keep it. `raw` carries the source fields this app does not model, so they survive a round trip instead of being lost the first time somebody edits here. Written by whatever imports the row; nothing in this app reads or maintains it. |  |
+| source_synced_at | string | When this row was last CONFIRMED against its source — not when it last changed. A delta run asks for everything it has not seen since its last pass, and over 25 000 products that is the difference between an index scan and reading the whole catalog, which is the reason the column is indexed. An edit made here leaves it alone, so a value that has stopped moving says the feed has gone quiet, not that nobody works the record. Null for a row no source owns. |  |
 | swatch | object | A colour or texture chip for the picker. Null for an option that is not visual. |  |
 
 
@@ -392,11 +419,11 @@ GET https://api.revenexx.com/v1/products/attribute_options/{id}
 
 ** Reads one attribute option by its id — the whole row, every column, as it is stored.
 
-The permitted values of one select or multi-select attribute. A record stores the option&#039;s CODE and never its label, so renaming an option in every language leaves every product that picked it untouched, and `position` is the order it appears in the dropdown. `GET /products/attribute-schema` republishes these as a field&#039;s `options`, already resolved for a locale.
+The permitted values of one select or multi-select attribute. A record stores the option's CODE and never its label, so renaming an option in every language leaves every product that picked it untouched, and `position` is the order it appears in the dropdown. `GET /products/attribute-schema` republishes these as a field's `options`, already resolved for a locale.
 
 An id no attribute option of this tenant carries answers 404, and so does one belonging to another tenant: row-level security makes that row invisible rather than forbidden. A malformed id answers 400 before the route is reached.
 
-Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
+Answered from the gateway's tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
 
 ### Parameters
 
@@ -411,7 +438,7 @@ PUT https://api.revenexx.com/v1/products/attribute_options/{id}
 
 ** Updates one attribute option by id. A partial patch: the body names only the columns to change and every column it leaves out keeps its current value, so there is no read-modify-write and no way to blank a field by forgetting it.
 
-The permitted values of one select or multi-select attribute. A record stores the option&#039;s CODE and never its label, so renaming an option in every language leaves every product that picked it untouched, and `position` is the order it appears in the dropdown. `GET /products/attribute-schema` republishes these as a field&#039;s `options`, already resolved for a locale.
+The permitted values of one select or multi-select attribute. A record stores the option's CODE and never its label, so renaming an option in every language leaves every product that picked it untouched, and `position` is the order it appears in the dropdown. `GET /products/attribute-schema` republishes these as a field's `options`, already resolved for a locale.
 
 A body that names nothing writable is refused with 400 rather than answered as a no-op, an id nobody carries answers 404, and a value that collides on `attribute_id` and `code` answers 409. **
 
@@ -422,8 +449,13 @@ A body that names nothing writable is refused with 400 rather than answered as a
 | id | string | **Required** The `attribute_options` row to address, by id. It names a row THIS TENANT holds, so no example is published — a uuid this app invented would document a call that answers 404, and a real one would be another tenant's data. Read one from `GET /v1/products/attribute_options`. An id no attribute option of this tenant carries answers 404; a malformed one answers 400 before the route is reached. |  |
 | attribute_id | string | The select / multi-select attribute these are the permitted values of. Deleting the attribute deletes its options with it. |  |
 | code | string | The value actually STORED in a record's `attribute_values` when this option is picked — never the label. Unique within the attribute. |  |
+| external_id | string | The key this option has in the system that owns the value list — an ETIM value, an eCl@ss value key. Unique per tenant where set. `code` is what a product stores when the option is picked; this is what the source calls the same choice, and holding the two apart is what stops a re-import founding a second option that means the same thing. |  |
+| external_refs | object | Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. |  |
 | labels | object | What the option is called, per language tag. Two tenants may label the same code differently; only the code is ever written into a record. |  |
+| metadata | object | Free-form jsonb this tenant owns, for whatever an integration has to remember about an option beyond its code, its label and its swatch. Nothing in this app reads it. |  |
 | position | integer | Order in the dropdown, ascending. Options that tie keep the order the database returns them in, so give every option a position if the order matters. |  |
+| source_data | object | What the source said about this row, kept as it said it: `{"system": …, "etag": …, "raw": {…}}`. The `etag` is what a write-back has to hand back in `If-Match`, and between two runs there is nowhere else to keep it. `raw` carries the source fields this app does not model, so they survive a round trip instead of being lost the first time somebody edits here. Written by whatever imports the row; nothing in this app reads or maintains it. |  |
+| source_synced_at | string | When this row was last CONFIRMED against its source — not when it last changed. A delta run asks for everything it has not seen since its last pass, and over 25 000 products that is the difference between an index scan and reading the whole catalog, which is the reason the column is indexed. An edit made here leaves it alone, so a value that has stopped moving says the feed has gone quiet, not that nobody works the record. Null for a row no source owns. |  |
 | swatch | object | A colour or texture chip for the picker. Null for an option that is not visual. |  |
 
 
@@ -431,11 +463,11 @@ A body that names nothing writable is refused with 400 rather than answered as a
 GET https://api.revenexx.com/v1/products/attributes
 ```
 
-** An attribute is one property a record can carry, and in an attribute-driven PIM it is a ROW rather than a column: giving the catalog a &quot;net weight&quot; is a create here, not a migration. Its own flags decide everything downstream — `localizable` and `scopable` pick which of the four `attribute_values` buckets its values are written to, `type` picks the editor that renders it, `usable_in_grid` and `is_filterable` are what the product grid reads. `entity_type`/`entity_ref` say which kind of record carries it: a product, one reference entity&#039;s records, one asset family, or a category.
+** An attribute is one property a record can carry, and in an attribute-driven PIM it is a ROW rather than a column: giving the catalog a "net weight" is a create here, not a migration. Its own flags decide everything downstream — `localizable` and `scopable` pick which of the four `attribute_values` buckets its values are written to, `type` picks the editor that renders it, `usable_in_grid` and `is_filterable` are what the product grid reads. `entity_type`/`entity_ref` say which kind of record carries it: a product, one reference entity's records, one asset family, or a category.
 
 Every column of `attributes` is an exact-match query parameter, `order` sorts by one column, and `limit`/`offset` page through `page.total`. A query key that is NOT a column is dropped rather than refused, and the `filter` object echoes the ones that were understood — that echo is the only way to tell an unfiltered answer from an empty one. It reads rows exactly as they are stored: no join is resolved, no jsonb value is unpacked.
 
-Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
+Answered from the gateway's tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
 
 ### Parameters
 
@@ -459,6 +491,11 @@ Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped t
 | config | string | Exact match on `config`. Type-specific settings; which keys apply depends on `type`. The ones this app reads: `units` (the unit list a measure attribute offers) and `reference_entity` (which entity a reference attribute draws its options from). The ones the cockpit edits alongside them: `unit`, `metric_family`, `decimals_allowed`, `asset_family`, `max_file_size`, `allowed_extensions`. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
 | labels | string | Exact match on `labels`. The field label a person sees, keyed by language tag. Resolution falls back to English and then to the code, so an untranslated attribute is still renderable. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
 | position | integer | Exact match on `position`. Where the field sits inside its group. A family may override it for its own form through `family_attributes.position`; this is the attribute's default. |  |
+| external_id | string | Exact match on `external_id`. The key this attribute has in the system that owns the property model — an ETIM feature, an eCl@ss property, a column of a supplier's data sheet. Unique per tenant where set. It is the half that survives a rename of `code`, so an import maps a source property onto an attribute once rather than on every run. |  |
+| external_refs | string | Exact match on `external_refs`. Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
+| source_synced_at | string | Exact match on `source_synced_at`. When this row was last CONFIRMED against its source — not when it last changed. A delta run asks for everything it has not seen since its last pass, and over 25 000 products that is the difference between an index scan and reading the whole catalog, which is the reason the column is indexed. An edit made here leaves it alone, so a value that has stopped moving says the feed has gone quiet, not that nobody works the record. Null for a row no source owns. |  |
+| source_data | string | Exact match on `source_data`. What the source said about this row, kept as it said it: `{"system": …, "etag": …, "raw": {…}}`. The `etag` is what a write-back has to hand back in `If-Match`, and between two runs there is nowhere else to keep it. `raw` carries the source fields this app does not model, so they survive a round trip instead of being lost the first time somebody edits here. Written by whatever imports the row; nothing in this app reads or maintains it. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
+| metadata | string | Exact match on `metadata`. Free-form jsonb this tenant owns. `validation` and `config` are read by this app and mean something to it; this is the pocket for everything else an integration has to remember about an attribute — a mapping note, an owning team, an export flag. Nothing here reads it. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
 | created_at | string | Exact match on `created_at`. When the row was created. Server-set — it is not part of any request body. |  |
 | updated_at | string | Exact match on `updated_at`. When the row was last written. Server-set — it is not part of any request body. |  |
 
@@ -469,7 +506,7 @@ POST https://api.revenexx.com/v1/products/attributes
 
 ** Creates one attribute and answers 201 with the stored row, including the id and the timestamps the database filled in — a client never sends an id, it reads one back and uses it in the path of every later call.
 
-An attribute is one property a record can carry, and in an attribute-driven PIM it is a ROW rather than a column: giving the catalog a &quot;net weight&quot; is a create here, not a migration. Its own flags decide everything downstream — `localizable` and `scopable` pick which of the four `attribute_values` buckets its values are written to, `type` picks the editor that renders it, `usable_in_grid` and `is_filterable` are what the product grid reads. `entity_type`/`entity_ref` say which kind of record carries it: a product, one reference entity&#039;s records, one asset family, or a category.
+An attribute is one property a record can carry, and in an attribute-driven PIM it is a ROW rather than a column: giving the catalog a "net weight" is a create here, not a migration. Its own flags decide everything downstream — `localizable` and `scopable` pick which of the four `attribute_values` buckets its values are written to, `type` picks the editor that renders it, `usable_in_grid` and `is_filterable` are what the product grid reads. `entity_type`/`entity_ref` say which kind of record carries it: a product, one reference entity's records, one asset family, or a category.
 
 `code` and `type` are the only columns the database refuses the row without; everything else has a default or is nullable. A second row with the same `entity_type`, `entity_ref`, `code` answers 409. **
 
@@ -481,13 +518,18 @@ An attribute is one property a record can carry, and in an attribute-driven PIM 
 | config | object | Type-specific settings; which keys apply depends on `type`. The ones this app reads: `units` (the unit list a measure attribute offers) and `reference_entity` (which entity a reference attribute draws its options from). The ones the cockpit edits alongside them: `unit`, `metric_family`, `decimals_allowed`, `asset_family`, `max_file_size`, `allowed_extensions`. |  |
 | entity_ref | string | Narrows `entity_type` to ONE reference entity or asset family, by its code — the attributes of `brand` rather than of every reference entity. Null for a plain product attribute. |  |
 | entity_type | string | Which kind of record carries this attribute: 'product' for the catalog itself, 'reference_entity', 'asset' or 'category' for the other things in this app that have attributes. Deliberately carries no CHECK — a tenant that models a fifth kind is served on it too. |  |
+| external_id | string | The key this attribute has in the system that owns the property model — an ETIM feature, an eCl@ss property, a column of a supplier's data sheet. Unique per tenant where set. It is the half that survives a rename of `code`, so an import maps a source property onto an attribute once rather than on every run. |  |
+| external_refs | object | Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. |  |
 | group_id | string | The `attribute_groups` row this attribute is filed under — the form section it appears in. Null is ungrouped, and an ungrouped field is rendered after every section that has a name. |  |
 | is_filterable | boolean | Offer this attribute as a filter in a product list. `GET /products/grid` reports exactly these attributes in its `filters` array, and nothing else reads the flag. |  |
 | is_unique | boolean | Declares that the value identifies the product — an EAN, a manufacturer part number. It is metadata a form and an importer read: no database index enforces it, because the value lives inside jsonb rather than in a column. |  |
 | labels | object | The field label a person sees, keyed by language tag. Resolution falls back to English and then to the code, so an untranslated attribute is still renderable. |  |
 | localizable | boolean | True → the record holds ONE VALUE PER LOCALE, under `attribute_values.locale_specific.<locale>.<code>`. False → one value, under `attribute_values.common.<code>`. This flag is what decides where a write goes. |  |
+| metadata | object | Free-form jsonb this tenant owns. `validation` and `config` are read by this app and mean something to it; this is the pocket for everything else an integration has to remember about an attribute — a mapping note, an owning team, an export flag. Nothing here reads it. |  |
 | position | integer | Where the field sits inside its group. A family may override it for its own form through `family_attributes.position`; this is the attribute's default. |  |
 | scopable | boolean | True → one value PER CHANNEL, under `attribute_values.channel_specific.<channel>.<code>`. Set together with `localizable` it means one value per channel AND locale, in `channel_locale_specific`. |  |
+| source_data | object | What the source said about this row, kept as it said it: `{"system": …, "etag": …, "raw": {…}}`. The `etag` is what a write-back has to hand back in `If-Match`, and between two runs there is nowhere else to keep it. `raw` carries the source fields this app does not model, so they survive a round trip instead of being lost the first time somebody edits here. Written by whatever imports the row; nothing in this app reads or maintains it. |  |
+| source_synced_at | string | When this row was last CONFIRMED against its source — not when it last changed. A delta run asks for everything it has not seen since its last pass, and over 25 000 products that is the difference between an index scan and reading the whole catalog, which is the reason the column is indexed. An edit made here leaves it alone, so a value that has stopped moving says the feed has gone quiet, not that nobody works the record. Null for a row no source owns. |  |
 | type | string | Which editor the value asks for — 'text', 'select', 'metric', 'price', 'asset_collection', 'reference_entity'. Carries no CHECK on purpose: an integrator adds a type, and `GET /products/attribute-schema` maps an unknown one onto a text field rather than refusing to answer. |  |
 | usable_in_grid | boolean | Show this attribute as a COLUMN in the product grid. `GET /products/grid` returns a column definition and a per-row value for exactly these. |  |
 | validation | object | Limits a value has to satisfy, as a flat object. The seven keys a client can act on are `min`, `max`, `min_length`, `max_length`, `pattern`, `min_items`, `max_items` — `GET /products/attribute-schema` republishes those and leaves anything else the tenant stored untouched. |  |
@@ -516,11 +558,11 @@ GET https://api.revenexx.com/v1/products/attributes/{id}
 
 ** Reads one attribute by its id — the whole row, every column, as it is stored.
 
-An attribute is one property a record can carry, and in an attribute-driven PIM it is a ROW rather than a column: giving the catalog a &quot;net weight&quot; is a create here, not a migration. Its own flags decide everything downstream — `localizable` and `scopable` pick which of the four `attribute_values` buckets its values are written to, `type` picks the editor that renders it, `usable_in_grid` and `is_filterable` are what the product grid reads. `entity_type`/`entity_ref` say which kind of record carries it: a product, one reference entity&#039;s records, one asset family, or a category.
+An attribute is one property a record can carry, and in an attribute-driven PIM it is a ROW rather than a column: giving the catalog a "net weight" is a create here, not a migration. Its own flags decide everything downstream — `localizable` and `scopable` pick which of the four `attribute_values` buckets its values are written to, `type` picks the editor that renders it, `usable_in_grid` and `is_filterable` are what the product grid reads. `entity_type`/`entity_ref` say which kind of record carries it: a product, one reference entity's records, one asset family, or a category.
 
 An id no attribute of this tenant carries answers 404, and so does one belonging to another tenant: row-level security makes that row invisible rather than forbidden. A malformed id answers 400 before the route is reached.
 
-Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
+Answered from the gateway's tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
 
 ### Parameters
 
@@ -535,7 +577,7 @@ PUT https://api.revenexx.com/v1/products/attributes/{id}
 
 ** Updates one attribute by id. A partial patch: the body names only the columns to change and every column it leaves out keeps its current value, so there is no read-modify-write and no way to blank a field by forgetting it.
 
-An attribute is one property a record can carry, and in an attribute-driven PIM it is a ROW rather than a column: giving the catalog a &quot;net weight&quot; is a create here, not a migration. Its own flags decide everything downstream — `localizable` and `scopable` pick which of the four `attribute_values` buckets its values are written to, `type` picks the editor that renders it, `usable_in_grid` and `is_filterable` are what the product grid reads. `entity_type`/`entity_ref` say which kind of record carries it: a product, one reference entity&#039;s records, one asset family, or a category.
+An attribute is one property a record can carry, and in an attribute-driven PIM it is a ROW rather than a column: giving the catalog a "net weight" is a create here, not a migration. Its own flags decide everything downstream — `localizable` and `scopable` pick which of the four `attribute_values` buckets its values are written to, `type` picks the editor that renders it, `usable_in_grid` and `is_filterable` are what the product grid reads. `entity_type`/`entity_ref` say which kind of record carries it: a product, one reference entity's records, one asset family, or a category.
 
 A body that names nothing writable is refused with 400 rather than answered as a no-op, an id nobody carries answers 404, and a value that collides on `entity_type`, `entity_ref`, `code` answers 409. **
 
@@ -548,13 +590,18 @@ A body that names nothing writable is refused with 400 rather than answered as a
 | config | object | Type-specific settings; which keys apply depends on `type`. The ones this app reads: `units` (the unit list a measure attribute offers) and `reference_entity` (which entity a reference attribute draws its options from). The ones the cockpit edits alongside them: `unit`, `metric_family`, `decimals_allowed`, `asset_family`, `max_file_size`, `allowed_extensions`. |  |
 | entity_ref | string | Narrows `entity_type` to ONE reference entity or asset family, by its code — the attributes of `brand` rather than of every reference entity. Null for a plain product attribute. |  |
 | entity_type | string | Which kind of record carries this attribute: 'product' for the catalog itself, 'reference_entity', 'asset' or 'category' for the other things in this app that have attributes. Deliberately carries no CHECK — a tenant that models a fifth kind is served on it too. |  |
+| external_id | string | The key this attribute has in the system that owns the property model — an ETIM feature, an eCl@ss property, a column of a supplier's data sheet. Unique per tenant where set. It is the half that survives a rename of `code`, so an import maps a source property onto an attribute once rather than on every run. |  |
+| external_refs | object | Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. |  |
 | group_id | string | The `attribute_groups` row this attribute is filed under — the form section it appears in. Null is ungrouped, and an ungrouped field is rendered after every section that has a name. |  |
 | is_filterable | boolean | Offer this attribute as a filter in a product list. `GET /products/grid` reports exactly these attributes in its `filters` array, and nothing else reads the flag. |  |
 | is_unique | boolean | Declares that the value identifies the product — an EAN, a manufacturer part number. It is metadata a form and an importer read: no database index enforces it, because the value lives inside jsonb rather than in a column. |  |
 | labels | object | The field label a person sees, keyed by language tag. Resolution falls back to English and then to the code, so an untranslated attribute is still renderable. |  |
 | localizable | boolean | True → the record holds ONE VALUE PER LOCALE, under `attribute_values.locale_specific.<locale>.<code>`. False → one value, under `attribute_values.common.<code>`. This flag is what decides where a write goes. |  |
+| metadata | object | Free-form jsonb this tenant owns. `validation` and `config` are read by this app and mean something to it; this is the pocket for everything else an integration has to remember about an attribute — a mapping note, an owning team, an export flag. Nothing here reads it. |  |
 | position | integer | Where the field sits inside its group. A family may override it for its own form through `family_attributes.position`; this is the attribute's default. |  |
 | scopable | boolean | True → one value PER CHANNEL, under `attribute_values.channel_specific.<channel>.<code>`. Set together with `localizable` it means one value per channel AND locale, in `channel_locale_specific`. |  |
+| source_data | object | What the source said about this row, kept as it said it: `{"system": …, "etag": …, "raw": {…}}`. The `etag` is what a write-back has to hand back in `If-Match`, and between two runs there is nowhere else to keep it. `raw` carries the source fields this app does not model, so they survive a round trip instead of being lost the first time somebody edits here. Written by whatever imports the row; nothing in this app reads or maintains it. |  |
+| source_synced_at | string | When this row was last CONFIRMED against its source — not when it last changed. A delta run asks for everything it has not seen since its last pass, and over 25 000 products that is the difference between an index scan and reading the whole catalog, which is the reason the column is indexed. An edit made here leaves it alone, so a value that has stopped moving says the feed has gone quiet, not that nobody works the record. Null for a row no source owns. |  |
 | type | string | Which editor the value asks for — 'text', 'select', 'metric', 'price', 'asset_collection', 'reference_entity'. Carries no CHECK on purpose: an integrator adds a type, and `GET /products/attribute-schema` maps an unknown one onto a text field rather than refusing to answer. |  |
 | usable_in_grid | boolean | Show this attribute as a COLUMN in the product grid. `GET /products/grid` returns a column definition and a per-row value for exactly these. |  |
 | validation | object | Limits a value has to satisfy, as a flat object. The seven keys a client can act on are `min`, `max`, `min_length`, `max_length`, `pattern`, `min_items`, `max_items` — `GET /products/attribute-schema` republishes those and leaves anything else the tenant stored untouched. |  |
@@ -568,7 +615,7 @@ GET https://api.revenexx.com/v1/products/families
 
 Every column of `families` is an exact-match query parameter, `order` sorts by one column, and `limit`/`offset` page through `page.total`. A query key that is NOT a column is dropped rather than refused, and the `filter` object echoes the ones that were understood — that echo is the only way to tell an unfiltered answer from an empty one. It reads rows exactly as they are stored: no join is resolved, no jsonb value is unpacked.
 
-Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
+Answered from the gateway's tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
 
 ### Parameters
 
@@ -582,6 +629,11 @@ Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped t
 | label_attribute | string | Exact match on `label_attribute`. Which attribute CODE carries the display name of a product in this family. A product's name is an attribute, not a column, and which attribute it is, is per family. Null falls back to the `default_label_attribute` setting and then to the conventional `name`. |  |
 | image_attribute | string | Exact match on `image_attribute`. Which attribute code carries the product's main image — the one a grid thumbnail and a picker read. |  |
 | labels | string | Exact match on `labels`. What the family is called, per language tag — the name an operator picks from, while the code is what everything else joins on. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
+| external_id | string | Exact match on `external_id`. The key this family has in the system that owns the classification — an ETIM class, an eCl@ss class, a supplier's article type. Unique per tenant where set, and what an import joins on to decide which family a delivered article belongs in. |  |
+| external_refs | string | Exact match on `external_refs`. Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
+| source_synced_at | string | Exact match on `source_synced_at`. When this row was last CONFIRMED against its source — not when it last changed. A delta run asks for everything it has not seen since its last pass, and over 25 000 products that is the difference between an index scan and reading the whole catalog, which is the reason the column is indexed. An edit made here leaves it alone, so a value that has stopped moving says the feed has gone quiet, not that nobody works the record. Null for a row no source owns. |  |
+| source_data | string | Exact match on `source_data`. What the source said about this row, kept as it said it: `{"system": …, "etag": …, "raw": {…}}`. The `etag` is what a write-back has to hand back in `If-Match`, and between two runs there is nowhere else to keep it. `raw` carries the source fields this app does not model, so they survive a round trip instead of being lost the first time somebody edits here. Written by whatever imports the row; nothing in this app reads or maintains it. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
+| metadata | string | Exact match on `metadata`. Free-form jsonb this tenant owns, for anything about a family this app does not model. `source_data` is the source's account of the row; this one is yours. Nothing here reads it. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
 | created_at | string | Exact match on `created_at`. When the row was created. Server-set — it is not part of any request body. |  |
 | updated_at | string | Exact match on `updated_at`. When the row was last written. Server-set — it is not part of any request body. |  |
 
@@ -601,9 +653,14 @@ A family decides WHICH attributes a product has — the set is `family_attribute
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | code | string | The family's stable identifier — which set of attributes a product of this family HAS. Unique per tenant, and the value `GET /products/attribute-schema?family_code=` resolves. |  |
+| external_id | string | The key this family has in the system that owns the classification — an ETIM class, an eCl@ss class, a supplier's article type. Unique per tenant where set, and what an import joins on to decide which family a delivered article belongs in. |  |
+| external_refs | object | Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. |  |
 | image_attribute | string | Which attribute code carries the product's main image — the one a grid thumbnail and a picker read. |  |
 | label_attribute | string | Which attribute CODE carries the display name of a product in this family. A product's name is an attribute, not a column, and which attribute it is, is per family. Null falls back to the `default_label_attribute` setting and then to the conventional `name`. |  |
 | labels | object | What the family is called, per language tag — the name an operator picks from, while the code is what everything else joins on. |  |
+| metadata | object | Free-form jsonb this tenant owns, for anything about a family this app does not model. `source_data` is the source's account of the row; this one is yours. Nothing here reads it. |  |
+| source_data | object | What the source said about this row, kept as it said it: `{"system": …, "etag": …, "raw": {…}}`. The `etag` is what a write-back has to hand back in `If-Match`, and between two runs there is nowhere else to keep it. `raw` carries the source fields this app does not model, so they survive a round trip instead of being lost the first time somebody edits here. Written by whatever imports the row; nothing in this app reads or maintains it. |  |
+| source_synced_at | string | When this row was last CONFIRMED against its source — not when it last changed. A delta run asks for everything it has not seen since its last pass, and over 25 000 products that is the difference between an index scan and reading the whole catalog, which is the reason the column is indexed. An edit made here leaves it alone, so a value that has stopped moving says the feed has gone quiet, not that nobody works the record. Null for a row no source owns. |  |
 
 
 ```http request
@@ -633,7 +690,7 @@ A family decides WHICH attributes a product has — the set is `family_attribute
 
 An id no family of this tenant carries answers 404, and so does one belonging to another tenant: row-level security makes that row invisible rather than forbidden. A malformed id answers 400 before the route is reached.
 
-Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
+Answered from the gateway's tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
 
 ### Parameters
 
@@ -658,20 +715,25 @@ A body that names nothing writable is refused with 400 rather than answered as a
 | --- | --- | --- | --- |
 | id | string | **Required** The `families` row to address, by id. It names a row THIS TENANT holds, so no example is published — a uuid this app invented would document a call that answers 404, and a real one would be another tenant's data. Read one from `GET /v1/products/families`. An id no familie of this tenant carries answers 404; a malformed one answers 400 before the route is reached. |  |
 | code | string | The family's stable identifier — which set of attributes a product of this family HAS. Unique per tenant, and the value `GET /products/attribute-schema?family_code=` resolves. |  |
+| external_id | string | The key this family has in the system that owns the classification — an ETIM class, an eCl@ss class, a supplier's article type. Unique per tenant where set, and what an import joins on to decide which family a delivered article belongs in. |  |
+| external_refs | object | Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. |  |
 | image_attribute | string | Which attribute code carries the product's main image — the one a grid thumbnail and a picker read. |  |
 | label_attribute | string | Which attribute CODE carries the display name of a product in this family. A product's name is an attribute, not a column, and which attribute it is, is per family. Null falls back to the `default_label_attribute` setting and then to the conventional `name`. |  |
 | labels | object | What the family is called, per language tag — the name an operator picks from, while the code is what everything else joins on. |  |
+| metadata | object | Free-form jsonb this tenant owns, for anything about a family this app does not model. `source_data` is the source's account of the row; this one is yours. Nothing here reads it. |  |
+| source_data | object | What the source said about this row, kept as it said it: `{"system": …, "etag": …, "raw": {…}}`. The `etag` is what a write-back has to hand back in `If-Match`, and between two runs there is nowhere else to keep it. `raw` carries the source fields this app does not model, so they survive a round trip instead of being lost the first time somebody edits here. Written by whatever imports the row; nothing in this app reads or maintains it. |  |
+| source_synced_at | string | When this row was last CONFIRMED against its source — not when it last changed. A delta run asks for everything it has not seen since its last pass, and over 25 000 products that is the difference between an index scan and reading the whole catalog, which is the reason the column is indexed. An edit made here leaves it alone, so a value that has stopped moving says the feed has gone quiet, not that nobody works the record. Null for a row no source owns. |  |
 
 
 ```http request
 GET https://api.revenexx.com/v1/products/family_attributes
 ```
 
-** One link between a family and an attribute — the row that puts an attribute INTO a family&#039;s form. It carries the family&#039;s own ordering of that attribute, which overrides the attribute&#039;s default position, and `is_required`, which is the flag `POST /products/{id}/completeness` measures and nothing else reads. `required_channels` narrows &quot;required&quot; to named channels; null or empty means required EVERYWHERE, not nowhere.
+** One link between a family and an attribute — the row that puts an attribute INTO a family's form. It carries the family's own ordering of that attribute, which overrides the attribute's default position, and `is_required`, which is the flag `POST /products/{id}/completeness` measures and nothing else reads. `required_channels` narrows "required" to named channels; null or empty means required EVERYWHERE, not nowhere.
 
 Every column of `family_attributes` is an exact-match query parameter, `order` sorts by one column, and `limit`/`offset` page through `page.total`. A query key that is NOT a column is dropped rather than refused, and the `filter` object echoes the ones that were understood — that echo is the only way to tell an unfiltered answer from an empty one. It reads rows exactly as they are stored: no join is resolved, no jsonb value is unpacked.
 
-Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
+Answered from the gateway's tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
 
 ### Parameters
 
@@ -687,6 +749,7 @@ Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped t
 | is_required | boolean | Exact match on `is_required`. The attribute has to carry a value for a product of this family to count as complete. `POST /products/{id}/completeness` measures exactly these and nothing else. |  |
 | required_channels | string | Exact match on `required_channels`. Narrows `is_required` to named channels. NULL or an empty list means required EVERYWHERE, not nowhere — that is how every required link in the wild is stored, and reading an empty list as "nowhere" reports a fully configured family as demanding nothing. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
 | created_at | string | Exact match on `created_at`. When the row was created. Server-set — it is not part of any request body. |  |
+| updated_at | string | Exact match on `updated_at`. When the row was last written. Server-set — it is not part of any request body. |  |
 
 
 ```http request
@@ -695,7 +758,7 @@ POST https://api.revenexx.com/v1/products/family_attributes
 
 ** Creates one family attribute and answers 201 with the stored row, including the id and the timestamps the database filled in — a client never sends an id, it reads one back and uses it in the path of every later call.
 
-One link between a family and an attribute — the row that puts an attribute INTO a family&#039;s form. It carries the family&#039;s own ordering of that attribute, which overrides the attribute&#039;s default position, and `is_required`, which is the flag `POST /products/{id}/completeness` measures and nothing else reads. `required_channels` narrows &quot;required&quot; to named channels; null or empty means required EVERYWHERE, not nowhere.
+One link between a family and an attribute — the row that puts an attribute INTO a family's form. It carries the family's own ordering of that attribute, which overrides the attribute's default position, and `is_required`, which is the flag `POST /products/{id}/completeness` measures and nothing else reads. `required_channels` narrows "required" to named channels; null or empty means required EVERYWHERE, not nowhere.
 
 `family_id` and `attribute_id` are the only columns the database refuses the row without; everything else has a default or is nullable. A second row with the same `family_id` and `attribute_id` answers 409. **
 
@@ -733,11 +796,11 @@ GET https://api.revenexx.com/v1/products/family_attributes/{id}
 
 ** Reads one family attribute by its id — the whole row, every column, as it is stored.
 
-One link between a family and an attribute — the row that puts an attribute INTO a family&#039;s form. It carries the family&#039;s own ordering of that attribute, which overrides the attribute&#039;s default position, and `is_required`, which is the flag `POST /products/{id}/completeness` measures and nothing else reads. `required_channels` narrows &quot;required&quot; to named channels; null or empty means required EVERYWHERE, not nowhere.
+One link between a family and an attribute — the row that puts an attribute INTO a family's form. It carries the family's own ordering of that attribute, which overrides the attribute's default position, and `is_required`, which is the flag `POST /products/{id}/completeness` measures and nothing else reads. `required_channels` narrows "required" to named channels; null or empty means required EVERYWHERE, not nowhere.
 
 An id no family attribute of this tenant carries answers 404, and so does one belonging to another tenant: row-level security makes that row invisible rather than forbidden. A malformed id answers 400 before the route is reached.
 
-Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
+Answered from the gateway's tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
 
 ### Parameters
 
@@ -752,7 +815,7 @@ PUT https://api.revenexx.com/v1/products/family_attributes/{id}
 
 ** Updates one family attribute by id. A partial patch: the body names only the columns to change and every column it leaves out keeps its current value, so there is no read-modify-write and no way to blank a field by forgetting it.
 
-One link between a family and an attribute — the row that puts an attribute INTO a family&#039;s form. It carries the family&#039;s own ordering of that attribute, which overrides the attribute&#039;s default position, and `is_required`, which is the flag `POST /products/{id}/completeness` measures and nothing else reads. `required_channels` narrows &quot;required&quot; to named channels; null or empty means required EVERYWHERE, not nowhere.
+One link between a family and an attribute — the row that puts an attribute INTO a family's form. It carries the family's own ordering of that attribute, which overrides the attribute's default position, and `is_required`, which is the flag `POST /products/{id}/completeness` measures and nothing else reads. `required_channels` narrows "required" to named channels; null or empty means required EVERYWHERE, not nowhere.
 
 A body that names nothing writable is refused with 400 rather than answered as a no-op, an id nobody carries answers 404, and a value that collides on `family_id` and `attribute_id` answers 409. **
 
@@ -776,7 +839,7 @@ GET https://api.revenexx.com/v1/products/family_variants
 
 Every column of `family_variants` is an exact-match query parameter, `order` sorts by one column, and `limit`/`offset` page through `page.total`. A query key that is NOT a column is dropped rather than refused, and the `filter` object echoes the ones that were understood — that echo is the only way to tell an unfiltered answer from an empty one. It reads rows exactly as they are stored: no join is resolved, no jsonb value is unpacked.
 
-Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
+Answered from the gateway's tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
 
 ### Parameters
 
@@ -790,6 +853,11 @@ Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped t
 | code | string | Exact match on `code`. The variant structure's stable identifier — how this family splits, not which product it splits. Unique per tenant. |  |
 | labels | string | Exact match on `labels`. What the variant structure is called, per language tag. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
 | axes | string | Exact match on `axes`. The attribute codes a product model splits its variants on. Two shapes are in the wild and both are read: a bare list of codes, or one entry per level, outermost first — `[{"level": 1, "axes": ["colour"]}, {"level": 2, "axes": ["size"]}]`. An attribute named here is READ-ONLY on the model and set on each variant, which is what `AttributeField.readonly_reason` reports. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
+| external_id | string | Exact match on `external_id`. The key this variant structure has in the system it came from. Unique per tenant where set, and usually null — few sources model how a family splits, so this is normally a structure somebody built here. |  |
+| external_refs | string | Exact match on `external_refs`. Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
+| source_synced_at | string | Exact match on `source_synced_at`. When this row was last CONFIRMED against its source — not when it last changed. A delta run asks for everything it has not seen since its last pass, and over 25 000 products that is the difference between an index scan and reading the whole catalog, which is the reason the column is indexed. An edit made here leaves it alone, so a value that has stopped moving says the feed has gone quiet, not that nobody works the record. Null for a row no source owns. |  |
+| source_data | string | Exact match on `source_data`. What the source said about this row, kept as it said it: `{"system": …, "etag": …, "raw": {…}}`. The `etag` is what a write-back has to hand back in `If-Match`, and between two runs there is nowhere else to keep it. `raw` carries the source fields this app does not model, so they survive a round trip instead of being lost the first time somebody edits here. Written by whatever imports the row; nothing in this app reads or maintains it. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
+| metadata | string | Exact match on `metadata`. Free-form jsonb this tenant owns, for anything about a variant structure this app does not model. Nothing here reads it. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
 | created_at | string | Exact match on `created_at`. When the row was created. Server-set — it is not part of any request body. |  |
 | updated_at | string | Exact match on `updated_at`. When the row was last written. Server-set — it is not part of any request body. |  |
 
@@ -810,8 +878,13 @@ A variant structure of a family: the attribute axes a product model splits its v
 | --- | --- | --- | --- |
 | axes | object | The attribute codes a product model splits its variants on. Two shapes are in the wild and both are read: a bare list of codes, or one entry per level, outermost first — `[{"level": 1, "axes": ["colour"]}, {"level": 2, "axes": ["size"]}]`. An attribute named here is READ-ONLY on the model and set on each variant, which is what `AttributeField.readonly_reason` reports. |  |
 | code | string | The variant structure's stable identifier — how this family splits, not which product it splits. Unique per tenant. |  |
+| external_id | string | The key this variant structure has in the system it came from. Unique per tenant where set, and usually null — few sources model how a family splits, so this is normally a structure somebody built here. |  |
+| external_refs | object | Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. |  |
 | family_id | string | The family this variant structure belongs to. A family may carry several, and a product names the one it follows through `family_variant_id`. |  |
 | labels | object | What the variant structure is called, per language tag. |  |
+| metadata | object | Free-form jsonb this tenant owns, for anything about a variant structure this app does not model. Nothing here reads it. |  |
+| source_data | object | What the source said about this row, kept as it said it: `{"system": …, "etag": …, "raw": {…}}`. The `etag` is what a write-back has to hand back in `If-Match`, and between two runs there is nowhere else to keep it. `raw` carries the source fields this app does not model, so they survive a round trip instead of being lost the first time somebody edits here. Written by whatever imports the row; nothing in this app reads or maintains it. |  |
+| source_synced_at | string | When this row was last CONFIRMED against its source — not when it last changed. A delta run asks for everything it has not seen since its last pass, and over 25 000 products that is the difference between an index scan and reading the whole catalog, which is the reason the column is indexed. An edit made here leaves it alone, so a value that has stopped moving says the feed has gone quiet, not that nobody works the record. Null for a row no source owns. |  |
 
 
 ```http request
@@ -841,7 +914,7 @@ A variant structure of a family: the attribute axes a product model splits its v
 
 An id no family variant of this tenant carries answers 404, and so does one belonging to another tenant: row-level security makes that row invisible rather than forbidden. A malformed id answers 400 before the route is reached.
 
-Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
+Answered from the gateway's tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
 
 ### Parameters
 
@@ -867,19 +940,24 @@ A body that names nothing writable is refused with 400 rather than answered as a
 | id | string | **Required** The `family_variants` row to address, by id. It names a row THIS TENANT holds, so no example is published — a uuid this app invented would document a call that answers 404, and a real one would be another tenant's data. Read one from `GET /v1/products/family_variants`. An id no family variant of this tenant carries answers 404; a malformed one answers 400 before the route is reached. |  |
 | axes | object | The attribute codes a product model splits its variants on. Two shapes are in the wild and both are read: a bare list of codes, or one entry per level, outermost first — `[{"level": 1, "axes": ["colour"]}, {"level": 2, "axes": ["size"]}]`. An attribute named here is READ-ONLY on the model and set on each variant, which is what `AttributeField.readonly_reason` reports. |  |
 | code | string | The variant structure's stable identifier — how this family splits, not which product it splits. Unique per tenant. |  |
+| external_id | string | The key this variant structure has in the system it came from. Unique per tenant where set, and usually null — few sources model how a family splits, so this is normally a structure somebody built here. |  |
+| external_refs | object | Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. |  |
 | family_id | string | The family this variant structure belongs to. A family may carry several, and a product names the one it follows through `family_variant_id`. |  |
 | labels | object | What the variant structure is called, per language tag. |  |
+| metadata | object | Free-form jsonb this tenant owns, for anything about a variant structure this app does not model. Nothing here reads it. |  |
+| source_data | object | What the source said about this row, kept as it said it: `{"system": …, "etag": …, "raw": {…}}`. The `etag` is what a write-back has to hand back in `If-Match`, and between two runs there is nowhere else to keep it. `raw` carries the source fields this app does not model, so they survive a round trip instead of being lost the first time somebody edits here. Written by whatever imports the row; nothing in this app reads or maintains it. |  |
+| source_synced_at | string | When this row was last CONFIRMED against its source — not when it last changed. A delta run asks for everything it has not seen since its last pass, and over 25 000 products that is the difference between an index scan and reading the whole catalog, which is the reason the column is indexed. An edit made here leaves it alone, so a value that has stopped moving says the feed has gone quiet, not that nobody works the record. Null for a row no source owns. |  |
 
 
 ```http request
 GET https://api.revenexx.com/v1/products/measurement_families
 ```
 
-** A family of units and the standard one they all convert to — weight in kilograms, length in metres. A `measure` attribute names one and then offers exactly that family&#039;s units, and each unit&#039;s `convert_factor` is what makes two values recorded in different units comparable at all.
+** A family of units and the standard one they all convert to — weight in kilograms, length in metres. A `measure` attribute names one and then offers exactly that family's units, and each unit's `convert_factor` is what makes two values recorded in different units comparable at all.
 
 Every column of `measurement_families` is an exact-match query parameter, `order` sorts by one column, and `limit`/`offset` page through `page.total`. A query key that is NOT a column is dropped rather than refused, and the `filter` object echoes the ones that were understood — that echo is the only way to tell an unfiltered answer from an empty one. It reads rows exactly as they are stored: no join is resolved, no jsonb value is unpacked.
 
-Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
+Answered from the gateway's tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
 
 ### Parameters
 
@@ -903,7 +981,7 @@ POST https://api.revenexx.com/v1/products/measurement_families
 
 ** Creates one measurement family and answers 201 with the stored row, including the id and the timestamps the database filled in — a client never sends an id, it reads one back and uses it in the path of every later call.
 
-A family of units and the standard one they all convert to — weight in kilograms, length in metres. A `measure` attribute names one and then offers exactly that family&#039;s units, and each unit&#039;s `convert_factor` is what makes two values recorded in different units comparable at all.
+A family of units and the standard one they all convert to — weight in kilograms, length in metres. A `measure` attribute names one and then offers exactly that family's units, and each unit's `convert_factor` is what makes two values recorded in different units comparable at all.
 
 `code` and `standard_unit` are the only columns the database refuses the row without; everything else has a default or is nullable. A second row with the same `code` answers 409. **
 
@@ -940,11 +1018,11 @@ GET https://api.revenexx.com/v1/products/measurement_families/{id}
 
 ** Reads one measurement family by its id — the whole row, every column, as it is stored.
 
-A family of units and the standard one they all convert to — weight in kilograms, length in metres. A `measure` attribute names one and then offers exactly that family&#039;s units, and each unit&#039;s `convert_factor` is what makes two values recorded in different units comparable at all.
+A family of units and the standard one they all convert to — weight in kilograms, length in metres. A `measure` attribute names one and then offers exactly that family's units, and each unit's `convert_factor` is what makes two values recorded in different units comparable at all.
 
 An id no measurement family of this tenant carries answers 404, and so does one belonging to another tenant: row-level security makes that row invisible rather than forbidden. A malformed id answers 400 before the route is reached.
 
-Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
+Answered from the gateway's tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
 
 ### Parameters
 
@@ -959,7 +1037,7 @@ PUT https://api.revenexx.com/v1/products/measurement_families/{id}
 
 ** Updates one measurement family by id. A partial patch: the body names only the columns to change and every column it leaves out keeps its current value, so there is no read-modify-write and no way to blank a field by forgetting it.
 
-A family of units and the standard one they all convert to — weight in kilograms, length in metres. A `measure` attribute names one and then offers exactly that family&#039;s units, and each unit&#039;s `convert_factor` is what makes two values recorded in different units comparable at all.
+A family of units and the standard one they all convert to — weight in kilograms, length in metres. A `measure` attribute names one and then offers exactly that family's units, and each unit's `convert_factor` is what makes two values recorded in different units comparable at all.
 
 A body that names nothing writable is refused with 400 rather than answered as a no-op, an id nobody carries answers 404, and a value that collides on `code` answers 409. **
 

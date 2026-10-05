@@ -3,7 +3,7 @@
 
 use Revenexx\Client;
 use Revenexx\Services\Search;
-use Revenexx\Enums\Collection;
+use Revenexx\Enums\Collection as CollectionEnum;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -14,7 +14,7 @@ $client = (new Client())
 $search = new Search($client);
 
 $result = $search->searchSearchDocuments(
-    collection: Collection::PRODUCTS(),
+    collection: CollectionEnum::PRODUCTS(),
     excludeFields: '', // optional
     facetBy: '', // optional
     filterBy: '', // optional

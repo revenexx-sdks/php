@@ -14,6 +14,8 @@ $inventoriesStock = new InventoriesStock($client);
 
 $result = $inventoriesStock->inventoriesStockUpdate(
     id: '',
+    availabilityCode: 'available', // optional
+    expectedAt: '2026-11-14', // optional
     locationId: '', // optional
     metadata: [
         'backorder' => true

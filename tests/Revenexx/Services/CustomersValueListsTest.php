@@ -168,6 +168,81 @@ final class CustomersValueListsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodCustomersContactPointKindsList(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersValueLists->customersContactPointKindsList(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersContactPointKindsCreate(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersValueLists->customersContactPointKindsCreate(
+            "",
+            "Invoice"
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersContactPointKindsDelete(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersValueLists->customersContactPointKindsDelete(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersContactPointKindsGet(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersValueLists->customersContactPointKindsGet(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersContactPointKindsUpdate(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersValueLists->customersContactPointKindsUpdate(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodCustomersDefaults(): void {
 
         $data = array();

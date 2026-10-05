@@ -7,7 +7,7 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\EntityType;
-use Revenexx\Enums\Kind;
+use Revenexx\Enums\ProductsListKind;
 
 final class ProductsDataModelTest extends TestCase {
     private $client;

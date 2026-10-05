@@ -37,11 +37,11 @@ class Client
      */
     protected array $headers = [
         'content-type' => '',
-        'user-agent' => 'RevenexxPHPSDK/0.1.4 ()',
+        'user-agent' => 'RevenexxPHPSDK/0.2.0 ()',
         'x-sdk-name'=> 'Revenexx PHP',
         'x-sdk-platform'=> '',
         'x-sdk-language'=> 'php',
-        'x-sdk-version'=> '0.1.4',
+        'x-sdk-version'=> '0.2.0',
     ];
 
     /**
@@ -215,7 +215,7 @@ class Client
     )
     {
         $headers = array_merge($this->headers, $headers);
-        $ch = curl_init($this->endpoint . $path . (($method == self::METHOD_GET && !empty($params)) ? '?' . http_build_query($params) : ''));
+        $ch = curl_init($this->endpoint . $path . (($method == self::METHOD_GET && !empty($params)) ? '?' . http_build_query($this->prepareQuery($params)) : ''));
         $responseHeaders = [];
 
         switch ($headers['content-type']) {
@@ -224,11 +224,11 @@ class Client
                 break;
 
             case 'multipart/form-data':
-                $query = $this->flatten($params);
+                $query = $this->flatten($this->prepareQuery($params));
                 break;
 
             default:
-                $query = http_build_query($params);
+                $query = http_build_query($this->prepareQuery($params));
                 break;
         }
 
@@ -298,7 +298,7 @@ class Client
 
         if($responseStatus >= 400) {
             if(is_array($responseBody)) {
-                throw new RevenexxException($responseBody['message'], $responseStatus, $responseBody['type'] ?? '', json_encode($responseBody));
+                throw new RevenexxException($responseBody['error'] ?? $responseBody['message'] ?? '', $responseStatus, $responseBody['type'] ?? '', json_encode($responseBody));
             } else {
                 throw new RevenexxException($responseBody, $responseStatus, '', $responseBody);
             }
@@ -353,6 +353,31 @@ class Client
 
         return $data;
     }
+    /**
+     * Prepare params for a query string or a form body: models become arrays
+     * and enums (which keep their value in a private property that
+     * http_build_query() cannot see) become their value. A query filter like
+     * `status=placed` was silently dropped.
+     *
+     * @param mixed $data
+     * @return mixed
+     */
+    protected function prepareQuery($data)
+    {
+        if (is_array($data)) {
+            return array_map([$this, 'prepareQuery'], $data);
+        }
+
+        if (is_object($data) && method_exists($data, 'toArray')) {
+            return $this->prepareQuery($data->toArray());
+        }
+
+        if ($data instanceof \Stringable) {
+            return (string) $data;
+        }
+
+        return $data;
+    }
 
     /**
      * Get information about this SDK and the generator that produced it.
@@ -365,7 +390,7 @@ class Client
     {
         return [
             'name' => 'Revenexx PHP',
-            'version' => '0.1.4',
+            'version' => '0.2.0',
             'language' => 'php',
             'generator' => 'revenexx/sdk-generator',
             'generatorUrl' => 'https://github.com/revenexx/sdk-generator',

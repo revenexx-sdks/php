@@ -6,6 +6,7 @@ use Revenexx\Client;
 use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
+use Revenexx\Enums\Factor;
 
 final class CustomersTest extends TestCase {
     private $client;
@@ -40,7 +41,6 @@ final class CustomersTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->customers->customersAuthLogin(
-            "einkauf@example.com",
             ""
         );
 
@@ -104,6 +104,7 @@ final class CustomersTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->customers->customersAuthMe(
+            "",
             ""
         );
 

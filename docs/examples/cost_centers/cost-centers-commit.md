@@ -14,8 +14,9 @@ $costCenters = new CostCenters($client);
 
 $result = $costCenters->costCentersCommit(
     allocations: [],
-    orderId: '',
     contactId: '', // optional
     currency: '', // optional
-    note: '' // optional
+    dryRun: true, // optional
+    note: '', // optional
+    orderId: '' // optional
 );```

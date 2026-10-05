@@ -34,6 +34,7 @@ $result = $prices->pricesListsUpdate(
     organizationId: '', // optional
     priority: 1, // optional
     requiresAuth: true, // optional
+    segmentCode: 'wholesale', // optional
     status: PriceListStatus::ACTIVE(), // optional
     taxBasis: PriceListTaxBasis::NET(), // optional
     taxIncluded: true, // optional

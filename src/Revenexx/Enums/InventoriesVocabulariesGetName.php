@@ -6,6 +6,7 @@ use JsonSerializable;
 
 class InventoriesVocabulariesGetName implements JsonSerializable
 {
+    private static InventoriesVocabulariesGetName $AVAILABILITYSTATES;
     private static InventoriesVocabulariesGetName $LOCATIONTYPES;
     private static InventoriesVocabulariesGetName $MOVEMENTTYPES;
     private static InventoriesVocabulariesGetName $RESERVATIONSTATUSES;
@@ -27,6 +28,13 @@ class InventoriesVocabulariesGetName implements JsonSerializable
         return $this->value;
     }
 
+    public static function AVAILABILITYSTATES(): InventoriesVocabulariesGetName
+    {
+        if (!isset(self::$AVAILABILITYSTATES)) {
+            self::$AVAILABILITYSTATES = new InventoriesVocabulariesGetName('availability-states');
+        }
+        return self::$AVAILABILITYSTATES;
+    }
     public static function LOCATIONTYPES(): InventoriesVocabulariesGetName
     {
         if (!isset(self::$LOCATIONTYPES)) {

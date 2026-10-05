@@ -29,13 +29,15 @@ class PaymentsLedger extends Service
      * order, so a newest-first list needs `?order=created_at.desc`.
      * `error_message` is answered from the failure taxonomy rather than echoed
      * out of the column, so what a driver or a PSP actually wrote is never
-     * serialized here.
+     * serialized here. On a buyer's own call the list holds that buyer's payments
+     * only, and a `contact_id` naming anyone else answers 400 `buyer_mismatch`.
      *
      * @param ?int $limit
      * @param ?int $offset
      * @param ?string $order
      * @param ?string $cartId
      * @param ?string $contactId
+     * @param ?string $orderId
      * @param ?PaymentStatus $status
      * @param ?string $orderRef
      * @param ?string $methodCode
@@ -43,10 +45,12 @@ class PaymentsLedger extends Service
      * @param ?string $provider
      * @param ?PaymentDunningStage $dunningStage
      * @param ?string $idempotencyKey
+     * @param ?string $externalId
+     * @param ?string $sourceSyncedAt
      * @throws RevenexxException
      * @return array
      */
-    public function paymentsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $cartId = null, ?string $contactId = null, ?PaymentStatus $status = null, ?string $orderRef = null, ?string $methodCode = null, ?PaymentMethodKind $kind = null, ?string $provider = null, ?PaymentDunningStage $dunningStage = null, ?string $idempotencyKey = null): array
+    public function paymentsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $cartId = null, ?string $contactId = null, ?string $orderId = null, ?PaymentStatus $status = null, ?string $orderRef = null, ?string $methodCode = null, ?PaymentMethodKind $kind = null, ?string $provider = null, ?PaymentDunningStage $dunningStage = null, ?string $idempotencyKey = null, ?string $externalId = null, ?string $sourceSyncedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -74,6 +78,10 @@ class PaymentsLedger extends Service
 
         if (!is_null($contactId)) {
             $apiParams['contact_id'] = $contactId;
+        }
+
+        if (!is_null($orderId)) {
+            $apiParams['order_id'] = $orderId;
         }
 
         if (!is_null($status)) {
@@ -104,6 +112,14 @@ class PaymentsLedger extends Service
             $apiParams['idempotency_key'] = $idempotencyKey;
         }
 
+        if (!is_null($externalId)) {
+            $apiParams['external_id'] = $externalId;
+        }
+
+        if (!is_null($sourceSyncedAt)) {
+            $apiParams['source_synced_at'] = $sourceSyncedAt;
+        }
+
         $apiHeaders = [];
 
         return $this->client->call(
@@ -130,9 +146,14 @@ class PaymentsLedger extends Service
      * `requires_action` with `next_action` — the instruction the storefront
      * must carry out, typically a redirect, set at that status and at no other.
      * Send an `idempotency_key` and a repeat of the same call answers 200 with
-     * the payment that key already named, unchanged and not re-authorized. What
-     * is never stored: the `instrument`, `token` or `card` is handed to the
-     * driver in-process and no token or PAN is written to the row.
+     * the payment that key already named, unchanged and not re-authorized; the
+     * same key with another method, amount or currency is 409
+     * `idempotency_key_reused`. On a buyer's own call — the gateway resolved a
+     * contact — only the checkout's routes answer (eligibility, creating and
+     * confirming a payment, the buyer's own payments, vocabularies, catalog,
+     * logos); every other route answers 403 `buyer_not_permitted`. What is never
+     * stored: the `instrument`, `token` or `card` is handed to the driver
+     * in-process and no token or PAN is written to the row.
      *
      * @param float $amount
      * @param string $methodCode
@@ -140,14 +161,19 @@ class PaymentsLedger extends Service
      * @param ?string $contactId
      * @param ?string $country
      * @param ?string $currency
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?string $idempotencyKey
      * @param ?array $metadata
+     * @param ?string $orderId
      * @param ?string $orderRef
      * @param ?string $returnUrl
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @throws RevenexxException
      * @return array
      */
-    public function paymentsCreate(float $amount, string $methodCode, ?string $cartId = null, ?string $contactId = null, ?string $country = null, ?string $currency = null, ?string $idempotencyKey = null, ?array $metadata = null, ?string $orderRef = null, ?string $returnUrl = null): array
+    public function paymentsCreate(float $amount, string $methodCode, ?string $cartId = null, ?string $contactId = null, ?string $country = null, ?string $currency = null, ?string $externalId = null, ?array $externalRefs = null, ?string $idempotencyKey = null, ?array $metadata = null, ?string $orderId = null, ?string $orderRef = null, ?string $returnUrl = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -165,10 +191,15 @@ class PaymentsLedger extends Service
         if (!is_null($currency)) {
             $apiParams['currency'] = $currency;
         }
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
         $apiParams['idempotency_key'] = $idempotencyKey;
         $apiParams['metadata'] = $metadata;
+        $apiParams['order_id'] = $orderId;
         $apiParams['order_ref'] = $orderRef;
         $apiParams['return_url'] = $returnUrl;
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -423,7 +454,8 @@ class PaymentsLedger extends Service
      * the failure taxonomy and never carries the provider's or the runtime's own
      * words, and there is no route that resolves a payment by `order_ref` —
      * that column is nullable and not unique, so it is a filter on the list (`GET
-     * /payments?order_ref=…`) which may legitimately answer several rows.
+     * /payments?order_ref=…`) which may legitimately answer several rows. On a
+     * buyer's own call a payment of another contact answers 404.
      *
      * @param string $id
      * @throws RevenexxException
@@ -546,7 +578,8 @@ class PaymentsLedger extends Service
      * straight after the authorization, in the same request, so a successful
      * confirm can come back `captured` rather than `authorized`; a failed
      * auto-capture does not fail the confirm, because a good authorization is
-     * worth more than a tidy status.
+     * worth more than a tidy status. On a buyer's own call a payment of another
+     * contact answers 404.
      *
      * @param string $id
      * @throws RevenexxException

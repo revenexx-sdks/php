@@ -6,7 +6,7 @@ use Revenexx\RevenexxException;
 use Revenexx\Client;
 use Revenexx\Service;
 use Revenexx\InputFile;
-use Revenexx\Enums\Kind;
+use Revenexx\Enums\ProductsListKind;
 use Revenexx\Enums\ProductsKind;
 
 class Products extends Service
@@ -40,7 +40,7 @@ class Products extends Service
      * @param ?string $order
      * @param ?string $id
      * @param ?string $sku
-     * @param ?Kind $kind
+     * @param ?ProductsListKind $kind
      * @param ?string $parentId
      * @param ?string $familyId
      * @param ?string $familyVariantId
@@ -50,13 +50,17 @@ class Products extends Service
      * @param ?string $label
      * @param ?string $quantifiedAssociations
      * @param ?string $completeness
+     * @param ?string $externalId
+     * @param ?string $externalRefs
+     * @param ?string $sourceSyncedAt
+     * @param ?string $sourceData
      * @param ?string $createdAt
      * @param ?string $updatedAt
      * @param ?string $deletedAt
      * @throws RevenexxException
      * @return array
      */
-    public function productsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $sku = null, ?Kind $kind = null, ?string $parentId = null, ?string $familyId = null, ?string $familyVariantId = null, ?bool $enabled = null, ?string $taxClass = null, ?string $attributeValues = null, ?string $label = null, ?string $quantifiedAssociations = null, ?string $completeness = null, ?string $createdAt = null, ?string $updatedAt = null, ?string $deletedAt = null): array
+    public function productsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $sku = null, ?ProductsListKind $kind = null, ?string $parentId = null, ?string $familyId = null, ?string $familyVariantId = null, ?bool $enabled = null, ?string $taxClass = null, ?string $attributeValues = null, ?string $label = null, ?string $quantifiedAssociations = null, ?string $completeness = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $createdAt = null, ?string $updatedAt = null, ?string $deletedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -126,6 +130,22 @@ class Products extends Service
             $apiParams['completeness'] = $completeness;
         }
 
+        if (!is_null($externalId)) {
+            $apiParams['external_id'] = $externalId;
+        }
+
+        if (!is_null($externalRefs)) {
+            $apiParams['external_refs'] = $externalRefs;
+        }
+
+        if (!is_null($sourceSyncedAt)) {
+            $apiParams['source_synced_at'] = $sourceSyncedAt;
+        }
+
+        if (!is_null($sourceData)) {
+            $apiParams['source_data'] = $sourceData;
+        }
+
         if (!is_null($createdAt)) {
             $apiParams['created_at'] = $createdAt;
         }
@@ -176,16 +196,20 @@ class Products extends Service
      * @param ?array $completeness
      * @param ?string $deletedAt
      * @param ?bool $enabled
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?string $familyId
      * @param ?string $familyVariantId
      * @param ?ProductsKind $kind
      * @param ?string $parentId
      * @param ?array $quantifiedAssociations
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @param ?string $taxClass
      * @throws RevenexxException
      * @return array
      */
-    public function productsCreate(string $sku, ?array $attributeValues = null, ?array $completeness = null, ?string $deletedAt = null, ?bool $enabled = null, ?string $familyId = null, ?string $familyVariantId = null, ?ProductsKind $kind = null, ?string $parentId = null, ?array $quantifiedAssociations = null, ?string $taxClass = null): array
+    public function productsCreate(string $sku, ?array $attributeValues = null, ?array $completeness = null, ?string $deletedAt = null, ?bool $enabled = null, ?string $externalId = null, ?array $externalRefs = null, ?string $familyId = null, ?string $familyVariantId = null, ?ProductsKind $kind = null, ?string $parentId = null, ?array $quantifiedAssociations = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $taxClass = null): array
     {
         $apiPath = str_replace(
             [],
@@ -205,6 +229,8 @@ class Products extends Service
         if (!is_null($enabled)) {
             $apiParams['enabled'] = $enabled;
         }
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
         $apiParams['family_id'] = $familyId;
         $apiParams['family_variant_id'] = $familyVariantId;
 
@@ -213,6 +239,8 @@ class Products extends Service
         }
         $apiParams['parent_id'] = $parentId;
         $apiParams['quantified_associations'] = $quantifiedAssociations;
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
         $apiParams['tax_class'] = $taxClass;
 
         $apiHeaders = [];
@@ -233,20 +261,30 @@ class Products extends Service
      * tax class, a feed builder holds ids and needs names, and neither should
      * page through the catalog or fire a request per line. Ask by either
      * identifier or both; the two are unioned and a product named twice comes
-     * back once.
+     * back once. At most 500 of each per call; more is refused with 400 rather
+     * than cut short.
      * 
-     * It answers what it FOUND: an id or SKU that names nothing is simply absent
-     * from `items` rather than an error, so compare the length of what you sent
-     * with what came back if a miss matters. It is not a general product read —
-     * for the whole row use `GET /products/{id}`, and for a scannable list use
-     * `GET /products/grid`.
+     * With `full: true` each item is the whole row instead — what `GET
+     * /products/{id}` answers, every column and the complete `attribute_values`
+     * document, with `label` still the resolved name. That mode is for a caller
+     * that has to hand a product on and cannot know in advance which fields it
+     * will need: punchout's hand-back writes whatever columns and attribute codes
+     * a merchant's field mappings name, for every line of a cart, and needs them
+     * in one read. Leave it off when four fields will do; the short shape is
+     * unchanged by it.
+     * 
+     * Either way it answers what it FOUND: an id or SKU that names nothing is
+     * simply absent from `items` rather than an error, so compare the length of
+     * what you sent with what came back if a miss matters. For a scannable list
+     * use `GET /products/grid`.
      *
+     * @param ?bool $full
      * @param ?array $ids
      * @param ?array $skus
      * @throws RevenexxException
      * @return array
      */
-    public function productsBatch(?array $ids = null, ?array $skus = null): array
+    public function productsBatch(?bool $full = null, ?array $ids = null, ?array $skus = null): array
     {
         $apiPath = str_replace(
             [],
@@ -255,6 +293,10 @@ class Products extends Service
         );
 
         $apiParams = [];
+
+        if (!is_null($full)) {
+            $apiParams['full'] = $full;
+        }
 
         if (!is_null($ids)) {
             $apiParams['ids'] = $ids;
@@ -298,13 +340,13 @@ class Products extends Service
      * @param ?int $offset
      * @param ?string $order
      * @param ?string $q
-     * @param ?Kind $kind
+     * @param ?ProductsListKind $kind
      * @param ?bool $enabled
      * @param ?string $familyId
      * @throws RevenexxException
      * @return array
      */
-    public function productsGrid(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $q = null, ?Kind $kind = null, ?bool $enabled = null, ?string $familyId = null): array
+    public function productsGrid(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $q = null, ?ProductsListKind $kind = null, ?bool $enabled = null, ?string $familyId = null): array
     {
         $apiPath = str_replace(
             [],
@@ -430,10 +472,11 @@ class Products extends Service
      * @param ?float $quantity
      * @param ?int $position
      * @param ?string $createdAt
+     * @param ?string $updatedAt
      * @throws RevenexxException
      * @return array
      */
-    public function productsProductAssociationsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $productId = null, ?string $associationTypeId = null, ?string $targetProductId = null, ?float $quantity = null, ?int $position = null, ?string $createdAt = null): array
+    public function productsProductAssociationsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $productId = null, ?string $associationTypeId = null, ?string $targetProductId = null, ?float $quantity = null, ?int $position = null, ?string $createdAt = null, ?string $updatedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -481,6 +524,10 @@ class Products extends Service
 
         if (!is_null($createdAt)) {
             $apiParams['created_at'] = $createdAt;
+        }
+
+        if (!is_null($updatedAt)) {
+            $apiParams['updated_at'] = $updatedAt;
         }
 
         $apiHeaders = [];
@@ -871,17 +918,21 @@ class Products extends Service
      * @param ?array $completeness
      * @param ?string $deletedAt
      * @param ?bool $enabled
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?string $familyId
      * @param ?string $familyVariantId
      * @param ?ProductsKind $kind
      * @param ?string $parentId
      * @param ?array $quantifiedAssociations
      * @param ?string $sku
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @param ?string $taxClass
      * @throws RevenexxException
      * @return array
      */
-    public function productsUpdate(string $id, ?array $attributeValues = null, ?array $completeness = null, ?string $deletedAt = null, ?bool $enabled = null, ?string $familyId = null, ?string $familyVariantId = null, ?ProductsKind $kind = null, ?string $parentId = null, ?array $quantifiedAssociations = null, ?string $sku = null, ?string $taxClass = null): array
+    public function productsUpdate(string $id, ?array $attributeValues = null, ?array $completeness = null, ?string $deletedAt = null, ?bool $enabled = null, ?string $externalId = null, ?array $externalRefs = null, ?string $familyId = null, ?string $familyVariantId = null, ?ProductsKind $kind = null, ?string $parentId = null, ?array $quantifiedAssociations = null, ?string $sku = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $taxClass = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -901,6 +952,8 @@ class Products extends Service
         if (!is_null($enabled)) {
             $apiParams['enabled'] = $enabled;
         }
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
         $apiParams['family_id'] = $familyId;
         $apiParams['family_variant_id'] = $familyVariantId;
 
@@ -913,6 +966,8 @@ class Products extends Service
         if (!is_null($sku)) {
             $apiParams['sku'] = $sku;
         }
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
         $apiParams['tax_class'] = $taxClass;
 
         $apiHeaders = [];

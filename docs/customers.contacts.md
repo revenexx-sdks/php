@@ -5,7 +5,7 @@
 GET https://api.revenexx.com/v1/customers/contact_events
 ```
 
-** A contact event is one entry on a customer&#039;s timeline: an activity somebody logged (a call, a visit, a meeting, a note) or a registration decision this app recorded itself. Every entry is keyed by a CONTACT and stamped with the organization derived from that contact, so a company&#039;s history is one indexed read rather than a join. Append-only — there is no update and no delete, which is what makes it usable as evidence. The activity feed, filtered by whichever column the question needs: `contact_id` for one person, `organization_id` for a whole company, `kind` for one type of activity. `kind: &quot;system&quot;` is this app&#039;s own registration decision trail (`registration.submitted` / `.approved` / `.rejected`), and no caller may file one of those. Paged with `limit`/`offset`/`order`; newest first is `order=occurred_at.desc`. **
+** A contact event is one entry on a customer's timeline: an activity somebody logged (a call, a visit, a meeting, a note) or a registration decision this app recorded itself. Every entry is keyed by a CONTACT and stamped with the organization derived from that contact, so a company's history is one indexed read rather than a join. Append-only — there is no update and no delete, which is what makes it usable as evidence. The activity feed, filtered by whichever column the question needs: `contact_id` for one person, `organization_id` for a whole company, `kind` for one type of activity. `kind: "system"` is this app's own registration decision trail (`registration.submitted` / `.approved` / `.rejected`), and no caller may file one of those. Paged with `limit`/`offset`/`order`; newest first is `order=occurred_at.desc`. **
 
 ### Parameters
 
@@ -29,7 +29,7 @@ GET https://api.revenexx.com/v1/customers/contact_events
 GET https://api.revenexx.com/v1/customers/contact_events/{id}
 ```
 
-** A contact event is one entry on a customer&#039;s timeline: an activity somebody logged (a call, a visit, a meeting, a note) or a registration decision this app recorded itself. Every entry is keyed by a CONTACT and stamped with the organization derived from that contact, so a company&#039;s history is one indexed read rather than a join. Append-only — there is no update and no delete, which is what makes it usable as evidence. One timeline entry by id, as it was written. Entries are never edited, so what this answers is what was recorded at the time. **
+** A contact event is one entry on a customer's timeline: an activity somebody logged (a call, a visit, a meeting, a note) or a registration decision this app recorded itself. Every entry is keyed by a CONTACT and stamped with the organization derived from that contact, so a company's history is one indexed read rather than a join. Append-only — there is no update and no delete, which is what makes it usable as evidence. One timeline entry by id, as it was written. Entries are never edited, so what this answers is what was recorded at the time. **
 
 ### Parameters
 
@@ -51,13 +51,15 @@ GET https://api.revenexx.com/v1/customers/contacts
 | id | string | Filter to exactly one person. |  |
 | organization_id | string | Filter to one company's people. The company address book. |  |
 | email | string | Filter by exact email — the one lookup that is guaranteed to return at most one person, because the address is unique per tenant. |  |
+| username | string | Filter to rows whose `username` is exactly this value. What this person types instead of an address, unique within the tenant where it is set. Free text the shop assigns or the buyer chooses — a customer number with a name behind it, a works login, whatever the trade already says. It exists because an address is not something every B2B buyer has, and because a customer number alone names a company rather than a person. |  |
 | first_name | string | Filter to rows whose `first_name` is exactly this value. Given name. Optional: an ERP import often has only a mailbox. |  |
 | last_name | string | Filter to rows whose `last_name` is exactly this value. Family name. Optional for the same reason. |  |
 | phone | string | Filter to rows whose `phone` is exactly this value. Direct number of this person, as somebody typed it — free text, no format is enforced or normalized. E.164 is what an integration should send. |  |
 | job_title | string | Filter to rows whose `job_title` is exactly this value. What this person does at the company — free text on purpose, because it is a title and not a grant. The permission ladder is `role`; overloading a job title with authority silently un-grants everyone the day the ledger is enforced. |  |
 | role | string | Filter by role. One of the tenant's own roles (GET /customers/roles) — a tenant that never edited the ledger has viewer, requester, buyer, approver, admin. |  |
 | status | string | Filter by status. |  |
-| order_approval_limit | number | Filter to rows whose `order_approval_limit` is exactly this value. Amount ceiling for this person, in the market's currency: with the `orders.approve` permission it is the most they may sign off. Null means no ceiling. An amount, never a grant — the grant comes from the role. |  |
+| order_approval_mode | string | Filter to rows whose `order_approval_mode` is exactly this value. How far `orders.approve` reaches for this person: 'none' (no order — the default), 'limited' (up to `order_approval_limit`) or 'unlimited'. Meaningful only with a role that grants `orders.approve`; the grant comes from the role, the reach from here. |  |
+| order_approval_limit | number | Filter to rows whose `order_approval_limit` is exactly this value. Amount ceiling for this person, in the market's currency: with the `orders.approve` permission it is the most they may sign off. Set exactly when `order_approval_mode` is 'limited', and then above 0; null otherwise. An amount, never a grant — the grant comes from the role. |  |
 | registration_status | string | Filter by registration state. `pending` IS the approval inbox — there is no second entity for it. |  |
 | registration_decided_at | string | Exact timestamp equality — this API has no range filter. To bound a period, sort with `order` and page. When a merchant approved or rejected the application. Null while nobody has decided. |  |
 | registration_decided_by | string | Filter to rows whose `registration_decided_by` is exactly this value. Who decided — free text as the deciding client supplied it (an operator id or an email address), not a resolvable user reference. |  |
@@ -66,6 +68,7 @@ GET https://api.revenexx.com/v1/customers/contacts
 | is_primary | boolean | Filter to the primary contacts — with `organization_id`, the one person a merchant calls first at that company. |  |
 | external_user_id | string | Find the contact behind a platform user id. What a storefront session resolves with when it has an auth id and needs the customer record. |  |
 | external_id | string | Filter to rows whose `external_id` is exactly this value. Id of this person in the system the record came from — an ERP contact number, a CRM id. Nullable, because a contact created in the shop has none and never will, and unique per tenant where it is set, which is what lets a repeated import find the row it wrote last time instead of adding a second one. Distinct from `external_user_id`, which points at the platform account: this one points OUT of the platform. |  |
+| source_synced_at | string | Exact timestamp equality — this API has no range filter. To bound a period, sort with `order` and page. When this row was last confirmed against its source. What a delta run asks for changes since, and what tells an operator that a feed has gone quiet — a row edited in the Cockpit does not touch it, because it says when the SOURCE was last seen, not when the row changed. Null for a row no source owns. |  |
 | created_at | string | Exact timestamp equality — this API has no range filter. To bound a period, sort with `order` and page. When this person record was created in this app. |  |
 | updated_at | string | Exact timestamp equality — this API has no range filter. To bound a period, sort with `order` and page. When any column of this row last changed. |  |
 | limit | integer | Page size (default 50, max 200). |  |
@@ -77,23 +80,25 @@ GET https://api.revenexx.com/v1/customers/contacts
 POST https://api.revenexx.com/v1/customers/contacts
 ```
 
-** A contact is a PERSON, and the unit that logs in: one platform user, one email address, one role held inside its organization. A contact without an organization is a standalone buyer rather than an error, and two people at the same company are two contacts sharing an `organization_id`. Creates the person and their platform login together, so a contact that exists can always sign in. `role` names one of this tenant&#039;s own roles and decides what they may do; `registration_status` may only be set to `pending` or `approved` here, because a rejection has to carry a reason and that is the reject route&#039;s job. `email` is the only field a create cannot omit; everything else is optional or defaulted by the database. Two rows of this tenant may not share `email` or `external_user_id` (while external_user_id IS NOT NULL). **
+** A contact is a PERSON, and the unit that logs in: one platform user, one email address, one role held inside its organization. A contact without an organization is a standalone buyer rather than an error, and two people at the same company are two contacts sharing an `organization_id`. Creates the person and their platform login together, so a contact that exists can always sign in. `role` names one of this tenant's own roles and decides what they may do; `registration_status` may only be set to `pending` or `approved` here, because a rejection has to carry a reason and that is the reject route's job. Two rows of this tenant may not share `email`, `external_user_id` (while external_user_id IS NOT NULL), `external_id` (while external_id IS NOT NULL) or `username` (while username IS NOT NULL). **
 
 ### Parameters
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
-| email | string | Login identity and the unique key of a person within the tenant. Changing it changes the platform login with it. Two people at the same company therefore need two addresses — a shared purchasing mailbox is one contact, not several. |  |
+| created_at | string | When this person record was created in this app. Accepted on create only from a call naming no acting contact — an operator, an import, an ERP carrying a record over with its original date. A buyer sending it, or any update changing it, is a 400 `server_owned_field`. |  |
+| email | string | One of the things this person can sign in with, unique within the tenant where it is set. Changing it changes the platform login with it. It is OPTIONAL: B2B buyers without an address of their own are a routine case, and they sign in by username instead. Two people sharing one address is still not possible — a shared purchasing mailbox is one contact, not several. |  |
 | external_id | string | Id of this person in the system the record came from — an ERP contact number, a CRM id. Nullable, because a contact created in the shop has none and never will, and unique per tenant where it is set, which is what lets a repeated import find the row it wrote last time instead of adding a second one. Distinct from `external_user_id`, which points at the platform account: this one points OUT of the platform. Writable, so a record can be adopted or a wrong id corrected — but it is the key a repeated import matches on, so changing it on a row an import owns makes the next run create a second one rather than update this. |  |
 | first_name | string | Given name. Optional: an ERP import often has only a mailbox. |  |
 | is_primary | boolean | The main contact of its organization — who a merchant calls first. At most one per company is the intent; the tenant's `primary_contact_required` setting decides whether the last one may be demoted or deleted. |  |
 | job_title | string | What this person does at the company — free text on purpose, because it is a title and not a grant. The permission ladder is `role`; overloading a job title with authority silently un-grants everyone the day the ledger is enforced. |  |
 | last_name | string | Family name. Optional for the same reason. |  |
 | locale | string | The language this person is written to in — BCP 47, and one of the store's configured locales. Null falls back to the store default. |  |
-| order_approval_limit | number | Amount ceiling for this person, in the market's currency: with the `orders.approve` permission it is the most they may sign off. Null means no ceiling. An amount, never a grant — the grant comes from the role. |  |
+| order_approval_limit | number | Amount ceiling for this person, in the market's currency: with the `orders.approve` permission it is the most they may sign off. Set exactly when `order_approval_mode` is 'limited', and then above 0; null otherwise. An amount, never a grant — the grant comes from the role. Required with `order_approval_mode` 'limited' and refused with any other mode (400 `limited_mode_requires_limit` / `limit_requires_limited_mode`). |  |
+| order_approval_mode | string | How far `orders.approve` reaches for this person: 'none' (no order — the default), 'limited' (up to `order_approval_limit`) or 'unlimited'. Meaningful only with a role that grants `orders.approve`; the grant comes from the role, the reach from here. Default 'none'. Leaving 'limited' without sending `order_approval_limit` clears the amount. |  |
 | organization_id | string | The company this person belongs to. NULL is a legitimate state, not a defect: a standalone buyer with no company behind them. Deleting the organization sets this null and keeps the person. Membership is mirrored to the platform team. |  |
 | phone | string | Direct number of this person, as somebody typed it — free text, no format is enforced or normalized. E.164 is what an integration should send. |  |
-| registration_status | string | Where this person's own application stands: 'approved' (the default, and what an open store creates), 'pending' while a merchant has yet to decide, 'rejected' once they declined. Only the approve/reject routes move it; it is ignored on an ordinary update. On CREATE only, and only to file the contact as an application: 'pending' creates the platform user disabled and routes the contact through approve/reject. Ignored on update. |  |
+| registration_status | string | Where this person's own application stands: 'approved' (the default, and what an open store creates), 'pending' while a merchant has yet to decide, 'rejected' once they declined. Only the approve/reject routes move it; it is ignored on an ordinary update. On CREATE only, and only to file the contact as an application: 'pending' creates the platform user disabled and routes the contact through approve/reject. |  |
 | role | string | The person's role INSIDE its organization, and the only thing permissions are derived from. One of the tenant's own roles (GET /customers/roles); a tenant that never edited the ledger has viewer, requester, buyer, approver, admin. Also the team role on the platform mirror. There is no global role — the same person in two companies is two contacts. A tenant that never edited the ledger has viewer, requester, buyer, approver, admin; a create without a role gets the one flagged as default, and a role the tenant does not keep is a 400. |  |
 | status | string | Whether this person may act: 'invited' has been created but has not accepted, 'active' works, 'blocked' cannot log in. A create through the API defaults to 'invited'; a self-registration in an open store lands 'active'. Default 'invited' on create. |  |
 
@@ -102,7 +107,7 @@ POST https://api.revenexx.com/v1/customers/contacts
 POST https://api.revenexx.com/v1/customers/contacts/{contact_id}/events
 ```
 
-** This is how a call, a visit, a meeting, an email or a plain note reaches one person&#039;s timeline. It writes a contact_events row with kind != &#039;system&#039; and emits contact_event.created, so an activity travels on the same bus as a registration decision and a timeline is one query rather than a union. organization_id is DERIVED from the contact, never taken from the body — an activity cannot be filed under a company the person does not belong to. **
+** This is how a call, a visit, a meeting, an email or a plain note reaches one person's timeline. It writes a contact_events row with kind != 'system' and emits contact_event.created, so an activity travels on the same bus as a registration decision and a timeline is one query rather than a union. organization_id is DERIVED from the contact, never taken from the body — an activity cannot be filed under a company the person does not belong to. **
 
 ### Parameters
 
@@ -117,17 +122,31 @@ POST https://api.revenexx.com/v1/customers/contacts/{contact_id}/events
 
 
 ```http request
+POST https://api.revenexx.com/v1/customers/contacts/{contact_id}/identity
+```
+
+** Repair the one contact an import leaves unable to sign in. A contact created through this API is mirrored as a platform login in the same call; a contact written straight into the record by a migration or an ERP feed is not, and reads as a customer everywhere while being able to do nothing — no password, no recovery, and "no account found for that address" as the only explanation. This call creates the missing login and links it. It is idempotent: a contact that already has one is answered with it and `created` false, and nothing is touched, so a whole import is healed with one call per contact and is safe to re-run. It takes no password — the person is handed to `POST /customers/auth/recovery` and mints their own. It mirrors the state it finds: a blocked contact, or one whose registration is still pending or rejected, gets its login created DISABLED, so a repair can never hand access to somebody who was refused it. And it delivers nothing at all — telling the person is what the invitation is for. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| contact_id | string | **Required** The person whose login is missing. |  |
+| created_by | string | Who ordered the repair, for the timeline entry. An automated sweep names itself here. |  |
+
+
+```http request
 POST https://api.revenexx.com/v1/customers/contacts/{contact_id}/invite
 ```
 
-** Tell somebody they were added to a company. A deliberate act rather than a side effect of creating the contact: a merchant entering a colleague from a business card is not always ready to mail them, and &quot;added&quot; and &quot;told&quot; are different decisions. No secret travels — the platform team membership is confirmed as it is created, so there is nothing to accept; the message says &quot;you are in, here is the way in&quot;. Unlike the auth mails, a failure here IS a failure: the identity service sends nothing for this occasion, so this is the only message the person gets. **
+** Tell somebody they were added to a company. A deliberate act rather than a side effect of creating the contact: a merchant entering a colleague from a business card is not always ready to mail them, and "added" and "told" are different decisions. No secret travels — the platform team membership is confirmed as it is created, so there is nothing to accept; the message says "you are in, here is the way in". Unlike the auth mails, a failure here IS a failure: the identity service sends nothing for this occasion, so this is the only message the person gets. **
 
 ### Parameters
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | contact_id | string | **Required** The person being told. They are already a member — this only sends the message. |  |
-| invited_by | string | Who did the inviting, as the recipient should read it. Absent, the company name is used — "Beispiel GmbH invited you" reads better than the name of somebody they have never heard of. |  |
+| invited_by | string | Who did the inviting, as the recipient should read it. Absent, the company name is used — "Beispiel GmbH invited you" reads better than the name of somebody they have never heard of. Ignored on a buyer's call: the mail then names the buyer, because a name in the shop's own mail is a claim the shop makes. |  |
 | url | string | Where the invitation points — the storefront sign-in, normally. There is no token in it: the person is already a member and only has to sign in. |  |
 
 
@@ -148,7 +167,7 @@ GET https://api.revenexx.com/v1/customers/contacts/{contact_id}/permissions
 POST https://api.revenexx.com/v1/customers/contacts/{contact_id}/registration/approve
 ```
 
-** Only reachable for a contact whose registration_status is &#039;pending&#039; or &#039;rejected&#039; (approving a rejection reinstates it). Enables the platform user FIRST — the password the applicant chose at submit time works immediately, no new credential is issued — then sets registration_status=&#039;approved&#039; and status=&#039;active&#039;, and un-blocks the organization this registration itself founded. Approving an already-approved registration is a no-op that emits nothing, so a retry is safe. Writes a contact_events row named &#039;registration.approved&#039;. **
+** Only reachable for a contact whose registration_status is 'pending' or 'rejected' (approving a rejection reinstates it). Enables the platform user FIRST — the password the applicant chose at submit time works immediately, no new credential is issued — then sets registration_status='approved' and status='active', and un-blocks the organization this registration itself founded. Approving an already-approved registration is a no-op that emits nothing, so a retry is safe. Writes a contact_events row named 'registration.approved'. **
 
 ### Parameters
 
@@ -162,7 +181,7 @@ POST https://api.revenexx.com/v1/customers/contacts/{contact_id}/registration/ap
 POST https://api.revenexx.com/v1/customers/contacts/{contact_id}/registration/reject
 ```
 
-** Only reachable from &#039;pending&#039;. Sets registration_status=&#039;rejected&#039; and status=&#039;blocked&#039;, keeps the platform user in place but disabled — the email must not fall free for a silent second identity, and the merchant keeps the record. Delete the contact to remove both. &#039;reason&#039; is mandatory and is stored on the contact plus carried in the event payload, so the applicant can be told why. Rejecting an already-rejected registration is a no-op. Writes a contact_events row named &#039;registration.rejected&#039;. **
+** Only reachable from 'pending'. Sets registration_status='rejected' and status='blocked', keeps the platform user in place but disabled — the email must not fall free for a silent second identity, and the merchant keeps the record. Delete the contact to remove both. 'reason' is mandatory and is stored on the contact plus carried in the event payload, so the applicant can be told why. Rejecting an already-rejected registration is a no-op. Writes a contact_events row named 'registration.rejected'. **
 
 ### Parameters
 
@@ -177,7 +196,7 @@ POST https://api.revenexx.com/v1/customers/contacts/{contact_id}/registration/re
 DELETE https://api.revenexx.com/v1/customers/contacts/{id}
 ```
 
-** A contact is a PERSON, and the unit that logs in: one platform user, one email address, one role held inside its organization. A contact without an organization is a standalone buyer rather than an error, and two people at the same company are two contacts sharing an `organization_id`. Removes the person and their platform login, so they can no longer sign in anywhere. Their company keeps trading; use `status: &quot;blocked&quot;` instead when the intent is to stop one person without erasing what they did. Deleting one takes every `contact_events` and `addresses` row that points at it with it — the foreign keys decide, not this route. **
+** A contact is a PERSON, and the unit that logs in: one platform user, one email address, one role held inside its organization. A contact without an organization is a standalone buyer rather than an error, and two people at the same company are two contacts sharing an `organization_id`. Removes the person and their platform login, so they can no longer sign in anywhere. Their company keeps trading; use `status: "blocked"` instead when the intent is to stop one person without erasing what they did. Deleting one takes every `contact_events` and `addresses` row that points at it with it — the foreign keys decide, not this route. **
 
 ### Parameters
 
@@ -203,24 +222,24 @@ GET https://api.revenexx.com/v1/customers/contacts/{id}
 PUT https://api.revenexx.com/v1/customers/contacts/{id}
 ```
 
-** A contact is a PERSON, and the unit that logs in: one platform user, one email address, one role held inside its organization. A contact without an organization is a standalone buyer rather than an error, and two people at the same company are two contacts sharing an `organization_id`. A partial update — send only what changes. `external_user_id` and every `registration_*` column are ignored: the link to platform auth is mirror-managed, and registration state is only ever moved by the approve and reject routes, which record why. Two rows of this tenant may not share `email` or `external_user_id` (while external_user_id IS NOT NULL). **
+** A contact is a PERSON, and the unit that logs in: one platform user, one email address, one role held inside its organization. A contact without an organization is a standalone buyer rather than an error, and two people at the same company are two contacts sharing an `organization_id`. A partial update — send only what changes. `external_user_id` and every `registration_*` column are ignored: the link to platform auth is mirror-managed, and registration state is only ever moved by the approve and reject routes, which record why. Two rows of this tenant may not share `email`, `external_user_id` (while external_user_id IS NOT NULL), `external_id` (while external_id IS NOT NULL) or `username` (while username IS NOT NULL). **
 
 ### Parameters
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The contact to update. |  |
-| email | string | Login identity and the unique key of a person within the tenant. Changing it changes the platform login with it. Two people at the same company therefore need two addresses — a shared purchasing mailbox is one contact, not several. |  |
+| email | string | One of the things this person can sign in with, unique within the tenant where it is set. Changing it changes the platform login with it. It is OPTIONAL: B2B buyers without an address of their own are a routine case, and they sign in by username instead. Two people sharing one address is still not possible — a shared purchasing mailbox is one contact, not several. |  |
 | external_id | string | Id of this person in the system the record came from — an ERP contact number, a CRM id. Nullable, because a contact created in the shop has none and never will, and unique per tenant where it is set, which is what lets a repeated import find the row it wrote last time instead of adding a second one. Distinct from `external_user_id`, which points at the platform account: this one points OUT of the platform. Writable, so a record can be adopted or a wrong id corrected — but it is the key a repeated import matches on, so changing it on a row an import owns makes the next run create a second one rather than update this. |  |
 | first_name | string | Given name. Optional: an ERP import often has only a mailbox. |  |
 | is_primary | boolean | The main contact of its organization — who a merchant calls first. At most one per company is the intent; the tenant's `primary_contact_required` setting decides whether the last one may be demoted or deleted. |  |
 | job_title | string | What this person does at the company — free text on purpose, because it is a title and not a grant. The permission ladder is `role`; overloading a job title with authority silently un-grants everyone the day the ledger is enforced. |  |
 | last_name | string | Family name. Optional for the same reason. |  |
 | locale | string | The language this person is written to in — BCP 47, and one of the store's configured locales. Null falls back to the store default. |  |
-| order_approval_limit | number | Amount ceiling for this person, in the market's currency: with the `orders.approve` permission it is the most they may sign off. Null means no ceiling. An amount, never a grant — the grant comes from the role. |  |
+| order_approval_limit | number | Amount ceiling for this person, in the market's currency: with the `orders.approve` permission it is the most they may sign off. Set exactly when `order_approval_mode` is 'limited', and then above 0; null otherwise. An amount, never a grant — the grant comes from the role. Required with `order_approval_mode` 'limited' and refused with any other mode (400 `limited_mode_requires_limit` / `limit_requires_limited_mode`). |  |
+| order_approval_mode | string | How far `orders.approve` reaches for this person: 'none' (no order — the default), 'limited' (up to `order_approval_limit`) or 'unlimited'. Meaningful only with a role that grants `orders.approve`; the grant comes from the role, the reach from here. Default 'none'. Leaving 'limited' without sending `order_approval_limit` clears the amount. |  |
 | organization_id | string | The company this person belongs to. NULL is a legitimate state, not a defect: a standalone buyer with no company behind them. Deleting the organization sets this null and keeps the person. Membership is mirrored to the platform team. |  |
 | phone | string | Direct number of this person, as somebody typed it — free text, no format is enforced or normalized. E.164 is what an integration should send. |  |
-| registration_status | string | Where this person's own application stands: 'approved' (the default, and what an open store creates), 'pending' while a merchant has yet to decide, 'rejected' once they declined. Only the approve/reject routes move it; it is ignored on an ordinary update. On CREATE only, and only to file the contact as an application: 'pending' creates the platform user disabled and routes the contact through approve/reject. Ignored on update. |  |
 | role | string | The person's role INSIDE its organization, and the only thing permissions are derived from. One of the tenant's own roles (GET /customers/roles); a tenant that never edited the ledger has viewer, requester, buyer, approver, admin. Also the team role on the platform mirror. There is no global role — the same person in two companies is two contacts. A tenant that never edited the ledger has viewer, requester, buyer, approver, admin; a create without a role gets the one flagged as default, and a role the tenant does not keep is a 400. |  |
 | status | string | Whether this person may act: 'invited' has been created but has not accepted, 'active' works, 'blocked' cannot log in. A create through the API defaults to 'invited'; a self-registration in an open store lands 'active'. Default 'invited' on create. |  |
 
@@ -229,7 +248,7 @@ PUT https://api.revenexx.com/v1/customers/contacts/{id}
 POST https://api.revenexx.com/v1/customers/organizations/{organization_id}/events
 ```
 
-** Same row as the contact route, reached from the organization. &#039;contact_id&#039; is required and must belong to THIS organization — the picker offering the contacts is not filtered, so the membership check here is what stops a call with one company being filed under someone else&#039;s person. **
+** Same row as the contact route, reached from the organization. 'contact_id' is required and must belong to THIS organization — the picker offering the contacts is not filtered, so the membership check here is what stops a call with one company being filed under someone else's person. **
 
 ### Parameters
 

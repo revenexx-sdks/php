@@ -12,5 +12,5 @@ GET https://api.revenexx.com/health/live
 GET https://api.revenexx.com/health/ready
 ```
 
-** Answers 200 once the gateway&#039;s registry source is reachable, 503 until then. **
+** Answers 200 once the gateway's registry source is reachable, 503 until then. **
 

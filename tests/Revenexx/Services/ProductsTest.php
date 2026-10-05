@@ -6,7 +6,7 @@ use Revenexx\Client;
 use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
-use Revenexx\Enums\Kind;
+use Revenexx\Enums\ProductsListKind;
 use Revenexx\Enums\ProductsKind;
 
 final class ProductsTest extends TestCase {

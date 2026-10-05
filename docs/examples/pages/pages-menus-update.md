@@ -15,5 +15,6 @@ $pages = new Pages($client);
 $result = $pages->pagesMenusUpdate(
     id: '',
     items: [], // optional
-    label: 'Main navigation' // optional
+    label: 'Main navigation', // optional
+    metadata: [] // optional
 );```

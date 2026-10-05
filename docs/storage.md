@@ -27,14 +27,14 @@ Records only: no file content is returned — fetch bytes with
 POST https://api.revenexx.com/v1/storage/assets
 ```
 
-** Upload one file into this tenant&#039;s media library. The file is checked
-against the tenant&#039;s single-file limit and its remaining storage quota,
+** Upload one file into this tenant's media library. The file is checked
+against the tenant's single-file limit and its remaining storage quota,
 its media type is sniffed from the content rather than trusted from the
 request, and it is virus-scanned before anything is written. The stored
 asset comes back with status `pending_processing`; metadata extraction
 finishes asynchronously and moves it to `available`. `folder_id`,
 `visibility`, `alt_text`, `description`, `display_name` and `tags` are
-applied on the way in; set `unpack` to also queue an uploaded archive&#039;s
+applied on the way in; set `unpack` to also queue an uploaded archive's
 members for ingestion.
 
 Every call creates a new asset — this never replaces the content of an
@@ -90,7 +90,7 @@ the retention window has passed. Until then `POST /assets/{id}/restore`
 brings it back.
 
 The stored file is not erased at this point and its bytes still count
-against the tenant&#039;s storage quota — use `DELETE /assets/{id}/permanent`
+against the tenant's storage quota — use `DELETE /assets/{id}/permanent`
 to erase it and free the quota immediately. **
 
 ### Parameters
@@ -104,7 +104,7 @@ to erase it and free the quota immediately. **
 GET https://api.revenexx.com/v1/storage/assets/{id}
 ```
 
-** Fetch one asset&#039;s record by id: name, folder, media type, size, status,
+** Fetch one asset's record by id: name, folder, media type, size, status,
 tags, the extracted metadata and the delivery URL (null for a private
 asset, which is reachable only through a signed URL). Metadata only — the
 bytes are served by `GET /assets/{id}/download`. A deleted asset is not
@@ -121,9 +121,9 @@ visible here until `POST /assets/{id}/restore` brings it back. **
 PATCH https://api.revenexx.com/v1/storage/assets/{id}
 ```
 
-** Change an asset&#039;s metadata: `display_name`, `alt_text`, `description`,
+** Change an asset's metadata: `display_name`, `alt_text`, `description`,
 `visibility` and `tags`. Sending `folder_id` moves it and sending `name`
-renames it; either re-derives the asset&#039;s public delivery path, so links
+renames it; either re-derives the asset's public delivery path, so links
 built from the old path stop resolving. Only the fields present in the
 request are touched.
 
@@ -148,9 +148,9 @@ upload a new asset. **
 GET https://api.revenexx.com/v1/storage/assets/{id}/download
 ```
 
-** Stream the asset&#039;s original file back as an attachment, named after the
+** Stream the asset's original file back as an attachment, named after the
 asset. This is the authenticated read path — every call carries the
-caller&#039;s credentials — and the bytes are the ones that were uploaded: no
+caller's credentials — and the bytes are the ones that were uploaded: no
 resizing, re-encoding or other transformation is applied.
 
 To let a browser, an email or a third party fetch the file without an API
@@ -168,7 +168,7 @@ DELETE https://api.revenexx.com/v1/storage/assets/{id}/permanent
 ```
 
 ** Erase an asset and its stored file for good and credit its bytes back to
-the tenant&#039;s used storage. Works on live and soft-deleted assets alike.
+the tenant's used storage. Works on live and soft-deleted assets alike.
 
 This cannot be undone: there is no restore afterwards, and links to the
 asset stop resolving at once. Use `DELETE /assets/{id}` for the
@@ -248,8 +248,8 @@ POST https://api.revenexx.com/v1/storage/assets/{id}/unpack
 
 ** Ingest the members of an already-uploaded archive as individual assets.
 They land in a folder named after the archive, created under
-`target_folder_id` or, when that is omitted, under the archive&#039;s own
-folder, and the archive&#039;s internal directory structure is mirrored
+`target_folder_id` or, when that is omitted, under the archive's own
+folder, and the archive's internal directory structure is mirrored
 beneath it. Each member goes through the same pipeline as an upload —
 media-type sniff, virus scan, quota — and a member that fails is skipped
 rather than failing the run. `keep_archive` (true by default) decides
@@ -277,7 +277,7 @@ GET https://api.revenexx.com/v1/storage/folders
 record carrying its `parent_id` and its materialized `path`, so a client
 can rebuild the tree without walking it. Not paginated and not filtered.
 
-Folders hold no file content of their own — list a folder&#039;s assets with
+Folders hold no file content of their own — list a folder's assets with
 `GET /assets` and `filter[folder_id]`. **
 
 
@@ -287,7 +287,7 @@ POST https://api.revenexx.com/v1/storage/folders
 
 ** Create a folder under `parent_id`, or at the library root when it is
 omitted. The `name` is slugged into a path segment and appended to the
-parent&#039;s path; that path is what the public delivery URL of every asset
+parent's path; that path is what the public delivery URL of every asset
 inside it is built from, so two siblings may not slug to the same
 segment.
 
@@ -311,7 +311,7 @@ folders or assets is refused, so pass `recursive=true` to delete it
 together with everything beneath it.
 
 A recursive delete soft-deletes the assets it takes with it — their files
-are not erased and their bytes still count against the tenant&#039;s storage
+are not erased and their bytes still count against the tenant's storage
 quota, and each remains restorable through `POST /assets/{id}/restore`.
 System folders cannot be deleted. **
 
@@ -327,7 +327,7 @@ System folders cannot be deleted. **
 GET https://api.revenexx.com/v1/storage/folders/{id}
 ```
 
-** Fetch one folder&#039;s record by id: its name, its parent, the materialized
+** Fetch one folder's record by id: its name, its parent, the materialized
 path assets inside it are delivered under, and whether it is a system
 folder (system folders cannot be renamed, moved or deleted).
 
@@ -347,7 +347,7 @@ PATCH https://api.revenexx.com/v1/storage/folders/{id}
 
 ** Rename a folder with `name`, move it under a different parent with
 `parent_id` (null for the root), or both at once. Either rewrites the
-folder&#039;s materialized path and the path of every folder beneath it, which
+folder's materialized path and the path of every folder beneath it, which
 changes the public delivery URL of every asset they hold — existing links
 built from the old path stop resolving.
 
@@ -369,7 +369,7 @@ among its new siblings. **
 GET https://api.revenexx.com/v1/storage/sftp/rules
 ```
 
-** Return this tenant&#039;s SFTP sync rules, newest first, each with the account
+** Return this tenant's SFTP sync rules, newest first, each with the account
 and remote path it pulls from, the folder it imports into, its cron
 schedule, whether it is enabled and when it last ran. Not paginated and
 not filtered.
@@ -382,7 +382,7 @@ has actually transferred, see `GET /sftp/sync-history`. **
 POST https://api.revenexx.com/v1/storage/sftp/rules
 ```
 
-** Schedule a recurring one-way pull from a directory on the tenant&#039;s SFTP
+** Schedule a recurring one-way pull from a directory on the tenant's SFTP
 storage box into this media library. `sftp_account_id` selects the
 account, `source_path` the remote directory, `target_folder_id` the
 folder imported assets land in, and `schedule` a cron expression (every
@@ -434,7 +434,7 @@ Requires the elevated (admin) tier. **
 GET https://api.revenexx.com/v1/storage/sftp/rules/{id}
 ```
 
-** Fetch one sync rule&#039;s configuration by id: the account and remote path it
+** Fetch one sync rule's configuration by id: the account and remote path it
 pulls from, its target folder, its cron schedule, its `options` and
 `last_run_at`.
 
@@ -484,7 +484,7 @@ with the rule id as soon as the job is queued — it does not wait for the
 transfer and it does not hand back a run id, so follow the outcome in
 `GET /sftp/sync-history`.
 
-The rule&#039;s own schedule is untouched, and this does not enable a disabled
+The rule's own schedule is untouched, and this does not enable a disabled
 rule: the job is queued but does nothing when it picks a disabled rule
 up. Requires the elevated (admin) tier. **
 
@@ -506,7 +506,7 @@ applies — plus a `summary` counting those entries by status (`success`,
 `skipped`, `failed`, `quarantined`).
 
 Use it to find out what one run actually did. It is not paginated, and it
-does not list a rule&#039;s runs: take the `run_id` from
+does not list a rule's runs: take the `run_id` from
 `GET /sftp/sync-history`. An unknown `runId` under a rule that does exist
 is an empty protocol, not a 404. **
 
@@ -522,7 +522,7 @@ is an empty protocol, not a 404. **
 GET https://api.revenexx.com/v1/storage/sftp/sync-history
 ```
 
-** Page through this tenant&#039;s per-file sync records across every rule,
+** Page through this tenant's per-file sync records across every rule,
 newest first. Each entry names the run it belongs to, the rule, the
 remote source path, the asset it produced where there is one, the
 outcome — `success`, `skipped`, `failed` or `quarantined` — the bytes
@@ -548,7 +548,7 @@ nothing leaves one too. To read a single run whole instead, group by
 GET https://api.revenexx.com/v1/storage/tenant/stats
 ```
 
-** Break this tenant&#039;s library down by asset kind — `image`, `video`,
+** Break this tenant's library down by asset kind — `image`, `video`,
 `audio`, `pdf`, `document`, `archive`, `model3d`, `other` — with a count
 and a byte total for each kind that has at least one asset, alongside the
 tenant-wide totals.
@@ -562,7 +562,7 @@ can be filtered. The tenant-wide byte total is the same running figure
 GET https://api.revenexx.com/v1/storage/tenant/usage
 ```
 
-** Report this tenant&#039;s storage consumption: the bytes in use, the byte
+** Report this tenant's storage consumption: the bytes in use, the byte
 quota in force (null when the tenant is uncapped) and how many assets it
 holds. This is the figure the quota check on upload compares against — it
 is maintained as a running total on every upload and permanent delete

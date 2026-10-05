@@ -6,8 +6,8 @@ GET https://api.revenexx.com/v1/messaging/audit
 ```
 
 ** Filterable by `resource_type`, `resource_id` and `subject` — the last one
-being the human-readable name a row was recorded under (a template&#039;s key,
-a layout&#039;s name), which is what an operator has to hand six weeks later
+being the human-readable name a row was recorded under (a template's key,
+a layout's name), which is what an operator has to hand six weeks later
 when the id means nothing to them.
 
 There is no write route and no delete route: an append-only log with an
@@ -28,7 +28,7 @@ GET https://api.revenexx.com/v1/messaging/bindings
 ```
 
 ** `?event_topic=` narrows to one topic, which is the question worth asking
-of this list: &quot;what does this event actually do&quot;. **
+of this list: "what does this event actually do". **
 
 ### Parameters
 
@@ -47,8 +47,8 @@ only way one binding can serve every customer. An event that renders it
 empty is skipped and logged rather than sent to nobody.
 
 `locale` is what the OPERATOR said this route speaks, and it outranks the
-tenant&#039;s default. Leave it null when nobody has made that decision, so
-that the recipient&#039;s own language is still allowed to decide. **
+tenant's default. Leave it null when nobody has made that decision, so
+that the recipient's own language is still allowed to decide. **
 
 ### Parameters
 
@@ -158,13 +158,13 @@ GET https://api.revenexx.com/v1/messaging/channel-credentials
 which of them are SET (never their values — secrets go in and do not come
 back), which markets hold an override, which providers this build offers,
 whether the deployment has the channel switched on at all, the URL to
-paste into the provider&#039;s own console so bounces and opens come back, and
+paste into the provider's own console so bounces and opens come back, and
 whether callbacks are actually arriving.
 
 Admin tier on the read as well as the write: the identifiers alone —
 which Twilio account, which sender number — are more than a read-only
 operator has reason to see, and the webhook URL served here contains the
-tenant&#039;s callback token. **
+tenant's callback token. **
 
 ### Parameters
 
@@ -198,7 +198,7 @@ twenty-six providers' field specifications per market would be most of the respo
 DELETE https://api.revenexx.com/v1/messaging/channel-credentials/{channel}
 ```
 
-** With `?market=`, only that market&#039;s override goes and the global
+** With `?market=`, only that market's override goes and the global
 credentials stand — the market then sends over the global provider again,
 which is what it did before anybody configured it. Without a market the
 channel goes entirely, overrides and all: a caller asking for a channel
@@ -233,7 +233,7 @@ a form that resent everything it had on screen does not report a change
 that did not happen.
 
 Three refusals, all 422 and all deliberate rather than ignored. A field
-the channel&#039;s provider does not have (`unknown_credential_field`) — a
+the channel's provider does not have (`unknown_credential_field`) — a
 typo sitting in the bag looking like configuration fails later with a
 message about a MISSING field the operator can see they filled in. A
 field the platform issues (`managed_credential`) — ignoring it would have
@@ -243,8 +243,8 @@ is generated at provisioning, and pasting a new one would orphan every
 browser registration the tenant has collected.
 
 Switching provider is `driver`, and the fields in the same request are
-validated against the provider being switched TO — validating Postmark&#039;s
-key against Mailgun&#039;s field list is how a switch loses everything the
+validated against the provider being switched TO — validating Postmark's
+key against Mailgun's field list is how a switch loses everything the
 operator just typed.
 
 This path answers on `PUT` and `PATCH`, both routed to the same action. **
@@ -276,7 +276,7 @@ a form that resent everything it had on screen does not report a change
 that did not happen.
 
 Three refusals, all 422 and all deliberate rather than ignored. A field
-the channel&#039;s provider does not have (`unknown_credential_field`) — a
+the channel's provider does not have (`unknown_credential_field`) — a
 typo sitting in the bag looking like configuration fails later with a
 message about a MISSING field the operator can see they filled in. A
 field the platform issues (`managed_credential`) — ignoring it would have
@@ -286,8 +286,8 @@ is generated at provisioning, and pasting a new one would orphan every
 browser registration the tenant has collected.
 
 Switching provider is `driver`, and the fields in the same request are
-validated against the provider being switched TO — validating Postmark&#039;s
-key against Mailgun&#039;s field list is how a switch loses everything the
+validated against the provider being switched TO — validating Postmark's
+key against Mailgun's field list is how a switch loses everything the
 operator just typed.
 
 This path answers on `PUT` and `PATCH`, both routed to the same action. **
@@ -320,9 +320,9 @@ somebody pasted a key with a trailing space.
 
 **Always 200.** The answer is `{ok, message}` in the body, including when
 the credentials are wrong: the REQUEST was fine, the credentials are not,
-and a 4xx here would have the cockpit&#039;s own error handling swallow the
+and a 4xx here would have the cockpit's own error handling swallow the
 one sentence worth reading. A channel that asks for no credentials at all
-(push, in-app) answers `ok: true` — &quot;nothing to verify&quot; is a finished
+(push, in-app) answers `ok: true` — "nothing to verify" is a finished
 check, not a failed one, and reporting it as an error painted a channel
 that has worked since provisioning in the same red as a wrong token. **
 
@@ -358,7 +358,7 @@ GET https://api.revenexx.com/v1/messaging/config
 ```
 
 ** A tenant that was never provisioned has no row and still gets an answer:
-an empty shape rather than a 404, so the Cockpit&#039;s panels open on
+an empty shape rather than a 404, so the Cockpit's panels open on
 editable blanks instead of an error.
 
 `meta.push_public_key` is the VAPID public key, and only the public one.
@@ -462,7 +462,7 @@ other key in the bag along with it. |  |
 GET https://api.revenexx.com/v1/messaging/layouts
 ```
 
-** The order is the list&#039;s purpose: it is a picker, and the entry most
+** The order is the list's purpose: it is a picker, and the entry most
 templates are actually on belongs at the top of it.
 
 Market-scoped as a browsing filter — see the parameters. `GET /layouts/{id}`
@@ -479,14 +479,14 @@ deliberately is not: somebody holding an id may read it. **
 POST https://api.revenexx.com/v1/messaging/layouts
 ```
 
-** A tenant&#039;s FIRST layout becomes the default whatever the request says: a
+** A tenant's FIRST layout becomes the default whatever the request says: a
 tenant with no default cannot compile a template that does not name one.
 
 The default may hold neither a validity window nor `enabled: false`, and
 asking for both in one request is refused with 422
 `layout_default_always_in_force`. There is no fallback behind the default
 — every template that names no layout is framed by it — so a window set
-today would take a tenant&#039;s whole letterhead away on a morning months
+today would take a tenant's whole letterhead away on a morning months
 from now, with nobody left who remembers typing the date. **
 
 
@@ -540,7 +540,7 @@ and the check is made of the OUTCOME, so promoting a layout and dating it
 in the same request is caught.
 
 The structural half of a layout — colours, width, font — is baked into
-each template&#039;s compiled body, so templates already on it keep the old
+each template's compiled body, so templates already on it keep the old
 one until they are recompiled. **
 
 ### Parameters
@@ -554,8 +554,8 @@ one until they are recompiled. **
 GET https://api.revenexx.com/v1/messaging/library
 ```
 
-** What the Cockpit&#039;s &quot;start from a template&quot; gallery is built from. These
-are not the tenant&#039;s rows and cannot be edited here: provisioning clones
+** What the Cockpit's "start from a template" gallery is built from. These
+are not the tenant's rows and cannot be edited here: provisioning clones
 them into `/v1/templates`, and it is the clone that a tenant owns. **
 
 ### Parameters
@@ -571,10 +571,10 @@ GET https://api.revenexx.com/v1/messaging/messages
 ```
 
 ** `?channel=` and `?status=` narrow it; `?limit=` is clamped to 200 and
-defaults to 50. `?channel=inapp` is the tenant&#039;s in-app inbox — the
+defaults to 50. `?channel=inapp` is the tenant's in-app inbox — the
 Message row IS the inbox item, so there is no second store for it.
 
-Rows are subject to the deployment&#039;s retention window and to erasure
+Rows are subject to the deployment's retention window and to erasure
 requests, so this is not an archive. **
 
 ### Parameters
@@ -589,8 +589,8 @@ requests, so this is not an archive. **
 GET https://api.revenexx.com/v1/messaging/messages/{id}
 ```
 
-** Carries the render model it was sent with, so &quot;why did this mail say
-     * that&quot; is answerable after the fact. That is also why the row is personal
+** Carries the render model it was sent with, so "why did this mail say
+     * that" is answerable after the fact. That is also why the row is personal
 data and why it can be erased — see POST /v1/privacy/erasures. **
 
 ### Parameters
@@ -641,7 +641,7 @@ capitalisation is an erasure that did not happen and reports success.
 Message rows and unsubscribe tokens are DELETED. Suppressions are KEPT
 with the clear-text address nulled: matching runs on a keyed hash, so the
 row can still block and can no longer identify. Deleting it instead is
-the obvious reading of &quot;erase everything about them&quot;, and it is the
+the obvious reading of "erase everything about them", and it is the
 reading that mails a dead address again next week — or mails somebody who
 complained, which is how a sending domain gets blocked.
 
@@ -664,7 +664,7 @@ DELETE https://api.revenexx.com/v1/messaging/push/subscriptions
 
 ** By endpoint and not by id, because the browser knows its endpoint and has
 never seen our id — this is called from a service worker reacting to
-`pushsubscriptionchange`, or from a &quot;turn off notifications&quot; button. **
+`pushsubscriptionchange`, or from a "turn off notifications" button. **
 
 ### Parameters
 
@@ -722,12 +722,12 @@ POST https://api.revenexx.com/v1/messaging/send
 ```
 
 ** Renders a tenant template and dispatches it — now, at `send_at`, or at
-the end of the tenant&#039;s quiet hours.
+the end of the tenant's quiet hours.
 
 The first line is deliberately a title, not a sentence about the
-mechanism: Scramble takes it as the operation&#039;s `summary`, and a summary
+mechanism: Scramble takes it as the operation's `summary`, and a summary
 is what an API explorer prints in its route list. The paragraph that used
-to be here ran to 119 characters across two lines, which the gateway&#039;s
+to be here ran to 119 characters across two lines, which the gateway's
 fragment tests reject for exactly that reason.
 
 Retry-safe when the caller sends an `Idempotency-Key` header. The two
@@ -736,12 +736,12 @@ answers are deliberately different:
   201 — a message was created by THIS call
   200 — this key was already used; here is the message it produced
 
-A caller has to be able to tell those apart. &quot;Your mail went out&quot; and
-&quot;your mail had already gone out&quot; are the same outcome and different
+A caller has to be able to tell those apart. "Your mail went out" and
+"your mail had already gone out" are the same outcome and different
 facts, and a client reconciling its own records needs the second one.
 Same key with a different body is a 422 — see IdempotencyConflict.
 
-A recipient on the tenant&#039;s suppression list is not sent to, and that is
+A recipient on the tenant's suppression list is not sent to, and that is
 reported as a refusal rather than as a silent success. **
 
 ### Parameters
@@ -798,7 +798,7 @@ range and the service would have to guess which end was meant.
 
 Three numbers are deliberately not the naive ones, and the `window` block
 says so rather than leaving a chart to imply otherwise. The window is
-CLAMPED to the tenant&#039;s retention, and `clamped_by_retention` says when
+CLAMPED to the tenant's retention, and `clamped_by_retention` says when
 that happened — 90 days on a 30-day retention is 30 days of data wearing
 a 90-day label, and the trend line it draws invents a collapse that never
 happened. Opens are counted only over channels that can report them; SMS
@@ -844,7 +844,7 @@ GET https://api.revenexx.com/v1/messaging/suppressions
 
 ** Filterable by `channel`, `scope`, `reason` and `address`. The address
 filter is looked up by FINGERPRINT rather than against the address
-column, which is what makes &quot;why did this person stop getting our mail&quot;
+column, which is what makes "why did this person stop getting our mail"
 answerable for somebody who has since been erased: the row has no
 address left to match on, and the question is still the same question. **
 
@@ -891,8 +891,8 @@ DELETE https://api.revenexx.com/v1/messaging/suppressions/{id}
 
 ** Audited, unlike most deletes in this service. Removing a row here is the
 one operation that makes the service mail an address something decided
-not to mail — if a complaint turns into a spam report later, &quot;who took
-     * this off the list, and when&quot; is the whole investigation. **
+not to mail — if a complaint turns into a spam report later, "who took
+     * this off the list, and when" is the whole investigation. **
 
 ### Parameters
 
@@ -921,10 +921,10 @@ GET https://api.revenexx.com/v1/messaging/templates
 ```
 
 ** `?channel=` narrows to one channel. Market-scoped as a BROWSING filter:
-with `X-Revenexx-Market` the list is the global rows plus that market&#039;s,
+with `X-Revenexx-Market` the list is the global rows plus that market's,
 without it the global rows only, and `?markets=all` is the unscoped read.
 Never a boundary — the tenant is fixed by the credential and by row-level
-security, and no value of either parameter reaches another tenant&#039;s rows. **
+security, and no value of either parameter reaches another tenant's rows. **
 
 ### Parameters
 
@@ -939,7 +939,7 @@ POST https://api.revenexx.com/v1/messaging/templates
 ```
 
 ** Send a `design` document and the service compiles it against the
-template&#039;s layout — or send `body_html` and `body_text` yourself and skip
+template's layout — or send `body_html` and `body_text` yourself and skip
 compilation entirely.
 
 A design that the compiler refuses is 422 and NOTHING is written, with
@@ -1011,9 +1011,9 @@ unset one means is decided on read (Template::whatsappCategory). |  |
 DELETE https://api.revenexx.com/v1/messaging/templates/{id}
 ```
 
-** Any binding still naming this template&#039;s key will find nothing when its
+** Any binding still naming this template's key will find nothing when its
 event next arrives. Audited under the KEY as well as the id: after the
-delete the id resolves to nothing, and &quot;deleted tmpl_01J…&quot; is not
+delete the id resolves to nothing, and "deleted tmpl_01J…" is not
 something an operator can act on six weeks later. **
 
 ### Parameters
@@ -1189,12 +1189,12 @@ GET https://api.revenexx.com/v1/messaging/templates/{templateId}/versions/{versi
 ```
 
 ** Addressed by its VERSION NUMBER — the small integer on the history row,
-not the snapshot&#039;s id — because that is the number an author has in front
+not the snapshot's id — because that is the number an author has in front
 of them.
 
 This is what sends actually rendered while that version was live, so it
-is the thing to read when the question is &quot;what did the mail we sent in
-     * March say&quot;. **
+is the thing to read when the question is "what did the mail we sent in
+     * March say". **
 
 ### Parameters
 

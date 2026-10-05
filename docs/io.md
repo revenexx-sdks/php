@@ -5,7 +5,7 @@
 GET https://api.revenexx.com/v1/io/bulk-jobs
 ```
 
-** The calling tenant&#039;s bulk jobs, newest first. Jobs are created by the
+** The calling tenant's bulk jobs, newest first. Jobs are created by the
 feature blocks (import / export / A/B swap / tenant copy / sample) —
 never here; this surface is read-only.
  **
@@ -44,12 +44,12 @@ intent.
 GET https://api.revenexx.com/v1/io/entities
 ```
 
-** Flat list of the entities the calling tenant&#039;s installed apps expose,
+** Flat list of the entities the calling tenant's installed apps expose,
 sorted by vendor, app, entity. Feeds the entity pickers of the
 Integration Studio I/O nodes.
 
 The app set comes from `baseline.tenant_app_versions`. Per app the
-entity list is resolved from the tenant&#039;s pinned schema version; when
+entity list is resolved from the tenant's pinned schema version; when
 that pointer is stale (missing or not applied) it falls back to the
 latest applied version of `(vendor, app)`. Apps with no applied
 schema at all contribute no entities.
@@ -60,7 +60,7 @@ schema at all contribute no entities.
 POST https://api.revenexx.com/v1/io/exports
 ```
 
-** Creates a `bulk_job` and dispatches the engine to export the tenant&#039;s
+** Creates a `bulk_job` and dispatches the engine to export the tenant's
 rows for an entity. CSV/XML stream row-by-row into an S3 multipart
 upload (flat RAM); JSON/XLSX are buffered. The response carries the
 object key the result will be written to.
@@ -103,7 +103,7 @@ POST https://api.revenexx.com/v1/io/imports
 
 ** Creates a `bulk_job` and dispatches the engine to import a previously
 uploaded object into the named entity. The engine streams CSV
-row-by-row (flat RAM at 1M+ rows) and COPYs into the entity&#039;s staging
+row-by-row (flat RAM at 1M+ rows) and COPYs into the entity's staging
 sibling before a merge / content-hash delta into the target.
  **
 
@@ -131,7 +131,7 @@ sibling for diff + switch-over instead of writing live.
 GET https://api.revenexx.com/v1/io/profiles
 ```
 
-** The calling tenant&#039;s saved profiles, ordered by name.
+** The calling tenant's saved profiles, ordered by name.
 
 When `X-Revenexx-Market` is present the listing is filtered to the
 profiles offered for that market — global profiles (`markets: null`)
@@ -207,7 +207,7 @@ is indistinguishable from a non-existent one and answers `404`.
 PUT https://api.revenexx.com/v1/io/profiles/{id}
 ```
 
-** Replace a saved profile&#039;s mapping, format, or apply mode (tenant-scoped). **
+** Replace a saved profile's mapping, format, or apply mode (tenant-scoped). **
 
 ### Parameters
 

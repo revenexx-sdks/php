@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\OrderStatus;
 use Revenexx\Enums\OrderPaymentStatus;
 use Revenexx\Enums\OrderFulfillmentStatus;
+use Revenexx\Enums\OrderVocabularyTone;
 use Revenexx\Enums\OrdersVocabulariesGetName;
 use Revenexx\Enums\OrderCommentVisibility;
 use Revenexx\Enums\OrderReturnSettlement;
@@ -32,6 +33,20 @@ final class OrdersTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->orders->ordersList(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodOrdersMigrationsRequestedDeliveryDate(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->orders->ordersMigrationsRequestedDeliveryDate(
         );
 
         $this->assertSame($data, $response);
@@ -149,6 +164,35 @@ final class OrdersTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->orders->ordersReportsCustomerRollup(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodOrdersReturnReasonsList(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->orders->ordersReturnReasonsList(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodOrdersReturnReasonsGet(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->orders->ordersReturnReasonsGet(
+            ""
         );
 
         $this->assertSame($data, $response);

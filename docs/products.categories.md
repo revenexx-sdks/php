@@ -9,7 +9,7 @@ GET https://api.revenexx.com/v1/products/categories
 
 Every column of `categories` is an exact-match query parameter, `order` sorts by one column, and `limit`/`offset` page through `page.total`. A query key that is NOT a column is dropped rather than refused, and the `filter` object echoes the ones that were understood — that echo is the only way to tell an unfiltered answer from an empty one. It reads rows exactly as they are stored: no join is resolved, no jsonb value is unpacked.
 
-Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
+Answered from the gateway's tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
 
 ### Parameters
 
@@ -28,6 +28,11 @@ Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped t
 | rules | string | Exact match on `rules`. The selector that makes this a RULE-DRIVEN category. Null means hand-picked. Matching products are MATERIALIZED as `product_categories` rows with source `rule`, next to the hand-picked ones a recompute never touches; `POST /products/categories/{category_id}/rules/preview` dry-runs this exact document before it is stored. Conditions address the `common` bucket of a product's values — a value held per locale or per channel has no single answer for a rule to test. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
 | rule_match | string | Exact match on `rule_match`. How the conditions combine: 'all' ANDs them (the default), 'any' ORs them. It is a column of its own rather than a key of `rules` because the compiler reads the two separately. |  |
 | rules_computed_at | string | Exact match on `rules_computed_at`. When the rule last ran TO COMPLETION and its memberships were synced. Null means no pass has ever finished — a recompute is chunked, so a half-finished pass leaves this untouched. |  |
+| external_id | string | Exact match on `external_id`. The key this category has in the system that owns the classification — an ETIM or eCl@ss group, a BMEcat catalogue group, the ERP's own product group. Unique per tenant where set. `code` stays this app's identifier and a merchant may rename it; this is what the source calls the same node, which is what keeps the next import pointing at it. |  |
+| external_refs | string | Exact match on `external_refs`. Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
+| source_synced_at | string | Exact match on `source_synced_at`. When this row was last CONFIRMED against its source — not when it last changed. A delta run asks for everything it has not seen since its last pass, and over 25 000 products that is the difference between an index scan and reading the whole catalog, which is the reason the column is indexed. An edit made here leaves it alone, so a value that has stopped moving says the feed has gone quiet, not that nobody works the record. Null for a row no source owns. |  |
+| source_data | string | Exact match on `source_data`. What the source said about this row, kept as it said it: `{"system": …, "etag": …, "raw": {…}}`. The `etag` is what a write-back has to hand back in `If-Match`, and between two runs there is nowhere else to keep it. `raw` carries the source fields this app does not model, so they survive a round trip instead of being lost the first time somebody edits here. Written by whatever imports the row; nothing in this app reads or maintains it. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
+| metadata | string | Exact match on `metadata`. Free-form jsonb this tenant owns for the INTEGRATION's account of this node — kept apart from `values`, which is the catalog's own pocket and the one a merchant edits, so a sync and a person never overwrite each other. Nothing in this app reads either. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
 | created_at | string | Exact match on `created_at`. When the row was created. Server-set — it is not part of any request body. |  |
 | updated_at | string | Exact match on `updated_at`. When the row was last written. Server-set — it is not part of any request body. |  |
 
@@ -47,13 +52,18 @@ One node of the category tree. `parent_id` is the structure this app navigates �
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | code | string | The category's stable identifier — what an import and a storefront join on, and what survives a rename of the label. Unique per tenant. |  |
+| external_id | string | The key this category has in the system that owns the classification — an ETIM or eCl@ss group, a BMEcat catalogue group, the ERP's own product group. Unique per tenant where set. `code` stays this app's identifier and a merchant may rename it; this is what the source calls the same node, which is what keeps the next import pointing at it. |  |
+| external_refs | object | Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. |  |
 | labels | object | The category name a person sees, per language tag. The catalog reads by name, not by code — a locale left blank falls back to the next filled one. |  |
+| metadata | object | Free-form jsonb this tenant owns for the INTEGRATION's account of this node — kept apart from `values`, which is the catalog's own pocket and the one a merchant edits, so a sync and a person never overwrite each other. Nothing in this app reads either. |  |
 | parent_id | string | The category this one hangs under. Null is a root of the tree. Deleting a parent lifts its children to the root rather than deleting them, so a mis-click never takes a subtree with it. |  |
 | path | string | A materialized position in the tree, kept for importers that carry one (`tools/power_tools/cordless_drills`). Nothing in this app writes or reads it — `parent_id` is the structure this app navigates. |  |
 | position | integer | Order among the siblings under the same parent, ascending. |  |
 | rule_match | string | How the conditions combine: 'all' ANDs them (the default), 'any' ORs them. It is a column of its own rather than a key of `rules` because the compiler reads the two separately. |  |
 | rules | object | The selector that makes this a RULE-DRIVEN category. Null means hand-picked. Matching products are MATERIALIZED as `product_categories` rows with source `rule`, next to the hand-picked ones a recompute never touches; `POST /products/categories/{category_id}/rules/preview` dry-runs this exact document before it is stored. Conditions address the `common` bucket of a product's values — a value held per locale or per channel has no single answer for a rule to test. |  |
 | rules_computed_at | string | When the rule last ran TO COMPLETION and its memberships were synced. Null means no pass has ever finished — a recompute is chunked, so a half-finished pass leaves this untouched. |  |
+| source_data | object | What the source said about this row, kept as it said it: `{"system": …, "etag": …, "raw": {…}}`. The `etag` is what a write-back has to hand back in `If-Match`, and between two runs there is nowhere else to keep it. `raw` carries the source fields this app does not model, so they survive a round trip instead of being lost the first time somebody edits here. Written by whatever imports the row; nothing in this app reads or maintains it. |  |
+| source_synced_at | string | When this row was last CONFIRMED against its source — not when it last changed. A delta run asks for everything it has not seen since its last pass, and over 25 000 products that is the difference between an index scan and reading the whole catalog, which is the reason the column is indexed. An edit made here leaves it alone, so a value that has stopped moving says the feed has gone quiet, not that nobody works the record. Null for a row no source owns. |  |
 | values | object | Whatever this catalog keeps on a category beyond the model — the keys belong to the tenant, not to this app, and nothing here reads them. |  |
 
 
@@ -74,7 +84,7 @@ POST https://api.revenexx.com/v1/products/categories/rules/recompute-all
 POST https://api.revenexx.com/v1/products/categories/{category_id}/rules/preview
 ```
 
-** Dry-runs a rule: how many products it selects, plus a sample of up to ten, and it WRITES NOTHING. Evaluates the rule in the request body against the live catalog WITHOUT touching product_categories — this powers the cockpit&#039;s &quot;matches N products&quot; preview while an operator edits a rule. Soft-deleted products are excluded. Counting is delegated to the database, never enumerated: a rule that compiles to a single query is answered by one exact-count request whatever its match set. A rule that needs several queries (rule_match &quot;any&quot;, or a repeated column such as a range) is combined in the app and stops at `cap` ids — check `capped` before showing `count` as a total. **
+** Dry-runs a rule: how many products it selects, plus a sample of up to ten, and it WRITES NOTHING. Evaluates the rule in the request body against the live catalog WITHOUT touching product_categories — this powers the cockpit's "matches N products" preview while an operator edits a rule. Soft-deleted products are excluded. Counting is delegated to the database, never enumerated: a rule that compiles to a single query is answered by one exact-count request whatever its match set. A rule that needs several queries (rule_match "any", or a repeated column such as a range) is combined in the app and stops at `cap` ids — check `capped` before showing `count` as a total. **
 
 ### Parameters
 
@@ -89,7 +99,7 @@ POST https://api.revenexx.com/v1/products/categories/{category_id}/rules/preview
 POST https://api.revenexx.com/v1/products/categories/{category_id}/rules/recompute
 ```
 
-** Syncs one category&#039;s rule-derived memberships to what its stored rule selects today. Evaluates categories.rules (NOT the request body), then inserts the newly matching products as source=&#039;rule&#039; rows and deletes the rule rows that no longer match. Manual (source=&#039;manual&#039;) memberships are never inserted, deleted or shadowed. Stamps categories.rules_computed_at.
+** Syncs one category's rule-derived memberships to what its stored rule selects today. Evaluates categories.rules (NOT the request body), then inserts the newly matching products as source='rule' rows and deletes the rule rows that no longer match. Manual (source='manual') memberships are never inserted, deleted or shadowed. Stamps categories.rules_computed_at.
 
 A large category does NOT finish in one call: the run stops when its wall-clock budget is spent and answers `done: false` with the `cursor` to send back, so drive it in a loop until `done` is true. **
 
@@ -128,7 +138,7 @@ One node of the category tree. `parent_id` is the structure this app navigates �
 
 An id no category of this tenant carries answers 404, and so does one belonging to another tenant: row-level security makes that row invisible rather than forbidden. A malformed id answers 400 before the route is reached.
 
-Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
+Answered from the gateway's tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
 
 ### Parameters
 
@@ -153,13 +163,18 @@ A body that names nothing writable is refused with 400 rather than answered as a
 | --- | --- | --- | --- |
 | id | string | **Required** The `categories` row to address, by id. It names a row THIS TENANT holds, so no example is published — a uuid this app invented would document a call that answers 404, and a real one would be another tenant's data. Read one from `GET /v1/products/categories`. An id no categorie of this tenant carries answers 404; a malformed one answers 400 before the route is reached. |  |
 | code | string | The category's stable identifier — what an import and a storefront join on, and what survives a rename of the label. Unique per tenant. |  |
+| external_id | string | The key this category has in the system that owns the classification — an ETIM or eCl@ss group, a BMEcat catalogue group, the ERP's own product group. Unique per tenant where set. `code` stays this app's identifier and a merchant may rename it; this is what the source calls the same node, which is what keeps the next import pointing at it. |  |
+| external_refs | object | Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. |  |
 | labels | object | The category name a person sees, per language tag. The catalog reads by name, not by code — a locale left blank falls back to the next filled one. |  |
+| metadata | object | Free-form jsonb this tenant owns for the INTEGRATION's account of this node — kept apart from `values`, which is the catalog's own pocket and the one a merchant edits, so a sync and a person never overwrite each other. Nothing in this app reads either. |  |
 | parent_id | string | The category this one hangs under. Null is a root of the tree. Deleting a parent lifts its children to the root rather than deleting them, so a mis-click never takes a subtree with it. |  |
 | path | string | A materialized position in the tree, kept for importers that carry one (`tools/power_tools/cordless_drills`). Nothing in this app writes or reads it — `parent_id` is the structure this app navigates. |  |
 | position | integer | Order among the siblings under the same parent, ascending. |  |
 | rule_match | string | How the conditions combine: 'all' ANDs them (the default), 'any' ORs them. It is a column of its own rather than a key of `rules` because the compiler reads the two separately. |  |
 | rules | object | The selector that makes this a RULE-DRIVEN category. Null means hand-picked. Matching products are MATERIALIZED as `product_categories` rows with source `rule`, next to the hand-picked ones a recompute never touches; `POST /products/categories/{category_id}/rules/preview` dry-runs this exact document before it is stored. Conditions address the `common` bucket of a product's values — a value held per locale or per channel has no single answer for a rule to test. |  |
 | rules_computed_at | string | When the rule last ran TO COMPLETION and its memberships were synced. Null means no pass has ever finished — a recompute is chunked, so a half-finished pass leaves this untouched. |  |
+| source_data | object | What the source said about this row, kept as it said it: `{"system": …, "etag": …, "raw": {…}}`. The `etag` is what a write-back has to hand back in `If-Match`, and between two runs there is nowhere else to keep it. `raw` carries the source fields this app does not model, so they survive a round trip instead of being lost the first time somebody edits here. Written by whatever imports the row; nothing in this app reads or maintains it. |  |
+| source_synced_at | string | When this row was last CONFIRMED against its source — not when it last changed. A delta run asks for everything it has not seen since its last pass, and over 25 000 products that is the difference between an index scan and reading the whole catalog, which is the reason the column is indexed. An edit made here leaves it alone, so a value that has stopped moving says the feed has gone quiet, not that nobody works the record. Null for a row no source owns. |  |
 | values | object | Whatever this catalog keeps on a category beyond the model — the keys belong to the tenant, not to this app, and nothing here reads them. |  |
 
 
@@ -171,7 +186,7 @@ GET https://api.revenexx.com/v1/products/product_categories
 
 Every column of `product_categories` is an exact-match query parameter, `order` sorts by one column, and `limit`/`offset` page through `page.total`. A query key that is NOT a column is dropped rather than refused, and the `filter` object echoes the ones that were understood — that echo is the only way to tell an unfiltered answer from an empty one. It reads rows exactly as they are stored: no join is resolved, no jsonb value is unpacked.
 
-Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
+Answered from the gateway's tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
 
 ### Parameters
 
@@ -186,6 +201,7 @@ Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped t
 | position | integer | Exact match on `position`. Sort order of this product inside the category. |  |
 | source | string | Exact match on `source`. How the membership came about: 'manual' is hand-picked, 'rule' was materialized by a category rule. The two never touch each other — a recompute only ever inserts and deletes `rule` rows, so a hand-picked membership survives every pass. |  |
 | created_at | string | Exact match on `created_at`. When the row was created. Server-set — it is not part of any request body. |  |
+| updated_at | string | Exact match on `updated_at`. When the row was last written. Server-set — it is not part of any request body. |  |
 
 
 ```http request
@@ -235,7 +251,7 @@ One membership: this product is filed in this category. `source` says how it got
 
 An id no product category membership of this tenant carries answers 404, and so does one belonging to another tenant: row-level security makes that row invisible rather than forbidden. A malformed id answers 400 before the route is reached.
 
-Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
+Answered from the gateway's tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
 
 ### Parameters
 
@@ -269,7 +285,7 @@ A body that names nothing writable is refused with 400 rather than answered as a
 POST https://api.revenexx.com/v1/products/{id}/categories
 ```
 
-** Files one product into one category by hand, and the membership is always `source: &#039;manual&#039;` — a rule recompute never deletes or shadows it. product_categories holds 28 758 rows and had no write surface that named the product it was filing. This takes the product from the route and the category from the body, which is what a bulk &#039;add the selected products to …&#039; needs. The membership is always source=&#039;manual&#039;, so a rule recompute never deletes or shadows it. **
+** Files one product into one category by hand, and the membership is always `source: 'manual'` — a rule recompute never deletes or shadows it. product_categories holds 28 758 rows and had no write surface that named the product it was filing. This takes the product from the route and the category from the body, which is what a bulk 'add the selected products to …' needs. The membership is always source='manual', so a rule recompute never deletes or shadows it. **
 
 ### Parameters
 

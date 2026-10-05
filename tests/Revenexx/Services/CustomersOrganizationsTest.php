@@ -7,6 +7,8 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\CustomersOrganizationsListStatus;
+use Revenexx\Enums\CreditLimitMode;
+use Revenexx\Enums\ShippingAdvice;
 use Revenexx\Enums\OrganizationStatus;
 
 final class CustomersOrganizationsTest extends TestCase {
@@ -43,7 +45,6 @@ final class CustomersOrganizationsTest extends TestCase {
         $response = $this->customersOrganizations->customersAddressesCreate(
             "Berlin",
             "DE",
-            "Musterstraße 12",
             "10115"
         );
 
@@ -89,6 +90,81 @@ final class CustomersOrganizationsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->customersOrganizations->customersAddressesUpdate(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersContactPointsList(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersOrganizations->customersContactPointsList(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersContactPointsCreate(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersOrganizations->customersContactPointsCreate(
+            "invoice",
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersContactPointsDelete(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersOrganizations->customersContactPointsDelete(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersContactPointsGet(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersOrganizations->customersContactPointsGet(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersContactPointsUpdate(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersOrganizations->customersContactPointsUpdate(
             ""
         );
 

@@ -19,5 +19,6 @@ $result = $shippingCarriers->shippingCarriersList(
     order: 'position.asc', // optional
     code: 'acme-parcel', // optional
     status: ShippingCarriersListStatus::ACTIVE(), // optional
-    serviceLevel: 'express' // optional
+    serviceLevel: 'express', // optional
+    externalId: 'SPEDITEUR-014' // optional
 );```

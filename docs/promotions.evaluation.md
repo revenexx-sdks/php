@@ -5,7 +5,7 @@
 POST https://api.revenexx.com/v1/promotions/available
 ```
 
-** A different question from what a cart is owed: a shop that can only answer the second can only tell a buyer about a discount after they have earned it. With a cart, each promotion states how far away it is — &quot;12 euro more&quot; is the sentence that raises an order value. A promotion needing a code is listed as needing one, and no code appears in the answer. **
+** A different question from what a cart is owed: a shop that can only answer the second can only tell a buyer about a discount after they have earned it. With a cart, each promotion states how far away it is — "12 euro more" is the sentence that raises an order value. A promotion needing a code is listed as needing one, and no code appears in the answer. **
 
 ### Parameters
 

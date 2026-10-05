@@ -16,6 +16,7 @@ $result = $orderlists->orderlistsList(
     ownerId: '', // optional
     organizationId: '', // optional
     kind: 'shopping', // optional
+    externalId: 'MERKZETTEL-20481', // optional
     limit: 50, // optional
     offset: 0, // optional
     order: 'created_at.desc' // optional

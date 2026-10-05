@@ -15,6 +15,7 @@ $customersSegments = new CustomersSegments($client);
 
 $result = $customersSegments->customersSegmentsCreate(
     code: 'key_accounts',
+    createdAt: '2026-01-01T12:00:00Z', // optional
     labels: [
         'de' => 'Großkunden',
         'en' => 'Key accounts'

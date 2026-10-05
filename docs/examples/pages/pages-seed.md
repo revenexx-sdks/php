@@ -3,6 +3,7 @@
 
 use Revenexx\Client;
 use Revenexx\Services\Pages;
+use Revenexx\Enums\PagesSeedMode;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -13,6 +14,9 @@ $client = (new Client())
 $pages = new Pages($client);
 
 $result = $pages->pagesSeed(
+    library: [], // optional
     menus: [], // optional
-    pages: [] // optional
+    mode: PagesSeedMode::FILL(), // optional
+    pages: [], // optional
+    settings: [] // optional
 );```

@@ -28,6 +28,10 @@ Every column of `products` is an exact-match query parameter, `order` sorts by o
 | label | string | Exact match on `label`. The display name, maintained by the DATABASE so a grid of twenty thousand rows can sort and filter on a name with no join. It is the first of `attribute_values.common.name`, `…common.label`, the `de`/`en`/`de_DE`/`en_US` locale buckets, `…common.manufacturer_aid`, and finally the SKU — so a value is ALWAYS present, and a label equal to the SKU means the catalog holds no name for this product. A generated column: it cannot be written, and a create or update that names it has it dropped rather than refused. The family-aware answer, which can consult `families.label_attribute` and report where the name came from, is `POST /products/labels`. |  |
 | quantified_associations | string | Exact match on `quantified_associations`. The import-side mirror of associations that carry a quantity — a bundle, a bill of materials, a spare-parts set. NOTHING IN THIS APP READS OR WRITES IT: no route produces it, no route consumes it, and it is null on every product this app has created. The surface that IS served is relational — `product_associations`, whose `quantity` column holds the number, guarded by `association_types.is_quantified`. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
 | completeness | string | Exact match on `completeness`. How much of what this product's family REQUIRES it actually carries — the number a merchandiser works down. `required` counts the attributes the family marks `is_required`, `filled` how many of those carry a value in ANY bucket, `ratio` is filled/required between 0 and 1 (a family that requires nothing is 1, not undefined), `missing` lists the codes with no value anywhere, sorted, and `computed_at` is when it was measured. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
+| external_id | string | Exact match on `external_id`. The key this article has in the system that OWNS it — for a catalog fed by BMEcat, the PIM's own id for the row. It is NOT the `sku`: the SKU is the merchant's article number, typed by people and printed on paper, while this is whatever the feeding system calls the same article, often a number nobody outside it sees. Unique per tenant where set, so a repeated import upserts on it instead of matching on SKU and founding a second product. Null for a product created here. |  |
+| external_refs | string | Exact match on `external_refs`. Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
+| source_synced_at | string | Exact match on `source_synced_at`. When this row was last CONFIRMED against its source — not when it last changed. A delta run asks for everything it has not seen since its last pass, and over 25 000 products that is the difference between an index scan and reading the whole catalog, which is the reason the column is indexed. An edit made here leaves it alone, so a value that has stopped moving says the feed has gone quiet, not that nobody works the record. Null for a row no source owns. |  |
+| source_data | string | Exact match on `source_data`. What the source said about this row, kept as it said it: `{"system": …, "etag": …, "raw": {…}}`. The `etag` is what a write-back has to hand back in `If-Match`, and between two runs there is nowhere else to keep it. `raw` carries the source fields this app does not model, so they survive a round trip instead of being lost the first time somebody edits here. Written by whatever imports the row; nothing in this app reads or maintains it. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
 | created_at | string | Exact match on `created_at`. When the row was created. Server-set — it is not part of any request body. |  |
 | updated_at | string | Exact match on `updated_at`. When the row was last written. Server-set — it is not part of any request body. |  |
 | deleted_at | string | Exact match on `deleted_at`. When the product was soft-deleted. `GET /products/grid` and every category-rule evaluation exclude a row that carries one; `GET /products` does NOT — filter on it to read the live catalog. |  |
@@ -70,6 +74,8 @@ Defaults to `{}`, and an empty object is a normal state — a record nobody has 
 Written only by `POST /products/{id}/completeness` and by `POST /products/{id}/family`; a plain create or update never touches it, so it is null until one of the two has run. It also stays null for a product with no family — there is nothing to measure it against, and 0 % would be a lie. |  |
 | deleted_at | string | When the product was soft-deleted. `GET /products/grid` and every category-rule evaluation exclude a row that carries one; `GET /products` does NOT — filter on it to read the live catalog. |  |
 | enabled | boolean | Whether the product is offered. A create defaults it from the `new_products_enabled_by_default` tenant setting rather than blindly to true, so an import does not publish twenty thousand unfinished products the moment it lands. An explicit value in the body always wins. |  |
+| external_id | string | The key this article has in the system that OWNS it — for a catalog fed by BMEcat, the PIM's own id for the row. It is NOT the `sku`: the SKU is the merchant's article number, typed by people and printed on paper, while this is whatever the feeding system calls the same article, often a number nobody outside it sees. Unique per tenant where set, so a repeated import upserts on it instead of matching on SKU and founding a second product. Null for a product created here. |  |
+| external_refs | object | Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. |  |
 | family_id | string | The family that decides which attributes this product HAS. Without one nothing is required, completeness cannot be computed and the display name never resolves — `POST /products/{id}/family` is the call that sets it and computes completeness in the same step. |  |
 | family_variant_id | string | Which variant structure of the family this product follows — the axes it splits on. Null on a simple product. |  |
 | kind | string | Where the product sits in the variant hierarchy. 'simple' stands on its own. 'model' carries the values its variants share and is never sold itself. 'variant' carries the axis values and points at its model through `parent_id`. |  |
@@ -78,6 +84,8 @@ Written only by `POST /products/{id}/completeness` and by `POST /products/{id}/f
 
 It exists because a PIM import (Akeneo, BMEcat) carries these in one blob keyed by association type code, and the column lets that document round-trip instead of being dropped. The database enforces no shape on it, so what a reader finds is whatever the importer wrote; the example is the conventional form. |  |
 | sku | string | The merchant's own article number — unique per tenant, and the value every integration (ERP, shop, feed, price list) joins on. The one identifier a person types, and the fallback this app shows when the catalog holds no name. |  |
+| source_data | object | What the source said about this row, kept as it said it: `{"system": …, "etag": …, "raw": {…}}`. The `etag` is what a write-back has to hand back in `If-Match`, and between two runs there is nowhere else to keep it. `raw` carries the source fields this app does not model, so they survive a round trip instead of being lost the first time somebody edits here. Written by whatever imports the row; nothing in this app reads or maintains it. |  |
+| source_synced_at | string | When this row was last CONFIRMED against its source — not when it last changed. A delta run asks for everything it has not seen since its last pass, and over 25 000 products that is the difference between an index scan and reading the whole catalog, which is the reason the column is indexed. An edit made here leaves it alone, so a value that has stopped moving says the feed has gone quiet, not that nobody works the record. Null for a row no source owns. |  |
 | tax_class | string | The tax class key the prices app resolves a VAT rate from. Free text here — the vocabulary belongs to the app that prices, and `POST /products/batch` exists to hand exactly this column to it in bulk. |  |
 
 
@@ -85,16 +93,19 @@ It exists because a PIM import (Akeneo, BMEcat) carries these in one blob keyed 
 POST https://api.revenexx.com/v1/products/batch
 ```
 
-** Answers four fields — id, sku, tax_class and the resolved display name — for a list of ids and/or SKUs in ONE call. It exists for the app on the other side of a product reference: the prices app holds SKUs and needs a tax class, a feed builder holds ids and needs names, and neither should page through the catalog or fire a request per line. Ask by either identifier or both; the two are unioned and a product named twice comes back once.
+** Answers four fields — id, sku, tax_class and the resolved display name — for a list of ids and/or SKUs in ONE call. It exists for the app on the other side of a product reference: the prices app holds SKUs and needs a tax class, a feed builder holds ids and needs names, and neither should page through the catalog or fire a request per line. Ask by either identifier or both; the two are unioned and a product named twice comes back once. At most 500 of each per call; more is refused with 400 rather than cut short.
 
-It answers what it FOUND: an id or SKU that names nothing is simply absent from `items` rather than an error, so compare the length of what you sent with what came back if a miss matters. It is not a general product read — for the whole row use `GET /products/{id}`, and for a scannable list use `GET /products/grid`. **
+With `full: true` each item is the whole row instead — what `GET /products/{id}` answers, every column and the complete `attribute_values` document, with `label` still the resolved name. That mode is for a caller that has to hand a product on and cannot know in advance which fields it will need: punchout's hand-back writes whatever columns and attribute codes a merchant's field mappings name, for every line of a cart, and needs them in one read. Leave it off when four fields will do; the short shape is unchanged by it.
+
+Either way it answers what it FOUND: an id or SKU that names nothing is simply absent from `items` rather than an error, so compare the length of what you sent with what came back if a miss matters. For a scannable list use `GET /products/grid`. **
 
 ### Parameters
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
-| ids | array | Product ids, when the caller already holds them. |  |
-| skus | array | Product SKUs — the identifier a foreign system carries, which is why this route exists at all. |  |
+| full | boolean | True answers each product as its whole row (`ProductBatchRow`) instead of the four-field reference (`ProductTaxRef`). For a caller that must hand a whole product on — every column and attribute value — without a read per line. |  |
+| ids | array | Product ids, when the caller already holds them. At most 500. |  |
+| skus | array | Product SKUs — the identifier a foreign system carries, which is why this route exists at all. At most 500. |  |
 
 
 ```http request
@@ -122,9 +133,9 @@ It filters on `q`, `kind`, `enabled` and `family_id`, and on NOTHING ELSE — a 
 POST https://api.revenexx.com/v1/products/labels
 ```
 
-** What is this product CALLED? A product&#039;s name is an attribute rather than a column, and which attribute it is, is per family — so no plain read can answer it. This resolves up to 500 products at once, by id and/or SKU: it reads families.label_attribute (falling back to the default_label_attribute setting, then to the conventional `name`) and looks the value up through the scoped attribute_values document — common, then locale_specific in the label_locales order, then the channel buckets.
+** What is this product CALLED? A product's name is an attribute rather than a column, and which attribute it is, is per family — so no plain read can answer it. This resolves up to 500 products at once, by id and/or SKU: it reads families.label_attribute (falling back to the default_label_attribute setting, then to the conventional `name`) and looks the value up through the scoped attribute_values document — common, then locale_specific in the label_locales order, then the channel buckets.
 
-It reports WHERE the name was found, which is the half that matters: `source: &quot;sku&quot;` means the catalog holds no name for this product and the SKU is standing in for one, so show it as a missing name rather than as a name. Writes nothing, and answers only what it found. **
+It reports WHERE the name was found, which is the half that matters: `source: "sku"` means the catalog holds no name for this product and the SKU is standing in for one, so show it as a missing name rather than as a name. Writes nothing, and answers only what it found. **
 
 ### Parameters
 
@@ -138,11 +149,11 @@ It reports WHERE the name was found, which is the half that matters: `source: &q
 GET https://api.revenexx.com/v1/products/product_associations
 ```
 
-** One relation from one product to another, of a declared type: this drill&#039;s accessories, this bundle&#039;s parts, this article&#039;s cross-sells. `quantity` is the number in &quot;this bundle contains 4 casters&quot; and is meaningful only when the association type carries `is_quantified`. This relational surface is the one this app serves; the `products.quantified_associations` column is an importer&#039;s blob that no route here reads or writes.
+** One relation from one product to another, of a declared type: this drill's accessories, this bundle's parts, this article's cross-sells. `quantity` is the number in "this bundle contains 4 casters" and is meaningful only when the association type carries `is_quantified`. This relational surface is the one this app serves; the `products.quantified_associations` column is an importer's blob that no route here reads or writes.
 
 Every column of `product_associations` is an exact-match query parameter, `order` sorts by one column, and `limit`/`offset` page through `page.total`. A query key that is NOT a column is dropped rather than refused, and the `filter` object echoes the ones that were understood — that echo is the only way to tell an unfiltered answer from an empty one. It reads rows exactly as they are stored: no join is resolved, no jsonb value is unpacked.
 
-Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
+Answered from the gateway's tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
 
 ### Parameters
 
@@ -158,6 +169,7 @@ Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped t
 | quantity | number | Exact match on `quantity`. How many of the target belong to the source — the 4 in "this bundle contains 4 casters". Only meaningful when the association type carries `is_quantified`; null on an ordinary cross-sell. |  |
 | position | integer | Exact match on `position`. Order in which the targets are shown, ascending. |  |
 | created_at | string | Exact match on `created_at`. When the row was created. Server-set — it is not part of any request body. |  |
+| updated_at | string | Exact match on `updated_at`. When the row was last written. Server-set — it is not part of any request body. |  |
 
 
 ```http request
@@ -166,7 +178,7 @@ POST https://api.revenexx.com/v1/products/product_associations
 
 ** Creates one product association and answers 201 with the stored row, including the id and the timestamps the database filled in — a client never sends an id, it reads one back and uses it in the path of every later call.
 
-One relation from one product to another, of a declared type: this drill&#039;s accessories, this bundle&#039;s parts, this article&#039;s cross-sells. `quantity` is the number in &quot;this bundle contains 4 casters&quot; and is meaningful only when the association type carries `is_quantified`. This relational surface is the one this app serves; the `products.quantified_associations` column is an importer&#039;s blob that no route here reads or writes.
+One relation from one product to another, of a declared type: this drill's accessories, this bundle's parts, this article's cross-sells. `quantity` is the number in "this bundle contains 4 casters" and is meaningful only when the association type carries `is_quantified`. This relational surface is the one this app serves; the `products.quantified_associations` column is an importer's blob that no route here reads or writes.
 
 `product_id`, `association_type_id`, `target_product_id` are the only columns the database refuses the row without; everything else has a default or is nullable. A second row with the same `product_id`, `association_type_id`, `target_product_id` answers 409. **
 
@@ -204,11 +216,11 @@ GET https://api.revenexx.com/v1/products/product_associations/{id}
 
 ** Reads one product association by its id — the whole row, every column, as it is stored.
 
-One relation from one product to another, of a declared type: this drill&#039;s accessories, this bundle&#039;s parts, this article&#039;s cross-sells. `quantity` is the number in &quot;this bundle contains 4 casters&quot; and is meaningful only when the association type carries `is_quantified`. This relational surface is the one this app serves; the `products.quantified_associations` column is an importer&#039;s blob that no route here reads or writes.
+One relation from one product to another, of a declared type: this drill's accessories, this bundle's parts, this article's cross-sells. `quantity` is the number in "this bundle contains 4 casters" and is meaningful only when the association type carries `is_quantified`. This relational surface is the one this app serves; the `products.quantified_associations` column is an importer's blob that no route here reads or writes.
 
 An id no product association of this tenant carries answers 404, and so does one belonging to another tenant: row-level security makes that row invisible rather than forbidden. A malformed id answers 400 before the route is reached.
 
-Answered from the gateway&#039;s tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
+Answered from the gateway's tenant cache for up to 30 minutes and dropped the moment this entity is written, because the data model changes weekly at most and every product page asks the same question. **
 
 ### Parameters
 
@@ -223,7 +235,7 @@ PUT https://api.revenexx.com/v1/products/product_associations/{id}
 
 ** Updates one product association by id. A partial patch: the body names only the columns to change and every column it leaves out keeps its current value, so there is no read-modify-write and no way to blank a field by forgetting it.
 
-One relation from one product to another, of a declared type: this drill&#039;s accessories, this bundle&#039;s parts, this article&#039;s cross-sells. `quantity` is the number in &quot;this bundle contains 4 casters&quot; and is meaningful only when the association type carries `is_quantified`. This relational surface is the one this app serves; the `products.quantified_associations` column is an importer&#039;s blob that no route here reads or writes.
+One relation from one product to another, of a declared type: this drill's accessories, this bundle's parts, this article's cross-sells. `quantity` is the number in "this bundle contains 4 casters" and is meaningful only when the association type carries `is_quantified`. This relational surface is the one this app serves; the `products.quantified_associations` column is an importer's blob that no route here reads or writes.
 
 A body that names nothing writable is refused with 400 rather than answered as a no-op, an id nobody carries answers 404, and a value that collides on `product_id`, `association_type_id`, `target_product_id` answers 409. **
 
@@ -333,6 +345,8 @@ Defaults to `{}`, and an empty object is a normal state — a record nobody has 
 Written only by `POST /products/{id}/completeness` and by `POST /products/{id}/family`; a plain create or update never touches it, so it is null until one of the two has run. It also stays null for a product with no family — there is nothing to measure it against, and 0 % would be a lie. |  |
 | deleted_at | string | When the product was soft-deleted. `GET /products/grid` and every category-rule evaluation exclude a row that carries one; `GET /products` does NOT — filter on it to read the live catalog. |  |
 | enabled | boolean | Whether the product is offered. A create defaults it from the `new_products_enabled_by_default` tenant setting rather than blindly to true, so an import does not publish twenty thousand unfinished products the moment it lands. An explicit value in the body always wins. |  |
+| external_id | string | The key this article has in the system that OWNS it — for a catalog fed by BMEcat, the PIM's own id for the row. It is NOT the `sku`: the SKU is the merchant's article number, typed by people and printed on paper, while this is whatever the feeding system calls the same article, often a number nobody outside it sees. Unique per tenant where set, so a repeated import upserts on it instead of matching on SKU and founding a second product. Null for a product created here. |  |
+| external_refs | object | Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. |  |
 | family_id | string | The family that decides which attributes this product HAS. Without one nothing is required, completeness cannot be computed and the display name never resolves — `POST /products/{id}/family` is the call that sets it and computes completeness in the same step. |  |
 | family_variant_id | string | Which variant structure of the family this product follows — the axes it splits on. Null on a simple product. |  |
 | kind | string | Where the product sits in the variant hierarchy. 'simple' stands on its own. 'model' carries the values its variants share and is never sold itself. 'variant' carries the axis values and points at its model through `parent_id`. |  |
@@ -341,6 +355,8 @@ Written only by `POST /products/{id}/completeness` and by `POST /products/{id}/f
 
 It exists because a PIM import (Akeneo, BMEcat) carries these in one blob keyed by association type code, and the column lets that document round-trip instead of being dropped. The database enforces no shape on it, so what a reader finds is whatever the importer wrote; the example is the conventional form. |  |
 | sku | string | The merchant's own article number — unique per tenant, and the value every integration (ERP, shop, feed, price list) joins on. The one identifier a person types, and the fallback this app shows when the catalog holds no name. |  |
+| source_data | object | What the source said about this row, kept as it said it: `{"system": …, "etag": …, "raw": {…}}`. The `etag` is what a write-back has to hand back in `If-Match`, and between two runs there is nowhere else to keep it. `raw` carries the source fields this app does not model, so they survive a round trip instead of being lost the first time somebody edits here. Written by whatever imports the row; nothing in this app reads or maintains it. |  |
+| source_synced_at | string | When this row was last CONFIRMED against its source — not when it last changed. A delta run asks for everything it has not seen since its last pass, and over 25 000 products that is the difference between an index scan and reading the whole catalog, which is the reason the column is indexed. An edit made here leaves it alone, so a value that has stopped moving says the feed has gone quiet, not that nobody works the record. Null for a row no source owns. |  |
 | tax_class | string | The tax class key the prices app resolves a VAT rate from. Free text here — the vocabulary belongs to the app that prices, and `POST /products/batch` exists to hand exactly this column to it in bulk. |  |
 
 
@@ -348,7 +364,7 @@ It exists because a PIM import (Akeneo, BMEcat) carries these in one blob keyed 
 POST https://api.revenexx.com/v1/products/{id}/completeness
 ```
 
-** How much of what its family REQUIRES does this product actually carry — the number a merchandiser works down. products.completeness is jsonb that nothing had ever written. This computes it from family_attributes (is_required) against the product&#039;s own scoped attribute_values and stores the result. A product with no family answers 400 rather than an invented 0 % — it has nothing to be measured against. **
+** How much of what its family REQUIRES does this product actually carry — the number a merchandiser works down. products.completeness is jsonb that nothing had ever written. This computes it from family_attributes (is_required) against the product's own scoped attribute_values and stores the result. A product with no family answers 400 rather than an invented 0 % — it has nothing to be measured against. **
 
 ### Parameters
 
@@ -362,7 +378,7 @@ POST https://api.revenexx.com/v1/products/{id}/completeness
 POST https://api.revenexx.com/v1/products/{id}/family
 ```
 
-** Names the family in the body — by `family_id` or by `family_code`, whichever the caller holds — and computes the product&#039;s completeness in the same call. The step every family-driven surface waits on: a product with no family has no required attributes, so its completeness cannot be computed and its family&#039;s label attribute never resolves. Assigning the family recomputes and STORES products.completeness immediately, so the metadata cannot go stale between the two operations. **
+** Names the family in the body — by `family_id` or by `family_code`, whichever the caller holds — and computes the product's completeness in the same call. The step every family-driven surface waits on: a product with no family has no required attributes, so its completeness cannot be computed and its family's label attribute never resolves. Assigning the family recomputes and STORES products.completeness immediately, so the metadata cannot go stale between the two operations. **
 
 ### Parameters
 

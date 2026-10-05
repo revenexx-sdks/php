@@ -5,7 +5,7 @@
 GET https://api.revenexx.com/v1/search/collections
 ```
 
-** The collections the tenant&#039;s installed apps have provisioned. Available on the API-gateway-trust path only — a `revx_` key authorises a single collection, so discovery is a gateway concern and a key-authenticated caller gets 403. **
+** The collections the tenant's installed apps have provisioned. Available on the API-gateway-trust path only — a `revx_` key authorises a single collection, so discovery is a gateway concern and a key-authenticated caller gets 403. **
 
 
 ```http request
@@ -79,7 +79,7 @@ POST https://api.revenexx.com/v1/search/collections/{collection}/documents/searc
 GET https://api.revenexx.com/v1/search/collections/{collection}/documents/{documentId}
 ```
 
-** Fetch a single document by id. The document shape is the collection&#039;s own schema, so it is described as a free-form object. Requires the `documents:get` action. **
+** Fetch a single document by id. The document shape is the collection's own schema, so it is described as a free-form object. Requires the `documents:get` action. **
 
 ### Parameters
 
@@ -93,14 +93,14 @@ GET https://api.revenexx.com/v1/search/collections/{collection}/documents/{docum
 POST https://api.revenexx.com/v1/search/facets/resync
 ```
 
-** Idempotent, and bounded by the tenant&#039;s own configuration: it can add
+** Idempotent, and bounded by the tenant's own configuration: it can add
 no field for an attribute the tenant has not marked `is_filterable`,
 and drops only fields whose attribute it has itself un-marked. A run
 that changes nothing makes zero calls to Typesense.
 
 Body (optional) narrows the sweep to one app:
 
-    {&quot;vendor&quot;: &quot;revenexx&quot;, &quot;app&quot;: &quot;products&quot;}
+    {"vendor": "revenexx", "app": "products"}
 
 Omitted, every app the tenant has installed is swept. Apps outside the
 facet-sync allowlist are included in the response with
@@ -108,12 +108,12 @@ facet-sync allowlist are included in the response with
 asking for an app that cannot have facets deserves to be told so.
 
 The response shape below is DECLARED rather than inferred. Its entries
-are built by spreading AttributeFacetSyncer::syncForCollection()&#039;s
+are built by spreading AttributeFacetSyncer::syncForCollection()'s
 summary, and the generator cannot see through an array spread: left to
 itself it emits an unnamed property and a null in `required`, which
-Spectral rejects as `&quot;1&quot; property must be string`.
+Spectral rejects as `"1" property must be string`.
 AppController::resyncFacets() carries the same declaration for the same
-reason — keep both in step with syncForApp()&#039;s return type. **
+reason — keep both in step with syncForApp()'s return type. **
 
 ### Parameters
 
@@ -127,7 +127,7 @@ reason — keep both in step with syncForApp()&#039;s return type. **
 POST https://api.revenexx.com/v1/search/multi_search
 ```
 
-** Run several searches in one round trip — the endpoint the typesense-js `multiSearch` helper and the InstantSearch adapter use for every query. On the gateway-trust path each entry must name a collection the tenant owns. With a `revx_` key `collection_name` is optional and is forced to the key&#039;s own collection. Requires the `documents:search` action. **
+** Run several searches in one round trip — the endpoint the typesense-js `multiSearch` helper and the InstantSearch adapter use for every query. On the gateway-trust path each entry must name a collection the tenant owns. With a `revx_` key `collection_name` is optional and is forced to the key's own collection. Requires the `documents:search` action. **
 
 ### Parameters
 

@@ -272,7 +272,8 @@ class Markets extends Service
     /**
      * Deleting a market takes its locales, currencies and tax classes with it:
      * all three carry an ON DELETE CASCADE onto markets.id, so this is never
-     * refused for having children.
+     * refused for having children. The tenant's default market is not deleted
+     * (409 `default_market`) — move the flag first.
      *
      * @param string $id
      * @throws RevenexxException
@@ -635,13 +636,14 @@ class Markets extends Service
      * @param ?bool $isDefault
      * @param ?int $position
      * @param ?string $createdAt
+     * @param ?string $updatedAt
      * @param ?int $limit
      * @param ?int $offset
      * @param ?string $order
      * @throws RevenexxException
      * @return array
      */
-    public function marketsCurrenciesList(string $marketId, ?string $id = null, ?string $code = null, ?bool $isDefault = null, ?int $position = null, ?string $createdAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function marketsCurrenciesList(string $marketId, ?string $id = null, ?string $code = null, ?bool $isDefault = null, ?int $position = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             ['{market_id}'],
@@ -670,6 +672,10 @@ class Markets extends Service
 
         if (!is_null($createdAt)) {
             $apiParams['created_at'] = $createdAt;
+        }
+
+        if (!is_null($updatedAt)) {
+            $apiParams['updated_at'] = $updatedAt;
         }
 
         if (!is_null($limit)) {
@@ -862,13 +868,14 @@ class Markets extends Service
      * @param ?bool $isDefault
      * @param ?int $position
      * @param ?string $createdAt
+     * @param ?string $updatedAt
      * @param ?int $limit
      * @param ?int $offset
      * @param ?string $order
      * @throws RevenexxException
      * @return array
      */
-    public function marketsLocalesList(string $marketId, ?string $id = null, ?string $code = null, ?string $language = null, ?string $country = null, ?bool $isDefault = null, ?int $position = null, ?string $createdAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function marketsLocalesList(string $marketId, ?string $id = null, ?string $code = null, ?string $language = null, ?string $country = null, ?bool $isDefault = null, ?int $position = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             ['{market_id}'],
@@ -907,6 +914,10 @@ class Markets extends Service
             $apiParams['created_at'] = $createdAt;
         }
 
+        if (!is_null($updatedAt)) {
+            $apiParams['updated_at'] = $updatedAt;
+        }
+
         if (!is_null($limit)) {
             $apiParams['limit'] = $limit;
         }
@@ -934,14 +945,14 @@ class Markets extends Service
      *
      * @param string $marketId
      * @param string $code
-     * @param string $country
-     * @param string $language
+     * @param ?string $country
      * @param ?bool $isDefault
+     * @param ?string $language
      * @param ?int $position
      * @throws RevenexxException
      * @return array
      */
-    public function marketsLocalesCreate(string $marketId, string $code, string $country, string $language, ?bool $isDefault = null, ?int $position = null): array
+    public function marketsLocalesCreate(string $marketId, string $code, ?string $country = null, ?bool $isDefault = null, ?string $language = null, ?int $position = null): array
     {
         $apiPath = str_replace(
             ['{market_id}'],
@@ -952,11 +963,17 @@ class Markets extends Service
         $apiParams = [];
         $apiParams['market_id'] = $marketId;
         $apiParams['code'] = $code;
-        $apiParams['country'] = $country;
-        $apiParams['language'] = $language;
+
+        if (!is_null($country)) {
+            $apiParams['country'] = $country;
+        }
 
         if (!is_null($isDefault)) {
             $apiParams['is_default'] = $isDefault;
+        }
+
+        if (!is_null($language)) {
+            $apiParams['language'] = $language;
         }
 
         if (!is_null($position)) {

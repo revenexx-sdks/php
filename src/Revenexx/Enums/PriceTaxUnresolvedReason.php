@@ -9,6 +9,7 @@ class PriceTaxUnresolvedReason implements JsonSerializable
     private static PriceTaxUnresolvedReason $MARKETREQUIRED;
     private static PriceTaxUnresolvedReason $NOMARKETS;
     private static PriceTaxUnresolvedReason $NOTAXCLASSES;
+    private static PriceTaxUnresolvedReason $UNKNOWNMARKET;
     private static PriceTaxUnresolvedReason $LOOKUPFAILED;
 
     private string $value;
@@ -48,6 +49,13 @@ class PriceTaxUnresolvedReason implements JsonSerializable
             self::$NOTAXCLASSES = new PriceTaxUnresolvedReason('no_tax_classes');
         }
         return self::$NOTAXCLASSES;
+    }
+    public static function UNKNOWNMARKET(): PriceTaxUnresolvedReason
+    {
+        if (!isset(self::$UNKNOWNMARKET)) {
+            self::$UNKNOWNMARKET = new PriceTaxUnresolvedReason('unknown_market');
+        }
+        return self::$UNKNOWNMARKET;
     }
     public static function LOOKUPFAILED(): PriceTaxUnresolvedReason
     {

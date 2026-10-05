@@ -3,7 +3,7 @@
 
 use Revenexx\Client;
 use Revenexx\Services\Storage;
-use Revenexx\Enums\Visibility;
+use Revenexx\Enums\AssetStoreVisibility;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -21,5 +21,5 @@ $result = $storage->assetUpdate(
     folderId: '', // optional
     name: '', // optional
     tags: [], // optional
-    visibility: Visibility::PUBLIC() // optional
+    visibility: AssetStoreVisibility::PUBLIC() // optional
 );```

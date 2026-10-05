@@ -8,6 +8,7 @@ class Source implements JsonSerializable
 {
     private static Source $MANUAL;
     private static Source $RULE;
+    private static Source $SYNC;
 
     private string $value;
 
@@ -39,5 +40,12 @@ class Source implements JsonSerializable
             self::$RULE = new Source('rule');
         }
         return self::$RULE;
+    }
+    public static function SYNC(): Source
+    {
+        if (!isset(self::$SYNC)) {
+            self::$SYNC = new Source('sync');
+        }
+        return self::$SYNC;
     }
 }

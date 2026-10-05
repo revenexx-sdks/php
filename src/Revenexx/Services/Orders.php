@@ -9,6 +9,7 @@ use Revenexx\InputFile;
 use Revenexx\Enums\OrderStatus;
 use Revenexx\Enums\OrderPaymentStatus;
 use Revenexx\Enums\OrderFulfillmentStatus;
+use Revenexx\Enums\OrderVocabularyTone;
 use Revenexx\Enums\OrdersVocabulariesGetName;
 use Revenexx\Enums\OrderCommentVisibility;
 use Revenexx\Enums\OrderReturnSettlement;
@@ -29,12 +30,13 @@ class Orders extends Service
      * rows without their positions, shipments, returns or cancellations — read
      * GET /orders/{id} for the aggregate of one. Every parameter below is an
      * exact match on the column it names, and combining them is an AND. Two kinds
-     * of key are not offered: one that names NO column is dropped silently, so a
-     * mistyped ?stauts=placed answers 200 with the whole list (compare the
-     * 'filter' echo against what you sent — no status code reports it), and the
-     * jsonb columns buyer, billing_address, shipping_address, payment, shipping,
-     * user_data and metadata reach the database as a text comparison and answer
-     * 400 invalid_value for anything that is not a whole JSON document.
+     * of key are not offered: one that names NO column is not a filter — the
+     * SDK release after app-sdks#30 answers it 400 unknown_filter, and until then
+     * a mistyped ?stauts=placed is dropped and answers the whole list (compare
+     * the 'filter' echo against what you sent) — and the jsonb columns buyer,
+     * billing_address, shipping_address, payment, shipping, user_data and
+     * metadata reach the database as a text comparison and answer 400
+     * invalid_value for anything that is not a whole JSON document.
      *
      * @param ?string $id
      * @param ?string $number
@@ -53,12 +55,21 @@ class Orders extends Service
      * @param ?string $holdReason
      * @param ?int $itemCount
      * @param ?float $subtotal
+     * @param ?float $discountTotal
      * @param ?float $shippingTotal
+     * @param ?float $shippingTaxRate
+     * @param ?float $shippingTaxAmount
+     * @param ?float $paymentFeeAmount
+     * @param ?float $paymentFeeTaxRate
+     * @param ?float $paymentFeeTaxAmount
      * @param ?float $taxTotal
      * @param ?float $grandTotal
      * @param ?string $placedAt
      * @param ?string $completedAt
      * @param ?string $cancelledAt
+     * @param ?string $externalId
+     * @param ?string $sourceSyncedAt
+     * @param ?string $requestedDeliveryDate
      * @param ?string $createdAt
      * @param ?string $updatedAt
      * @param ?int $limit
@@ -67,7 +78,7 @@ class Orders extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function ordersList(?string $id = null, ?string $number = null, ?string $customerOrderNumber = null, ?string $externalRef = null, ?string $acknowledgedAt = null, ?string $cartId = null, ?string $contactId = null, ?string $organizationId = null, ?string $channelId = null, ?string $currency = null, ?OrderStatus $status = null, ?OrderPaymentStatus $paymentStatus = null, ?OrderFulfillmentStatus $fulfillmentStatus = null, ?bool $onHold = null, ?string $holdReason = null, ?int $itemCount = null, ?float $subtotal = null, ?float $shippingTotal = null, ?float $taxTotal = null, ?float $grandTotal = null, ?string $placedAt = null, ?string $completedAt = null, ?string $cancelledAt = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function ordersList(?string $id = null, ?string $number = null, ?string $customerOrderNumber = null, ?string $externalRef = null, ?string $acknowledgedAt = null, ?string $cartId = null, ?string $contactId = null, ?string $organizationId = null, ?string $channelId = null, ?string $currency = null, ?OrderStatus $status = null, ?OrderPaymentStatus $paymentStatus = null, ?OrderFulfillmentStatus $fulfillmentStatus = null, ?bool $onHold = null, ?string $holdReason = null, ?int $itemCount = null, ?float $subtotal = null, ?float $discountTotal = null, ?float $shippingTotal = null, ?float $shippingTaxRate = null, ?float $shippingTaxAmount = null, ?float $paymentFeeAmount = null, ?float $paymentFeeTaxRate = null, ?float $paymentFeeTaxAmount = null, ?float $taxTotal = null, ?float $grandTotal = null, ?string $placedAt = null, ?string $completedAt = null, ?string $cancelledAt = null, ?string $externalId = null, ?string $sourceSyncedAt = null, ?string $requestedDeliveryDate = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             [],
@@ -145,8 +156,32 @@ class Orders extends Service
             $apiParams['subtotal'] = $subtotal;
         }
 
+        if (!is_null($discountTotal)) {
+            $apiParams['discount_total'] = $discountTotal;
+        }
+
         if (!is_null($shippingTotal)) {
             $apiParams['shipping_total'] = $shippingTotal;
+        }
+
+        if (!is_null($shippingTaxRate)) {
+            $apiParams['shipping_tax_rate'] = $shippingTaxRate;
+        }
+
+        if (!is_null($shippingTaxAmount)) {
+            $apiParams['shipping_tax_amount'] = $shippingTaxAmount;
+        }
+
+        if (!is_null($paymentFeeAmount)) {
+            $apiParams['payment_fee_amount'] = $paymentFeeAmount;
+        }
+
+        if (!is_null($paymentFeeTaxRate)) {
+            $apiParams['payment_fee_tax_rate'] = $paymentFeeTaxRate;
+        }
+
+        if (!is_null($paymentFeeTaxAmount)) {
+            $apiParams['payment_fee_tax_amount'] = $paymentFeeTaxAmount;
         }
 
         if (!is_null($taxTotal)) {
@@ -167,6 +202,18 @@ class Orders extends Service
 
         if (!is_null($cancelledAt)) {
             $apiParams['cancelled_at'] = $cancelledAt;
+        }
+
+        if (!is_null($externalId)) {
+            $apiParams['external_id'] = $externalId;
+        }
+
+        if (!is_null($sourceSyncedAt)) {
+            $apiParams['source_synced_at'] = $sourceSyncedAt;
+        }
+
+        if (!is_null($requestedDeliveryDate)) {
+            $apiParams['requested_delivery_date'] = $requestedDeliveryDate;
         }
 
         if (!is_null($createdAt)) {
@@ -200,14 +247,64 @@ class Orders extends Service
     }
 
     /**
+     * A one-off per tenant, and a MIGRATION rather than a feature: the day a
+     * buyer asked to be delivered on was collected long before it had a field of
+     * its own, in `user_data.requested_date` — a free-form blob, so the date
+     * was present and neither filterable, sortable nor visible to any ERP
+     * mapping. This copies what is already there into `requested_delivery_date`
+     * on every order that carries no date yet, and it is safe to run again: a
+     * second call finds nothing to fill and says so. It reads only the orders
+     * with no date, so it is cheap; `filled` is what it changed and `scanned`
+     * what it had to look at, and `scanned` never falls to zero, because an order
+     * that genuinely asked for no day is read by every later run. THE JSONB KEY
+     * IS LEFT WHERE IT IS: `user_data` belongs to the caller and is handed back
+     * untouched, so the key stays as a deprecated echo of the column — the
+     * column is what is compared, sorted and mapped from here on. `updated_at` is
+     * not touched either: it says when the row last changed for the merchant, and
+     * stamping the whole table with today would destroy that reading for every
+     * reader of it, a delta run included. A value in the key that is not a
+     * calendar day is counted under `skipped` and left alone rather than refusing
+     * the run. The scan stops itself before the gateway's timeout and hands back
+     * a `cursor`; send it back unchanged until `done` is true.
+     *
+     * @param ?string $cursor
+     * @param ?int $limit
+     * @throws RevenexxException
+     * @return array
+     */
+    public function ordersMigrationsRequestedDeliveryDate(?string $cursor = null, ?int $limit = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/orders/migrations/requested-delivery-date'
+        );
+
+        $apiParams = [];
+        $apiParams['cursor'] = $cursor;
+        $apiParams['limit'] = $limit;
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
      * The counters this tenant numbers its orders, delivery notes and returns
      * from — what an operator sees on the Number ranges settings page, and what
      * a migration reads to check the prefixes and the padding before it imports
      * anything. Every parameter below is an exact-match filter on the column it
      * names (?code=order finds the order counter). Two things are not: a key that
-     * names NO column is dropped silently — the call answers 200 with the
-     * unfiltered page, so compare the 'filter' echo against what you sent — and
-     * the jsonb column 'metadata' is honoured by the router but refused by the
+     * names NO column is not a filter — the SDK release after app-sdks#30
+     * answers it 400 unknown_filter, and until then it is dropped and absent from
+     * the 'filter' echo, so compare that echo against what you sent — and the
+     * jsonb column 'metadata' is honoured by the router but refused by the
      * database (400 invalid_value) unless the value is a whole JSON document,
      * which is why it is not offered here. It does not draw a number: `counter`
      * is the last number DRAWN, and only placing an order, a shipment or a return
@@ -317,7 +414,8 @@ class Orders extends Service
      * a 409 for one that is taken rather than a second counter under the same
      * name. It does not renumber anything that already exists, and setting
      * `counter` to a value already issued re-issues those numbers, which the
-     * unique index on the order number then refuses.
+     * unique index on the order number then refuses. created_at and updated_at
+     * are the server's: a body carrying either is 400 server_owned_field.
      *
      * @param string $code
      * @param ?string $channelId
@@ -423,11 +521,10 @@ class Orders extends Service
      * Remove a counter a tenant no longer numbers anything from. It touches
      * nothing that was numbered out of it: existing orders, delivery notes and
      * returns keep the numbers they were given, because a number is copied onto
-     * the row at place-time and is not a reference to this table. Deleting one of
-     * the three standard codes is allowed and is usually a mistake — the next
-     * draw against it answers 422 'number_range_missing', unless POST
-     * /orders/number-ranges/defaults or a reinstall seeds it again, which starts
-     * its counter back at 0.
+     * the row at place-time and is not a reference to this table. Only a range
+     * that has never drawn a number can be removed: one whose counter is above 0
+     * answers 409 range_in_use, because a standard code would come back at 0 on
+     * the next draw and hand out numbers that already exist.
      *
      * @param string $id
      * @throws RevenexxException
@@ -496,9 +593,12 @@ class Orders extends Service
      * configuration. Everything takes effect on the NEXT draw only: nothing that
      * was already numbered is renumbered, so widening the padding leaves
      * ORD-000123 and starts writing ORD-0000124. Moving `counter` forward skips
-     * numbers, and moving it back re-issues numbers that exist, which the unique
-     * index on the order number answers 409 for at place-time rather than here.
-     * Renaming `code` to one another range of this tenant already holds is a 409.
+     * numbers; moving it BACK is refused (422 counter_rewind), because it would
+     * hand out numbers orders already carry — resending the counter the range
+     * already has is fine, only a change is checked. Renaming `code` to one
+     * another range of this tenant already holds is a 409. updated_at is stamped
+     * by the server; a body carrying created_at or updated_at is 400
+     * server_owned_field.
      *
      * @param string $id
      * @param ?string $channelId
@@ -588,7 +688,12 @@ class Orders extends Service
      * require_approval_above_value (a principal holding orders.approve is exempt
      * from the threshold). The order.requested event says which, in
      * 'approval_reason'. The currency defaults to the market's default_currency
-     * setting and the position cap is the tenant's max_items_per_order.
+     * setting and the position cap is the tenant's max_items_per_order. PRICES
+     * ARE THE CALLER'S: this app reads no price list, so the unit price, the tax
+     * rate, the shipping charge and the promotions a caller evaluated are taken
+     * as sent — refused only when they cannot be money (a negative price or
+     * shipping charge, a tax rate outside 0–100). Totals, tax amounts and the
+     * discount split are computed here.
      *
      * @param array $items
      * @param ?array $billingAddress
@@ -598,18 +703,23 @@ class Orders extends Service
      * @param ?string $contactId
      * @param ?string $currency
      * @param ?string $customerOrderNumber
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?float $grandTotal
      * @param ?array $metadata
      * @param ?string $organizationId
      * @param ?array $payment
+     * @param ?string $requestedDeliveryDate
      * @param ?array $shipping
      * @param ?array $shippingAddress
      * @param ?float $shippingTotal
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @param ?array $userData
      * @throws RevenexxException
      * @return array
      */
-    public function ordersPlace(array $items, ?array $billingAddress = null, ?array $buyer = null, ?string $cartId = null, ?string $channelId = null, ?string $contactId = null, ?string $currency = null, ?string $customerOrderNumber = null, ?float $grandTotal = null, ?array $metadata = null, ?string $organizationId = null, ?array $payment = null, ?array $shipping = null, ?array $shippingAddress = null, ?float $shippingTotal = null, ?array $userData = null): array
+    public function ordersPlace(array $items, ?array $billingAddress = null, ?array $buyer = null, ?string $cartId = null, ?string $channelId = null, ?string $contactId = null, ?string $currency = null, ?string $customerOrderNumber = null, ?string $externalId = null, ?array $externalRefs = null, ?float $grandTotal = null, ?array $metadata = null, ?string $organizationId = null, ?array $payment = null, ?string $requestedDeliveryDate = null, ?array $shipping = null, ?array $shippingAddress = null, ?float $shippingTotal = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?array $userData = null): array
     {
         $apiPath = str_replace(
             [],
@@ -626,13 +736,18 @@ class Orders extends Service
         $apiParams['contact_id'] = $contactId;
         $apiParams['currency'] = $currency;
         $apiParams['customer_order_number'] = $customerOrderNumber;
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
         $apiParams['grand_total'] = $grandTotal;
         $apiParams['metadata'] = $metadata;
         $apiParams['organization_id'] = $organizationId;
         $apiParams['payment'] = $payment;
+        $apiParams['requested_delivery_date'] = $requestedDeliveryDate;
         $apiParams['shipping'] = $shipping;
         $apiParams['shipping_address'] = $shippingAddress;
         $apiParams['shipping_total'] = $shippingTotal;
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
         $apiParams['user_data'] = $userData;
 
         $apiHeaders = [];
@@ -697,14 +812,157 @@ class Orders extends Service
     }
 
     /**
+     * The reasons a merchant takes goods back under, in their own words and in
+     * the order a picker should offer them — what a returns dialog fills its
+     * reason select from, and what turns the `reason_code` on a return into a
+     * title somebody can read. It is the one vocabulary of this app the MERCHANT
+     * keeps rather than the database: why a customer sent something back differs
+     * per trade, so it is a table and a merchant gets their own without a release
+     * of this app. The set is served whole and seeds itself: a tenant that has
+     * never read it is given the nine standard reasons on the way, so this route
+     * never answers an empty select. Exactly one row carries `is_default` — the
+     * reason a picker preselects, repaired on read if nothing holds it — and it
+     * is deliberately 'other' rather than a real reason, because
+     * `order_returns.reason_code` is nullable and nothing here falls back to the
+     * flag. Every parameter below is an exact match on the column it names, and a
+     * key that names no column is 400 unknown_filter; limit, offset and order
+     * ('column.asc' | 'column.desc') page and sort it. The jsonb columns `labels`
+     * and `descriptions` are not offered, because the data plane answers 400 for
+     * anything that is not a whole JSON document. Adding, renaming and retiring a
+     * reason has no address here yet.
+     *
+     * @param ?string $id
+     * @param ?string $code
+     * @param ?string $title
+     * @param ?string $description
+     * @param ?bool $isDefault
+     * @param ?OrderVocabularyTone $tone
+     * @param ?int $position
+     * @param ?bool $isSystem
+     * @param ?string $createdAt
+     * @param ?string $updatedAt
+     * @param ?int $limit
+     * @param ?int $offset
+     * @param ?string $order
+     * @throws RevenexxException
+     * @return array
+     */
+    public function ordersReturnReasonsList(?string $id = null, ?string $code = null, ?string $title = null, ?string $description = null, ?bool $isDefault = null, ?OrderVocabularyTone $tone = null, ?int $position = null, ?bool $isSystem = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/orders/return-reasons'
+        );
+
+        $apiParams = [];
+
+        if (!is_null($id)) {
+            $apiParams['id'] = $id;
+        }
+
+        if (!is_null($code)) {
+            $apiParams['code'] = $code;
+        }
+
+        if (!is_null($title)) {
+            $apiParams['title'] = $title;
+        }
+
+        if (!is_null($description)) {
+            $apiParams['description'] = $description;
+        }
+
+        if (!is_null($isDefault)) {
+            $apiParams['is_default'] = $isDefault;
+        }
+
+        if (!is_null($tone)) {
+            $apiParams['tone'] = $tone;
+        }
+
+        if (!is_null($position)) {
+            $apiParams['position'] = $position;
+        }
+
+        if (!is_null($isSystem)) {
+            $apiParams['is_system'] = $isSystem;
+        }
+
+        if (!is_null($createdAt)) {
+            $apiParams['created_at'] = $createdAt;
+        }
+
+        if (!is_null($updatedAt)) {
+            $apiParams['updated_at'] = $updatedAt;
+        }
+
+        if (!is_null($limit)) {
+            $apiParams['limit'] = $limit;
+        }
+
+        if (!is_null($offset)) {
+            $apiParams['offset'] = $offset;
+        }
+
+        if (!is_null($order)) {
+            $apiParams['order'] = $order;
+        }
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * One reason with its code, its title, the labels and descriptions per locale
+     * and the badge tone a client renders it in. Reach for it when you hold the
+     * id — from the list, or off a Cockpit row. Addressed by uuid and not by
+     * code: a `reason_code` read off a return becomes a row through GET
+     * /orders/return-reasons?code=… . Unlike the list this route does NOT seed,
+     * because an id can only have come from a set that was already read.
+     *
+     * @param string $id
+     * @throws RevenexxException
+     * @return array
+     */
+    public function ordersReturnReasonsGet(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/orders/return-reasons/{id}'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
      * Which value sets this app will describe for you, by name — order
      * statuses, payment statuses, fulfillment statuses, item types, return
      * statuses and return resolutions — so a client can discover them instead
      * of shipping its own copy of five statuses that goes stale one release
      * later. The values themselves are deliberately NOT here: this is the index,
      * and each set is fetched on its own. Discovery for the vocabulary routes.
-     * Names: cancellation-scopes, comment-visibilities, fulfillment-statuses,
-     * item-types, payment-statuses, return-resolutions, return-statuses,
+     * Names: cancellation-scopes, comment-visibilities, discount-applies-to,
+     * discount-effect-kinds, discount-placements, discount-sources,
+     * discount-value-types, fulfillment-statuses, item-types, payment-statuses,
+     * refund-modes, return-reason-tones, return-resolutions, return-statuses,
      * statuses. Fetch one with GET /orders/vocabularies/{name}; a client holding
      * the qualified pair 'orders.<name>' builds that URL from the pair alone.
      * 'title' and 'description' are locale maps wherever somebody wrote the copy
@@ -754,8 +1012,10 @@ class Orders extends Service
      * them. 'title' and 'description' are locale maps where the copy was written
      * and plain strings where the key-derived fallback answered, on the
      * vocabulary and on every value alike. Names: cancellation-scopes,
-     * comment-visibilities, fulfillment-statuses, item-types, payment-statuses,
-     * return-resolutions, return-statuses, statuses.
+     * comment-visibilities, discount-applies-to, discount-effect-kinds,
+     * discount-placements, discount-sources, discount-value-types,
+     * fulfillment-statuses, item-types, payment-statuses, refund-modes,
+     * return-reason-tones, return-resolutions, return-statuses, statuses.
      *
      * @param OrdersVocabulariesGetName $name
      * @throws RevenexxException
@@ -791,7 +1051,9 @@ class Orders extends Service
      * carry 'restock'. Two things it does not carry: the comments and the event
      * trail, which are their own paginated routes because both grow without
      * bound. Addressed by uuid — an order number goes through GET
-     * /orders?number=… first.
+     * /orders?number=… first. The fields currency, grand_total, contact_id and
+     * status and the five statuses are read by other apps (payments checks a
+     * payment against them) and are stable from 1.0.
      *
      * @param string $id
      * @throws RevenexxException
@@ -821,28 +1083,39 @@ class Orders extends Service
     /**
      * The narrow correction window a service desk needs: the customer gave the
      * wrong delivery address, the buyer's name is misspelled, their
-     * purchase-order number was missing. Six columns and no others —
-     * customer_order_number, buyer, billing_address, shipping_address, user_data
-     * and metadata — and each is REPLACED whole, not merged, so send the entire
-     * address rather than the one line that changed. It moves nothing: status,
+     * purchase-order number was missing. Ten columns and no others —
+     * customer_order_number, buyer, billing_address, shipping_address, user_data,
+     * metadata, and the four that say where the order came from (external_id,
+     * external_refs, source_synced_at, source_data) — and each is REPLACED
+     * whole, not merged, so send the entire address rather than the one line that
+     * changed. The last four are the only ones a delta run needs, and this is the
+     * only address that refreshes them without moving the order: a new ETag and a
+     * new confirmation time arrive here. It moves nothing: status,
      * payment_status, fulfillment_status and the quantities belong to the action
      * routes, and a body carrying them is accepted with those keys quietly
-     * dropped. The window closes when the fulfilling system acknowledges the
-     * order, because from then on the ERP holds the copy that ships — unless
-     * the tenant set allow_modification_after_acknowledge. Every accepted change
-     * writes an order.updated event naming the columns it touched.
+     * dropped — except created_at and updated_at, which are the server's and
+     * answer 400 server_owned_field. The window closes when the fulfilling system
+     * acknowledges the order, because from then on the ERP holds the copy that
+     * ships — unless the tenant set allow_modification_after_acknowledge. Every
+     * accepted change writes an order.updated event naming the columns it
+     * touched.
      *
      * @param string $id
      * @param ?array $billingAddress
      * @param ?array $buyer
      * @param ?string $customerOrderNumber
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?array $metadata
+     * @param ?string $requestedDeliveryDate
      * @param ?array $shippingAddress
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @param ?array $userData
      * @throws RevenexxException
      * @return array
      */
-    public function ordersUpdate(string $id, ?array $billingAddress = null, ?array $buyer = null, ?string $customerOrderNumber = null, ?array $metadata = null, ?array $shippingAddress = null, ?array $userData = null): array
+    public function ordersUpdate(string $id, ?array $billingAddress = null, ?array $buyer = null, ?string $customerOrderNumber = null, ?string $externalId = null, ?array $externalRefs = null, ?array $metadata = null, ?string $requestedDeliveryDate = null, ?array $shippingAddress = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?array $userData = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -864,14 +1137,19 @@ class Orders extends Service
         if (!is_null($customerOrderNumber)) {
             $apiParams['customer_order_number'] = $customerOrderNumber;
         }
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
 
         if (!is_null($metadata)) {
             $apiParams['metadata'] = $metadata;
         }
+        $apiParams['requested_delivery_date'] = $requestedDeliveryDate;
 
         if (!is_null($shippingAddress)) {
             $apiParams['shipping_address'] = $shippingAddress;
         }
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
 
         if (!is_null($userData)) {
             $apiParams['user_data'] = $userData;
@@ -891,21 +1169,28 @@ class Orders extends Service
     /**
      * The return channel for whatever fulfils the order. An Integration Studio
      * workflow picks up order.placed, books the order into the ERP, and calls
-     * this with the id the ERP gave it — which lands in external_ref and makes
-     * the two systems mutually findable. It stamps acknowledged_at from the
-     * server's clock, and that timestamp is what closes the correction window:
-     * PUT /orders/{id} refuses afterwards, because the copy that ships now lives
-     * elsewhere. It is a handshake and nothing more — it does not change
-     * status, payment_status or fulfillment_status, and it does not ship
-     * anything. Once only: a second call is a 422 rather than a silent overwrite
-     * of the first system's reference.
+     * this with what the ERP gave it — the readable order number in
+     * external_ref, the ERP's own key in external_id, and the token a later
+     * write-back has to hand back in source_data. That is what makes the two
+     * systems mutually findable, and an external_id another order of this tenant
+     * already holds is a 409 rather than a silent second claim on the same ERP
+     * record. It stamps acknowledged_at from the server's clock, and that
+     * timestamp is what closes the correction window: PUT /orders/{id} refuses
+     * afterwards, because the copy that ships now lives elsewhere. It is a
+     * handshake and nothing more — it does not change status, payment_status or
+     * fulfillment_status, and it does not ship anything. Once only: a second call
+     * is a 422 rather than a silent overwrite of the first system's reference.
      *
      * @param string $id
+     * @param ?string $externalId
      * @param ?string $externalRef
+     * @param ?array $externalRefs
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @throws RevenexxException
      * @return array
      */
-    public function ordersAcknowledge(string $id, ?string $externalRef = null): array
+    public function ordersAcknowledge(string $id, ?string $externalId = null, ?string $externalRef = null, ?array $externalRefs = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -915,10 +1200,14 @@ class Orders extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+        $apiParams['external_id'] = $externalId;
 
         if (!is_null($externalRef)) {
             $apiParams['external_ref'] = $externalRef;
         }
+        $apiParams['external_refs'] = $externalRefs;
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -942,7 +1231,10 @@ class Orders extends Service
      * stock: payment travels through /payment-status and restocking is an
      * explicit inventories call by the orchestrator. A tenant may require a
      * reason (cancel_requires_reason), and a hold may block it (on_hold_blocks =
-     * 'shipping_and_cancel').
+     * 'shipping_and_cancel'). A pending order may be cancelled. A BUYER's own
+     * call reaches further back only: the buyer cancels while the order is
+     * pending or placed, not acknowledged by a fulfilling system and with nothing
+     * shipped — otherwise 422 order_not_cancellable, and the merchant decides.
      *
      * @param string $id
      * @param ?string $cancelledBy
@@ -984,16 +1276,14 @@ class Orders extends Service
      * What people have written about this order, oldest first: the service desk's
      * own notes and the messages meant for the customer, in one list. Filter by
      * ?visibility=customer to build the version a customer may see, and by
-     * ?visibility=internal for the desk's own — the route does NOT decide that
-     * for you, so a customer-facing surface has to ask for the customer ones.
-     * Comments are prose about the order and never move it; the lifecycle lives
-     * in the event trail. Every parameter below is an exact match on the column
-     * it names. `order_id` is deliberately absent: the route fixes it from the
-     * path AFTER the query filter is read, so sending one is accepted and then
-     * overwritten — it filters nothing. DEPRECATED KEY: the response also
-     * repeats 'items' under 'comments' for compatibility with the pre-envelope
-     * shape. It is the same array; read 'items'. The alias is removed in the next
-     * minor version.
+     * ?visibility=internal for the desk's own — on a back-office call the route
+     * does NOT decide that for you; on a buyer's own call it does, and only the
+     * customer-visible ones exist (asking for ?visibility=internal is 403
+     * buyer_not_permitted). Comments are prose about the order and never move it;
+     * the lifecycle lives in the event trail. Every parameter below is an exact
+     * match on the column it names. `order_id` is deliberately absent: the route
+     * fixes it from the path AFTER the query filter is read, so sending one is
+     * accepted and then overwritten — it filters nothing.
      *
      * @param string $id
      * @param ?string $idQuery
@@ -1070,7 +1360,10 @@ class Orders extends Service
      * Adding one writes an order.comment.added event, so the trail shows that a
      * note was made and its visibility, without copying the text onto the bus. It
      * changes nothing about the order, and it sends nothing to anybody: this
-     * stores a comment, it does not email the customer.
+     * stores a comment, it does not email the customer. On a buyer's own call the
+     * note is always 'customer' — a buyer writes to the merchant, not into the
+     * desk's internal notes, and asking for 'internal' is 403
+     * buyer_not_permitted.
      *
      * @param string $id
      * @param string $body
@@ -1171,9 +1464,7 @@ class Orders extends Service
      * read and a value sent for it is overwritten rather than honoured. The jsonb
      * column 'payload' is not offered for the same reason it is not offered on
      * the order list: the data plane answers 400 for anything that is not a whole
-     * JSON document. DEPRECATED KEY: the response also repeats 'items' under
-     * 'events' for compatibility with the pre-envelope shape. It is the same
-     * array; read 'items'. The alias is removed in the next minor version.
+     * JSON document.
      *
      * @param string $id
      * @param ?string $idQuery
@@ -1382,25 +1673,30 @@ class Orders extends Service
      * Open a return case: the customer has announced goods are coming back, and
      * this is where that becomes a tracked thing with a return number of its own,
      * drawn from the tenant's return range. Positions are guarded against what
-     * actually SHIPPED and has not already come back, so a return cannot exceed
-     * the goods that left. Each position carries a `restock` flag saying whether
-     * the item is expected to be sellable again — recorded now, acted on only
-     * when the return completes. Omitting `positions` registers everything still
-     * returnable, the 'the customer sent the whole delivery back' case. Nothing
-     * is booked yet: quantity_returned stays where it is and the order does not
-     * move — the return starts as 'registered' and travels through receive and
-     * complete or reject. Allowed on a completed order, refused on a cancelled
-     * one.
+     * actually SHIPPED and is neither back nor already claimed by another open
+     * return, so two returns cannot claim the same pieces. Each position carries
+     * a `restock` flag saying whether the item is expected to be sellable again
+     * — recorded now, acted on only when the return completes. Omitting
+     * `positions` registers everything still returnable, the 'the customer sent
+     * the whole delivery back' case. Nothing is booked yet: quantity_returned
+     * stays where it is and the order does not move — the return starts as
+     * 'registered' and travels through receive and complete or reject. Allowed on
+     * a completed order, refused on a cancelled one.
      *
      * @param string $id
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?array $metadata
      * @param ?array $positions
      * @param ?string $reason
+     * @param ?string $reasonCode
      * @param ?bool $restock
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @throws RevenexxException
      * @return array
      */
-    public function ordersReturn(string $id, ?array $metadata = null, ?array $positions = null, ?string $reason = null, ?bool $restock = null): array
+    public function ordersReturn(string $id, ?string $externalId = null, ?array $externalRefs = null, ?array $metadata = null, ?array $positions = null, ?string $reason = null, ?string $reasonCode = null, ?bool $restock = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -1410,6 +1706,8 @@ class Orders extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
 
         if (!is_null($metadata)) {
             $apiParams['metadata'] = $metadata;
@@ -1422,10 +1720,13 @@ class Orders extends Service
         if (!is_null($reason)) {
             $apiParams['reason'] = $reason;
         }
+        $apiParams['reason_code'] = $reasonCode;
 
         if (!is_null($restock)) {
             $apiParams['restock'] = $restock;
         }
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -1455,7 +1756,10 @@ class Orders extends Service
      * (refund, partial_refund, replacement, repair, store_credit — see GET
      * /orders/vocabularies/return-resolutions); anything else is refused rather
      * than stored as a word no reader knows. It is checked before the positions
-     * are booked, so a rejected value leaves nothing behind.
+     * are booked, so a rejected value leaves nothing behind. The refunds of all
+     * completed returns of one order together never exceed its grand_total: a
+     * refund_total that would cross it is 422 refund_exceeds_order, checked
+     * before anything is booked.
      *
      * @param string $id
      * @param string $rid
@@ -1596,16 +1900,20 @@ class Orders extends Service
      *
      * @param string $id
      * @param ?string $carrier
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?array $metadata
      * @param ?string $number
      * @param ?array $positions
      * @param ?string $shippedAt
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @param ?string $trackingCode
      * @param ?string $trackingUrl
      * @throws RevenexxException
      * @return array
      */
-    public function ordersShip(string $id, ?string $carrier = null, ?array $metadata = null, ?string $number = null, ?array $positions = null, ?string $shippedAt = null, ?string $trackingCode = null, ?string $trackingUrl = null): array
+    public function ordersShip(string $id, ?string $carrier = null, ?string $externalId = null, ?array $externalRefs = null, ?array $metadata = null, ?string $number = null, ?array $positions = null, ?string $shippedAt = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $trackingCode = null, ?string $trackingUrl = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -1619,6 +1927,8 @@ class Orders extends Service
         if (!is_null($carrier)) {
             $apiParams['carrier'] = $carrier;
         }
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
 
         if (!is_null($metadata)) {
             $apiParams['metadata'] = $metadata;
@@ -1635,6 +1945,8 @@ class Orders extends Service
         if (!is_null($shippedAt)) {
             $apiParams['shipped_at'] = $shippedAt;
         }
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
 
         if (!is_null($trackingCode)) {
             $apiParams['tracking_code'] = $trackingCode;
@@ -1667,8 +1979,9 @@ class Orders extends Service
      * what this answers and what that accepts cannot drift — a client
      * subtracting the quantities itself eventually offers a shipment the server
      * refuses, or one it should have refused. 'shippable' is false with a
-     * 'blocked_reason' when the order is held, cancelled, completed or has
-     * nothing open.
+     * 'blocked_reason' when the order is held, cancelled, completed, still
+     * pending approval or has nothing open. A discount placed as a position of
+     * its own is money, not goods, and is not listed.
      *
      * @param string $id
      * @throws RevenexxException

@@ -13,6 +13,7 @@ class BudgetChangeReason implements JsonSerializable
     private static BudgetChangeReason $MANUAL;
     private static BudgetChangeReason $ROLLOVER;
     private static BudgetChangeReason $LAPSED;
+    private static BudgetChangeReason $CANCELLATION;
 
     private string $value;
 
@@ -79,5 +80,12 @@ class BudgetChangeReason implements JsonSerializable
             self::$LAPSED = new BudgetChangeReason('lapsed');
         }
         return self::$LAPSED;
+    }
+    public static function CANCELLATION(): BudgetChangeReason
+    {
+        if (!isset(self::$CANCELLATION)) {
+            self::$CANCELLATION = new BudgetChangeReason('cancellation');
+        }
+        return self::$CANCELLATION;
     }
 }

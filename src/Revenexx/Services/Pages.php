@@ -7,6 +7,8 @@ use Revenexx\Client;
 use Revenexx\Service;
 use Revenexx\InputFile;
 use Revenexx\Enums\PageStatus;
+use Revenexx\Enums\Deleted;
+use Revenexx\Enums\PagesSeedMode;
 use Revenexx\Enums\PagesVocabulariesGetName;
 
 class Pages extends Service
@@ -154,11 +156,12 @@ class Pages extends Service
      * @param string $id
      * @param ?string $bundle
      * @param ?string $label
+     * @param ?array $metadata
      * @param ?array $tree
      * @throws RevenexxException
      * @return array
      */
-    public function pagesLibraryUpdate(string $id, ?string $bundle = null, ?string $label = null, ?array $tree = null): array
+    public function pagesLibraryUpdate(string $id, ?string $bundle = null, ?string $label = null, ?array $metadata = null, ?array $tree = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -175,6 +178,10 @@ class Pages extends Service
 
         if (!is_null($label)) {
             $apiParams['label'] = $label;
+        }
+
+        if (!is_null($metadata)) {
+            $apiParams['metadata'] = $metadata;
         }
 
         if (!is_null($tree)) {
@@ -357,10 +364,11 @@ class Pages extends Service
      * @param string $id
      * @param ?array $items
      * @param ?string $label
+     * @param ?array $metadata
      * @throws RevenexxException
      * @return array
      */
-    public function pagesMenusUpdate(string $id, ?array $items = null, ?string $label = null): array
+    public function pagesMenusUpdate(string $id, ?array $items = null, ?string $label = null, ?array $metadata = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -377,6 +385,10 @@ class Pages extends Service
 
         if (!is_null($label)) {
             $apiParams['label'] = $label;
+        }
+
+        if (!is_null($metadata)) {
+            $apiParams['metadata'] = $metadata;
         }
 
         $apiHeaders = [];
@@ -397,8 +409,11 @@ class Pages extends Service
      * visitor can see the page, because a published status without a published
      * revision still delivers nothing. A storefront wants `GET
      * /pages/delivery/pages` instead, which answers only what is actually
-     * servable. Soft-deleted pages are never returned and the predicate is this
-     * route's own, not something a caller can switch off.
+     * servable. Soft-deleted pages are not returned unless `?deleted=only` asks
+     * for the trash instead: then ONLY soft-deleted pages come back, most
+     * recently deleted first, each carrying its `deleted_at`, and `POST
+     * /pages/pages/{id}/restore` brings one back. The two collections never mix
+     * in one answer.
      *
      * @param ?int $limit
      * @param ?int $offset
@@ -406,10 +421,11 @@ class Pages extends Service
      * @param ?string $bundle
      * @param ?PageStatus $status
      * @param ?string $q
+     * @param ?Deleted $deleted
      * @throws RevenexxException
      * @return array
      */
-    public function pagesPagesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $bundle = null, ?PageStatus $status = null, ?string $q = null): array
+    public function pagesPagesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $bundle = null, ?PageStatus $status = null, ?string $q = null, ?Deleted $deleted = null): array
     {
         $apiPath = str_replace(
             [],
@@ -443,6 +459,10 @@ class Pages extends Service
             $apiParams['q'] = $q;
         }
 
+        if (!is_null($deleted)) {
+            $apiParams['deleted'] = $deleted;
+        }
+
         $apiHeaders = [];
 
         return $this->client->call(
@@ -469,10 +489,11 @@ class Pages extends Service
      * @param ?array $meta
      * @param ?string $slug
      * @param ?string $sourceLanguage
+     * @param ?string $templateId
      * @throws RevenexxException
      * @return array
      */
-    public function pagesPagesCreate(string $title, ?string $bundle = null, ?array $hostOptions = null, ?array $meta = null, ?string $slug = null, ?string $sourceLanguage = null): array
+    public function pagesPagesCreate(string $title, ?string $bundle = null, ?array $hostOptions = null, ?array $meta = null, ?string $slug = null, ?string $sourceLanguage = null, ?string $templateId = null): array
     {
         $apiPath = str_replace(
             [],
@@ -487,6 +508,7 @@ class Pages extends Service
         $apiParams['meta'] = $meta;
         $apiParams['slug'] = $slug;
         $apiParams['sourceLanguage'] = $sourceLanguage;
+        $apiParams['templateId'] = $templateId;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -505,9 +527,9 @@ class Pages extends Service
      * index counts live rows only. Nothing is erased: the translations, blocks,
      * edit state, revisions, comments and preview grants that hang off the page
      * all keep their rows, because their `on delete cascade` belongs to a hard
-     * delete and this is not one. So a page can be brought back intact by
-     * clearing `deleted_at` — but not through this app, which publishes no
-     * route that does it.
+     * delete and this is not one. So a page comes back intact through `POST
+     * /pages/pages/{id}/restore`, and until then it is listed in the trash at
+     * `GET /pages/pages?deleted=only`.
      *
      * @param string $id
      * @throws RevenexxException
@@ -628,6 +650,85 @@ class Pages extends Service
     }
 
     /**
+     * Creates a new page from what the source SHOWS: its blocks as they stand,
+     * which after a publish are the live tree, every language's title, its type,
+     * language, display options and metadata. An open draft on the source is not
+     * copied — it lives in the source's edit state, not in its blocks. Every
+     * block of the copy gets a new id, so editing the copy never touches the
+     * source, while a block that references a library item keeps referencing it.
+     * The copy is unpublished, has no revisions and no edit state, and starts at
+     * default_page_status. With an empty body (`{}`) its title is the source's
+     * plus a copy suffix in the source language and it has no slug, so it
+     * collides with nothing.
+     *
+     * @param string $id
+     * @param ?string $slug
+     * @param ?string $title
+     * @throws RevenexxException
+     * @return array
+     */
+    public function pagesPagesDuplicate(string $id, ?string $slug = null, ?string $title = null): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/pages/pages/{id}/duplicate'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+        $apiParams['slug'] = $slug;
+
+        if (!is_null($title)) {
+            $apiParams['title'] = $title;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Clears the tombstone, and that is the whole restore: a soft delete never
+     * touched the translations, blocks, edit state, revisions, comments or
+     * preview grants, so the page returns to every list, read and delivery
+     * exactly as it was, including its published revision. Only the slug can have
+     * moved on — deleting freed it, so another live page may hold it now. Then
+     * the page stays in the trash and the call answers 409; free or change the
+     * other page's slug and restore again.
+     *
+     * @param string $id
+     * @throws RevenexxException
+     * @return array
+     */
+    public function pagesPagesRestore(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/pages/pages/{id}/restore'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
      * One entry per publication, newest first, which is the order a history is
      * read in and the one this route sorts by unless `order` says otherwise. The
      * `snapshot` — the whole published page, in every language — is
@@ -695,21 +796,31 @@ class Pages extends Service
     }
 
     /**
-     * The target of a theme activation hook: hand it the theme's default pages
-     * and menus and it creates whatever is missing. Idempotent by `slug` and by
-     * menu key — a slug or a key the tenant already holds is skipped rather
-     * than rewritten, so re-running after a theme update adds only the new ones
-     * and never overwrites what an editor has since changed. A seeded page is
-     * published on the spot, immediately servable by delivery: the
+     * The target of a theme install: hand it the theme's default pages, menus,
+     * library items and site settings. In `fill` mode — the default — it
+     * creates whatever is missing and leaves everything else alone: idempotent by
+     * page `slug`, menu key, library item label and setting key, so re-running
+     * after a theme update adds only the new ones and never overwrites what an
+     * editor has since changed, and a setting the tenant has set keeps its value.
+     * In `reset` mode every section the body carries REPLACES the tenant's own
+     * content of that kind: the live pages, menus or library items are
+     * soft-deleted first, exactly as their delete does it — so they wait in the
+     * trash and can be restored — and the site settings are removed, then the
+     * section is seeded as in fill. A section the body leaves out is not touched
+     * in either mode, and nothing reaches beyond the calling tenant. A seeded
+     * page is published on the spot, immediately servable by delivery: the
      * default_page_status setting deliberately does not apply, because a theme
      * that activates with invisible pages looks broken.
      *
+     * @param ?array $library
      * @param ?array $menus
+     * @param ?PagesSeedMode $mode
      * @param ?array $pages
+     * @param ?array $settings
      * @throws RevenexxException
      * @return array
      */
-    public function pagesSeed(?array $menus = null, ?array $pages = null): array
+    public function pagesSeed(?array $library = null, ?array $menus = null, ?PagesSeedMode $mode = null, ?array $pages = null, ?array $settings = null): array
     {
         $apiPath = str_replace(
             [],
@@ -718,14 +829,272 @@ class Pages extends Service
         );
 
         $apiParams = [];
+        $apiParams['library'] = $library;
         $apiParams['menus'] = $menus;
+
+        if (!is_null($mode)) {
+            $apiParams['mode'] = $mode;
+        }
         $apiParams['pages'] = $pages;
+        $apiParams['settings'] = $settings;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
 
         return $this->client->call(
             Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Every site setting the tenant has set, ordered by key — what a theme
+     * styles the whole storefront with: its appearance, its design tokens, its
+     * custom CSS. Not paged: a tenant holds a handful of keys, and this is the
+     * whole set in one read. A key nobody set is simply absent here; `GET
+     * /pages/delivery/site-settings` is the read that answers it as `null`.
+     *
+     * @throws RevenexxException
+     * @return array
+     */
+    public function pagesSettingsSiteList(): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/pages/settings/site'
+        );
+
+        $apiParams = [];
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Takes the value away, so the key reads as unset again — absent from the
+     * list, `null` on delivery, which is where a theme falls back to its own
+     * default. Not a tombstone: there is nothing to restore, and setting the key
+     * again starts afresh.
+     *
+     * @param string $key
+     * @throws RevenexxException
+     * @return array
+     */
+    public function pagesSettingsSiteDelete(string $key): array
+    {
+        $apiPath = str_replace(
+            ['{key}'],
+            [$key],
+            '/v1/pages/settings/site/{key}'
+        );
+
+        $apiParams = [];
+        $apiParams['key'] = $key;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_DELETE,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * One key, with who set it and when. A key the tenant never set answers 404
+     * rather than an empty value, so an editor can tell "not set" from "set to
+     * nothing".
+     *
+     * @param string $key
+     * @throws RevenexxException
+     * @return array
+     */
+    public function pagesSettingsSiteGet(string $key): array
+    {
+        $apiPath = str_replace(
+            ['{key}'],
+            [$key],
+            '/v1/pages/settings/site/{key}'
+        );
+
+        $apiParams = [];
+        $apiParams['key'] = $key;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Stores the value under the key, creating the key or replacing its value —
+     * both answer 200 with the stored row, because after either call the key
+     * holds exactly what was sent. The value is replaced whole, never merged, and
+     * it is not checked against what a theme expects: this app stores JSON and
+     * the theme reading the key decides its shape. It reaches every storefront of
+     * the tenant at once, through `GET /pages/delivery/site-settings`.
+     *
+     * @param string $key
+     * @param array $value
+     * @throws RevenexxException
+     * @return array
+     */
+    public function pagesSettingsSitePut(string $key, array $value): array
+    {
+        $apiPath = str_replace(
+            ['{key}'],
+            [$key],
+            '/v1/pages/settings/site/{key}'
+        );
+
+        $apiParams = [];
+        $apiParams['key'] = $key;
+        $apiParams['value'] = $value;
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_PUT,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Which records render with which page: one entry per product or category
+     * that has a page of its own as its template. Every other record renders with
+     * the theme's default template, so an absent record is not an error. Filter
+     * by `resource_type` for one kind of record, by `page_slug` for everything
+     * one page is the template of.
+     *
+     * @param ?int $limit
+     * @param ?int $offset
+     * @param ?string $order
+     * @param ?string $resourceType
+     * @param ?string $pageSlug
+     * @throws RevenexxException
+     * @return array
+     */
+    public function pagesTemplateAssignmentsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $resourceType = null, ?string $pageSlug = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/pages/template-assignments'
+        );
+
+        $apiParams = [];
+
+        if (!is_null($limit)) {
+            $apiParams['limit'] = $limit;
+        }
+
+        if (!is_null($offset)) {
+            $apiParams['offset'] = $offset;
+        }
+
+        if (!is_null($order)) {
+            $apiParams['order'] = $order;
+        }
+
+        if (!is_null($resourceType)) {
+            $apiParams['resource_type'] = $resourceType;
+        }
+
+        if (!is_null($pageSlug)) {
+            $apiParams['page_slug'] = $pageSlug;
+        }
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Takes the page away from the record, which then renders with the theme's
+     * default template again. The page itself is not touched. Not a tombstone:
+     * the assignment is gone, and assigning a page again starts afresh.
+     *
+     * @param string $resourceType
+     * @param string $resourceId
+     * @throws RevenexxException
+     * @return array
+     */
+    public function pagesTemplateAssignmentsDelete(string $resourceType, string $resourceId): array
+    {
+        $apiPath = str_replace(
+            ['{resource_type}', '{resource_id}'],
+            [$resourceType, $resourceId],
+            '/v1/pages/template-assignments/{resource_type}/{resource_id}'
+        );
+
+        $apiParams = [];
+        $apiParams['resource_type'] = $resourceType;
+        $apiParams['resource_id'] = $resourceId;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_DELETE,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Makes a page the template one record renders with, replacing any page
+     * assigned before — the record is the address, so a second PUT moves it
+     * rather than adding another. The page is named by its slug and has to be a
+     * live page when the call is made; it need not be published yet, but the
+     * storefront only uses it once it is. Answers 200 with the stored assignment
+     * either way.
+     *
+     * @param string $resourceType
+     * @param string $resourceId
+     * @param string $pageSlug
+     * @throws RevenexxException
+     * @return array
+     */
+    public function pagesTemplateAssignmentsPut(string $resourceType, string $resourceId, string $pageSlug): array
+    {
+        $apiPath = str_replace(
+            ['{resource_type}', '{resource_id}'],
+            [$resourceType, $resourceId],
+            '/v1/pages/template-assignments/{resource_type}/{resource_id}'
+        );
+
+        $apiParams = [];
+        $apiParams['resource_type'] = $resourceType;
+        $apiParams['resource_id'] = $resourceId;
+        $apiParams['pageSlug'] = $pageSlug;
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_PUT,
             $apiPath,
             $apiHeaders,
             $apiParams

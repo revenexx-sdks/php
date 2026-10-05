@@ -452,13 +452,230 @@ class CustomersValueLists extends Service
     }
 
     /**
-     * What the app.installed event runs. It fills all four of the value sets a
+     * Which document a contact point receives. Four is what an ERP delivers per
+     * debtor; a merchant whose own mails a credit note or a statement separately
+     * adds theirs. A fresh install is seeded with invoice, order_confirmation,
+     * shipping_notice, dunning, and the set seeds on first read too, so the page
+     * is never empty. The whole set comes back in one page in the tenant's own
+     * order — this route takes no limit/offset/order and no column filters, so
+     * `page` describes the full set and `filter` is always empty.
+     *
+     * @throws RevenexxException
+     * @return array
+     */
+    public function customersContactPointKindsList(): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/customers/contact-point-kinds'
+        );
+
+        $apiParams = [];
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Extends this tenant's recipient types set with a value of their own — the
+     * whole reason these four stopped being CHECK constraints. Which document a
+     * contact point receives. Four is what an ERP delivers per debtor; a merchant
+     * whose own mails a credit note or a statement separately adds theirs. The
+     * code is lowercase and becomes what `contact_points.kind` stores; it cannot
+     * be changed afterwards, because every record carrying it would be orphaned.
+     *
+     * @param string $code
+     * @param string $title
+     * @param ?string $description
+     * @param ?array $descriptions
+     * @param ?bool $isDefault
+     * @param ?array $labels
+     * @param ?int $position
+     * @param ?Tone $tone
+     * @throws RevenexxException
+     * @return array
+     */
+    public function customersContactPointKindsCreate(string $code, string $title, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?Tone $tone = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/customers/contact-point-kinds'
+        );
+
+        $apiParams = [];
+        $apiParams['code'] = $code;
+        $apiParams['title'] = $title;
+        $apiParams['description'] = $description;
+        $apiParams['descriptions'] = $descriptions;
+
+        if (!is_null($isDefault)) {
+            $apiParams['is_default'] = $isDefault;
+        }
+        $apiParams['labels'] = $labels;
+
+        if (!is_null($position)) {
+            $apiParams['position'] = $position;
+        }
+
+        if (!is_null($tone)) {
+            $apiParams['tone'] = $tone;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Takes a value out of the recipient types set. There is no foreign key
+     * behind `contact_points.kind` — one added to a table that starts empty
+     * fails the migration of every existing tenant — so this route IS the
+     * integrity: it refuses while any record still carries the code, and it
+     * refuses to empty the set. Retiring a value that is in use is therefore a
+     * two-step job: move the records onto another value first, then remove it.
+     *
+     * @param string $id
+     * @throws RevenexxException
+     * @return array
+     */
+    public function customersContactPointKindsDelete(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/customers/contact-point-kinds/{id}'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_DELETE,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * One value of the recipient types set, by its id — its code, its fallback
+     * title, the per-language `labels` an operator reads and the badge `tone` a
+     * client renders it with. Which document a contact point receives. Four is
+     * what an ERP delivers per debtor; a merchant whose own mails a credit note
+     * or a statement separately adds theirs. Reading one value is the rare path:
+     * `GET /customers/contact-point-kinds` answers the whole set in a single
+     * page, which is what a select needs.
+     *
+     * @param string $id
+     * @throws RevenexxException
+     * @return array
+     */
+    public function customersContactPointKindsGet(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/customers/contact-point-kinds/{id}'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Everything about a value except the value itself: its titles, its help
+     * text, its badge tone, its `position` in the select, and which one of the
+     * set is the default. The `code` is immutable, so no record carrying it is
+     * ever orphaned by an edit here — a merchant who retitles `invoice` to
+     * wording of their own changes what people READ and nothing about what
+     * `contact_points.kind` stores. Seeded values (`is_system`) are renameable
+     * like any other, and re-seeding leaves the rename alone.
+     *
+     * @param string $id
+     * @param ?string $description
+     * @param ?array $descriptions
+     * @param ?bool $isDefault
+     * @param ?array $labels
+     * @param ?int $position
+     * @param ?string $title
+     * @param ?Tone $tone
+     * @throws RevenexxException
+     * @return array
+     */
+    public function customersContactPointKindsUpdate(string $id, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?string $title = null, ?Tone $tone = null): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/customers/contact-point-kinds/{id}'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+        $apiParams['description'] = $description;
+        $apiParams['descriptions'] = $descriptions;
+
+        if (!is_null($isDefault)) {
+            $apiParams['is_default'] = $isDefault;
+        }
+        $apiParams['labels'] = $labels;
+
+        if (!is_null($position)) {
+            $apiParams['position'] = $position;
+        }
+
+        if (!is_null($title)) {
+            $apiParams['title'] = $title;
+        }
+
+        if (!is_null($tone)) {
+            $apiParams['tone'] = $tone;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_PUT,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * What the app.installed event runs. It fills all 5 of the value sets a
      * tenant needs before anything else works — the payment terms, the address
-     * types, the lifecycle stages and the activity types — in one call.
-     * Idempotent by code: a set that already has its rows is left completely
-     * alone, so a re-delivered event and a merchant's renames both survive. A
-     * tenant installed before these tables existed is seeded lazily instead, by
-     * the first read that finds one empty.
+     * types, the lifecycle stages, the activity types and the recipient types —
+     * in one call. Idempotent by code: a set that already has its rows is left
+     * completely alone, so a re-delivered event and a merchant's renames both
+     * survive. A tenant installed before these tables existed is seeded lazily
+     * instead, by the first read that finds one empty.
      *
      * @param array $data
      * @throws RevenexxException
@@ -925,9 +1142,10 @@ class CustomersValueLists extends Service
      * a name, a title and a description. The VALUES are deliberately left out —
      * this is the call that says which vocabularies exist, and the detail route
      * is the one that answers what is in them. Names: address-types,
-     * contact-event-kinds, contact-statuses, lifecycle-stages, locales,
+     * contact-event-kinds, contact-point-kinds, contact-statuses,
+     * credit-limit-modes, lifecycle-stages, locales, order-approval-modes,
      * organization-statuses, payment-terms, registration-statuses, roles,
-     * rule-matches, segment-sources. Fetch one with GET
+     * rule-matches, segment-sources, shipping-advice. Fetch one with GET
      * /customers/vocabularies/{name}; a client holding the qualified pair
      * 'customers.<name>' builds that URL from the pair alone.
      *
@@ -970,9 +1188,10 @@ class CustomersValueLists extends Service
      * value outside it is stale data rather than a missing label. Values come
      * back in the order a select should offer them — lifecycle order for a
      * status, the merchant's own position for a table. Names: address-types,
-     * contact-event-kinds, contact-statuses, lifecycle-stages, locales,
+     * contact-event-kinds, contact-point-kinds, contact-statuses,
+     * credit-limit-modes, lifecycle-stages, locales, order-approval-modes,
      * organization-statuses, payment-terms, registration-statuses, roles,
-     * rule-matches, segment-sources.
+     * rule-matches, segment-sources, shipping-advice.
      *
      * @param CustomersVocabulariesGetName $name
      * @throws RevenexxException

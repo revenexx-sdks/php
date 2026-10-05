@@ -7,6 +7,7 @@ use Revenexx\Client;
 use Revenexx\Service;
 use Revenexx\InputFile;
 use Revenexx\Enums\Status;
+use Revenexx\Enums\OrderApprovalMode;
 use Revenexx\Enums\RegistrationStatus;
 use Revenexx\Enums\CustomersContactsCreateRegistrationStatus;
 use Revenexx\Enums\ContactStatus;
@@ -164,12 +165,14 @@ class CustomersContacts extends Service
      * @param ?string $id
      * @param ?string $organizationId
      * @param ?string $email
+     * @param ?string $username
      * @param ?string $firstName
      * @param ?string $lastName
      * @param ?string $phone
      * @param ?string $jobTitle
      * @param ?string $role
      * @param ?Status $status
+     * @param ?OrderApprovalMode $orderApprovalMode
      * @param ?float $orderApprovalLimit
      * @param ?RegistrationStatus $registrationStatus
      * @param ?string $registrationDecidedAt
@@ -179,6 +182,7 @@ class CustomersContacts extends Service
      * @param ?bool $isPrimary
      * @param ?string $externalUserId
      * @param ?string $externalId
+     * @param ?string $sourceSyncedAt
      * @param ?string $createdAt
      * @param ?string $updatedAt
      * @param ?int $limit
@@ -187,7 +191,7 @@ class CustomersContacts extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function customersContactsList(?string $id = null, ?string $organizationId = null, ?string $email = null, ?string $firstName = null, ?string $lastName = null, ?string $phone = null, ?string $jobTitle = null, ?string $role = null, ?Status $status = null, ?float $orderApprovalLimit = null, ?RegistrationStatus $registrationStatus = null, ?string $registrationDecidedAt = null, ?string $registrationDecidedBy = null, ?string $registrationReason = null, ?string $locale = null, ?bool $isPrimary = null, ?string $externalUserId = null, ?string $externalId = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function customersContactsList(?string $id = null, ?string $organizationId = null, ?string $email = null, ?string $username = null, ?string $firstName = null, ?string $lastName = null, ?string $phone = null, ?string $jobTitle = null, ?string $role = null, ?Status $status = null, ?OrderApprovalMode $orderApprovalMode = null, ?float $orderApprovalLimit = null, ?RegistrationStatus $registrationStatus = null, ?string $registrationDecidedAt = null, ?string $registrationDecidedBy = null, ?string $registrationReason = null, ?string $locale = null, ?bool $isPrimary = null, ?string $externalUserId = null, ?string $externalId = null, ?string $sourceSyncedAt = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             [],
@@ -207,6 +211,10 @@ class CustomersContacts extends Service
 
         if (!is_null($email)) {
             $apiParams['email'] = $email;
+        }
+
+        if (!is_null($username)) {
+            $apiParams['username'] = $username;
         }
 
         if (!is_null($firstName)) {
@@ -231,6 +239,10 @@ class CustomersContacts extends Service
 
         if (!is_null($status)) {
             $apiParams['status'] = $status;
+        }
+
+        if (!is_null($orderApprovalMode)) {
+            $apiParams['order_approval_mode'] = $orderApprovalMode;
         }
 
         if (!is_null($orderApprovalLimit)) {
@@ -267,6 +279,10 @@ class CustomersContacts extends Service
 
         if (!is_null($externalId)) {
             $apiParams['external_id'] = $externalId;
+        }
+
+        if (!is_null($sourceSyncedAt)) {
+            $apiParams['source_synced_at'] = $sourceSyncedAt;
         }
 
         if (!is_null($createdAt)) {
@@ -308,12 +324,12 @@ class CustomersContacts extends Service
      * always sign in. `role` names one of this tenant's own roles and decides
      * what they may do; `registration_status` may only be set to `pending` or
      * `approved` here, because a rejection has to carry a reason and that is the
-     * reject route's job. `email` is the only field a create cannot omit;
-     * everything else is optional or defaulted by the database. Two rows of this
-     * tenant may not share `email` or `external_user_id` (while external_user_id
-     * IS NOT NULL).
+     * reject route's job. Two rows of this tenant may not share `email`,
+     * `external_user_id` (while external_user_id IS NOT NULL), `external_id`
+     * (while external_id IS NOT NULL) or `username` (while username IS NOT NULL).
      *
      * @param string $email
+     * @param ?string $createdAt
      * @param ?string $externalId
      * @param ?string $firstName
      * @param ?bool $isPrimary
@@ -321,6 +337,7 @@ class CustomersContacts extends Service
      * @param ?string $lastName
      * @param ?string $locale
      * @param ?float $orderApprovalLimit
+     * @param ?OrderApprovalMode $orderApprovalMode
      * @param ?string $organizationId
      * @param ?string $phone
      * @param ?CustomersContactsCreateRegistrationStatus $registrationStatus
@@ -329,7 +346,7 @@ class CustomersContacts extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function customersContactsCreate(string $email, ?string $externalId = null, ?string $firstName = null, ?bool $isPrimary = null, ?string $jobTitle = null, ?string $lastName = null, ?string $locale = null, ?float $orderApprovalLimit = null, ?string $organizationId = null, ?string $phone = null, ?CustomersContactsCreateRegistrationStatus $registrationStatus = null, ?string $role = null, ?ContactStatus $status = null): array
+    public function customersContactsCreate(string $email, ?string $createdAt = null, ?string $externalId = null, ?string $firstName = null, ?bool $isPrimary = null, ?string $jobTitle = null, ?string $lastName = null, ?string $locale = null, ?float $orderApprovalLimit = null, ?OrderApprovalMode $orderApprovalMode = null, ?string $organizationId = null, ?string $phone = null, ?CustomersContactsCreateRegistrationStatus $registrationStatus = null, ?string $role = null, ?ContactStatus $status = null): array
     {
         $apiPath = str_replace(
             [],
@@ -339,6 +356,10 @@ class CustomersContacts extends Service
 
         $apiParams = [];
         $apiParams['email'] = $email;
+
+        if (!is_null($createdAt)) {
+            $apiParams['created_at'] = $createdAt;
+        }
         $apiParams['external_id'] = $externalId;
         $apiParams['first_name'] = $firstName;
 
@@ -349,6 +370,10 @@ class CustomersContacts extends Service
         $apiParams['last_name'] = $lastName;
         $apiParams['locale'] = $locale;
         $apiParams['order_approval_limit'] = $orderApprovalLimit;
+
+        if (!is_null($orderApprovalMode)) {
+            $apiParams['order_approval_mode'] = $orderApprovalMode;
+        }
         $apiParams['organization_id'] = $organizationId;
         $apiParams['phone'] = $phone;
 
@@ -410,6 +435,50 @@ class CustomersContacts extends Service
         }
         $apiParams['note'] = $note;
         $apiParams['occurred_at'] = $occurredAt;
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Repair the one contact an import leaves unable to sign in. A contact
+     * created through this API is mirrored as a platform login in the same call;
+     * a contact written straight into the record by a migration or an ERP feed is
+     * not, and reads as a customer everywhere while being able to do nothing —
+     * no password, no recovery, and "no account found for that address" as the
+     * only explanation. This call creates the missing login and links it. It is
+     * idempotent: a contact that already has one is answered with it and
+     * `created` false, and nothing is touched, so a whole import is healed with
+     * one call per contact and is safe to re-run. It takes no password — the
+     * person is handed to `POST /customers/auth/recovery` and mints their own. It
+     * mirrors the state it finds: a blocked contact, or one whose registration is
+     * still pending or rejected, gets its login created DISABLED, so a repair can
+     * never hand access to somebody who was refused it. And it delivers nothing
+     * at all — telling the person is what the invitation is for.
+     *
+     * @param string $contactId
+     * @param ?string $createdBy
+     * @throws RevenexxException
+     * @return array
+     */
+    public function customersContactsIdentity(string $contactId, ?string $createdBy = null): array
+    {
+        $apiPath = str_replace(
+            ['{contact_id}'],
+            [$contactId],
+            '/v1/customers/contacts/{contact_id}/identity'
+        );
+
+        $apiParams = [];
+        $apiParams['contact_id'] = $contactId;
+        $apiParams['created_by'] = $createdBy;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -647,7 +716,9 @@ class CustomersContacts extends Service
      * `registration_*` column are ignored: the link to platform auth is
      * mirror-managed, and registration state is only ever moved by the approve
      * and reject routes, which record why. Two rows of this tenant may not share
-     * `email` or `external_user_id` (while external_user_id IS NOT NULL).
+     * `email`, `external_user_id` (while external_user_id IS NOT NULL),
+     * `external_id` (while external_id IS NOT NULL) or `username` (while username
+     * IS NOT NULL).
      *
      * @param string $id
      * @param ?string $email
@@ -658,15 +729,15 @@ class CustomersContacts extends Service
      * @param ?string $lastName
      * @param ?string $locale
      * @param ?float $orderApprovalLimit
+     * @param ?OrderApprovalMode $orderApprovalMode
      * @param ?string $organizationId
      * @param ?string $phone
-     * @param ?CustomersContactsCreateRegistrationStatus $registrationStatus
      * @param ?string $role
      * @param ?ContactStatus $status
      * @throws RevenexxException
      * @return array
      */
-    public function customersContactsUpdate(string $id, ?string $email = null, ?string $externalId = null, ?string $firstName = null, ?bool $isPrimary = null, ?string $jobTitle = null, ?string $lastName = null, ?string $locale = null, ?float $orderApprovalLimit = null, ?string $organizationId = null, ?string $phone = null, ?CustomersContactsCreateRegistrationStatus $registrationStatus = null, ?string $role = null, ?ContactStatus $status = null): array
+    public function customersContactsUpdate(string $id, ?string $email = null, ?string $externalId = null, ?string $firstName = null, ?bool $isPrimary = null, ?string $jobTitle = null, ?string $lastName = null, ?string $locale = null, ?float $orderApprovalLimit = null, ?OrderApprovalMode $orderApprovalMode = null, ?string $organizationId = null, ?string $phone = null, ?string $role = null, ?ContactStatus $status = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -690,12 +761,12 @@ class CustomersContacts extends Service
         $apiParams['last_name'] = $lastName;
         $apiParams['locale'] = $locale;
         $apiParams['order_approval_limit'] = $orderApprovalLimit;
+
+        if (!is_null($orderApprovalMode)) {
+            $apiParams['order_approval_mode'] = $orderApprovalMode;
+        }
         $apiParams['organization_id'] = $organizationId;
         $apiParams['phone'] = $phone;
-
-        if (!is_null($registrationStatus)) {
-            $apiParams['registration_status'] = $registrationStatus;
-        }
 
         if (!is_null($role)) {
             $apiParams['role'] = $role;

@@ -10,6 +10,7 @@ use Revenexx\Enums\Condition;
 use Revenexx\Enums\Effect;
 use Revenexx\Enums\ApproverType;
 use Revenexx\Enums\ProcurementPurchaseRequestItemsCreateType;
+use Revenexx\Enums\ProcurementVocabulariesGetName;
 
 final class ProcurementTest extends TestCase {
     private $client;
@@ -90,6 +91,126 @@ final class ProcurementTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->procurement->procurementApprovalRulesUpdate(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodProcurementBudgetReleasesList(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->procurement->procurementBudgetReleasesList(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodProcurementBudgetReleasesGet(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->procurement->procurementBudgetReleasesGet(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodProcurementBudgetReleasesRetry(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->procurement->procurementBudgetReleasesRetry(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodProcurementBudgetReleasesSettle(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->procurement->procurementBudgetReleasesSettle(
+            "",
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodProcurementDirectOrdersList(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->procurement->procurementDirectOrdersList(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodProcurementDirectOrdersGet(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->procurement->procurementDirectOrdersGet(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodProcurementDirectOrdersCommit(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->procurement->procurementDirectOrdersCommit(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodProcurementDirectOrdersSettle(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->procurement->procurementDirectOrdersSettle(
+            "",
             ""
         );
 
@@ -374,6 +495,35 @@ final class ProcurementTest extends TestCase {
         $response = $this->procurement->procurementSubmit(
             "",
             array()
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodProcurementVocabulariesList(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->procurement->procurementVocabulariesList(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodProcurementVocabulariesGet(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->procurement->procurementVocabulariesGet(
+            ProcurementVocabulariesGetName::APPROVALSTATUSES()
         );
 
         $this->assertSame($data, $response);

@@ -36,11 +36,12 @@ class ShippingMethods extends Service
      * @param ?PricingType $pricingType
      * @param ?string $carrierId
      * @param ?string $carrier
+     * @param ?string $externalId
      * @param ?string $taxClass
      * @throws RevenexxException
      * @return array
      */
-    public function shippingMethodsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $code = null, ?bool $enabled = null, ?PricingType $pricingType = null, ?string $carrierId = null, ?string $carrier = null, ?string $taxClass = null): array
+    public function shippingMethodsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $code = null, ?bool $enabled = null, ?PricingType $pricingType = null, ?string $carrierId = null, ?string $carrier = null, ?string $externalId = null, ?string $taxClass = null): array
     {
         $apiPath = str_replace(
             [],
@@ -82,6 +83,10 @@ class ShippingMethods extends Service
             $apiParams['carrier'] = $carrier;
         }
 
+        if (!is_null($externalId)) {
+            $apiParams['external_id'] = $externalId;
+        }
+
         if (!is_null($taxClass)) {
             $apiParams['tax_class'] = $taxClass;
         }
@@ -104,13 +109,13 @@ class ShippingMethods extends Service
      * transit days — is inherited from the carrier wherever the method states
      * none of its own. A create cannot omit `code` and `name`; every other column
      * is optional or defaulted by the database. Two rows of this tenant may not
-     * share `code` — that is the 409. The new method is quoted by nobody until
-     * two further things are true: `enabled` defaults to FALSE, and a 'matrix'
-     * method has no tiers yet — until POST or PUT …/tiers gives it some it
-     * appears in `excluded` with 'matrix has no rate tiers configured' rather
-     * than in the rates. `carrier_id` and the legacy `carrier` code are both
-     * accepted and neither is verified against the carrier table here: an
-     * unmatched code is a plain carrier name on the rate, not an error.
+     * share `code` or `external_id` — that is the 409. The new method is quoted
+     * by nobody until two further things are true: `enabled` defaults to FALSE,
+     * and a 'matrix' method has no tiers yet — until POST or PUT …/tiers
+     * gives it some it appears in `excluded` with 'matrix has no rate tiers
+     * configured' rather than in the rates. `carrier_id` and the legacy `carrier`
+     * code are both accepted and neither is verified against the carrier table
+     * here: an unmatched code is a plain carrier name on the rate, not an error.
      *
      * @param string $code
      * @param string $name
@@ -122,6 +127,8 @@ class ShippingMethods extends Service
      * @param ?bool $enabled
      * @param ?int $etaDaysMax
      * @param ?int $etaDaysMin
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?float $freeAbove
      * @param ?array $labels
      * @param ?string $matrixAttribute
@@ -131,11 +138,13 @@ class ShippingMethods extends Service
      * @param ?float $price
      * @param ?ShippingMethodPricingType $pricingType
      * @param ?float $quoteAbove
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @param ?string $taxClass
      * @throws RevenexxException
      * @return array
      */
-    public function shippingMethodsCreate(string $code, string $name, ?string $carrier = null, ?string $carrierId = null, ?array $countries = null, ?string $currency = null, ?string $description = null, ?bool $enabled = null, ?int $etaDaysMax = null, ?int $etaDaysMin = null, ?float $freeAbove = null, ?array $labels = null, ?string $matrixAttribute = null, ?ShippingMethodMatrixBasis $matrixBasis = null, ?array $metadata = null, ?int $position = null, ?float $price = null, ?ShippingMethodPricingType $pricingType = null, ?float $quoteAbove = null, ?string $taxClass = null): array
+    public function shippingMethodsCreate(string $code, string $name, ?string $carrier = null, ?string $carrierId = null, ?array $countries = null, ?string $currency = null, ?string $description = null, ?bool $enabled = null, ?int $etaDaysMax = null, ?int $etaDaysMin = null, ?string $externalId = null, ?array $externalRefs = null, ?float $freeAbove = null, ?array $labels = null, ?string $matrixAttribute = null, ?ShippingMethodMatrixBasis $matrixBasis = null, ?array $metadata = null, ?int $position = null, ?float $price = null, ?ShippingMethodPricingType $pricingType = null, ?float $quoteAbove = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $taxClass = null): array
     {
         $apiPath = str_replace(
             [],
@@ -160,6 +169,8 @@ class ShippingMethods extends Service
         }
         $apiParams['eta_days_max'] = $etaDaysMax;
         $apiParams['eta_days_min'] = $etaDaysMin;
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
         $apiParams['free_above'] = $freeAbove;
         $apiParams['labels'] = $labels;
         $apiParams['matrix_attribute'] = $matrixAttribute;
@@ -178,6 +189,8 @@ class ShippingMethods extends Service
             $apiParams['pricing_type'] = $pricingType;
         }
         $apiParams['quote_above'] = $quoteAbove;
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
         $apiParams['tax_class'] = $taxClass;
 
         $apiHeaders = [];
@@ -312,7 +325,7 @@ class ShippingMethods extends Service
      * 'matrix' does NOT delete the tier table — it stops being read, and
      * changing back reinstates the old prices, so a method switched to 'fixed'
      * and back quotes what it quoted before. Two rows of this tenant may not
-     * share `code` — that is the 409.
+     * share `code` or `external_id` — that is the 409.
      *
      * @param string $id
      * @param ?string $carrier
@@ -324,6 +337,8 @@ class ShippingMethods extends Service
      * @param ?bool $enabled
      * @param ?int $etaDaysMax
      * @param ?int $etaDaysMin
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?float $freeAbove
      * @param ?array $labels
      * @param ?string $matrixAttribute
@@ -334,11 +349,13 @@ class ShippingMethods extends Service
      * @param ?float $price
      * @param ?ShippingMethodPricingType $pricingType
      * @param ?float $quoteAbove
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @param ?string $taxClass
      * @throws RevenexxException
      * @return array
      */
-    public function shippingMethodsUpdate(string $id, ?string $carrier = null, ?string $carrierId = null, ?string $code = null, ?array $countries = null, ?string $currency = null, ?string $description = null, ?bool $enabled = null, ?int $etaDaysMax = null, ?int $etaDaysMin = null, ?float $freeAbove = null, ?array $labels = null, ?string $matrixAttribute = null, ?ShippingMethodMatrixBasis $matrixBasis = null, ?array $metadata = null, ?string $name = null, ?int $position = null, ?float $price = null, ?ShippingMethodPricingType $pricingType = null, ?float $quoteAbove = null, ?string $taxClass = null): array
+    public function shippingMethodsUpdate(string $id, ?string $carrier = null, ?string $carrierId = null, ?string $code = null, ?array $countries = null, ?string $currency = null, ?string $description = null, ?bool $enabled = null, ?int $etaDaysMax = null, ?int $etaDaysMin = null, ?string $externalId = null, ?array $externalRefs = null, ?float $freeAbove = null, ?array $labels = null, ?string $matrixAttribute = null, ?ShippingMethodMatrixBasis $matrixBasis = null, ?array $metadata = null, ?string $name = null, ?int $position = null, ?float $price = null, ?ShippingMethodPricingType $pricingType = null, ?float $quoteAbove = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $taxClass = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -366,6 +383,8 @@ class ShippingMethods extends Service
         }
         $apiParams['eta_days_max'] = $etaDaysMax;
         $apiParams['eta_days_min'] = $etaDaysMin;
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
         $apiParams['free_above'] = $freeAbove;
         $apiParams['labels'] = $labels;
         $apiParams['matrix_attribute'] = $matrixAttribute;
@@ -388,6 +407,8 @@ class ShippingMethods extends Service
             $apiParams['pricing_type'] = $pricingType;
         }
         $apiParams['quote_above'] = $quoteAbove;
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
         $apiParams['tax_class'] = $taxClass;
 
         $apiHeaders = [];

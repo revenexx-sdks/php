@@ -84,6 +84,100 @@ PUT https://api.revenexx.com/v1/procurement/approval-rules/{id}
 
 
 ```http request
+GET https://api.revenexx.com/v1/procurement/budget-releases
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| limit | integer | Page size (default 50, max 200). |  |
+| offset | integer | Row offset for pagination (default 0). |  |
+| order | string | Sort as 'column.asc' | 'column.desc', e.g. 'created_at.desc'. |  |
+
+
+```http request
+GET https://api.revenexx.com/v1/procurement/budget-releases/{id}
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required**  |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/procurement/budget-releases/{id}/retry
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required**  |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/procurement/budget-releases/{id}/settle
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required**  |  |
+| note | string | Required free-text reason, kept on the record. |  |
+
+
+```http request
+GET https://api.revenexx.com/v1/procurement/direct-orders
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| limit | integer | Page size (default 50, max 200). |  |
+| offset | integer | Row offset for pagination (default 0). |  |
+| order | string | Sort as 'column.asc' | 'column.desc', e.g. 'created_at.desc'. |  |
+
+
+```http request
+GET https://api.revenexx.com/v1/procurement/direct-orders/{id}
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required**  |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/procurement/direct-orders/{id}/commit
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required**  |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/procurement/direct-orders/{id}/settle
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required**  |  |
+| note | string | Required free-text reason, kept on the record. |  |
+
+
+```http request
 GET https://api.revenexx.com/v1/procurement/pending-approvals
 ```
 
@@ -345,7 +439,7 @@ POST https://api.revenexx.com/v1/procurement/reconcile
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
-| limit | integer | Requests examined per status (default 50, max 200). |  |
+| limit | integer | Records examined per status (default 50, max 200). |  |
 
 
 ```http request
@@ -371,4 +465,20 @@ POST https://api.revenexx.com/v1/procurement/submit
 | shipping | object |  |  |
 | shipping_address | object |  |  |
 | user_data | object |  |  |
+
+
+```http request
+GET https://api.revenexx.com/v1/procurement/vocabularies
+```
+
+
+```http request
+GET https://api.revenexx.com/v1/procurement/vocabularies/{name}
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| name | string | **Required** Which vocabulary to read — the part after the dot in `procurement.<name>`. |  |
 

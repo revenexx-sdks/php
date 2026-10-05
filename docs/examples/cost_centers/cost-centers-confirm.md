@@ -14,6 +14,7 @@ $costCenters = new CostCenters($client);
 
 $result = $costCenters->costCentersConfirm(
     purchaseRequestId: '',
+    allocations: [], // optional
     currency: '', // optional
     note: '', // optional
     orderId: '' // optional

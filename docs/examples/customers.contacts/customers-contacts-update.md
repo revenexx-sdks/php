@@ -3,7 +3,7 @@
 
 use Revenexx\Client;
 use Revenexx\Services\CustomersContacts;
-use Revenexx\Enums\CustomersContactsCreateRegistrationStatus;
+use Revenexx\Enums\OrderApprovalMode;
 use Revenexx\Enums\ContactStatus;
 
 $client = (new Client())
@@ -24,9 +24,9 @@ $result = $customersContacts->customersContactsUpdate(
     lastName: 'Berger', // optional
     locale: 'de-DE', // optional
     orderApprovalLimit: 25000, // optional
+    orderApprovalMode: OrderApprovalMode::LIMITED(), // optional
     organizationId: '', // optional
     phone: '+49 30 5550123', // optional
-    registrationStatus: CustomersContactsCreateRegistrationStatus::PENDING(), // optional
     role: 'buyer', // optional
     status: ContactStatus::INVITED() // optional
 );```

@@ -4,7 +4,7 @@
 use Revenexx\Client;
 use Revenexx\InputFile;
 use Revenexx\Services\Storage;
-use Revenexx\Enums\Visibility;
+use Revenexx\Enums\AssetStoreVisibility;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -23,5 +23,5 @@ $result = $storage->assetStore(
     keepArchive: true, // optional
     tags: [], // optional
     unpack: true, // optional
-    visibility: Visibility::PUBLIC() // optional
+    visibility: AssetStoreVisibility::PUBLIC() // optional
 );```

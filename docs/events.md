@@ -5,7 +5,7 @@
 GET https://api.revenexx.com/v1/events/catalog
 ```
 
-** Every event type this tenant&#039;s installed apps and platform services declare — what can be published and subscribed to, independent of whether one has fired yet. Each entry says what causes it (`trigger`) and what it carries (`sample`, `data_schema`). **
+** Every event type this tenant's installed apps and platform services declare — what can be published and subscribed to, independent of whether one has fired yet. Each entry says what causes it (`trigger`) and what it carries (`sample`, `data_schema`). **
 
 ### Parameters
 

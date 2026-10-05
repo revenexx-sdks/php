@@ -7,6 +7,8 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\PageStatus;
+use Revenexx\Enums\Deleted;
+use Revenexx\Enums\PagesSeedMode;
 use Revenexx\Enums\PagesVocabulariesGetName;
 
 final class PagesTest extends TestCase {
@@ -226,6 +228,36 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodPagesPagesDuplicate(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->pages->pagesPagesDuplicate(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPagesPagesRestore(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->pages->pagesPagesRestore(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodPagesPagesRevisions(): void {
 
         $data = array();
@@ -250,6 +282,113 @@ final class PagesTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->pages->pagesSeed(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPagesSettingsSiteList(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->pages->pagesSettingsSiteList(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPagesSettingsSiteDelete(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->pages->pagesSettingsSiteDelete(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPagesSettingsSiteGet(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->pages->pagesSettingsSiteGet(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPagesSettingsSitePut(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->pages->pagesSettingsSitePut(
+            "",
+            array()
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPagesTemplateAssignmentsList(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->pages->pagesTemplateAssignmentsList(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPagesTemplateAssignmentsDelete(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->pages->pagesTemplateAssignmentsDelete(
+            "",
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPagesTemplateAssignmentsPut(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->pages->pagesTemplateAssignmentsPut(
+            "",
+            "",
+            "product-detail"
         );
 
         $this->assertSame($data, $response);

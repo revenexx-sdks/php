@@ -6,7 +6,7 @@ use Revenexx\Client;
 use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
-use Revenexx\Enums\Collection;
+use Revenexx\Enums\Collection as CollectionEnum;
 
 final class SearchTest extends TestCase {
     private $client;
@@ -41,7 +41,7 @@ final class SearchTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->search->searchGetCollection(
-            Collection::PRODUCTS()
+            CollectionEnum::PRODUCTS()
         );
 
         $this->assertSame($data, $response);
@@ -56,7 +56,7 @@ final class SearchTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->search->searchSearchDocumentsGet(
-            Collection::PRODUCTS()
+            CollectionEnum::PRODUCTS()
         );
 
         $this->assertSame($data, $response);
@@ -71,7 +71,7 @@ final class SearchTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->search->searchSearchDocuments(
-            Collection::PRODUCTS()
+            CollectionEnum::PRODUCTS()
         );
 
         $this->assertSame($data, $response);
@@ -86,7 +86,7 @@ final class SearchTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->search->searchGetDocument(
-            Collection::PRODUCTS(),
+            CollectionEnum::PRODUCTS(),
             ""
         );
 

@@ -14,6 +14,7 @@ $costCenters = new CostCenters($client);
 
 $result = $costCenters->costCentersWithdraw(
     purchaseRequestId: '',
+    allocations: [], // optional
     currency: '', // optional
     note: '' // optional
 );```

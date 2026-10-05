@@ -279,7 +279,10 @@ class InventoriesReservations extends Service
      * location's country; or 'single_location' for the whole order);
      * backorder_policy decides what happens when none can — refuse (422), or
      * reserve anyway and let availability go negative. expires_at defaults from
-     * reservation_ttl_minutes and the sweeper enforces it.
+     * reservation_ttl_minutes and the sweeper enforces it. A second call under
+     * the same `order_ref` ADDS holds beside the ones already there — it never
+     * replaces them — and commit and release then act on every active hold of
+     * the reference.
      *
      * @param string $orderRef
      * @param ?string $expiresAt

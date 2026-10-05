@@ -191,4 +191,75 @@ class PagesDelivery extends Service
             $apiParams
         );
     }
+
+    /**
+     * What a theme styles the whole storefront with, in one object keyed by
+     * setting name. `appearance`, `design` and `customCss` are always present —
+     * `null` when the tenant has not set them, which is the theme's cue to use
+     * its own default — and any other key the tenant set is answered alongside
+     * them.
+     *
+     * @throws RevenexxException
+     * @return array
+     */
+    public function pagesDeliverySiteSettings(): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/pages/delivery/site-settings'
+        );
+
+        $apiParams = [];
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Which page a product or a category renders with: `GET
+     * /pages/delivery/template?type=product&id=5137` answers `{ "slug":
+     * "product-detail" }`, and the theme then renders that page through `GET
+     * /pages/delivery/page`. 404 means "use the default template" — no page is
+     * assigned, or the one assigned is hidden or not published, so a visitor is
+     * never sent to a page delivery would refuse.
+     *
+     * @param ?string $type
+     * @param ?string $id
+     * @throws RevenexxException
+     * @return array
+     */
+    public function pagesDeliveryTemplate(?string $type = null, ?string $id = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/pages/delivery/template'
+        );
+
+        $apiParams = [];
+
+        if (!is_null($type)) {
+            $apiParams['type'] = $type;
+        }
+
+        if (!is_null($id)) {
+            $apiParams['id'] = $id;
+        }
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
 }

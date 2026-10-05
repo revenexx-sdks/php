@@ -14,5 +14,5 @@ $client = (new Client())
 $apps = new Apps($client);
 
 $result = $apps->appsListUsage(
-    range: Range::24H() // optional
+    range: Range::_24H() // optional
 );```

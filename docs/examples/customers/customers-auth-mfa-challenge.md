@@ -3,6 +3,7 @@
 
 use Revenexx\Client;
 use Revenexx\Services\Customers;
+use Revenexx\Enums\Factor;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -14,5 +15,5 @@ $customers = new Customers($client);
 
 $result = $customers->customersAuthMfaChallenge(
     userId: '',
-    factor: 'email' // optional
+    factor: Factor::EMAIL() // optional
 );```
