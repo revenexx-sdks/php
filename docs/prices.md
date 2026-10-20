@@ -2,6 +2,31 @@
 
 
 ```http request
+POST https://api.revenexx.com/v1/prices/check
+```
+
+** The answer to "what does this item cost this customer in this market, and why?" for one item: the price, the list that won, its tier, the reason it won, the line total, and every other list that would have priced the item with the reason it lost. The resolution is exactly the one `POST /prices/resolve` runs — same candidate lists, same groups, same tier rule, same tie-break — so the answer matches what the shop quotes.
+
+Configuration, not a buyer route: it names lists a buyer must not learn about. The market is the one `market` names, else the active market of the request; a market other than the request's is read through its own market-scoped view. Texts (`winning_list`, `tier`, `reason`, `why`, `summary`) are German or English after `lang`, else the first Accept-Language tag, else German; the `*_code` fields beside them are stable. Segments are taken as stated in `segment_codes`, not looked up from the organization. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| at | string | The instant validity windows are read at. Absent is now. |  |
+| channel_id | string | The channel the question is asked for. |  |
+| contact_id | string | The buying contact, if any. |  |
+| currency | string | A currency to price in instead of the market's, upper-case ISO 4217. |  |
+| lang | string | The language of the texts in the answer. |  |
+| market | string | The market code. Absent is the active market of the request. |  |
+| organization_id | string | The buying organization, if any. |  |
+| product_id | string | The product. `product_id` or `sku` is required. |  |
+| quantity | number | The quantity the tier is chosen for. Absent is 1. |  |
+| segment_codes | array | Segments the buyer is in, as codes. |  |
+| sku | string | The SKU, matched exactly, for entries that carry no product id. |  |
+
+
+```http request
 GET https://api.revenexx.com/v1/prices/lists
 ```
 
@@ -36,6 +61,7 @@ Market is deliberately not among them: a list is scoped to a market by an assign
 | updated_at | string | Exact equality on the last change — matched to the stored microsecond, not a range. This app publishes no from/until query; narrow a period client-side, or by `order` plus `limit`. |  |
 | external_id | string | Filter by the key the system that OWNS the price list knows it by — how an import finds the row it wrote last run. Exact match; a price list maintained here carries none and is never answered by it. |  |
 | source_synced_at | string | Filter to the price lists last confirmed against their source at exactly this instant. A filter is an equality, so bounding a period means sorting with `order` and paging. |  |
+| trashed | string | Which lists the page holds with respect to the trash: `exclude` (default) leaves lists in the trash out, `only` answers the trash itself, `include` answers both. Anything else is refused with 400 `invalid_trashed`. |  |
 | limit | integer | Page size (default 50, max 200). |  |
 | offset | integer | Row offset for pagination (default 0). |  |
 | order | string | Sort by one column: 'column' | 'column.asc' | 'column.desc'. A bare column sorts ascending. Anything else is refused with 400. |  |
@@ -91,14 +117,27 @@ Idempotent twice over — by that code, and by the existence of ANY default list
 
 
 ```http request
+POST https://api.revenexx.com/v1/prices/lists/trash/empty
+```
+
+** Empties the trash: each list in it is deleted for good on its own, exactly as a second delete would, and a list something still needs stays with its reason. The answer lists both halves, so a partial success is visible. Nothing is recoverable afterwards. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| data | object | Request body |  |
+
+
+```http request
 DELETE https://api.revenexx.com/v1/prices/lists/{id}
 ```
 
-** Deletes the list AND every price in it. `price_entries.price_list_id` references this row ON DELETE CASCADE, so the entries go in the same statement: nothing asks, nothing blocks, a book of 40 000 prices deletes exactly as fast as an empty one, and the answer is a bare `{deleted, id}` that never says how many prices went with it.
+** The first delete moves the list to the TRASH: it keeps its entries, prices nothing from the next resolve call on, is left out of the list read, refuses every write, and keeps its code reserved. The answer counts the entries that stay with it under `warnings`. Only the default list is refused (409 `default_price_list`) — every fallback price comes from it, so make another list the default first.
 
-What that means while a storefront is quoting: from the next resolve call the items this list priced fall through to the next candidate list, and where there is none the answer is `on_request` — "price on request" for something that had a price a second ago, never €0. The default list itself is never deleted: move the flag with `POST /prices/lists/{list_id}/make-default` first, otherwise the delete answers 409 `default_price_list`.
+A delete of a list that is already in the trash deletes it for good. Only then do its entries go — `price_entries.price_list_id` cascades — and only then does `price_list.deleted` fire. Carts, quotes and orders carry the resolved price as a snapshot and no list id, so nothing elsewhere blocks it. The daily purge does the same after the tenant's trash retention.
 
-This is not the way to take a list out of circulation. `status: "inactive"` does that immediately and reversibly and keeps the prices; deleting is for a list whose contents you are prepared to import again, because nothing here is recoverable. **
+This is still not the way to take a list out of circulation for a while: `status: "inactive"` does that and keeps the list editable. The trash is for a list that should go; `POST /prices/lists/{id}/restore` is the way back while it is there. **
 
 ### Parameters
 
@@ -153,6 +192,35 @@ Three edits do more than their field names suggest. `currency` re-denominates wi
 | tax_included | boolean | LEGACY mirror of tax_basis. false is the column default and is NOT read as a statement of intent; true is read as gross, and only where tax_basis is null. Prefer tax_basis. |  |
 | valid_from | string | Start of the validity window of the WHOLE list (ISO 8601); null = open-ended. Outside it the list is not a candidate at all. |  |
 | valid_until | string | End of the validity window of the whole list; null = open-ended. Lets a season expire on its own instead of being deactivated by hand. |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/prices/lists/{id}/copy
+```
+
+** A new price list from this one (PE-1053, „Kopie anlegen“). It keeps every setting of the source — name, labels, currency, tax basis, buyer scope, priority, validity — starts `inactive` and never as the default, and takes the source's entries when `parts` names `prices`. Sync columns (`external_id`, `external_refs`, `source_*`) stay behind: the copy is nobody's import. The market assignment lives in the platform's scope registry, not on the row, so the copy starts global. A failure after the new list was written deletes it again, entries included. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required** The price list, by id. |  |
+| code | string | The code of the new list, unique per tenant like every list code. |  |
+| parts | array | What the copy takes along: `prices` copies every entry of the source. Empty or absent copies the list header only. |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/prices/lists/{id}/restore
+```
+
+** Brings a list in the trash back as it was, entries included: from the next resolve call it prices again. Everything trashed in the same action comes back with it. Takes the same right as deleting. A list that is not in the trash answers 409 `not_in_trash`. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required** The price list, by id. |  |
+| data | object | Request body |  |
 
 
 ```http request

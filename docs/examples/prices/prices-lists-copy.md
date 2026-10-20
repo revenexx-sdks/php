@@ -1,0 +1,20 @@
+```php
+<?php
+
+use Revenexx\Client;
+use Revenexx\Services\Prices;
+use Revenexx\Enums\Parts;
+
+$client = (new Client())
+    ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
+    ->setTenant('<TENANT_SLUG>') // Your tenant slug
+    ->setApiKeyAuth('<API_KEY>') // A gateway-managed scoped API key (rvxk_…).
+;
+
+$prices = new Prices($client);
+
+$result = $prices->pricesListsCopy(
+    id: '',
+    code: 'dealer-de-2027',
+    parts: [Parts::PRICES()] // optional
+);```

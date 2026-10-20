@@ -14,7 +14,7 @@ $client = (new Client())
 $search = new Search($client);
 
 $result = $search->searchSearchDocumentsGet(
-    collection: CollectionEnum::PRODUCTS(),
+    collection: CollectionEnum::CATEGORIES(),
     q: '', // optional
     queryBy: '', // optional
     filterBy: '', // optional

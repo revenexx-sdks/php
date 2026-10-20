@@ -63,6 +63,21 @@ final class CartsItemsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodCartsItemsPriced(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->cartsItems->cartsItemsPriced(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodCartsItemsDelete(): void {
 
         $data = array();

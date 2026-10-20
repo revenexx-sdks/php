@@ -16,6 +16,7 @@ $customersValueLists = new CustomersValueLists($client);
 $result = $customersValueLists->customersAddressTypesCreate(
     code: '',
     title: 'Shipping address',
+    active: true, // optional
     description: 'Where the goods go.', // optional
     descriptions: [
         'de' => 'Wohin die Ware geliefert wird.',

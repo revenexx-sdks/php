@@ -15,6 +15,7 @@ $documentsKinds = new DocumentsKinds($client);
 
 $result = $documentsKinds->documentsKindsUpdate(
     id: '',
+    active: true, // optional
     code: 'invoice', // optional
     description: 'What the buyer owes for an order.', // optional
     descriptions: [

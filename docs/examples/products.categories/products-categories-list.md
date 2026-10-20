@@ -3,6 +3,7 @@
 
 use Revenexx\Client;
 use Revenexx\Services\ProductsCategories;
+use Revenexx\Enums\ProductsListTrashed;
 use Revenexx\Enums\RuleMatch;
 
 $client = (new Client())
@@ -17,6 +18,7 @@ $result = $productsCategories->productsCategoriesList(
     limit: 1, // optional
     offset: 1, // optional
     order: 'created_at.desc', // optional
+    trashed: ProductsListTrashed::ONLY(), // optional
     id: '', // optional
     code: 'cordless_drills', // optional
     parentId: '', // optional
@@ -27,11 +29,22 @@ $result = $productsCategories->productsCategoriesList(
     rules: '{}', // optional
     ruleMatch: RuleMatch::ALL(), // optional
     rulesComputedAt: '2026-01-01T12:00:00Z', // optional
+    pathLabel: 'Werkzeug › Elektrowerkzeug › Akku-Bohrschrauber', // optional
+    membersDirect: 1, // optional
+    membersTotal: 1, // optional
+    countsComputedAt: '2026-01-01T12:00:00Z', // optional
+    active: true, // optional
     externalId: 'EG000024', // optional
     externalRefs: '{}', // optional
     sourceSyncedAt: '2026-01-01T12:00:00Z', // optional
     sourceData: '{}', // optional
     metadata: '{}', // optional
     createdAt: '2026-01-01T12:00:00Z', // optional
-    updatedAt: '2026-01-01T12:00:00Z' // optional
+    updatedAt: '2026-01-01T12:00:00Z', // optional
+    deletedAt: '2026-01-01T12:00:00Z', // optional
+    deletedBy: 'merchant@example.com', // optional
+    deletedById: '283746592837465012', // optional
+    trashBatch: '', // optional
+    purgeAt: '2026-01-01T12:00:00Z', // optional
+    purgeBlockedReason: ''S1230020C1TI25' still has stock at 2 location(s)' // optional
 );```

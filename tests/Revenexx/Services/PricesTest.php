@@ -6,8 +6,11 @@ use Revenexx\Client;
 use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
+use Revenexx\Enums\Lang;
 use Revenexx\Enums\PriceListStatus;
 use Revenexx\Enums\PriceListTaxBasis;
+use Revenexx\Enums\PriceListTrashed;
+use Revenexx\Enums\Parts;
 use Revenexx\Enums\PriceEntryType;
 use Revenexx\Enums\PriceEndingRule;
 use Revenexx\Enums\PriceEntriesBulkMode;
@@ -20,6 +23,20 @@ final class PricesTest extends TestCase {
     protected function setUp(): void {
         $this->client = Mockery::mock(Client::class);
         $this->prices = new Prices($this->client);
+    }
+
+    public function testMethodPricesCheck(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->prices->pricesCheck(
+        );
+
+        $this->assertSame($data, $response);
     }
 
     public function testMethodPricesListsList(): void {
@@ -66,6 +83,21 @@ final class PricesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodPricesListsEmptyTrash(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->prices->pricesListsEmptyTrash(
+            array()
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodPricesListsDelete(): void {
 
         $data = array();
@@ -106,6 +138,38 @@ final class PricesTest extends TestCase {
 
         $response = $this->prices->pricesListsUpdate(
             ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPricesListsCopy(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->prices->pricesListsCopy(
+            "",
+            "dealer-de-2027"
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPricesListsRestore(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->prices->pricesListsRestore(
+            "",
+            array()
         );
 
         $this->assertSame($data, $response);

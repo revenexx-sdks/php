@@ -14,5 +14,5 @@ $client = (new Client())
 $orders = new Orders($client);
 
 $result = $orders->ordersVocabulariesGet(
-    name: OrdersVocabulariesGetName::CANCELLATIONSCOPES()
+    name: OrdersVocabulariesGetName::CANCELLATIONKINDS()
 );```

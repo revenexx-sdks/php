@@ -15,5 +15,6 @@ $punchout = new Punchout($client);
 $result = $punchout->punchoutAccountsList(
     limit: 1, // optional
     offset: 1, // optional
-    order: '' // optional
+    order: '', // optional
+    fallbackContactId: '' // optional
 );```

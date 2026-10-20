@@ -14,6 +14,7 @@ $productsDataModel = new ProductsDataModel($client);
 
 $result = $productsDataModel->productsMeasurementFamiliesUpdate(
     id: '',
+    active: true, // optional
     code: 'weight', // optional
     labels: [
         'de' => 'Gewicht',

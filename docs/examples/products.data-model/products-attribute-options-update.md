@@ -14,6 +14,7 @@ $productsDataModel = new ProductsDataModel($client);
 
 $result = $productsDataModel->productsAttributeOptionsUpdate(
     id: '',
+    active: true, // optional
     attributeId: '', // optional
     code: 'stainless_steel', // optional
     externalId: 'EV000456', // optional

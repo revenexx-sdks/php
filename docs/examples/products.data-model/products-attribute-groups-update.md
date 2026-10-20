@@ -14,6 +14,7 @@ $productsDataModel = new ProductsDataModel($client);
 
 $result = $productsDataModel->productsAttributeGroupsUpdate(
     id: '',
+    active: true, // optional
     code: 'technical_attributes', // optional
     externalId: 'GRP-TECHNICAL', // optional
     externalRefs: [

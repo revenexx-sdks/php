@@ -5,6 +5,7 @@ use Revenexx\Client;
 use Revenexx\Services\Prices;
 use Revenexx\Enums\PriceListStatus;
 use Revenexx\Enums\PriceListTaxBasis;
+use Revenexx\Enums\PriceListTrashed;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -36,6 +37,7 @@ $result = $prices->pricesListsList(
     updatedAt: '2026-01-01T12:00:00Z', // optional
     externalId: 'VKPL-2026', // optional
     sourceSyncedAt: '2026-01-01T12:00:00Z', // optional
+    trashed: PriceListTrashed::ONLY(), // optional
     limit: 1, // optional
     offset: 1, // optional
     order: 'created_at.desc' // optional

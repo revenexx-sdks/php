@@ -15,6 +15,7 @@ $shippingValueLists = new ShippingValueLists($client);
 
 $result = $shippingValueLists->shippingServiceLevelsUpdate(
     id: '',
+    active: true, // optional
     description: 'When to pick this service level.', // optional
     descriptions: [
         'de' => 'Wann diese Option zu wählen ist.',

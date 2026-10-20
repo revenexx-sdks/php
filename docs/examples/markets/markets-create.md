@@ -23,5 +23,7 @@ $result = $markets->marketsCreate(
         'en-GB' => 'Northwind'
     ], // optional
     position: 0, // optional
+    shipFromCountry: 'DE', // optional
+    shipFromCountryReview: false, // optional
     status: MarketStatus::ACTIVE() // optional
 );```

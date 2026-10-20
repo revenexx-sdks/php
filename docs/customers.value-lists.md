@@ -5,7 +5,13 @@
 GET https://api.revenexx.com/v1/customers/address-types
 ```
 
-** What an address is used for. Billing and shipping are what a checkout needs; a works entrance or a central accounts office is the tenant's own. A fresh install is seeded with billing, shipping, and the set seeds on first read too, so the page is never empty and `addresses.type` always has a value it may carry. The whole set comes back in one page in the tenant's own order — this route takes no limit/offset/order and no column filters, so `page` describes the full set and `filter` is always empty. **
+** What an address is used for. Billing and shipping are what a checkout needs; a works entrance or a central accounts office is the tenant's own. A fresh install is seeded with billing, shipping, and the set seeds on first read too, so the page is never empty and `addresses.type` always has a value it may carry. The whole set comes back in one page in the tenant's own order — this route takes no limit/offset/order, so `page` describes the full set. Retired values are included; `?active=true` answers only the values on offer, `?active=false` only the retired ones. No other filter is taken. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| active | boolean | true answers only the values still on offer (what a picker lists), false only the retired ones. Left out, every value comes back — a read never hides a retired value unless asked. |  |
 
 
 ```http request
@@ -18,6 +24,7 @@ POST https://api.revenexx.com/v1/customers/address-types
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
+| active | boolean | Whether pickers offer this value. Default true. An inactive value cannot be created as the default. |  |
 | code | string | What `addresses.type` will store. Lowercase, starting with a letter; immutable afterwards. |  |
 | description | string | One line of help for whoever picks this value. |  |
 | descriptions | object | Localized descriptions, keyed by language tag ({ "en": …, "de": … }). Null when nobody translated this value — a client then falls back to `description`. |  |
@@ -65,9 +72,10 @@ PUT https://api.revenexx.com/v1/customers/address-types/{id}
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The address type to edit. |  |
+| active | boolean | False retires the value: records that carry it keep it, pickers stop offering it. Refused on the default — make another entry the default first. |  |
 | description | string | One line of help for whoever picks this value. |  |
 | descriptions | object | Localized descriptions, keyed by language tag ({ "en": …, "de": … }). Null when nobody translated this value — a client then falls back to `description`. |  |
-| is_default | boolean | Promote this value; the previous default is demoted. |  |
+| is_default | boolean | Promote this value; the previous default is demoted. Refused for an inactive value. |  |
 | labels | object | Localized titles, keyed by language tag ({ "en": …, "de": … }). Null when nobody translated this value — a client then falls back to `title`. |  |
 | position | integer | Where it sits in the set, ascending. |  |
 | title | string | The fallback name shown when no locale matches. |  |
@@ -78,7 +86,13 @@ PUT https://api.revenexx.com/v1/customers/address-types/{id}
 GET https://api.revenexx.com/v1/customers/contact-event-kinds
 ```
 
-** What kind of entry lands on a customer timeline. 'system' is the app's own decision trail and a caller may not file one, whatever the set says. A fresh install is seeded with system, note, call, email, meeting, visit, task, and the set seeds on first read too, so the page is never empty and `contact_events.kind` always has a value it may carry. The whole set comes back in one page in the tenant's own order — this route takes no limit/offset/order and no column filters, so `page` describes the full set and `filter` is always empty. **
+** What kind of entry lands on a customer timeline. 'system' is the app's own decision trail and a caller may not file one, whatever the set says. A fresh install is seeded with system, note, call, email, meeting, visit, task, and the set seeds on first read too, so the page is never empty and `contact_events.kind` always has a value it may carry. The whole set comes back in one page in the tenant's own order — this route takes no limit/offset/order, so `page` describes the full set. Retired values are included; `?active=true` answers only the values on offer, `?active=false` only the retired ones. No other filter is taken. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| active | boolean | true answers only the values still on offer (what a picker lists), false only the retired ones. Left out, every value comes back — a read never hides a retired value unless asked. |  |
 
 
 ```http request
@@ -91,6 +105,7 @@ POST https://api.revenexx.com/v1/customers/contact-event-kinds
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
+| active | boolean | Whether pickers offer this value. Default true. An inactive value cannot be created as the default. |  |
 | code | string | What `contact_events.kind` will store. Lowercase, starting with a letter; immutable afterwards. |  |
 | description | string | One line of help for whoever picks this value. |  |
 | descriptions | object | Localized descriptions, keyed by language tag ({ "en": …, "de": … }). Null when nobody translated this value — a client then falls back to `description`. |  |
@@ -138,9 +153,91 @@ PUT https://api.revenexx.com/v1/customers/contact-event-kinds/{id}
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The activity type to edit. |  |
+| active | boolean | False retires the value: records that carry it keep it, pickers stop offering it. Refused on the default — make another entry the default first. |  |
 | description | string | One line of help for whoever picks this value. |  |
 | descriptions | object | Localized descriptions, keyed by language tag ({ "en": …, "de": … }). Null when nobody translated this value — a client then falls back to `description`. |  |
-| is_default | boolean | Promote this value; the previous default is demoted. |  |
+| is_default | boolean | Promote this value; the previous default is demoted. Refused for an inactive value. |  |
+| labels | object | Localized titles, keyed by language tag ({ "en": …, "de": … }). Null when nobody translated this value — a client then falls back to `title`. |  |
+| position | integer | Where it sits in the set, ascending. |  |
+| title | string | The fallback name shown when no locale matches. |  |
+| tone | string | Semantic badge colour. |  |
+
+
+```http request
+GET https://api.revenexx.com/v1/customers/contact-lifecycle-stages
+```
+
+** Where a PERSON stands in the marketing and sales funnel, apart from the company's stage. The marketing apps name the six seeded codes; a merchant may rename them and add steps of their own. A fresh install is seeded with subscriber, lead, mql, sql, opportunity, customer, and the set seeds on first read too, so the page is never empty and `contacts.lifecycle_stage` always has a value it may carry. The whole set comes back in one page in the tenant's own order — this route takes no limit/offset/order, so `page` describes the full set. Retired values are included; `?active=true` answers only the values on offer, `?active=false` only the retired ones. No other filter is taken. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| active | boolean | true answers only the values still on offer (what a picker lists), false only the retired ones. Left out, every value comes back — a read never hides a retired value unless asked. |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/customers/contact-lifecycle-stages
+```
+
+** Extends this tenant's contact stages set with a value of their own — the whole reason these four stopped being CHECK constraints. Where a PERSON stands in the marketing and sales funnel, apart from the company's stage. The marketing apps name the six seeded codes; a merchant may rename them and add steps of their own. The code is lowercase and becomes what `contacts.lifecycle_stage` stores; it cannot be changed afterwards, because every record carrying it would be orphaned. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| active | boolean | Whether pickers offer this value. Default true. An inactive value cannot be created as the default. |  |
+| code | string | What `contacts.lifecycle_stage` will store. Lowercase, starting with a letter; immutable afterwards. |  |
+| description | string | One line of help for whoever picks this value. |  |
+| descriptions | object | Localized descriptions, keyed by language tag ({ "en": …, "de": … }). Null when nobody translated this value — a client then falls back to `description`. |  |
+| is_default | boolean | Promote this value; the previous default is demoted in the same call. |  |
+| labels | object | Localized titles, keyed by language tag ({ "en": …, "de": … }). Null when nobody translated this value — a client then falls back to `title`. |  |
+| position | integer | Where it sits in the set, ascending. Default 0. |  |
+| title | string | The fallback name shown when no locale matches. |  |
+| tone | string | Semantic badge colour. |  |
+
+
+```http request
+DELETE https://api.revenexx.com/v1/customers/contact-lifecycle-stages/{id}
+```
+
+** Takes a value out of the contact stages set. There is no foreign key behind `contacts.lifecycle_stage` — one added to a table that starts empty fails the migration of every existing tenant — so this route IS the integrity: it refuses while any record still carries the code, and it refuses to empty the set. Retiring a value that is in use is therefore a two-step job: move the records onto another value first, then remove it. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required** The contact stage to remove. |  |
+
+
+```http request
+GET https://api.revenexx.com/v1/customers/contact-lifecycle-stages/{id}
+```
+
+** One value of the contact stages set, by its id — its code, its fallback title, the per-language `labels` an operator reads and the badge `tone` a client renders it with. Where a PERSON stands in the marketing and sales funnel, apart from the company's stage. The marketing apps name the six seeded codes; a merchant may rename them and add steps of their own. Reading one value is the rare path: `GET /customers/contact-lifecycle-stages` answers the whole set in a single page, which is what a select needs. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required** The contact stage to read. Note that records store the CODE, not this id. |  |
+
+
+```http request
+PUT https://api.revenexx.com/v1/customers/contact-lifecycle-stages/{id}
+```
+
+** Everything about a value except the value itself: its titles, its help text, its badge tone, its `position` in the select, and which one of the set is the default. The `code` is immutable, so no record carrying it is ever orphaned by an edit here — a merchant who retitles `lead` to wording of their own changes what people READ and nothing about what `contacts.lifecycle_stage` stores. Seeded values (`is_system`) are renameable like any other, and re-seeding leaves the rename alone. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required** The contact stage to edit. |  |
+| active | boolean | False retires the value: records that carry it keep it, pickers stop offering it. Refused on the default — make another entry the default first. |  |
+| description | string | One line of help for whoever picks this value. |  |
+| descriptions | object | Localized descriptions, keyed by language tag ({ "en": …, "de": … }). Null when nobody translated this value — a client then falls back to `description`. |  |
+| is_default | boolean | Promote this value; the previous default is demoted. Refused for an inactive value. |  |
 | labels | object | Localized titles, keyed by language tag ({ "en": …, "de": … }). Null when nobody translated this value — a client then falls back to `title`. |  |
 | position | integer | Where it sits in the set, ascending. |  |
 | title | string | The fallback name shown when no locale matches. |  |
@@ -151,7 +248,13 @@ PUT https://api.revenexx.com/v1/customers/contact-event-kinds/{id}
 GET https://api.revenexx.com/v1/customers/contact-point-kinds
 ```
 
-** Which document a contact point receives. Four is what an ERP delivers per debtor; a merchant whose own mails a credit note or a statement separately adds theirs. A fresh install is seeded with invoice, order_confirmation, shipping_notice, dunning, and the set seeds on first read too, so the page is never empty. The whole set comes back in one page in the tenant's own order — this route takes no limit/offset/order and no column filters, so `page` describes the full set and `filter` is always empty. **
+** Which document a contact point receives. Four is what an ERP delivers per debtor; a merchant whose own mails a credit note or a statement separately adds theirs. A fresh install is seeded with invoice, order_confirmation, shipping_notice, dunning, and the set seeds on first read too, so the page is never empty. The whole set comes back in one page in the tenant's own order — this route takes no limit/offset/order, so `page` describes the full set. Retired values are included; `?active=true` answers only the values on offer, `?active=false` only the retired ones. No other filter is taken. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| active | boolean | true answers only the values still on offer (what a picker lists), false only the retired ones. Left out, every value comes back — a read never hides a retired value unless asked. |  |
 
 
 ```http request
@@ -164,6 +267,7 @@ POST https://api.revenexx.com/v1/customers/contact-point-kinds
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
+| active | boolean | Whether pickers offer this value. Default true. An inactive value cannot be created as the default. |  |
 | code | string | What `contact_points.kind` will store. Lowercase, starting with a letter; immutable afterwards. |  |
 | description | string | One line of help for whoever picks this value. |  |
 | descriptions | object | Localized descriptions, keyed by language tag ({ "en": …, "de": … }). Null when nobody translated this value — a client then falls back to `description`. |  |
@@ -211,9 +315,10 @@ PUT https://api.revenexx.com/v1/customers/contact-point-kinds/{id}
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The recipient type to edit. |  |
+| active | boolean | False retires the value: records that carry it keep it, pickers stop offering it. Refused on the default — make another entry the default first. |  |
 | description | string | One line of help for whoever picks this value. |  |
 | descriptions | object | Localized descriptions, keyed by language tag ({ "en": …, "de": … }). Null when nobody translated this value — a client then falls back to `description`. |  |
-| is_default | boolean | Promote this value; the previous default is demoted. |  |
+| is_default | boolean | Promote this value; the previous default is demoted. Refused for an inactive value. |  |
 | labels | object | Localized titles, keyed by language tag ({ "en": …, "de": … }). Null when nobody translated this value — a client then falls back to `title`. |  |
 | position | integer | Where it sits in the set, ascending. |  |
 | title | string | The fallback name shown when no locale matches. |  |
@@ -224,7 +329,7 @@ PUT https://api.revenexx.com/v1/customers/contact-point-kinds/{id}
 POST https://api.revenexx.com/v1/customers/defaults
 ```
 
-** What the app.installed event runs. It fills all 5 of the value sets a tenant needs before anything else works — the payment terms, the address types, the lifecycle stages, the activity types and the recipient types — in one call. Idempotent by code: a set that already has its rows is left completely alone, so a re-delivered event and a merchant's renames both survive. A tenant installed before these tables existed is seeded lazily instead, by the first read that finds one empty. **
+** What the app.installed event runs. It fills all 6 of the value sets a tenant needs before anything else works — the payment terms, the address types, the lifecycle stages, the contact stages, the activity types and the recipient types — in one call. Idempotent by code: a set that already has its rows is left completely alone, so a re-delivered event and a merchant's renames both survive. A tenant installed before these tables existed is seeded lazily instead, by the first read that finds one empty. **
 
 ### Parameters
 
@@ -237,7 +342,13 @@ POST https://api.revenexx.com/v1/customers/defaults
 GET https://api.revenexx.com/v1/customers/lifecycle-stages
 ```
 
-** Where a company stands in the sales pipeline — a separate axis from status, and one whose steps are a sales team's own. A fresh install is seeded with lead, prospect, customer, churned, and the set seeds on first read too, so the page is never empty and `organizations.lifecycle_stage` always has a value it may carry. The whole set comes back in one page in the tenant's own order — this route takes no limit/offset/order and no column filters, so `page` describes the full set and `filter` is always empty. **
+** Where a company stands in the sales pipeline — a separate axis from status, and one whose steps are a sales team's own. A fresh install is seeded with lead, prospect, customer, churned, and the set seeds on first read too, so the page is never empty and `organizations.lifecycle_stage` always has a value it may carry. The whole set comes back in one page in the tenant's own order — this route takes no limit/offset/order, so `page` describes the full set. Retired values are included; `?active=true` answers only the values on offer, `?active=false` only the retired ones. No other filter is taken. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| active | boolean | true answers only the values still on offer (what a picker lists), false only the retired ones. Left out, every value comes back — a read never hides a retired value unless asked. |  |
 
 
 ```http request
@@ -250,6 +361,7 @@ POST https://api.revenexx.com/v1/customers/lifecycle-stages
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
+| active | boolean | Whether pickers offer this value. Default true. An inactive value cannot be created as the default. |  |
 | code | string | What `organizations.lifecycle_stage` will store. Lowercase, starting with a letter; immutable afterwards. |  |
 | description | string | One line of help for whoever picks this value. |  |
 | descriptions | object | Localized descriptions, keyed by language tag ({ "en": …, "de": … }). Null when nobody translated this value — a client then falls back to `description`. |  |
@@ -297,9 +409,10 @@ PUT https://api.revenexx.com/v1/customers/lifecycle-stages/{id}
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The lifecycle stage to edit. |  |
+| active | boolean | False retires the value: records that carry it keep it, pickers stop offering it. Refused on the default — make another entry the default first. |  |
 | description | string | One line of help for whoever picks this value. |  |
 | descriptions | object | Localized descriptions, keyed by language tag ({ "en": …, "de": … }). Null when nobody translated this value — a client then falls back to `description`. |  |
-| is_default | boolean | Promote this value; the previous default is demoted. |  |
+| is_default | boolean | Promote this value; the previous default is demoted. Refused for an inactive value. |  |
 | labels | object | Localized titles, keyed by language tag ({ "en": …, "de": … }). Null when nobody translated this value — a client then falls back to `title`. |  |
 | position | integer | Where it sits in the set, ascending. |  |
 | title | string | The fallback name shown when no locale matches. |  |
@@ -310,7 +423,13 @@ PUT https://api.revenexx.com/v1/customers/lifecycle-stages/{id}
 GET https://api.revenexx.com/v1/customers/payment-terms
 ```
 
-** When a company has to pay. A wholesaler who agrees net 45 with one customer used to need a release of this app to say so. A fresh install is seeded with prepayment, direct_debit, net_7, net_14, net_30, net_60, net_90, and the set seeds on first read too, so the page is never empty and `organizations.payment_terms` always has a value it may carry. The whole set comes back in one page in the tenant's own order — this route takes no limit/offset/order and no column filters, so `page` describes the full set and `filter` is always empty. **
+** When a company has to pay. A wholesaler who agrees net 45 with one customer used to need a release of this app to say so. A fresh install is seeded with prepayment, direct_debit, net_7, net_14, net_30, net_60, net_90, and the set seeds on first read too, so the page is never empty and `organizations.payment_terms` always has a value it may carry. The whole set comes back in one page in the tenant's own order — this route takes no limit/offset/order, so `page` describes the full set. Retired values are included; `?active=true` answers only the values on offer, `?active=false` only the retired ones. No other filter is taken. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| active | boolean | true answers only the values still on offer (what a picker lists), false only the retired ones. Left out, every value comes back — a read never hides a retired value unless asked. |  |
 
 
 ```http request
@@ -323,6 +442,7 @@ POST https://api.revenexx.com/v1/customers/payment-terms
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
+| active | boolean | Whether pickers offer this value. Default true. An inactive value cannot be created as the default. |  |
 | code | string | What `organizations.payment_terms` will store. Lowercase, starting with a letter; immutable afterwards. |  |
 | description | string | One line of help for whoever picks this value. |  |
 | descriptions | object | Localized descriptions, keyed by language tag ({ "en": …, "de": … }). Null when nobody translated this value — a client then falls back to `description`. |  |
@@ -370,9 +490,10 @@ PUT https://api.revenexx.com/v1/customers/payment-terms/{id}
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The payment term to edit. |  |
+| active | boolean | False retires the value: records that carry it keep it, pickers stop offering it. Refused on the default — make another entry the default first. |  |
 | description | string | One line of help for whoever picks this value. |  |
 | descriptions | object | Localized descriptions, keyed by language tag ({ "en": …, "de": … }). Null when nobody translated this value — a client then falls back to `description`. |  |
-| is_default | boolean | Promote this value; the previous default is demoted. |  |
+| is_default | boolean | Promote this value; the previous default is demoted. Refused for an inactive value. |  |
 | labels | object | Localized titles, keyed by language tag ({ "en": …, "de": … }). Null when nobody translated this value — a client then falls back to `title`. |  |
 | position | integer | Where it sits in the set, ascending. |  |
 | title | string | The fallback name shown when no locale matches. |  |
@@ -383,14 +504,14 @@ PUT https://api.revenexx.com/v1/customers/payment-terms/{id}
 GET https://api.revenexx.com/v1/customers/vocabularies
 ```
 
-** Discovery for the vocabulary routes: every enum this app publishes, each as a name, a title and a description. The VALUES are deliberately left out — this is the call that says which vocabularies exist, and the detail route is the one that answers what is in them. Names: address-types, contact-event-kinds, contact-point-kinds, contact-statuses, credit-limit-modes, lifecycle-stages, locales, order-approval-modes, organization-statuses, payment-terms, registration-statuses, roles, rule-matches, segment-sources, shipping-advice. Fetch one with GET /customers/vocabularies/{name}; a client holding the qualified pair 'customers.<name>' builds that URL from the pair alone. **
+** Discovery for the vocabulary routes: every enum this app publishes, each as a name, a title and a description. The VALUES are deliberately left out — this is the call that says which vocabularies exist, and the detail route is the one that answers what is in them. Names: address-types, contact-event-kinds, contact-lifecycle-stages, contact-point-kinds, contact-statuses, credit-limit-modes, lead-sources, lifecycle-stages, locales, order-approval-modes, organization-statuses, payment-terms, permissions, registration-statuses, roles, rule-matches, segment-member-types, segment-sources, shipping-advice, shop-access. Fetch one with GET /customers/vocabularies/{name}; a client holding the qualified pair 'customers.<name>' builds that URL from the pair alone. **
 
 
 ```http request
 GET https://api.revenexx.com/v1/customers/vocabularies/{name}
 ```
 
-** One vocabulary in full: every permitted value, each with its title, its description and the badge tone a client renders it with — enough to build a select without a second call. Two kinds of set, and 'source' says which one answered. 'schema' — the values are read out of the column's CHECK constraint, so the served set IS the enforced set and the two cannot drift; a value added to the constraint appears here even before anyone labels it, titled from its own key. 'table' — the values are the TENANT's own rows (payment terms, address types, lifecycle stages, activity types, roles), so they carry labels/descriptions per locale, is_system and is_default, and a merchant may add to them without a release of this app. 'tenant'/'defaults' are the two answers for a set the merchant configures but may not extend. Either way 'closed' is true: the set is exhaustive at this moment, so a value outside it is stale data rather than a missing label. Values come back in the order a select should offer them — lifecycle order for a status, the merchant's own position for a table. Names: address-types, contact-event-kinds, contact-point-kinds, contact-statuses, credit-limit-modes, lifecycle-stages, locales, order-approval-modes, organization-statuses, payment-terms, registration-statuses, roles, rule-matches, segment-sources, shipping-advice. **
+** One vocabulary in full: every permitted value, each with its title, its description and the badge tone a client renders it with — enough to build a select without a second call. Two kinds of set, and 'source' says which one answered. 'schema' — the values are read out of the column's CHECK constraint, so the served set IS the enforced set and the two cannot drift; a value added to the constraint appears here even before anyone labels it, titled from its own key. 'table' — the values are the TENANT's own rows (payment terms, address types, lifecycle stages, activity types, roles), so they carry labels/descriptions per locale, is_system, is_default and active, and a merchant may add to them without a release of this app. A value the merchant retired (active: false) is not in 'values', which is what a picker offers; it is in 'inactive', in the same shape, so a screen still renders the title of a record that carries one from this one answer. 'tenant'/'defaults' are the two answers for a set the merchant configures but may not extend. Either way 'closed' is true: the set is exhaustive at this moment, so a value in neither 'values' nor 'inactive' is stale data rather than a missing label. Values come back in the order a select should offer them — lifecycle order for a status, the merchant's own position for a table. Names: address-types, contact-event-kinds, contact-lifecycle-stages, contact-point-kinds, contact-statuses, credit-limit-modes, lead-sources, lifecycle-stages, locales, order-approval-modes, organization-statuses, payment-terms, permissions, registration-statuses, roles, rule-matches, segment-member-types, segment-sources, shipping-advice, shop-access. **
 
 ### Parameters
 

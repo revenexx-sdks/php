@@ -13,12 +13,14 @@ $client = (new Client())
 $cartsIo = new CartsIo($client);
 
 $result = $cartsIo->cartsImport(
+    sessionKey: 'a1b2c3d4e5f6', // optional
     contactId: '', // optional
     csv: 'sku,name,quantity,unit_price
 BOLT-M8-30,Hex bolt M8,100,0.12
 NUT-M8,Hex nut M8,100,0.04
 ', // optional
     name: 'Weekly order', // optional
+    organizationId: '', // optional
     payload: [
         'cart' => [
             'currency' => 'EUR',
@@ -34,6 +36,7 @@ NUT-M8,Hex nut M8,100,0.04
         ]
     ], // optional
     profileId: '', // optional
-    sessionKey: 'a1b2c3d4e5f6', // optional
-    targetCartId: '' // optional
+    sessionKeyBody: 'a1b2c3d4e5f6', // optional
+    targetCartId: '', // optional
+    xlsx: 'UEsDBBQABgAIAAAAIQ…' // optional
 );```

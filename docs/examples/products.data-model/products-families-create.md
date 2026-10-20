@@ -14,6 +14,7 @@ $productsDataModel = new ProductsDataModel($client);
 
 $result = $productsDataModel->productsFamiliesCreate(
     code: 'power_tools',
+    active: true, // optional
     externalId: 'EC001234', // optional
     externalRefs: [
         'entitys' => '4711',

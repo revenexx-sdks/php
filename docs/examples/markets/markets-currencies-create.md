@@ -15,6 +15,7 @@ $markets = new Markets($client);
 $result = $markets->marketsCurrenciesCreate(
     marketId: '',
     code: 'EUR',
+    active: true, // optional
     isDefault: true, // optional
     position: 0 // optional
 );```

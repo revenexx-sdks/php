@@ -22,6 +22,7 @@ $result = $orderlists->orderlistsItemsList(
     quantity: 12, // optional
     unit: 'piece', // optional
     price: 3.49, // optional
+    currency: 'EUR', // optional
     taxRate: 19, // optional
     costCenterId: 'CC-100', // optional
     positionTexts: '{}', // optional

@@ -28,6 +28,7 @@ GET https://api.revenexx.com/v1/carts/{cart_id}/items
 | limit | integer | Page size (default 50, max 200). |  |
 | offset | integer | Row offset for pagination (default 0). |  |
 | order | string | Sort by one column: 'column' | 'column.asc' | 'column.desc'. A bare column sorts ascending. Anything else is refused with 400. |  |
+| session_key | string | The session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Accepted and not yet checked; from 3.0.0 on, a call acting for a contact reaches such a cart only with it. |  |
 
 
 ```http request
@@ -41,6 +42,7 @@ POST https://api.revenexx.com/v1/carts/{cart_id}/items
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | cart_id | string | **Required** The cart the line belongs to, by its id. An id no cart in this tenant has answers 404 rather than an empty list, so a wrong cart is never mistaken for an empty one. |  |
+| session_key | string | The session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Accepted and not yet checked; from 3.0.0 on, a call acting for a contact reaches such a cart only with it. |  |
 | configuration | object | What was configured on this line, in the configurator's own vocabulary — this app stores it and reads nothing out of it. Its mere PRESENCE is behaviour: a line that carries a configuration never merges with another, because two differently configured units of the same article are not one line. Keys are the configurator's; the example is one shape, not the shape. |  |
 | currency | string | Optional, and it cannot change anything: a line is read in its CART's currency and stores none of its own. Sending the cart's code (or nothing) is accepted — which is what makes an exported line re-importable — and sending a different one answers 409 `currency_mismatch` rather than being converted or quietly stored. |  |
 | metadata | object | Free-form data the storefront hangs on the line. Stored and returned verbatim; no key in here is read by this app. |  |
@@ -67,7 +69,27 @@ PUT https://api.revenexx.com/v1/carts/{cart_id}/items
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | cart_id | string | **Required** The cart the line belongs to, by its id. An id no cart in this tenant has answers 404 rather than an empty list, so a wrong cart is never mistaken for an empty one. |  |
+| session_key | string | The session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Accepted and not yet checked; from 3.0.0 on, a call acting for a contact reaches such a cart only with it. |  |
 | items | array | The complete new item set (set semantics). |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/carts/{cart_id}/items/priced
+```
+
+** The operator's add-to-basket. The caller names an article and a quantity; the line is written with the article's name and SKU from the products catalogue and the price the prices app resolves for THIS cart's buyer — contact, organization, currency and market (the request's market, else the cart's own) — so a cart filled in a customer's name carries the prices that customer sees in the shop. This app still sets no price: it asks, exactly as a storefront asks before it adds. An agreed price may be stated as `unit_price`; the snapshot then keeps the resolved price beside it. From there the line goes the way every add goes — an identical product line at the same price folds into the existing one, the line limits apply and the totals are recomputed. It fails closed: an article prices cannot price for this buyer answers 422 `no_price` unless an agreed price was sent, and a tax rate that cannot be resolved is a refusal, never a line at 0 %. A request acting for a contact is refused with 403. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| cart_id | string | **Required** The cart the line belongs to, by its id. An id no cart in this tenant has answers 404 rather than an empty list, so a wrong cart is never mistaken for an empty one. |  |
+| session_key | string | The session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Accepted and not yet checked; from 3.0.0 on, a call acting for a contact reaches such a cart only with it. |  |
+| product_id | string | The catalogue product. Send this or `sku`. |  |
+| quantity | number | How much of it — default 1. It is also the quantity the price is resolved for, so a tier price applies. |  |
+| sku | string | The article number, when no product id is at hand. Resolved against the products catalogue. |  |
+| tax_rate | number | VAT percent, read only for an article the prices app has no price for, together with `unit_price`. A rate prices answers always wins. |  |
+| unit_price | number | An agreed net unit price that overrides the resolved one. Omit it and the line carries the price the customer would see in the shop. The snapshot keeps both. |  |
 
 
 ```http request
@@ -82,6 +104,7 @@ DELETE https://api.revenexx.com/v1/carts/{cart_id}/items/{id}
 | --- | --- | --- | --- |
 | cart_id | string | **Required** The cart the line belongs to, by its id. An id no cart in this tenant has answers 404 rather than an empty list, so a wrong cart is never mistaken for an empty one. |  |
 | id | string | **Required** The line, by its id. The cart in the path is checked too: a line that belongs to a different cart answers 404, so an id guessed from another cart never resolves here. |  |
+| session_key | string | The session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Accepted and not yet checked; from 3.0.0 on, a call acting for a contact reaches such a cart only with it. |  |
 
 
 ```http request
@@ -96,6 +119,7 @@ GET https://api.revenexx.com/v1/carts/{cart_id}/items/{id}
 | --- | --- | --- | --- |
 | cart_id | string | **Required** The cart the line belongs to, by its id. An id no cart in this tenant has answers 404 rather than an empty list, so a wrong cart is never mistaken for an empty one. |  |
 | id | string | **Required** The line, by its id. The cart in the path is checked too: a line that belongs to a different cart answers 404, so an id guessed from another cart never resolves here. |  |
+| session_key | string | The session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Accepted and not yet checked; from 3.0.0 on, a call acting for a contact reaches such a cart only with it. |  |
 
 
 ```http request
@@ -110,6 +134,7 @@ PUT https://api.revenexx.com/v1/carts/{cart_id}/items/{id}
 | --- | --- | --- | --- |
 | cart_id | string | **Required** The cart the line belongs to, by its id. An id no cart in this tenant has answers 404 rather than an empty list, so a wrong cart is never mistaken for an empty one. |  |
 | id | string | **Required** The line, by its id. The cart in the path is checked too: a line that belongs to a different cart answers 404, so an id guessed from another cart never resolves here. |  |
+| session_key | string | The session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Accepted and not yet checked; from 3.0.0 on, a call acting for a contact reaches such a cart only with it. |  |
 | configuration | object | What was configured on this line, in the configurator's own vocabulary — this app stores it and reads nothing out of it. Its mere PRESENCE is behaviour: a line that carries a configuration never merges with another, because two differently configured units of the same article are not one line. Keys are the configurator's; the example is one shape, not the shape. |  |
 | currency | string | Optional, and it cannot change anything: a line is read in its CART's currency and stores none of its own. Sending the cart's code (or nothing) is accepted — which is what makes an exported line re-importable — and sending a different one answers 409 `currency_mismatch` rather than being converted or quietly stored. |  |
 | metadata | object | Free-form data the storefront hangs on the line. Stored and returned verbatim; no key in here is read by this app. |  |

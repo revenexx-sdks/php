@@ -16,6 +16,7 @@ $customersValueLists = new CustomersValueLists($client);
 $result = $customersValueLists->customersPaymentTermsCreate(
     code: '',
     title: 'Net 30 days',
+    active: true, // optional
     description: 'Invoice due 30 days after the delivery note.', // optional
     descriptions: [
         'de' => 'Rechnung 30 Tage nach Lieferschein fällig.',

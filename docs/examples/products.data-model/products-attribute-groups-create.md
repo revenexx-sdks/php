@@ -14,6 +14,7 @@ $productsDataModel = new ProductsDataModel($client);
 
 $result = $productsDataModel->productsAttributeGroupsCreate(
     code: 'technical_attributes',
+    active: true, // optional
     externalId: 'GRP-TECHNICAL', // optional
     externalRefs: [
         'entitys' => '4711',

@@ -15,6 +15,7 @@ $productsDataModel = new ProductsDataModel($client);
 $result = $productsDataModel->productsMeasurementFamiliesCreate(
     code: 'weight',
     standardUnit: 'kilogram',
+    active: true, // optional
     labels: [
         'de' => 'Gewicht',
         'en' => 'Weight'

@@ -6,6 +6,9 @@ use JsonSerializable;
 
 class Collection implements JsonSerializable
 {
+    private static Collection $CATEGORIES;
+    private static Collection $MANUFACTURERS;
+    private static Collection $PAGES;
     private static Collection $PRODUCTS;
 
     private string $value;
@@ -25,6 +28,27 @@ class Collection implements JsonSerializable
         return $this->value;
     }
 
+    public static function CATEGORIES(): Collection
+    {
+        if (!isset(self::$CATEGORIES)) {
+            self::$CATEGORIES = new Collection('categories');
+        }
+        return self::$CATEGORIES;
+    }
+    public static function MANUFACTURERS(): Collection
+    {
+        if (!isset(self::$MANUFACTURERS)) {
+            self::$MANUFACTURERS = new Collection('manufacturers');
+        }
+        return self::$MANUFACTURERS;
+    }
+    public static function PAGES(): Collection
+    {
+        if (!isset(self::$PAGES)) {
+            self::$PAGES = new Collection('pages');
+        }
+        return self::$PAGES;
+    }
     public static function PRODUCTS(): Collection
     {
         if (!isset(self::$PRODUCTS)) {

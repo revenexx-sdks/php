@@ -15,13 +15,14 @@ $productsReferences = new ProductsReferences($client);
 $result = $productsReferences->productsReferenceEntityRecordsCreate(
     code: 'acme_tools',
     referenceEntityId: '',
+    active: true, // optional
     attributeValues: [
         'common' => [
             'country' => 'DE',
             'founded' => 1946
         ],
         'locale_specific' => [
-            'de_DE' => [
+            'de' => [
                 'description' => 'Werkzeughersteller aus Süddeutschland.'
             ]
         ]

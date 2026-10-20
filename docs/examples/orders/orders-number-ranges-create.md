@@ -14,8 +14,13 @@ $orders = new Orders($client);
 
 $result = $orders->ordersNumberRangesCreate(
     code: 'order',
+    active: true, // optional
     channelId: '', // optional
     counter: 123, // optional
+    labels: [
+        'de' => 'Bestellnummern',
+        'en' => 'Order numbers'
+    ], // optional
     metadata: [
         'owner' => 'erp-sync'
     ], // optional
@@ -23,5 +28,6 @@ $result = $orders->ordersNumberRangesCreate(
     positionStep: 10, // optional
     prefix: 'ORD-', // optional
     step: 1, // optional
-    suffix: '' // optional
+    suffix: '', // optional
+    title: 'Order numbers' // optional
 );```

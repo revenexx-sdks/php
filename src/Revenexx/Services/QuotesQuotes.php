@@ -7,7 +7,9 @@ use Revenexx\Client;
 use Revenexx\Service;
 use Revenexx\InputFile;
 use Revenexx\Enums\Origin;
+use Revenexx\Enums\QuotesQuotesCopyParts;
 use Revenexx\Enums\Audience;
+use Revenexx\Enums\QuotesQuotesVocabularyName;
 
 class QuotesQuotes extends Service
 {
@@ -15,6 +17,55 @@ class QuotesQuotes extends Service
      {
          parent::__construct($client);
      }
+
+    /**
+     * Every position of an open quote that names one product, across all quotes
+     * — what `products` asks before it deletes a product for good, so a quote
+     * still being negotiated holds the delete (RAD-247). Open means requested, in
+     * review, quoted or partially accepted unless `status` says otherwise. Each
+     * row is the position with its quote's `quote_number` and `quote_status`;
+     * newest quote first, then by position. A call the gateway attributes to a
+     * buyer reads only that buyer's organisation's quotes.
+     *
+     * @param string $productId
+     * @param ?string $status
+     * @param ?int $limit
+     * @param ?int $offset
+     * @throws RevenexxException
+     * @return array
+     */
+    public function quotesQuotesOpenItems(string $productId, ?string $status = null, ?int $limit = null, ?int $offset = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/quotes/open-items'
+        );
+
+        $apiParams = [];
+        $apiParams['product_id'] = $productId;
+
+        if (!is_null($status)) {
+            $apiParams['status'] = $status;
+        }
+
+        if (!is_null($limit)) {
+            $apiParams['limit'] = $limit;
+        }
+
+        if (!is_null($offset)) {
+            $apiParams['offset'] = $offset;
+        }
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
 
     /**
      * The quote list — a merchant's work queue and a buyer's history, depending
@@ -231,6 +282,45 @@ class QuotesQuotes extends Service
     }
 
     /**
+     * Opens a new quote from an existing one, as the desk's own work: it takes
+     * the next number, starts `in_review` with revision 1 and no request date,
+     * keeps the customer, the addresses, the carriage and the notes, and carries
+     * none of the original's decisions, deadline, cart or source keys. `parts:
+     * ["items"]` (the default) copies the positions with their prices and
+     * discounts, every decision open again.
+     *
+     * @param string $id
+     * @param ?array $parts
+     * @throws RevenexxException
+     * @return array
+     */
+    public function quotesQuotesCopy(string $id, ?array $parts = null): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/quotes/quotes/{id}/copy'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        if (!is_null($parts)) {
+            $apiParams['parts'] = $parts;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
      * The whole quote in one call: the record, its positions in order, the trail
      * of every move and note, and the attachments. This is what a record page and
      * a storefront both read. A buyer — or any caller asking with
@@ -413,6 +503,39 @@ class QuotesQuotes extends Service
         );
 
         $apiParams = [];
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * One list, value by value, with the title a person reads in English and
+     * German, a badge tone and whether the value ends a quote. The lists backed
+     * by a database constraint are closed and carry exactly the values the
+     * database accepts; the trail's entry kinds and actors are written only by
+     * this app and are served as known values, not as a promise that nothing else
+     * appears.
+     *
+     * @param QuotesQuotesVocabularyName $name
+     * @throws RevenexxException
+     * @return array
+     */
+    public function quotesQuotesVocabulary(QuotesQuotesVocabularyName $name): array
+    {
+        $apiPath = str_replace(
+            ['{name}'],
+            [$name],
+            '/v1/quotes/vocabularies/{name}'
+        );
+
+        $apiParams = [];
+        $apiParams['name'] = $name;
 
         $apiHeaders = [];
 

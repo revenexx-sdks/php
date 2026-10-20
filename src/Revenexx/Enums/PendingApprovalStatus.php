@@ -9,6 +9,7 @@ class PendingApprovalStatus implements JsonSerializable
     private static PendingApprovalStatus $PENDING;
     private static PendingApprovalStatus $APPROVED;
     private static PendingApprovalStatus $DECLINED;
+    private static PendingApprovalStatus $CANCELLED;
 
     private string $value;
 
@@ -47,5 +48,12 @@ class PendingApprovalStatus implements JsonSerializable
             self::$DECLINED = new PendingApprovalStatus('declined');
         }
         return self::$DECLINED;
+    }
+    public static function CANCELLED(): PendingApprovalStatus
+    {
+        if (!isset(self::$CANCELLED)) {
+            self::$CANCELLED = new PendingApprovalStatus('cancelled');
+        }
+        return self::$CANCELLED;
     }
 }

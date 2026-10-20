@@ -7,6 +7,7 @@ use JsonSerializable;
 class MarketLocaleFallback implements JsonSerializable
 {
     private static MarketLocaleFallback $LANGUAGE;
+    private static MarketLocaleFallback $SOURCE;
     private static MarketLocaleFallback $DEFAULTLOCALE;
     private static MarketLocaleFallback $NONE;
 
@@ -33,6 +34,13 @@ class MarketLocaleFallback implements JsonSerializable
             self::$LANGUAGE = new MarketLocaleFallback('language');
         }
         return self::$LANGUAGE;
+    }
+    public static function SOURCE(): MarketLocaleFallback
+    {
+        if (!isset(self::$SOURCE)) {
+            self::$SOURCE = new MarketLocaleFallback('source');
+        }
+        return self::$SOURCE;
     }
     public static function DEFAULTLOCALE(): MarketLocaleFallback
     {

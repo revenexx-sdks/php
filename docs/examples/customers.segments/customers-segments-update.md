@@ -15,6 +15,7 @@ $customersSegments = new CustomersSegments($client);
 
 $result = $customersSegments->customersSegmentsUpdate(
     id: '',
+    active: true, // optional
     code: 'key_accounts', // optional
     labels: [
         'de' => 'Großkunden',

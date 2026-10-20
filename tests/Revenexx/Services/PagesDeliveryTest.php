@@ -58,6 +58,20 @@ final class PagesDeliveryTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodPagesDeliveryPopups(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->pagesDelivery->pagesDeliveryPopups(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodPagesDeliveryPreview(): void {
 
         $data = array();

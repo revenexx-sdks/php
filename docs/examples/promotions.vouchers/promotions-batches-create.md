@@ -17,7 +17,7 @@ $result = $promotionsVouchers->promotionsBatchesCreate(
     name: '',
     promotionId: '',
     alphabet: '', // optional
-    metadata: [], // optional
+    metadata: , // optional
     pattern: '', // optional
     requestRef: '', // optional
     requested: 1, // optional

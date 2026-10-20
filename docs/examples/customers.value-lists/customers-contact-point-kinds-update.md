@@ -15,6 +15,7 @@ $customersValueLists = new CustomersValueLists($client);
 
 $result = $customersValueLists->customersContactPointKindsUpdate(
     id: '',
+    active: true, // optional
     description: 'Where the invoice is sent.', // optional
     descriptions: [
         'de' => 'Wohin die Rechnung geschickt wird.',

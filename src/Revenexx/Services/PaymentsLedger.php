@@ -38,6 +38,7 @@ class PaymentsLedger extends Service
      * @param ?string $cartId
      * @param ?string $contactId
      * @param ?string $orderId
+     * @param ?string $organizationId
      * @param ?PaymentStatus $status
      * @param ?string $orderRef
      * @param ?string $methodCode
@@ -46,11 +47,12 @@ class PaymentsLedger extends Service
      * @param ?PaymentDunningStage $dunningStage
      * @param ?string $idempotencyKey
      * @param ?string $externalId
+     * @param ?string $reference
      * @param ?string $sourceSyncedAt
      * @throws RevenexxException
      * @return array
      */
-    public function paymentsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $cartId = null, ?string $contactId = null, ?string $orderId = null, ?PaymentStatus $status = null, ?string $orderRef = null, ?string $methodCode = null, ?PaymentMethodKind $kind = null, ?string $provider = null, ?PaymentDunningStage $dunningStage = null, ?string $idempotencyKey = null, ?string $externalId = null, ?string $sourceSyncedAt = null): array
+    public function paymentsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $cartId = null, ?string $contactId = null, ?string $orderId = null, ?string $organizationId = null, ?PaymentStatus $status = null, ?string $orderRef = null, ?string $methodCode = null, ?PaymentMethodKind $kind = null, ?string $provider = null, ?PaymentDunningStage $dunningStage = null, ?string $idempotencyKey = null, ?string $externalId = null, ?string $reference = null, ?string $sourceSyncedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -84,6 +86,10 @@ class PaymentsLedger extends Service
             $apiParams['order_id'] = $orderId;
         }
 
+        if (!is_null($organizationId)) {
+            $apiParams['organization_id'] = $organizationId;
+        }
+
         if (!is_null($status)) {
             $apiParams['status'] = $status;
         }
@@ -114,6 +120,10 @@ class PaymentsLedger extends Service
 
         if (!is_null($externalId)) {
             $apiParams['external_id'] = $externalId;
+        }
+
+        if (!is_null($reference)) {
+            $apiParams['reference'] = $reference;
         }
 
         if (!is_null($sourceSyncedAt)) {
@@ -267,6 +277,52 @@ class PaymentsLedger extends Service
         );
 
         $apiParams = [];
+        $apiParams['apply'] = $apply;
+        $apiParams['limit'] = $limit;
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Resolves the `order_ref` of payments that name no `order_id` to the order
+     * it names — by id when it is one, otherwise by number through the orders
+     * app — and writes `order_id` and the order's `organization_id`, nothing
+     * else. A payment that already names its order but no organization gets the
+     * order's organization. A match is linked only when it can have been this
+     * payment's order: the same currency, an amount within the order's total, and
+     * an order no younger than the payment — a number a later order reuses is
+     * reported, never linked. It is the same resolution creating a payment now
+     * runs, for payments written before it did. Dry-run by default — reports
+     * what it would link and changes nothing until apply:true. Oldest first,
+     * `limit` rows a run; `after` continues from the `next` of the previous run.
+     * Idempotent: a linked payment is no longer scanned. An orders app that
+     * cannot be asked answers 502 `orders_unavailable` and the run stops where it
+     * was.
+     *
+     * @param ?string $after
+     * @param ?bool $apply
+     * @param ?int $limit
+     * @throws RevenexxException
+     * @return array
+     */
+    public function paymentsOrdersRelink(?string $after = null, ?bool $apply = null, ?int $limit = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/payments/orders/relink'
+        );
+
+        $apiParams = [];
+        $apiParams['after'] = $after;
         $apiParams['apply'] = $apply;
         $apiParams['limit'] = $limit;
 

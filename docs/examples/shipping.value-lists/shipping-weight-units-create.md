@@ -17,6 +17,7 @@ $result = $shippingValueLists->shippingWeightUnitsCreate(
     code: 't',
     factor: 1000,
     title: 'Tonne',
+    active: true, // optional
     description: 'When to pick this weight unit.', // optional
     descriptions: [
         'de' => 'Wann diese Option zu wählen ist.',

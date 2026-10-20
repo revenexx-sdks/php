@@ -6,8 +6,13 @@ use Revenexx\Client;
 use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
+use Revenexx\Enums\ProductsListTrashed;
 use Revenexx\Enums\ProductsListKind;
+use Revenexx\Enums\ProductsListStatus;
 use Revenexx\Enums\ProductsKind;
+use Revenexx\Enums\ProductsStatus;
+use Revenexx\Enums\ProductsChannelsAssignMode;
+use Revenexx\Enums\ProductsCopyParts;
 
 final class ProductsTest extends TestCase {
     private $client;
@@ -165,6 +170,34 @@ final class ProductsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodProductsSetup(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->products->productsSetup(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodProductsEmptyTrash(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->products->productsEmptyTrash(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodProductsVocabulariesList(): void {
 
         $data = array();
@@ -239,6 +272,39 @@ final class ProductsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodProductsAttributeSet(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->products->productsAttributeSet(
+            "",
+            "material",
+            Edelstahl
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodProductsChannelsAssign(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->products->productsChannelsAssign(
+            "",
+            array()
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodProductsCompleteness(): void {
 
         $data = array();
@@ -255,6 +321,22 @@ final class ProductsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodProductsCopy(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->products->productsCopy(
+            "",
+            "ACME-4712-BLK"
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodProductsFamilyAssign(): void {
 
         $data = array();
@@ -264,6 +346,37 @@ final class ProductsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->products->productsFamilyAssign(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodProductsManufacturerAssign(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->products->productsManufacturerAssign(
+            "",
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodProductsRestore(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->products->productsRestore(
             ""
         );
 

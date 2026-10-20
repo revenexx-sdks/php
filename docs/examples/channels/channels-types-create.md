@@ -16,6 +16,7 @@ $channels = new Channels($client);
 $result = $channels->channelsTypesCreate(
     code: 'feed',
     title: 'Product feed',
+    active: true, // optional
     description: 'A web shop a human browses.', // optional
     descriptions: [
         'de' => 'Shop',

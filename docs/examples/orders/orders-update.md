@@ -15,12 +15,19 @@ $orders = new Orders($client);
 $result = $orders->ordersUpdate(
     id: '',
     billingAddress: [
-        'city' => 'Berlin',
-        'company' => 'Beispiel Industrietechnik GmbH',
-        'country' => 'DE',
-        'name' => 'Anna Berger',
-        'street' => 'Musterstraße 12',
-        'zip' => '10115'
+        'address_line1' => 'Musterstraße 12',
+        'country_code' => 'DE',
+        'formatted' => [
+            '0' => 'Anna Berger',
+            '1' => 'Beispiel Industrietechnik GmbH',
+            '2' => 'Musterstraße 12',
+            '3' => '10115 Berlin',
+            '4' => 'GERMANY'
+        ],
+        'locality' => 'Berlin',
+        'organization_name' => 'Beispiel Industrietechnik GmbH',
+        'postal_code' => '10115',
+        'recipient_name' => 'Anna Berger'
     ], // optional
     buyer: [
         'company' => 'Beispiel Industrietechnik GmbH',
@@ -38,13 +45,21 @@ $result = $orders->ordersUpdate(
         'erp_batch' => '2026-W32'
     ], // optional
     requestedDeliveryDate: '2026-03-17', // optional
+    senderCountry: 'DE', // optional
     shippingAddress: [
-        'city' => 'Berlin',
-        'company' => 'Beispiel Industrietechnik GmbH',
-        'country' => 'DE',
-        'name' => 'Anna Berger',
-        'street' => 'Musterstraße 12',
-        'zip' => '10115'
+        'address_line1' => 'Musterstraße 12',
+        'country_code' => 'DE',
+        'formatted' => [
+            '0' => 'Anna Berger',
+            '1' => 'Beispiel Industrietechnik GmbH',
+            '2' => 'Musterstraße 12',
+            '3' => '10115 Berlin',
+            '4' => 'GERMANY'
+        ],
+        'locality' => 'Berlin',
+        'organization_name' => 'Beispiel Industrietechnik GmbH',
+        'postal_code' => '10115',
+        'recipient_name' => 'Anna Berger'
     ], // optional
     sourceData: [
         'etag' => 'W/"JzQ0O0c2MDAwMCI="',

@@ -16,8 +16,9 @@ $promotionsPromotions = new PromotionsPromotions($client);
 $result = $promotionsPromotions->promotionsGroupsCreate(
     code: '',
     name: '',
-    labels: [], // optional
-    metadata: [], // optional
+    active: true, // optional
+    labels: , // optional
+    metadata: , // optional
     mode: PromotionsGroupsCreateMode::STACK(), // optional
     parentId: '', // optional
     position: 1 // optional

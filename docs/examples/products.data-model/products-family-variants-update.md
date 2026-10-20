@@ -14,6 +14,7 @@ $productsDataModel = new ProductsDataModel($client);
 
 $result = $productsDataModel->productsFamilyVariantsUpdate(
     id: '',
+    active: true, // optional
     axes: [
         '0' => 'colour',
         '1' => 'size'

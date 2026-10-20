@@ -8,6 +8,7 @@ class CartIoFormat implements JsonSerializable
 {
     private static CartIoFormat $JSON;
     private static CartIoFormat $CSV;
+    private static CartIoFormat $XLSX;
 
     private string $value;
 
@@ -39,5 +40,12 @@ class CartIoFormat implements JsonSerializable
             self::$CSV = new CartIoFormat('csv');
         }
         return self::$CSV;
+    }
+    public static function XLSX(): CartIoFormat
+    {
+        if (!isset(self::$XLSX)) {
+            self::$XLSX = new CartIoFormat('xlsx');
+        }
+        return self::$XLSX;
     }
 }

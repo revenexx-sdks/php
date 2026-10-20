@@ -226,18 +226,21 @@ class Orderlists extends Service
      * step it no longer has to make. Rows come back in `position` order,
      * ascending, which is the order a select should offer them in, and each
      * carries the `is_default` flag that decides what a create with no `kind`
-     * falls back to. It takes NO filters: `limit` and `offset` are the only query
-     * keys it reads, and any other is ignored rather than refused — which is
-     * also why this collection alone answers no `filter` echo, since echoing an
-     * empty one would be noise. The `code` on each row, not the `id`, is what
+     * falls back to. Its one filter is `active`: omitted, every kind is answered,
+     * the retired ones included, so a screen rendering a list's stored kind finds
+     * it; `?active=true` is what a picker for a new list reads. Besides it,
+     * `limit` and `offset` are the only query keys it reads, and any other is
+     * ignored rather than refused — which is also why this collection answers
+     * no `filter` echo. The `code` on each row, not the `id`, is what
      * `lists.kind` stores and what `?kind=` on GET /orderlists matches.
      *
      * @param ?int $limit
      * @param ?int $offset
+     * @param ?bool $active
      * @throws RevenexxException
      * @return array
      */
-    public function orderlistsKindsList(?int $limit = null, ?int $offset = null): array
+    public function orderlistsKindsList(?int $limit = null, ?int $offset = null, ?bool $active = null): array
     {
         $apiPath = str_replace(
             [],
@@ -253,6 +256,10 @@ class Orderlists extends Service
 
         if (!is_null($offset)) {
             $apiParams['offset'] = $offset;
+        }
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
         }
 
         $apiHeaders = [];
@@ -278,6 +285,7 @@ class Orderlists extends Service
      *
      * @param string $code
      * @param string $title
+     * @param ?bool $active
      * @param ?string $description
      * @param ?array $descriptions
      * @param ?bool $isDefault
@@ -287,7 +295,7 @@ class Orderlists extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function orderlistsKindsCreate(string $code, string $title, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?OrderListKindTone $tone = null): array
+    public function orderlistsKindsCreate(string $code, string $title, ?bool $active = null, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?OrderListKindTone $tone = null): array
     {
         $apiPath = str_replace(
             [],
@@ -298,6 +306,10 @@ class Orderlists extends Service
         $apiParams = [];
         $apiParams['code'] = $code;
         $apiParams['title'] = $title;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
         $apiParams['description'] = $description;
         $apiParams['descriptions'] = $descriptions;
 
@@ -422,6 +434,7 @@ class Orderlists extends Service
      * system kind is editable like any other.
      *
      * @param string $id
+     * @param ?bool $active
      * @param ?string $description
      * @param ?array $descriptions
      * @param ?bool $isDefault
@@ -432,7 +445,7 @@ class Orderlists extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function orderlistsKindsUpdate(string $id, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?string $title = null, ?OrderListKindTone $tone = null): array
+    public function orderlistsKindsUpdate(string $id, ?bool $active = null, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?string $title = null, ?OrderListKindTone $tone = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -442,6 +455,10 @@ class Orderlists extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
         $apiParams['description'] = $description;
         $apiParams['descriptions'] = $descriptions;
 
@@ -826,6 +843,49 @@ class Orderlists extends Service
     }
 
     /**
+     * The buyer who kept a list has left, and the list is still how the company
+     * orders: this hands it to another contact of the same organization, with its
+     * positions, kind and sharing exactly as they were. Back office only — a
+     * buyer can neither give a list away nor take a colleague's, so a call with
+     * an acting contact is a 403. The new owner has to be a contact the customers
+     * app knows and, when the list belongs to an organization, one of that
+     * organization's contacts; only the customers app can say either, so this
+     * route asks it (customers.contacts.get) and refuses when it cannot be asked
+     * rather than moving a list out of the account it is shared in. The stored
+     * owner name follows the new owner. Naming the owner the list already has
+     * changes nothing and answers the list. The tenant's `max_lists_per_owner`
+     * applies to the new owner as it does on a create. This is the only way a
+     * list changes owner: PUT /orderlists/{id} refuses `owner_id`.
+     *
+     * @param string $id
+     * @param string $ownerId
+     * @throws RevenexxException
+     * @return array
+     */
+    public function orderlistsTransferOwner(string $id, string $ownerId): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/orderlists/{id}/transfer-owner'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+        $apiParams['owner_id'] = $ownerId;
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
      * Every column of a position is an exact-match filter — eighteen of them,
      * which is the whole row — and they combine as AND. `list_id` is not among
      * them: it comes from the path and overwrites anything the query says. The
@@ -847,6 +907,7 @@ class Orderlists extends Service
      * @param ?float $quantity
      * @param ?string $unit
      * @param ?float $price
+     * @param ?string $currency
      * @param ?float $taxRate
      * @param ?string $costCenterId
      * @param ?string $positionTexts
@@ -867,7 +928,7 @@ class Orderlists extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function orderlistsItemsList(string $listId, ?string $id = null, ?string $productId = null, ?string $sku = null, ?string $name = null, ?string $image = null, ?float $quantity = null, ?string $unit = null, ?float $price = null, ?float $taxRate = null, ?string $costCenterId = null, ?string $positionTexts = null, ?string $customSku = null, ?string $categorySlug = null, ?string $subcategorySlug = null, ?int $position = null, ?string $metadata = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function orderlistsItemsList(string $listId, ?string $id = null, ?string $productId = null, ?string $sku = null, ?string $name = null, ?string $image = null, ?float $quantity = null, ?string $unit = null, ?float $price = null, ?string $currency = null, ?float $taxRate = null, ?string $costCenterId = null, ?string $positionTexts = null, ?string $customSku = null, ?string $categorySlug = null, ?string $subcategorySlug = null, ?int $position = null, ?string $metadata = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             ['{list_id}'],
@@ -908,6 +969,10 @@ class Orderlists extends Service
 
         if (!is_null($price)) {
             $apiParams['price'] = $price;
+        }
+
+        if (!is_null($currency)) {
+            $apiParams['currency'] = $currency;
         }
 
         if (!is_null($taxRate)) {
@@ -1004,6 +1069,7 @@ class Orderlists extends Service
      * @param string $name
      * @param ?string $categorySlug
      * @param ?string $costCenterId
+     * @param ?string $currency
      * @param ?string $customSku
      * @param ?string $externalId
      * @param ?array $externalRefs
@@ -1023,7 +1089,7 @@ class Orderlists extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function orderlistsItemsCreate(string $listId, string $name, ?string $categorySlug = null, ?string $costCenterId = null, ?string $customSku = null, ?string $externalId = null, ?array $externalRefs = null, ?string $image = null, ?array $metadata = null, ?int $position = null, ?array $positionTexts = null, ?float $price = null, ?string $productId = null, ?float $quantity = null, ?string $sku = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $subcategorySlug = null, ?float $taxRate = null, ?string $unit = null): array
+    public function orderlistsItemsCreate(string $listId, string $name, ?string $categorySlug = null, ?string $costCenterId = null, ?string $currency = null, ?string $customSku = null, ?string $externalId = null, ?array $externalRefs = null, ?string $image = null, ?array $metadata = null, ?int $position = null, ?array $positionTexts = null, ?float $price = null, ?string $productId = null, ?float $quantity = null, ?string $sku = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $subcategorySlug = null, ?float $taxRate = null, ?string $unit = null): array
     {
         $apiPath = str_replace(
             ['{list_id}'],
@@ -1036,6 +1102,7 @@ class Orderlists extends Service
         $apiParams['name'] = $name;
         $apiParams['category_slug'] = $categorySlug;
         $apiParams['cost_center_id'] = $costCenterId;
+        $apiParams['currency'] = $currency;
         $apiParams['custom_sku'] = $customSku;
         $apiParams['external_id'] = $externalId;
         $apiParams['external_refs'] = $externalRefs;
@@ -1206,6 +1273,7 @@ class Orderlists extends Service
      * @param string $id
      * @param ?string $categorySlug
      * @param ?string $costCenterId
+     * @param ?string $currency
      * @param ?string $customSku
      * @param ?string $externalId
      * @param ?array $externalRefs
@@ -1226,7 +1294,7 @@ class Orderlists extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function orderlistsItemsUpdate(string $listId, string $id, ?string $categorySlug = null, ?string $costCenterId = null, ?string $customSku = null, ?string $externalId = null, ?array $externalRefs = null, ?string $image = null, ?array $metadata = null, ?string $name = null, ?int $position = null, ?array $positionTexts = null, ?float $price = null, ?string $productId = null, ?float $quantity = null, ?string $sku = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $subcategorySlug = null, ?float $taxRate = null, ?string $unit = null): array
+    public function orderlistsItemsUpdate(string $listId, string $id, ?string $categorySlug = null, ?string $costCenterId = null, ?string $currency = null, ?string $customSku = null, ?string $externalId = null, ?array $externalRefs = null, ?string $image = null, ?array $metadata = null, ?string $name = null, ?int $position = null, ?array $positionTexts = null, ?float $price = null, ?string $productId = null, ?float $quantity = null, ?string $sku = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $subcategorySlug = null, ?float $taxRate = null, ?string $unit = null): array
     {
         $apiPath = str_replace(
             ['{list_id}', '{id}'],
@@ -1239,6 +1307,7 @@ class Orderlists extends Service
         $apiParams['id'] = $id;
         $apiParams['category_slug'] = $categorySlug;
         $apiParams['cost_center_id'] = $costCenterId;
+        $apiParams['currency'] = $currency;
         $apiParams['custom_sku'] = $customSku;
         $apiParams['external_id'] = $externalId;
         $apiParams['external_refs'] = $externalRefs;

@@ -25,6 +25,7 @@ $result = $inventoriesStock->inventoriesAvailabilityStatesList(
     descriptions: '{}', // optional
     orderable: true, // optional
     isDefault: true, // optional
+    active: true, // optional
     tone: Tone::NEUTRAL(), // optional
     position: 1, // optional
     isSystem: true, // optional

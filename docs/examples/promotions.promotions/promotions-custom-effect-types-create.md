@@ -14,9 +14,10 @@ $promotionsPromotions = new PromotionsPromotions($client);
 
 $result = $promotionsPromotions->promotionsCustomEffectTypesCreate(
     name: '',
+    active: true, // optional
     carriesAmount: true, // optional
-    description: [], // optional
-    metadata: [], // optional
-    payloadShape: [], // optional
-    title: [] // optional
+    description: , // optional
+    metadata: , // optional
+    payloadShape: , // optional
+    title:  // optional
 );```

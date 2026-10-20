@@ -21,6 +21,7 @@ $result = $productsDataModel->productsAssociationTypesList(
     isTwoWay: true, // optional
     isQuantified: true, // optional
     labels: '{}', // optional
+    active: true, // optional
     createdAt: '2026-01-01T12:00:00Z', // optional
     updatedAt: '2026-01-01T12:00:00Z' // optional
 );```

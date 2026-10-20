@@ -8,19 +8,24 @@ class CustomersVocabulariesGetName implements JsonSerializable
 {
     private static CustomersVocabulariesGetName $ADDRESSTYPES;
     private static CustomersVocabulariesGetName $CONTACTEVENTKINDS;
+    private static CustomersVocabulariesGetName $CONTACTLIFECYCLESTAGES;
     private static CustomersVocabulariesGetName $CONTACTPOINTKINDS;
     private static CustomersVocabulariesGetName $CONTACTSTATUSES;
     private static CustomersVocabulariesGetName $CREDITLIMITMODES;
+    private static CustomersVocabulariesGetName $LEADSOURCES;
     private static CustomersVocabulariesGetName $LIFECYCLESTAGES;
     private static CustomersVocabulariesGetName $LOCALES;
     private static CustomersVocabulariesGetName $ORDERAPPROVALMODES;
     private static CustomersVocabulariesGetName $ORGANIZATIONSTATUSES;
     private static CustomersVocabulariesGetName $PAYMENTTERMS;
+    private static CustomersVocabulariesGetName $PERMISSIONS;
     private static CustomersVocabulariesGetName $REGISTRATIONSTATUSES;
     private static CustomersVocabulariesGetName $ROLES;
     private static CustomersVocabulariesGetName $RULEMATCHES;
+    private static CustomersVocabulariesGetName $SEGMENTMEMBERTYPES;
     private static CustomersVocabulariesGetName $SEGMENTSOURCES;
     private static CustomersVocabulariesGetName $SHIPPINGADVICE;
+    private static CustomersVocabulariesGetName $SHOPACCESS;
 
     private string $value;
 
@@ -53,6 +58,13 @@ class CustomersVocabulariesGetName implements JsonSerializable
         }
         return self::$CONTACTEVENTKINDS;
     }
+    public static function CONTACTLIFECYCLESTAGES(): CustomersVocabulariesGetName
+    {
+        if (!isset(self::$CONTACTLIFECYCLESTAGES)) {
+            self::$CONTACTLIFECYCLESTAGES = new CustomersVocabulariesGetName('contact-lifecycle-stages');
+        }
+        return self::$CONTACTLIFECYCLESTAGES;
+    }
     public static function CONTACTPOINTKINDS(): CustomersVocabulariesGetName
     {
         if (!isset(self::$CONTACTPOINTKINDS)) {
@@ -73,6 +85,13 @@ class CustomersVocabulariesGetName implements JsonSerializable
             self::$CREDITLIMITMODES = new CustomersVocabulariesGetName('credit-limit-modes');
         }
         return self::$CREDITLIMITMODES;
+    }
+    public static function LEADSOURCES(): CustomersVocabulariesGetName
+    {
+        if (!isset(self::$LEADSOURCES)) {
+            self::$LEADSOURCES = new CustomersVocabulariesGetName('lead-sources');
+        }
+        return self::$LEADSOURCES;
     }
     public static function LIFECYCLESTAGES(): CustomersVocabulariesGetName
     {
@@ -109,6 +128,13 @@ class CustomersVocabulariesGetName implements JsonSerializable
         }
         return self::$PAYMENTTERMS;
     }
+    public static function PERMISSIONS(): CustomersVocabulariesGetName
+    {
+        if (!isset(self::$PERMISSIONS)) {
+            self::$PERMISSIONS = new CustomersVocabulariesGetName('permissions');
+        }
+        return self::$PERMISSIONS;
+    }
     public static function REGISTRATIONSTATUSES(): CustomersVocabulariesGetName
     {
         if (!isset(self::$REGISTRATIONSTATUSES)) {
@@ -130,6 +156,13 @@ class CustomersVocabulariesGetName implements JsonSerializable
         }
         return self::$RULEMATCHES;
     }
+    public static function SEGMENTMEMBERTYPES(): CustomersVocabulariesGetName
+    {
+        if (!isset(self::$SEGMENTMEMBERTYPES)) {
+            self::$SEGMENTMEMBERTYPES = new CustomersVocabulariesGetName('segment-member-types');
+        }
+        return self::$SEGMENTMEMBERTYPES;
+    }
     public static function SEGMENTSOURCES(): CustomersVocabulariesGetName
     {
         if (!isset(self::$SEGMENTSOURCES)) {
@@ -143,5 +176,12 @@ class CustomersVocabulariesGetName implements JsonSerializable
             self::$SHIPPINGADVICE = new CustomersVocabulariesGetName('shipping-advice');
         }
         return self::$SHIPPINGADVICE;
+    }
+    public static function SHOPACCESS(): CustomersVocabulariesGetName
+    {
+        if (!isset(self::$SHOPACCESS)) {
+            self::$SHOPACCESS = new CustomersVocabulariesGetName('shop-access');
+        }
+        return self::$SHOPACCESS;
     }
 }

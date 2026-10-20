@@ -17,6 +17,7 @@ $result = $orders->ordersEventsList(
     idQuery: '', // optional
     name: 'order.shipment.created', // optional
     actor: '', // optional
+    idempotencyKey: 'order.cancelled:7f3a9c1e-0000-4000-8000-000000000001', // optional
     createdAt: '2026-01-01T12:00:00Z', // optional
     limit: 50, // optional
     offset: 0, // optional

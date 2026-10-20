@@ -6,6 +6,7 @@ use Revenexx\Client;
 use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
+use Revenexx\Enums\Tone;
 
 final class CustomersRolesTest extends TestCase {
     private $client;
@@ -14,6 +15,20 @@ final class CustomersRolesTest extends TestCase {
     protected function setUp(): void {
         $this->client = Mockery::mock(Client::class);
         $this->customersRoles = new CustomersRoles($this->client);
+    }
+
+    public function testMethodCustomersPermissionsLedger(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersRoles->customersPermissionsLedger(
+        );
+
+        $this->assertSame($data, $response);
     }
 
     public function testMethodCustomersRolesList(): void {
@@ -30,6 +45,21 @@ final class CustomersRolesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodCustomersRolesCreate(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersRoles->customersRolesCreate(
+            "Einkauf Zentrale"
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodCustomersRolesDefaults(): void {
 
         $data = array();
@@ -40,6 +70,37 @@ final class CustomersRolesTest extends TestCase {
 
         $response = $this->customersRoles->customersRolesDefaults(
             array()
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersRolesUpdate(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersRoles->customersRolesUpdate(
+            "einkauf-zentrale"
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersRolesCopy(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersRoles->customersRolesCopy(
+            "buyer",
+            "Einkäufer Werk 2"
         );
 
         $this->assertSame($data, $response);

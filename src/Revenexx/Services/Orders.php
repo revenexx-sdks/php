@@ -9,6 +9,7 @@ use Revenexx\InputFile;
 use Revenexx\Enums\OrderStatus;
 use Revenexx\Enums\OrderPaymentStatus;
 use Revenexx\Enums\OrderFulfillmentStatus;
+use Revenexx\Enums\OrderCancellationKind;
 use Revenexx\Enums\OrderVocabularyTone;
 use Revenexx\Enums\OrdersVocabulariesGetName;
 use Revenexx\Enums\OrderCommentVisibility;
@@ -65,11 +66,17 @@ class Orders extends Service
      * @param ?float $taxTotal
      * @param ?float $grandTotal
      * @param ?string $placedAt
+     * @param ?string $placedOn
      * @param ?string $completedAt
      * @param ?string $cancelledAt
+     * @param ?OrderCancellationKind $cancellationKind
+     * @param ?string $cancelledBy
+     * @param ?string $cancellationReason
      * @param ?string $externalId
      * @param ?string $sourceSyncedAt
      * @param ?string $requestedDeliveryDate
+     * @param ?string $utmCampaign
+     * @param ?string $campaignRef
      * @param ?string $createdAt
      * @param ?string $updatedAt
      * @param ?int $limit
@@ -78,7 +85,7 @@ class Orders extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function ordersList(?string $id = null, ?string $number = null, ?string $customerOrderNumber = null, ?string $externalRef = null, ?string $acknowledgedAt = null, ?string $cartId = null, ?string $contactId = null, ?string $organizationId = null, ?string $channelId = null, ?string $currency = null, ?OrderStatus $status = null, ?OrderPaymentStatus $paymentStatus = null, ?OrderFulfillmentStatus $fulfillmentStatus = null, ?bool $onHold = null, ?string $holdReason = null, ?int $itemCount = null, ?float $subtotal = null, ?float $discountTotal = null, ?float $shippingTotal = null, ?float $shippingTaxRate = null, ?float $shippingTaxAmount = null, ?float $paymentFeeAmount = null, ?float $paymentFeeTaxRate = null, ?float $paymentFeeTaxAmount = null, ?float $taxTotal = null, ?float $grandTotal = null, ?string $placedAt = null, ?string $completedAt = null, ?string $cancelledAt = null, ?string $externalId = null, ?string $sourceSyncedAt = null, ?string $requestedDeliveryDate = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function ordersList(?string $id = null, ?string $number = null, ?string $customerOrderNumber = null, ?string $externalRef = null, ?string $acknowledgedAt = null, ?string $cartId = null, ?string $contactId = null, ?string $organizationId = null, ?string $channelId = null, ?string $currency = null, ?OrderStatus $status = null, ?OrderPaymentStatus $paymentStatus = null, ?OrderFulfillmentStatus $fulfillmentStatus = null, ?bool $onHold = null, ?string $holdReason = null, ?int $itemCount = null, ?float $subtotal = null, ?float $discountTotal = null, ?float $shippingTotal = null, ?float $shippingTaxRate = null, ?float $shippingTaxAmount = null, ?float $paymentFeeAmount = null, ?float $paymentFeeTaxRate = null, ?float $paymentFeeTaxAmount = null, ?float $taxTotal = null, ?float $grandTotal = null, ?string $placedAt = null, ?string $placedOn = null, ?string $completedAt = null, ?string $cancelledAt = null, ?OrderCancellationKind $cancellationKind = null, ?string $cancelledBy = null, ?string $cancellationReason = null, ?string $externalId = null, ?string $sourceSyncedAt = null, ?string $requestedDeliveryDate = null, ?string $utmCampaign = null, ?string $campaignRef = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             [],
@@ -196,12 +203,28 @@ class Orders extends Service
             $apiParams['placed_at'] = $placedAt;
         }
 
+        if (!is_null($placedOn)) {
+            $apiParams['placed_on'] = $placedOn;
+        }
+
         if (!is_null($completedAt)) {
             $apiParams['completed_at'] = $completedAt;
         }
 
         if (!is_null($cancelledAt)) {
             $apiParams['cancelled_at'] = $cancelledAt;
+        }
+
+        if (!is_null($cancellationKind)) {
+            $apiParams['cancellation_kind'] = $cancellationKind;
+        }
+
+        if (!is_null($cancelledBy)) {
+            $apiParams['cancelled_by'] = $cancelledBy;
+        }
+
+        if (!is_null($cancellationReason)) {
+            $apiParams['cancellation_reason'] = $cancellationReason;
         }
 
         if (!is_null($externalId)) {
@@ -214,6 +237,14 @@ class Orders extends Service
 
         if (!is_null($requestedDeliveryDate)) {
             $apiParams['requested_delivery_date'] = $requestedDeliveryDate;
+        }
+
+        if (!is_null($utmCampaign)) {
+            $apiParams['utm_campaign'] = $utmCampaign;
+        }
+
+        if (!is_null($campaignRef)) {
+            $apiParams['campaign_ref'] = $campaignRef;
         }
 
         if (!is_null($createdAt)) {
@@ -318,6 +349,8 @@ class Orders extends Service
      * @param ?int $counter
      * @param ?int $step
      * @param ?int $positionStep
+     * @param ?string $title
+     * @param ?bool $active
      * @param ?string $channelId
      * @param ?string $createdAt
      * @param ?string $updatedAt
@@ -327,7 +360,7 @@ class Orders extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function ordersNumberRangesList(?string $id = null, ?string $code = null, ?string $prefix = null, ?string $suffix = null, ?int $padding = null, ?int $counter = null, ?int $step = null, ?int $positionStep = null, ?string $channelId = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function ordersNumberRangesList(?string $id = null, ?string $code = null, ?string $prefix = null, ?string $suffix = null, ?int $padding = null, ?int $counter = null, ?int $step = null, ?int $positionStep = null, ?string $title = null, ?bool $active = null, ?string $channelId = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             [],
@@ -367,6 +400,14 @@ class Orders extends Service
 
         if (!is_null($positionStep)) {
             $apiParams['position_step'] = $positionStep;
+        }
+
+        if (!is_null($title)) {
+            $apiParams['title'] = $title;
+        }
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
         }
 
         if (!is_null($channelId)) {
@@ -418,18 +459,21 @@ class Orders extends Service
      * are the server's: a body carrying either is 400 server_owned_field.
      *
      * @param string $code
+     * @param ?bool $active
      * @param ?string $channelId
      * @param ?int $counter
+     * @param ?array $labels
      * @param ?array $metadata
      * @param ?int $padding
      * @param ?int $positionStep
      * @param ?string $prefix
      * @param ?int $step
      * @param ?string $suffix
+     * @param ?string $title
      * @throws RevenexxException
      * @return array
      */
-    public function ordersNumberRangesCreate(string $code, ?string $channelId = null, ?int $counter = null, ?array $metadata = null, ?int $padding = null, ?int $positionStep = null, ?string $prefix = null, ?int $step = null, ?string $suffix = null): array
+    public function ordersNumberRangesCreate(string $code, ?bool $active = null, ?string $channelId = null, ?int $counter = null, ?array $labels = null, ?array $metadata = null, ?int $padding = null, ?int $positionStep = null, ?string $prefix = null, ?int $step = null, ?string $suffix = null, ?string $title = null): array
     {
         $apiPath = str_replace(
             [],
@@ -440,6 +484,10 @@ class Orders extends Service
         $apiParams = [];
         $apiParams['code'] = $code;
 
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
+
         if (!is_null($channelId)) {
             $apiParams['channel_id'] = $channelId;
         }
@@ -447,6 +495,7 @@ class Orders extends Service
         if (!is_null($counter)) {
             $apiParams['counter'] = $counter;
         }
+        $apiParams['labels'] = $labels;
 
         if (!is_null($metadata)) {
             $apiParams['metadata'] = $metadata;
@@ -471,6 +520,7 @@ class Orders extends Service
         if (!is_null($suffix)) {
             $apiParams['suffix'] = $suffix;
         }
+        $apiParams['title'] = $title;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -601,19 +651,22 @@ class Orders extends Service
      * server_owned_field.
      *
      * @param string $id
+     * @param ?bool $active
      * @param ?string $channelId
      * @param ?string $code
      * @param ?int $counter
+     * @param ?array $labels
      * @param ?array $metadata
      * @param ?int $padding
      * @param ?int $positionStep
      * @param ?string $prefix
      * @param ?int $step
      * @param ?string $suffix
+     * @param ?string $title
      * @throws RevenexxException
      * @return array
      */
-    public function ordersNumberRangesUpdate(string $id, ?string $channelId = null, ?string $code = null, ?int $counter = null, ?array $metadata = null, ?int $padding = null, ?int $positionStep = null, ?string $prefix = null, ?int $step = null, ?string $suffix = null): array
+    public function ordersNumberRangesUpdate(string $id, ?bool $active = null, ?string $channelId = null, ?string $code = null, ?int $counter = null, ?array $labels = null, ?array $metadata = null, ?int $padding = null, ?int $positionStep = null, ?string $prefix = null, ?int $step = null, ?string $suffix = null, ?string $title = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -623,6 +676,10 @@ class Orders extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
 
         if (!is_null($channelId)) {
             $apiParams['channel_id'] = $channelId;
@@ -635,6 +692,7 @@ class Orders extends Service
         if (!is_null($counter)) {
             $apiParams['counter'] = $counter;
         }
+        $apiParams['labels'] = $labels;
 
         if (!is_null($metadata)) {
             $apiParams['metadata'] = $metadata;
@@ -659,6 +717,7 @@ class Orders extends Service
         if (!is_null($suffix)) {
             $apiParams['suffix'] = $suffix;
         }
+        $apiParams['title'] = $title;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -696,6 +755,7 @@ class Orders extends Service
      * discount split are computed here.
      *
      * @param array $items
+     * @param ?array $attribution
      * @param ?array $billingAddress
      * @param ?array $buyer
      * @param ?string $cartId
@@ -710,6 +770,7 @@ class Orders extends Service
      * @param ?string $organizationId
      * @param ?array $payment
      * @param ?string $requestedDeliveryDate
+     * @param ?string $senderCountry
      * @param ?array $shipping
      * @param ?array $shippingAddress
      * @param ?float $shippingTotal
@@ -719,7 +780,7 @@ class Orders extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function ordersPlace(array $items, ?array $billingAddress = null, ?array $buyer = null, ?string $cartId = null, ?string $channelId = null, ?string $contactId = null, ?string $currency = null, ?string $customerOrderNumber = null, ?string $externalId = null, ?array $externalRefs = null, ?float $grandTotal = null, ?array $metadata = null, ?string $organizationId = null, ?array $payment = null, ?string $requestedDeliveryDate = null, ?array $shipping = null, ?array $shippingAddress = null, ?float $shippingTotal = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?array $userData = null): array
+    public function ordersPlace(array $items, ?array $attribution = null, ?array $billingAddress = null, ?array $buyer = null, ?string $cartId = null, ?string $channelId = null, ?string $contactId = null, ?string $currency = null, ?string $customerOrderNumber = null, ?string $externalId = null, ?array $externalRefs = null, ?float $grandTotal = null, ?array $metadata = null, ?string $organizationId = null, ?array $payment = null, ?string $requestedDeliveryDate = null, ?string $senderCountry = null, ?array $shipping = null, ?array $shippingAddress = null, ?float $shippingTotal = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?array $userData = null): array
     {
         $apiPath = str_replace(
             [],
@@ -729,6 +790,7 @@ class Orders extends Service
 
         $apiParams = [];
         $apiParams['items'] = $items;
+        $apiParams['attribution'] = $attribution;
         $apiParams['billing_address'] = $billingAddress;
         $apiParams['buyer'] = $buyer;
         $apiParams['cart_id'] = $cartId;
@@ -743,6 +805,7 @@ class Orders extends Service
         $apiParams['organization_id'] = $organizationId;
         $apiParams['payment'] = $payment;
         $apiParams['requested_delivery_date'] = $requestedDeliveryDate;
+        $apiParams['sender_country'] = $senderCountry;
         $apiParams['shipping'] = $shipping;
         $apiParams['shipping_address'] = $shippingAddress;
         $apiParams['shipping_total'] = $shippingTotal;
@@ -839,6 +902,7 @@ class Orders extends Service
      * @param ?OrderVocabularyTone $tone
      * @param ?int $position
      * @param ?bool $isSystem
+     * @param ?bool $active
      * @param ?string $createdAt
      * @param ?string $updatedAt
      * @param ?int $limit
@@ -847,7 +911,7 @@ class Orders extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function ordersReturnReasonsList(?string $id = null, ?string $code = null, ?string $title = null, ?string $description = null, ?bool $isDefault = null, ?OrderVocabularyTone $tone = null, ?int $position = null, ?bool $isSystem = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function ordersReturnReasonsList(?string $id = null, ?string $code = null, ?string $title = null, ?string $description = null, ?bool $isDefault = null, ?OrderVocabularyTone $tone = null, ?int $position = null, ?bool $isSystem = null, ?bool $active = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             [],
@@ -887,6 +951,10 @@ class Orders extends Service
 
         if (!is_null($isSystem)) {
             $apiParams['is_system'] = $isSystem;
+        }
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
         }
 
         if (!is_null($createdAt)) {
@@ -953,20 +1021,63 @@ class Orders extends Service
     }
 
     /**
+     * Where no carrier interface reports delivery, the back office records it:
+     * delivery_status becomes 'delivered', delivered_at is the given time or now,
+     * delivery_source is 'manual' and the optional note is kept. It books nothing
+     * — quantities moved when the shipment was created — and fires no topic;
+     * the order's trail records an order.shipment.delivered entry. A shipment
+     * already marked delivered answers 422.
+     *
+     * @param string $id
+     * @param ?string $deliveredAt
+     * @param ?string $note
+     * @throws RevenexxException
+     * @return array
+     */
+    public function ordersShipmentsMarkDelivered(string $id, ?string $deliveredAt = null, ?string $note = null): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/orders/shipments/{id}/mark-delivered'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        if (!is_null($deliveredAt)) {
+            $apiParams['delivered_at'] = $deliveredAt;
+        }
+        $apiParams['note'] = $note;
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
      * Which value sets this app will describe for you, by name — order
      * statuses, payment statuses, fulfillment statuses, item types, return
      * statuses and return resolutions — so a client can discover them instead
      * of shipping its own copy of five statuses that goes stale one release
      * later. The values themselves are deliberately NOT here: this is the index,
      * and each set is fetched on its own. Discovery for the vocabulary routes.
-     * Names: cancellation-scopes, comment-visibilities, discount-applies-to,
+     * Names: cancellation-kinds, cancellation-scopes, comment-visibilities,
+     * delivery-sources, delivery-statuses, discount-applies-to,
      * discount-effect-kinds, discount-placements, discount-sources,
-     * discount-value-types, fulfillment-statuses, item-types, payment-statuses,
-     * refund-modes, return-reason-tones, return-resolutions, return-statuses,
-     * statuses. Fetch one with GET /orders/vocabularies/{name}; a client holding
-     * the qualified pair 'orders.<name>' builds that URL from the pair alone.
-     * 'title' and 'description' are locale maps wherever somebody wrote the copy
-     * and plain strings where the fallback did — read both forms.
+     * discount-value-types, fulfillment-statuses, item-types,
+     * order-cancellation-kinds, payment-statuses, refund-modes,
+     * return-reason-tones, return-resolutions, return-statuses, statuses. Fetch
+     * one with GET /orders/vocabularies/{name}; a client holding the qualified
+     * pair 'orders.<name>' builds that URL from the pair alone. 'title' and
+     * 'description' are locale maps wherever somebody wrote the copy and plain
+     * strings where the fallback did — read both forms.
      *
      * @throws RevenexxException
      * @return array
@@ -1011,11 +1122,13 @@ class Orders extends Service
      * additionally carry 'stage' (complete | reject): the transition that accepts
      * them. 'title' and 'description' are locale maps where the copy was written
      * and plain strings where the key-derived fallback answered, on the
-     * vocabulary and on every value alike. Names: cancellation-scopes,
-     * comment-visibilities, discount-applies-to, discount-effect-kinds,
+     * vocabulary and on every value alike. Names: cancellation-kinds,
+     * cancellation-scopes, comment-visibilities, delivery-sources,
+     * delivery-statuses, discount-applies-to, discount-effect-kinds,
      * discount-placements, discount-sources, discount-value-types,
-     * fulfillment-statuses, item-types, payment-statuses, refund-modes,
-     * return-reason-tones, return-resolutions, return-statuses, statuses.
+     * fulfillment-statuses, item-types, order-cancellation-kinds,
+     * payment-statuses, refund-modes, return-reason-tones, return-resolutions,
+     * return-statuses, statuses.
      *
      * @param OrdersVocabulariesGetName $name
      * @throws RevenexxException
@@ -1108,6 +1221,7 @@ class Orders extends Service
      * @param ?array $externalRefs
      * @param ?array $metadata
      * @param ?string $requestedDeliveryDate
+     * @param ?string $senderCountry
      * @param ?array $shippingAddress
      * @param ?array $sourceData
      * @param ?string $sourceSyncedAt
@@ -1115,7 +1229,7 @@ class Orders extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function ordersUpdate(string $id, ?array $billingAddress = null, ?array $buyer = null, ?string $customerOrderNumber = null, ?string $externalId = null, ?array $externalRefs = null, ?array $metadata = null, ?string $requestedDeliveryDate = null, ?array $shippingAddress = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?array $userData = null): array
+    public function ordersUpdate(string $id, ?array $billingAddress = null, ?array $buyer = null, ?string $customerOrderNumber = null, ?string $externalId = null, ?array $externalRefs = null, ?array $metadata = null, ?string $requestedDeliveryDate = null, ?string $senderCountry = null, ?array $shippingAddress = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?array $userData = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -1144,6 +1258,7 @@ class Orders extends Service
             $apiParams['metadata'] = $metadata;
         }
         $apiParams['requested_delivery_date'] = $requestedDeliveryDate;
+        $apiParams['sender_country'] = $senderCountry;
 
         if (!is_null($shippingAddress)) {
             $apiParams['shipping_address'] = $shippingAddress;
@@ -1211,6 +1326,49 @@ class Orders extends Service
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * The way out of the approval queue: a pending order becomes 'placed',
+     * placed_at is stamped now, and order.placed goes onto the bus carrying
+     * exactly what a direct placement carries, plus approved_by and the
+     * approval_reason (and threshold) the order.requested event named.
+     * approved_by is who the platform says is acting — the buyer's contact, or
+     * the operator the gateway names — and null for a system calling as itself;
+     * there is no body, and one sent is not read. Downstream sees one
+     * order.placed per order either way. A retry is safe: when an approval died
+     * after placing the order but before it was announced, the retry announces it
+     * and answers 200 rather than 422 — the event id is derived from the order,
+     * so a second publish is absorbed. Rejecting is POST /orders/{id}/reject. A
+     * hold survives approval: it stops fulfilment, not placement. The back office
+     * approves any pending order. A buyer's own call needs orders.approve,
+     * reaches only orders of the buyer's own organization, and never the buyer's
+     * own order. There is no amount limit per approver — tiered sign-off is
+     * procurement's.
+     *
+     * @param string $id
+     * @throws RevenexxException
+     * @return array
+     */
+    public function ordersApprove(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/orders/{id}/approve'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
 
         return $this->client->call(
             Client::METHOD_POST,
@@ -1470,6 +1628,7 @@ class Orders extends Service
      * @param ?string $idQuery
      * @param ?string $name
      * @param ?string $actor
+     * @param ?string $idempotencyKey
      * @param ?string $createdAt
      * @param ?int $limit
      * @param ?int $offset
@@ -1477,7 +1636,7 @@ class Orders extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function ordersEventsList(string $id, ?string $idQuery = null, ?string $name = null, ?string $actor = null, ?string $createdAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function ordersEventsList(string $id, ?string $idQuery = null, ?string $name = null, ?string $actor = null, ?string $idempotencyKey = null, ?string $createdAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -1498,6 +1657,10 @@ class Orders extends Service
 
         if (!is_null($actor)) {
             $apiParams['actor'] = $actor;
+        }
+
+        if (!is_null($idempotencyKey)) {
+            $apiParams['idempotency_key'] = $idempotencyKey;
         }
 
         if (!is_null($createdAt)) {
@@ -1630,19 +1793,22 @@ class Orders extends Service
      * route writes that word onto the order and records the change as an
      * order.payment_status.changed event carrying the previous value, so the
      * trail shows the sequence and not just the current state. Optionally attach
-     * the payment_id of the transaction it came from. It takes no money, refunds
-     * none and validates nothing about the amount — it records a fact somebody
-     * else established, and any of the seven words may follow any other. The
-     * other half of auto_complete_on = 'payment': an order that has shipped in
-     * full is completed by this call when the status becomes 'paid'.
+     * the provider's reference for the transaction it came from as
+     * transaction_reference (payment_id, the older name, is still accepted). It
+     * takes no money, refunds none and validates nothing about the amount — it
+     * records a fact somebody else established, and any of the seven words may
+     * follow any other. The other half of auto_complete_on = 'payment': an order
+     * that has shipped in full is completed by this call when the status becomes
+     * 'paid'.
      *
      * @param string $id
      * @param OrderPaymentStatus $status
      * @param ?string $paymentId
+     * @param ?string $transactionReference
      * @throws RevenexxException
      * @return array
      */
-    public function ordersPaymentStatusUpdate(string $id, OrderPaymentStatus $status, ?string $paymentId = null): array
+    public function ordersPaymentStatusUpdate(string $id, OrderPaymentStatus $status, ?string $paymentId = null, ?string $transactionReference = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -1657,6 +1823,63 @@ class Orders extends Service
         if (!is_null($paymentId)) {
             $apiParams['payment_id'] = $paymentId;
         }
+
+        if (!is_null($transactionReference)) {
+            $apiParams['transaction_reference'] = $transactionReference;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * The other way out of the approval queue, and not a cancellation by another
+     * name: /cancel is a buyer or the merchant withdrawing an order, this is an
+     * approver saying no to one that waited. A pending order becomes 'cancelled'
+     * with every position cancelled in full, a cancellation record of kind
+     * 'rejection' is written with the reason and the rejecting person, and
+     * order.cancelled goes onto the bus with rejected_by and rejection_reason
+     * added. The reason is required. Who rejected is the platform's to state —
+     * the buyer's contact, or the operator the gateway names, or null for a
+     * system calling as itself — and is never read from the body. The same
+     * people may reject as may approve: the back office any pending order; a
+     * buyer's own call needs orders.approve, reaches only orders of the buyer's
+     * own organization, and never the buyer's own order (that one they cancel). A
+     * hold does not stop it, and it freezes the addresses as an approval does. A
+     * retry is safe: one that died after the order was cancelled but before it
+     * was announced finishes the announcement and answers 200, naming whoever
+     * rejected it; any caller allowed to reject finishes such an order from what
+     * it says, and only its rejecter is then answered 200 — anybody else gets
+     * 422 order_not_pending. A second click by the same rejecter while the first
+     * is still finishing is answered 200; once finished, rejecting again is 422
+     * order_not_pending. Only an order this route cancelled is finished that way
+     * — the order's cancellation_kind says so, written in the same step as the
+     * status — and one withdrawn through /cancel or cut down position by
+     * position is 422 order_not_pending.
+     *
+     * @param string $id
+     * @param string $reason
+     * @throws RevenexxException
+     * @return array
+     */
+    public function ordersReject(string $id, string $reason): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/orders/{id}/reject'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+        $apiParams['reason'] = $reason;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -1733,6 +1956,46 @@ class Orders extends Service
 
         return $this->client->call(
             Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * What a return dialog needs before it can offer anything: per position, what
+     * shipped, what came back, what open returns already claim and what is left
+     * to take back, plus one boolean saying whether a return would be accepted at
+     * all. Reach for it to offer a line and quantity selection for a partial
+     * return instead of subtracting the quantities client-side. It changes
+     * nothing and books nothing — it is the question POST /orders/{id}/return
+     * answers with an action. The read half of orders.return: the budget per
+     * position (shipped − returned − claimed by registered or received
+     * returns) and the two guards (cancelled order, pending approval) are the
+     * SAME code the return route runs, so what this answers and what that accepts
+     * cannot drift. A completed order still answers positions, because goods come
+     * back after the sale is over. A discount placed as a position of its own is
+     * money, not goods, and is not listed.
+     *
+     * @param string $id
+     * @throws RevenexxException
+     * @return array
+     */
+    public function ordersReturnable(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/orders/{id}/returnable'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
             $apiPath,
             $apiHeaders,
             $apiParams
@@ -1900,6 +2163,7 @@ class Orders extends Service
      *
      * @param string $id
      * @param ?string $carrier
+     * @param ?string $carrierCode
      * @param ?string $externalId
      * @param ?array $externalRefs
      * @param ?array $metadata
@@ -1913,7 +2177,7 @@ class Orders extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function ordersShip(string $id, ?string $carrier = null, ?string $externalId = null, ?array $externalRefs = null, ?array $metadata = null, ?string $number = null, ?array $positions = null, ?string $shippedAt = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $trackingCode = null, ?string $trackingUrl = null): array
+    public function ordersShip(string $id, ?string $carrier = null, ?string $carrierCode = null, ?string $externalId = null, ?array $externalRefs = null, ?array $metadata = null, ?string $number = null, ?array $positions = null, ?string $shippedAt = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $trackingCode = null, ?string $trackingUrl = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -1926,6 +2190,10 @@ class Orders extends Service
 
         if (!is_null($carrier)) {
             $apiParams['carrier'] = $carrier;
+        }
+
+        if (!is_null($carrierCode)) {
+            $apiParams['carrier_code'] = $carrierCode;
         }
         $apiParams['external_id'] = $externalId;
         $apiParams['external_refs'] = $externalRefs;

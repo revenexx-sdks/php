@@ -14,6 +14,7 @@ $productsDataModel = new ProductsDataModel($client);
 
 $result = $productsDataModel->productsAssetFamiliesCreate(
     code: 'packshots',
+    active: true, // optional
     labels: [
         'de' => 'Packshots',
         'en' => 'Packshots'

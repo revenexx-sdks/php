@@ -6,8 +6,11 @@ use JsonSerializable;
 
 class OrderVocabularyName implements JsonSerializable
 {
+    private static OrderVocabularyName $CANCELLATIONKINDS;
     private static OrderVocabularyName $CANCELLATIONSCOPES;
     private static OrderVocabularyName $COMMENTVISIBILITIES;
+    private static OrderVocabularyName $DELIVERYSOURCES;
+    private static OrderVocabularyName $DELIVERYSTATUSES;
     private static OrderVocabularyName $DISCOUNTAPPLIESTO;
     private static OrderVocabularyName $DISCOUNTEFFECTKINDS;
     private static OrderVocabularyName $DISCOUNTPLACEMENTS;
@@ -15,6 +18,7 @@ class OrderVocabularyName implements JsonSerializable
     private static OrderVocabularyName $DISCOUNTVALUETYPES;
     private static OrderVocabularyName $FULFILLMENTSTATUSES;
     private static OrderVocabularyName $ITEMTYPES;
+    private static OrderVocabularyName $ORDERCANCELLATIONKINDS;
     private static OrderVocabularyName $PAYMENTSTATUSES;
     private static OrderVocabularyName $REFUNDMODES;
     private static OrderVocabularyName $RETURNREASONTONES;
@@ -39,6 +43,13 @@ class OrderVocabularyName implements JsonSerializable
         return $this->value;
     }
 
+    public static function CANCELLATIONKINDS(): OrderVocabularyName
+    {
+        if (!isset(self::$CANCELLATIONKINDS)) {
+            self::$CANCELLATIONKINDS = new OrderVocabularyName('cancellation-kinds');
+        }
+        return self::$CANCELLATIONKINDS;
+    }
     public static function CANCELLATIONSCOPES(): OrderVocabularyName
     {
         if (!isset(self::$CANCELLATIONSCOPES)) {
@@ -52,6 +63,20 @@ class OrderVocabularyName implements JsonSerializable
             self::$COMMENTVISIBILITIES = new OrderVocabularyName('comment-visibilities');
         }
         return self::$COMMENTVISIBILITIES;
+    }
+    public static function DELIVERYSOURCES(): OrderVocabularyName
+    {
+        if (!isset(self::$DELIVERYSOURCES)) {
+            self::$DELIVERYSOURCES = new OrderVocabularyName('delivery-sources');
+        }
+        return self::$DELIVERYSOURCES;
+    }
+    public static function DELIVERYSTATUSES(): OrderVocabularyName
+    {
+        if (!isset(self::$DELIVERYSTATUSES)) {
+            self::$DELIVERYSTATUSES = new OrderVocabularyName('delivery-statuses');
+        }
+        return self::$DELIVERYSTATUSES;
     }
     public static function DISCOUNTAPPLIESTO(): OrderVocabularyName
     {
@@ -101,6 +126,13 @@ class OrderVocabularyName implements JsonSerializable
             self::$ITEMTYPES = new OrderVocabularyName('item-types');
         }
         return self::$ITEMTYPES;
+    }
+    public static function ORDERCANCELLATIONKINDS(): OrderVocabularyName
+    {
+        if (!isset(self::$ORDERCANCELLATIONKINDS)) {
+            self::$ORDERCANCELLATIONKINDS = new OrderVocabularyName('order-cancellation-kinds');
+        }
+        return self::$ORDERCANCELLATIONKINDS;
     }
     public static function PAYMENTSTATUSES(): OrderVocabularyName
     {

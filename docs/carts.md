@@ -15,12 +15,20 @@ GET https://api.revenexx.com/v1/carts
 | name | string | Exact name, not a search: 'Weekly' does not find 'Weekly order'. Useful with contact_id, to resume a named cart a buyer keeps. |  |
 | status | string | By lifecycle status — the abandoned queue, the ordered ones, the merged trail. |  |
 | contact_id | string | Every cart of one customer. With multi_cart_enabled this is a list, not a row. |  |
+| organization_id | string | Every cart of one company — the Cockpit's organisation column and filter. |  |
 | session_key | string | Every cart of one guest session — what a storefront asks for before anybody logs in, and what carts.claim then hands over. |  |
+| is_guest | boolean | Only guest carts (`true`) or only customer carts (`false`). |  |
 | channel_id | string | Carts opened in one sales channel. |  |
 | currency | string | Carts priced in one currency. |  |
 | is_current | boolean | The owner's current cart — the flag carts.activate sets, and the only way to read what it wrote. Pair it with contact_id or session_key; on its own it selects every current cart in the tenant. |  |
 | item_count | integer | Exact total quantity. `?item_count=0` is the one that earns its place: the empty carts. |  |
 | subtotal | number | Exact subtotal. Equality only — there is no range form on this route, so this finds `0` and little else. |  |
+| discount_total | number | Exact discount. `?discount_total=0` finds the carts nothing has been taken off. |  |
+| shipping_total | number | Exact shipping amount. `?shipping_total=0` finds the carts shipping free, or not quoted yet. |  |
+| tax_total | number | Exact tax. Equality only, like every amount here. |  |
+| grand_total | number | Exact total. Equality only — for sums over carts, ask the data plane for an aggregate instead of paging through rows. |  |
+| shipping_method | string | Carts quoted with one shipping method. |  |
+| totals_computed_at | string | Exact instant, not a range. |  |
 | abandoned_at | string | Exact instant, not a range. Of little use on its own; `status=abandoned` is the question people actually have. |  |
 | ordered_at | string | Exact instant, not a range. `status=ordered` is usually the question. |  |
 | order_ref | string | The cart behind an order number — the join order management and support both need. |  |
@@ -42,12 +50,14 @@ POST https://api.revenexx.com/v1/carts
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
+| attribution | object | Where the cart came from (RAD-287): the UTM values of the visit, the campaign, the ad click id, the landing page and referrer, first and last touch, the consent state of the consent manager and whether the objection notice for existing-customer mail was shown. The storefront writes it whole on every touch while the cart is open; it is frozen once the cart is ordered, and the order copies it at placement. A merge keeps the survivor's, or adopts the merged cart's when the survivor has none. Null until written. |  |
 | channel_id | string | The sales channel this cart is being opened in, as a channel of the channels app. Stored for attribution; nothing in this app reads it. |  |
 | contact_id | string | The customer who owns this cart, as a contact of the customers app. Send this OR session_key — a cart with neither owner is refused. |  |
 | currency | string | ISO 4217 code EVERY amount in this cart will be read in, lines included — a line carries no currency of its own. Omit it and the cart is opened in the market's `default_currency` setting (EUR unless a market says otherwise), which is resolved once here and written to the row: changing that setting later never re-denominates a cart that already exists. |  |
 | is_current | boolean | Make this THE current cart of its owner as it is created — the same thing carts.activate does later, and it clears the flag on every sibling cart of the same owner. |  |
 | metadata | object | Free-form data the storefront hangs on the cart. Stored and returned verbatim; no key in here is read by this app, and none is indexed. |  |
 | name | string | What the buyer calls this cart (default 'Cart'). An empty string is legal and lands on the default. |  |
+| organization_id | string | The buyer's company, as an organization of the customers app. Stored as sent; this app never looks it up. |  |
 | session_key | string | The guest session that owns this cart — the key the storefront already keeps in its own session or cookie. Any non-empty string is accepted; this app issues none and parses none, so the example shows a shape and not a format. Send this OR contact_id. |  |
 
 
@@ -62,9 +72,26 @@ POST https://api.revenexx.com/v1/carts/claim
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | contact_id | string | The contact taking ownership. Every active cart of that session ends up with this contact — adopted as it stands, or folded into `target_cart_id`. |  |
+| organization_id | string | The contact's company, written onto every cart that is adopted as it stands. Omit it and an adopted cart keeps what it had. |  |
 | session_key | string | The guest session whose active carts are handed over — the key the storefront keeps in its own session or cookie and has been sending on every anonymous call. This app neither issues nor parses it, so the example shows the shape of an opaque token and not a format anything enforces. |  |
 | strategy | string | Override the tenant's cart_merge_strategy for this call: 'merge' keeps the target cart's own lines, 'replace' clears them first. Omit to use the setting. |  |
 | target_cart_id | string | Merge the session carts into this cart instead of adopting them. |  |
+
+
+```http request
+GET https://api.revenexx.com/v1/carts/held-codes
+```
+
+** Which promotion and voucher codes the buyers' open carts still hold, and how many carts hold each. Promotions asks this before it deletes a promotion for good (RAD-247): a code typed into a cart that can still become an order would point at nothing once the promotion is gone. Open means `active` or `abandoned` (abandoned is reversible) unless `status` says otherwise. A code is matched trimmed and case-insensitively and reported in that form, upper-cased — a tenant whose codes are case-sensitive gets a count that is at worst too high. `code` narrows the answer to the codes asked about; without it every held code is listed. `carts` counts the distinct carts behind the listed codes across all pages. Codes come sorted, paged like every list here. A read for the back office and for other apps: the answer names no cart and no owner. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| code | string | One code, or several separated by commas — at most 200. Matched trimmed and case-insensitively. Left out, every code an open cart holds is listed. |  |
+| status | string | Which carts count as holding a code, as cart statuses separated by commas. Default `active,abandoned`. |  |
+| limit | integer | Page size (default 50, max 200). |  |
+| offset | integer | Row offset for pagination (default 0). |  |
 
 
 ```http request
@@ -90,8 +117,28 @@ POST https://api.revenexx.com/v1/carts/merge
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
+| session_key | string | The session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Accepted and not yet checked; from 3.0.0 on, a call acting for a contact reaches such a cart only with it. |  |
 | source_cart_id | string | The cart being folded in. It must be active, and it does NOT survive as a workspace: its lines are copied into the target, it becomes status merged, and merged_into_cart_id points at the target. Its own lines stay on it as the record of what was moved. |  |
 | target_cart_id | string | The cart that SURVIVES. Must be active; it gains the source's lines (identical product lines at the same price adding up) and its totals are recomputed. |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/carts/on-behalf
+```
+
+** The operator's create: an order taken by phone, fax, mail or in the field starts here. It opens an ordinary active cart OWNED BY THE CONTACT, booked to the organization, with how the order arrived and the operator's note in `metadata` (`on_behalf`, `ordering_channel`, `note`, `opened_at`). Every rule of carts.create applies unchanged — the currency resolved once and written, and a second active cart refused with 409 while `multi_cart_enabled` is off. The cart is never made current, so the buyer's own basket stays where it was. Lines follow through carts.items.priced, which prices them for this customer as the shop would; the checkout is the one every stored cart takes, procurement's submit-cart, which applies the customer's approval rules and budgets and places the order. A request acting FOR a contact is refused with 403: a buyer opens their own carts through carts.create. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| channel | string | How the order reached the operator (default 'phone'). Kept in the cart's metadata as `ordering_channel`, and it names the cart when no `name` is sent. |  |
+| channel_id | string | The sales channel, as a channel of the channels app. Stored for attribution. |  |
+| contact_id | string | The customer the cart is for, as a contact of the customers app. The cart is theirs: it is checked out under their approval rules and budgets, as in the shop. |  |
+| currency | string | ISO 4217 code the cart is priced in. Omitted, the market's `default_currency` applies, as on carts.create. |  |
+| name | string | What the cart is called. Defaults to the channel: 'Phone order', 'Fax order', 'Email order' or 'Field sales order'. |  |
+| note | string | The operator's note — a call-back time, a delivery wish. Kept in the cart's metadata as `note`. |  |
+| organization_id | string | The customer's company, as an organization of the customers app. Stored as sent; this app never looks it up. |  |
 
 
 ```http request
@@ -125,6 +172,7 @@ DELETE https://api.revenexx.com/v1/carts/{id}
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The cart, by its id — the `id` every cart answer carries. A uuid: the data plane casts the segment, so a code or a slug is refused before the cart is looked up. |  |
+| session_key | string | The session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Accepted and not yet checked; from 3.0.0 on, a call acting for a contact reaches such a cart only with it. |  |
 
 
 ```http request
@@ -138,23 +186,31 @@ GET https://api.revenexx.com/v1/carts/{id}
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The cart, by its id — the `id` every cart answer carries. A uuid: the data plane casts the segment, so a code or a slug is refused before the cart is looked up. |  |
+| session_key | string | The session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Accepted and not yet checked; from 3.0.0 on, a call acting for a contact reaches such a cart only with it. |  |
 
 
 ```http request
 PUT https://api.revenexx.com/v1/carts/{id}
 ```
 
-** The four columns a cart's own editing screen owns, and only those: `name`, `currency`, `channel_id` and `metadata`. Everything else about a cart is either derived or a lifecycle move, and both are deliberately out of reach here — `item_count` and `subtotal` are recomputed from the lines, `status` travels through the action routes (activate, abandon, reopen, order, merge) so that every transition is guarded, and `market_id` is the platform's scope on the row rather than a column this app writes. A payload carrying none of the four answers 400 rather than storing nothing quietly, so a caller never believes an ignored field was saved. The owner is not updatable either: a guest cart becomes a customer's through carts.claim. One of the four has a guard behind it: `currency` re-denominates every amount in the cart, lines included, so it is accepted only while the cart holds no money and answers 409 once it does. **
+** The columns a cart's own editing screen owns — `name`, `currency`, `channel_id`, `metadata` and `voucher_codes` — and the pricing the storefront hands in after asking promotions and shipping: `discount_lines`, `shipping_total`, `shipping_method`. A change to the vouchers or the pricing recomputes `discount_total`, `tax_total`, `grand_total` and `totals_computed_at`; those four are the cart's own and a payload naming one answers 400 `server_owned_field`. Everything else about a cart is either derived or a lifecycle move, and both are deliberately out of reach here — `item_count` and `subtotal` are recomputed from the lines, `status` travels through the action routes (activate, abandon, reopen, order, merge) so that every transition is guarded, and `market_id` is the platform's scope on the row rather than a column this app writes. A payload carrying none of the four answers 400 rather than storing nothing quietly, so a caller never believes an ignored field was saved. The owner is not updatable either: a guest cart becomes a customer's through carts.claim. One of the four has a guard behind it: `currency` re-denominates every amount in the cart, lines included, so it is accepted only while the cart holds no money and answers 409 once it does. **
 
 ### Parameters
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The cart, by its id — the `id` every cart answer carries. A uuid: the data plane casts the segment, so a code or a slug is refused before the cart is looked up. |  |
+| session_key | string | The session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Accepted and not yet checked; from 3.0.0 on, a call acting for a contact reaches such a cart only with it. |  |
+| attribution | object | Where the cart came from (RAD-287): the UTM values of the visit, the campaign, the ad click id, the landing page and referrer, first and last touch, the consent state of the consent manager and whether the objection notice for existing-customer mail was shown. The storefront writes it whole on every touch while the cart is open; it is frozen once the cart is ordered, and the order copies it at placement. A merge keeps the survivor's, or adopts the merged cart's when the survivor has none. Null until written. Replaced whole; `null` clears it. An ordered or merged cart answers 409 `attribution_frozen`. |  |
 | channel_id | string | Move the cart to another sales channel. |  |
 | currency | string | Re-denominate the cart — which re-denominates every amount in it, because the lines are read in this code and hold none of their own. Only while the cart is still empty of money: a cart whose subtotal or any line price is non-zero answers 409 `currency_mismatch`, since nothing here converts and a changed code would restate a history in a currency it was never in. `null` is refused: a cart is always priced in one. |  |
+| discount_lines | array | The discounts the storefront evaluated for this cart with the promotions app, replacing the stored ones. An entry naming a voucher must name one the cart holds (400 `voucher_not_held`). The cart recomputes discount_total, tax_total and grand_total from them. Only on an active cart. `null` clears them. |  |
 | metadata | object | Free-form data the storefront hangs on the cart. Stored and returned verbatim; no key in here is read by this app, and none is indexed. |  |
 | name | string | Rename the cart. Unlike on create, this is written verbatim — `null` and `''` are refused by the database. |  |
+| organization_id | string | Set or correct the buyer's company. `null` clears it. |  |
+| shipping_method | string | The method shipping_total was quoted for. |  |
+| shipping_total | number | Shipping for this cart as the shipping app quoted it, net. The cart recomputes its tax and total. Only on an active cart. |  |
+| voucher_codes | array | Replace the codes the buyer entered. A discount line naming a code that is no longer in the list is dropped, and the totals are recomputed. |  |
 
 
 ```http request
@@ -168,6 +224,7 @@ POST https://api.revenexx.com/v1/carts/{id}/abandon
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The cart, by its id — the `id` every cart answer carries. A uuid: the data plane casts the segment, so a code or a slug is refused before the cart is looked up. |  |
+| session_key | string | The session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Accepted and not yet checked; from 3.0.0 on, a call acting for a contact reaches such a cart only with it. |  |
 
 
 ```http request
@@ -181,6 +238,7 @@ POST https://api.revenexx.com/v1/carts/{id}/activate
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The cart, by its id — the `id` every cart answer carries. A uuid: the data plane casts the segment, so a code or a slug is refused before the cart is looked up. |  |
+| session_key | string | The session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Accepted and not yet checked; from 3.0.0 on, a call acting for a contact reaches such a cart only with it. |  |
 
 
 ```http request
@@ -194,6 +252,7 @@ POST https://api.revenexx.com/v1/carts/{id}/merge-into
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The SOURCE cart — the one whose lines move and which becomes status merged. |  |
+| session_key | string | The session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Accepted and not yet checked; from 3.0.0 on, a call acting for a contact reaches such a cart only with it. |  |
 | target_cart_id | string | Receiving cart (must be active). The cart in the path is the source and becomes status merged. |  |
 
 
@@ -208,6 +267,7 @@ POST https://api.revenexx.com/v1/carts/{id}/order
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The cart, by its id — the `id` every cart answer carries. A uuid: the data plane casts the segment, so a code or a slug is refused before the cart is looked up. |  |
+| session_key | string | The session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Accepted and not yet checked; from 3.0.0 on, a call acting for a contact reaches such a cart only with it. |  |
 | order_ref | string | The order number this cart becomes, in order management's own numbering. Stored on the cart — filtering on it is how anyone gets from an order back to the cart behind it — and it is also the reference the stock reservation is booked under. Omit it and the cart id is used for the reservation instead. |  |
 
 
@@ -222,4 +282,5 @@ POST https://api.revenexx.com/v1/carts/{id}/reopen
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The cart, by its id — the `id` every cart answer carries. A uuid: the data plane casts the segment, so a code or a slug is refused before the cart is looked up. |  |
+| session_key | string | The session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Accepted and not yet checked; from 3.0.0 on, a call acting for a contact reaches such a cart only with it. |  |
 

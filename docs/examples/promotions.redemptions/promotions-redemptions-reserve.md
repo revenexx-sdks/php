@@ -18,5 +18,6 @@ $result = $promotionsRedemptions->promotionsRedemptionsReserve(
     currency: '', // optional
     fromCartId: '', // optional
     organizationId: '', // optional
-    promotions: [] // optional
+    promotions: [], // optional
+    redeemedBy: '' // optional
 );```

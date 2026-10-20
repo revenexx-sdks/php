@@ -42,12 +42,13 @@ class ProductsDataModel extends Service
      * @param ?string $code
      * @param ?string $labels
      * @param ?string $namingConvention
+     * @param ?bool $active
      * @param ?string $createdAt
      * @param ?string $updatedAt
      * @throws RevenexxException
      * @return array
      */
-    public function productsAssetFamiliesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?string $labels = null, ?string $namingConvention = null, ?string $createdAt = null, ?string $updatedAt = null): array
+    public function productsAssetFamiliesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?string $labels = null, ?string $namingConvention = null, ?bool $active = null, ?string $createdAt = null, ?string $updatedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -85,6 +86,10 @@ class ProductsDataModel extends Service
             $apiParams['naming_convention'] = $namingConvention;
         }
 
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
+
         if (!is_null($createdAt)) {
             $apiParams['created_at'] = $createdAt;
         }
@@ -119,12 +124,13 @@ class ProductsDataModel extends Service
      * answers 409.
      *
      * @param string $code
+     * @param ?bool $active
      * @param ?array $labels
      * @param ?array $namingConvention
      * @throws RevenexxException
      * @return array
      */
-    public function productsAssetFamiliesCreate(string $code, ?array $labels = null, ?array $namingConvention = null): array
+    public function productsAssetFamiliesCreate(string $code, ?bool $active = null, ?array $labels = null, ?array $namingConvention = null): array
     {
         $apiPath = str_replace(
             [],
@@ -134,6 +140,10 @@ class ProductsDataModel extends Service
 
         $apiParams = [];
         $apiParams['code'] = $code;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
         $apiParams['labels'] = $labels;
         $apiParams['naming_convention'] = $namingConvention;
 
@@ -244,13 +254,14 @@ class ProductsDataModel extends Service
      * `code` answers 409.
      *
      * @param string $id
+     * @param ?bool $active
      * @param ?string $code
      * @param ?array $labels
      * @param ?array $namingConvention
      * @throws RevenexxException
      * @return array
      */
-    public function productsAssetFamiliesUpdate(string $id, ?string $code = null, ?array $labels = null, ?array $namingConvention = null): array
+    public function productsAssetFamiliesUpdate(string $id, ?bool $active = null, ?string $code = null, ?array $labels = null, ?array $namingConvention = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -260,6 +271,10 @@ class ProductsDataModel extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
 
         if (!is_null($code)) {
             $apiParams['code'] = $code;
@@ -305,12 +320,13 @@ class ProductsDataModel extends Service
      * @param ?bool $isTwoWay
      * @param ?bool $isQuantified
      * @param ?string $labels
+     * @param ?bool $active
      * @param ?string $createdAt
      * @param ?string $updatedAt
      * @throws RevenexxException
      * @return array
      */
-    public function productsAssociationTypesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?bool $isTwoWay = null, ?bool $isQuantified = null, ?string $labels = null, ?string $createdAt = null, ?string $updatedAt = null): array
+    public function productsAssociationTypesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?bool $isTwoWay = null, ?bool $isQuantified = null, ?string $labels = null, ?bool $active = null, ?string $createdAt = null, ?string $updatedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -352,6 +368,10 @@ class ProductsDataModel extends Service
             $apiParams['labels'] = $labels;
         }
 
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
+
         if (!is_null($createdAt)) {
             $apiParams['created_at'] = $createdAt;
         }
@@ -386,13 +406,14 @@ class ProductsDataModel extends Service
      * answers 409.
      *
      * @param string $code
+     * @param ?bool $active
      * @param ?bool $isQuantified
      * @param ?bool $isTwoWay
      * @param ?array $labels
      * @throws RevenexxException
      * @return array
      */
-    public function productsAssociationTypesCreate(string $code, ?bool $isQuantified = null, ?bool $isTwoWay = null, ?array $labels = null): array
+    public function productsAssociationTypesCreate(string $code, ?bool $active = null, ?bool $isQuantified = null, ?bool $isTwoWay = null, ?array $labels = null): array
     {
         $apiPath = str_replace(
             [],
@@ -402,6 +423,10 @@ class ProductsDataModel extends Service
 
         $apiParams = [];
         $apiParams['code'] = $code;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
 
         if (!is_null($isQuantified)) {
             $apiParams['is_quantified'] = $isQuantified;
@@ -520,6 +545,7 @@ class ProductsDataModel extends Service
      * `code` answers 409.
      *
      * @param string $id
+     * @param ?bool $active
      * @param ?string $code
      * @param ?bool $isQuantified
      * @param ?bool $isTwoWay
@@ -527,7 +553,7 @@ class ProductsDataModel extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function productsAssociationTypesUpdate(string $id, ?string $code = null, ?bool $isQuantified = null, ?bool $isTwoWay = null, ?array $labels = null): array
+    public function productsAssociationTypesUpdate(string $id, ?bool $active = null, ?string $code = null, ?bool $isQuantified = null, ?bool $isTwoWay = null, ?array $labels = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -537,6 +563,10 @@ class ProductsDataModel extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
 
         if (!is_null($code)) {
             $apiParams['code'] = $code;
@@ -663,6 +693,7 @@ class ProductsDataModel extends Service
      * @param ?string $code
      * @param ?int $position
      * @param ?string $labels
+     * @param ?bool $active
      * @param ?string $externalId
      * @param ?string $externalRefs
      * @param ?string $sourceSyncedAt
@@ -673,7 +704,7 @@ class ProductsDataModel extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function productsAttributeGroupsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?int $position = null, ?string $labels = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $metadata = null, ?string $createdAt = null, ?string $updatedAt = null): array
+    public function productsAttributeGroupsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?int $position = null, ?string $labels = null, ?bool $active = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $metadata = null, ?string $createdAt = null, ?string $updatedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -709,6 +740,10 @@ class ProductsDataModel extends Service
 
         if (!is_null($labels)) {
             $apiParams['labels'] = $labels;
+        }
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
         }
 
         if (!is_null($externalId)) {
@@ -767,6 +802,7 @@ class ProductsDataModel extends Service
      * answers 409.
      *
      * @param string $code
+     * @param ?bool $active
      * @param ?string $externalId
      * @param ?array $externalRefs
      * @param ?array $labels
@@ -777,7 +813,7 @@ class ProductsDataModel extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function productsAttributeGroupsCreate(string $code, ?string $externalId = null, ?array $externalRefs = null, ?array $labels = null, ?array $metadata = null, ?int $position = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
+    public function productsAttributeGroupsCreate(string $code, ?bool $active = null, ?string $externalId = null, ?array $externalRefs = null, ?array $labels = null, ?array $metadata = null, ?int $position = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -787,6 +823,10 @@ class ProductsDataModel extends Service
 
         $apiParams = [];
         $apiParams['code'] = $code;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
         $apiParams['external_id'] = $externalId;
         $apiParams['external_refs'] = $externalRefs;
         $apiParams['labels'] = $labels;
@@ -910,6 +950,7 @@ class ProductsDataModel extends Service
      * `code` answers 409.
      *
      * @param string $id
+     * @param ?bool $active
      * @param ?string $code
      * @param ?string $externalId
      * @param ?array $externalRefs
@@ -921,7 +962,7 @@ class ProductsDataModel extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function productsAttributeGroupsUpdate(string $id, ?string $code = null, ?string $externalId = null, ?array $externalRefs = null, ?array $labels = null, ?array $metadata = null, ?int $position = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
+    public function productsAttributeGroupsUpdate(string $id, ?bool $active = null, ?string $code = null, ?string $externalId = null, ?array $externalRefs = null, ?array $labels = null, ?array $metadata = null, ?int $position = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -931,6 +972,10 @@ class ProductsDataModel extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
 
         if (!is_null($code)) {
             $apiParams['code'] = $code;
@@ -986,6 +1031,7 @@ class ProductsDataModel extends Service
      * @param ?int $position
      * @param ?string $swatch
      * @param ?string $labels
+     * @param ?bool $active
      * @param ?string $externalId
      * @param ?string $externalRefs
      * @param ?string $sourceSyncedAt
@@ -996,7 +1042,7 @@ class ProductsDataModel extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function productsAttributeOptionsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $attributeId = null, ?string $code = null, ?int $position = null, ?string $swatch = null, ?string $labels = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $metadata = null, ?string $createdAt = null, ?string $updatedAt = null): array
+    public function productsAttributeOptionsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $attributeId = null, ?string $code = null, ?int $position = null, ?string $swatch = null, ?string $labels = null, ?bool $active = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $metadata = null, ?string $createdAt = null, ?string $updatedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -1040,6 +1086,10 @@ class ProductsDataModel extends Service
 
         if (!is_null($labels)) {
             $apiParams['labels'] = $labels;
+        }
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
         }
 
         if (!is_null($externalId)) {
@@ -1098,6 +1148,7 @@ class ProductsDataModel extends Service
      *
      * @param string $attributeId
      * @param string $code
+     * @param ?bool $active
      * @param ?string $externalId
      * @param ?array $externalRefs
      * @param ?array $labels
@@ -1109,7 +1160,7 @@ class ProductsDataModel extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function productsAttributeOptionsCreate(string $attributeId, string $code, ?string $externalId = null, ?array $externalRefs = null, ?array $labels = null, ?array $metadata = null, ?int $position = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?array $swatch = null): array
+    public function productsAttributeOptionsCreate(string $attributeId, string $code, ?bool $active = null, ?string $externalId = null, ?array $externalRefs = null, ?array $labels = null, ?array $metadata = null, ?int $position = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?array $swatch = null): array
     {
         $apiPath = str_replace(
             [],
@@ -1120,6 +1171,10 @@ class ProductsDataModel extends Service
         $apiParams = [];
         $apiParams['attribute_id'] = $attributeId;
         $apiParams['code'] = $code;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
         $apiParams['external_id'] = $externalId;
         $apiParams['external_refs'] = $externalRefs;
         $apiParams['labels'] = $labels;
@@ -1241,6 +1296,7 @@ class ProductsDataModel extends Service
      * `attribute_id` and `code` answers 409.
      *
      * @param string $id
+     * @param ?bool $active
      * @param ?string $attributeId
      * @param ?string $code
      * @param ?string $externalId
@@ -1254,7 +1310,7 @@ class ProductsDataModel extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function productsAttributeOptionsUpdate(string $id, ?string $attributeId = null, ?string $code = null, ?string $externalId = null, ?array $externalRefs = null, ?array $labels = null, ?array $metadata = null, ?int $position = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?array $swatch = null): array
+    public function productsAttributeOptionsUpdate(string $id, ?bool $active = null, ?string $attributeId = null, ?string $code = null, ?string $externalId = null, ?array $externalRefs = null, ?array $labels = null, ?array $metadata = null, ?int $position = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?array $swatch = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -1264,6 +1320,10 @@ class ProductsDataModel extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
 
         if (!is_null($attributeId)) {
             $apiParams['attribute_id'] = $attributeId;
@@ -1335,6 +1395,7 @@ class ProductsDataModel extends Service
      * @param ?string $config
      * @param ?string $labels
      * @param ?int $position
+     * @param ?bool $active
      * @param ?string $externalId
      * @param ?string $externalRefs
      * @param ?string $sourceSyncedAt
@@ -1345,7 +1406,7 @@ class ProductsDataModel extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function productsAttributesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?string $entityType = null, ?string $entityRef = null, ?string $type = null, ?string $groupId = null, ?bool $localizable = null, ?bool $scopable = null, ?bool $isUnique = null, ?bool $isFilterable = null, ?bool $usableInGrid = null, ?string $validation = null, ?string $config = null, ?string $labels = null, ?int $position = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $metadata = null, ?string $createdAt = null, ?string $updatedAt = null): array
+    public function productsAttributesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?string $entityType = null, ?string $entityRef = null, ?string $type = null, ?string $groupId = null, ?bool $localizable = null, ?bool $scopable = null, ?bool $isUnique = null, ?bool $isFilterable = null, ?bool $usableInGrid = null, ?string $validation = null, ?string $config = null, ?string $labels = null, ?int $position = null, ?bool $active = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $metadata = null, ?string $createdAt = null, ?string $updatedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -1427,6 +1488,10 @@ class ProductsDataModel extends Service
             $apiParams['position'] = $position;
         }
 
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
+
         if (!is_null($externalId)) {
             $apiParams['external_id'] = $externalId;
         }
@@ -1485,6 +1550,7 @@ class ProductsDataModel extends Service
      *
      * @param string $code
      * @param string $type
+     * @param ?bool $active
      * @param ?array $config
      * @param ?string $entityRef
      * @param ?string $entityType
@@ -1505,7 +1571,7 @@ class ProductsDataModel extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function productsAttributesCreate(string $code, string $type, ?array $config = null, ?string $entityRef = null, ?string $entityType = null, ?string $externalId = null, ?array $externalRefs = null, ?string $groupId = null, ?bool $isFilterable = null, ?bool $isUnique = null, ?array $labels = null, ?bool $localizable = null, ?array $metadata = null, ?int $position = null, ?bool $scopable = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?bool $usableInGrid = null, ?array $validation = null): array
+    public function productsAttributesCreate(string $code, string $type, ?bool $active = null, ?array $config = null, ?string $entityRef = null, ?string $entityType = null, ?string $externalId = null, ?array $externalRefs = null, ?string $groupId = null, ?bool $isFilterable = null, ?bool $isUnique = null, ?array $labels = null, ?bool $localizable = null, ?array $metadata = null, ?int $position = null, ?bool $scopable = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?bool $usableInGrid = null, ?array $validation = null): array
     {
         $apiPath = str_replace(
             [],
@@ -1516,6 +1582,10 @@ class ProductsDataModel extends Service
         $apiParams = [];
         $apiParams['code'] = $code;
         $apiParams['type'] = $type;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
         $apiParams['config'] = $config;
         $apiParams['entity_ref'] = $entityRef;
 
@@ -1669,6 +1739,7 @@ class ProductsDataModel extends Service
      * `entity_type`, `entity_ref`, `code` answers 409.
      *
      * @param string $id
+     * @param ?bool $active
      * @param ?string $code
      * @param ?array $config
      * @param ?string $entityRef
@@ -1691,7 +1762,7 @@ class ProductsDataModel extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function productsAttributesUpdate(string $id, ?string $code = null, ?array $config = null, ?string $entityRef = null, ?string $entityType = null, ?string $externalId = null, ?array $externalRefs = null, ?string $groupId = null, ?bool $isFilterable = null, ?bool $isUnique = null, ?array $labels = null, ?bool $localizable = null, ?array $metadata = null, ?int $position = null, ?bool $scopable = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $type = null, ?bool $usableInGrid = null, ?array $validation = null): array
+    public function productsAttributesUpdate(string $id, ?bool $active = null, ?string $code = null, ?array $config = null, ?string $entityRef = null, ?string $entityType = null, ?string $externalId = null, ?array $externalRefs = null, ?string $groupId = null, ?bool $isFilterable = null, ?bool $isUnique = null, ?array $labels = null, ?bool $localizable = null, ?array $metadata = null, ?int $position = null, ?bool $scopable = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $type = null, ?bool $usableInGrid = null, ?array $validation = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -1701,6 +1772,10 @@ class ProductsDataModel extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
 
         if (!is_null($code)) {
             $apiParams['code'] = $code;
@@ -1787,6 +1862,7 @@ class ProductsDataModel extends Service
      * @param ?string $labelAttribute
      * @param ?string $imageAttribute
      * @param ?string $labels
+     * @param ?bool $active
      * @param ?string $externalId
      * @param ?string $externalRefs
      * @param ?string $sourceSyncedAt
@@ -1797,7 +1873,7 @@ class ProductsDataModel extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function productsFamiliesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?string $labelAttribute = null, ?string $imageAttribute = null, ?string $labels = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $metadata = null, ?string $createdAt = null, ?string $updatedAt = null): array
+    public function productsFamiliesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?string $labelAttribute = null, ?string $imageAttribute = null, ?string $labels = null, ?bool $active = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $metadata = null, ?string $createdAt = null, ?string $updatedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -1837,6 +1913,10 @@ class ProductsDataModel extends Service
 
         if (!is_null($labels)) {
             $apiParams['labels'] = $labels;
+        }
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
         }
 
         if (!is_null($externalId)) {
@@ -1895,6 +1975,7 @@ class ProductsDataModel extends Service
      * answers 409.
      *
      * @param string $code
+     * @param ?bool $active
      * @param ?string $externalId
      * @param ?array $externalRefs
      * @param ?string $imageAttribute
@@ -1906,7 +1987,7 @@ class ProductsDataModel extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function productsFamiliesCreate(string $code, ?string $externalId = null, ?array $externalRefs = null, ?string $imageAttribute = null, ?string $labelAttribute = null, ?array $labels = null, ?array $metadata = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
+    public function productsFamiliesCreate(string $code, ?bool $active = null, ?string $externalId = null, ?array $externalRefs = null, ?string $imageAttribute = null, ?string $labelAttribute = null, ?array $labels = null, ?array $metadata = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -1916,6 +1997,10 @@ class ProductsDataModel extends Service
 
         $apiParams = [];
         $apiParams['code'] = $code;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
         $apiParams['external_id'] = $externalId;
         $apiParams['external_refs'] = $externalRefs;
         $apiParams['image_attribute'] = $imageAttribute;
@@ -2038,6 +2123,7 @@ class ProductsDataModel extends Service
      * `code` answers 409.
      *
      * @param string $id
+     * @param ?bool $active
      * @param ?string $code
      * @param ?string $externalId
      * @param ?array $externalRefs
@@ -2050,7 +2136,7 @@ class ProductsDataModel extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function productsFamiliesUpdate(string $id, ?string $code = null, ?string $externalId = null, ?array $externalRefs = null, ?string $imageAttribute = null, ?string $labelAttribute = null, ?array $labels = null, ?array $metadata = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
+    public function productsFamiliesUpdate(string $id, ?bool $active = null, ?string $code = null, ?string $externalId = null, ?array $externalRefs = null, ?string $imageAttribute = null, ?string $labelAttribute = null, ?array $labels = null, ?array $metadata = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -2060,6 +2146,10 @@ class ProductsDataModel extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
 
         if (!is_null($code)) {
             $apiParams['code'] = $code;
@@ -2412,6 +2502,7 @@ class ProductsDataModel extends Service
      * @param ?string $code
      * @param ?string $labels
      * @param ?string $axes
+     * @param ?bool $active
      * @param ?string $externalId
      * @param ?string $externalRefs
      * @param ?string $sourceSyncedAt
@@ -2422,7 +2513,7 @@ class ProductsDataModel extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function productsFamilyVariantsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $familyId = null, ?string $code = null, ?string $labels = null, ?string $axes = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $metadata = null, ?string $createdAt = null, ?string $updatedAt = null): array
+    public function productsFamilyVariantsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $familyId = null, ?string $code = null, ?string $labels = null, ?string $axes = null, ?bool $active = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $metadata = null, ?string $createdAt = null, ?string $updatedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -2462,6 +2553,10 @@ class ProductsDataModel extends Service
 
         if (!is_null($axes)) {
             $apiParams['axes'] = $axes;
+        }
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
         }
 
         if (!is_null($externalId)) {
@@ -2521,6 +2616,7 @@ class ProductsDataModel extends Service
      *
      * @param string $code
      * @param string $familyId
+     * @param ?bool $active
      * @param ?array $axes
      * @param ?string $externalId
      * @param ?array $externalRefs
@@ -2531,7 +2627,7 @@ class ProductsDataModel extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function productsFamilyVariantsCreate(string $code, string $familyId, ?array $axes = null, ?string $externalId = null, ?array $externalRefs = null, ?array $labels = null, ?array $metadata = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
+    public function productsFamilyVariantsCreate(string $code, string $familyId, ?bool $active = null, ?array $axes = null, ?string $externalId = null, ?array $externalRefs = null, ?array $labels = null, ?array $metadata = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -2542,6 +2638,10 @@ class ProductsDataModel extends Service
         $apiParams = [];
         $apiParams['code'] = $code;
         $apiParams['family_id'] = $familyId;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
         $apiParams['axes'] = $axes;
         $apiParams['external_id'] = $externalId;
         $apiParams['external_refs'] = $externalRefs;
@@ -2662,6 +2762,7 @@ class ProductsDataModel extends Service
      * `code` answers 409.
      *
      * @param string $id
+     * @param ?bool $active
      * @param ?array $axes
      * @param ?string $code
      * @param ?string $externalId
@@ -2674,7 +2775,7 @@ class ProductsDataModel extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function productsFamilyVariantsUpdate(string $id, ?array $axes = null, ?string $code = null, ?string $externalId = null, ?array $externalRefs = null, ?string $familyId = null, ?array $labels = null, ?array $metadata = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
+    public function productsFamilyVariantsUpdate(string $id, ?bool $active = null, ?array $axes = null, ?string $code = null, ?string $externalId = null, ?array $externalRefs = null, ?string $familyId = null, ?array $labels = null, ?array $metadata = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -2684,6 +2785,10 @@ class ProductsDataModel extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
         $apiParams['axes'] = $axes;
 
         if (!is_null($code)) {
@@ -2737,12 +2842,13 @@ class ProductsDataModel extends Service
      * @param ?string $standardUnit
      * @param ?string $units
      * @param ?string $labels
+     * @param ?bool $active
      * @param ?string $createdAt
      * @param ?string $updatedAt
      * @throws RevenexxException
      * @return array
      */
-    public function productsMeasurementFamiliesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?string $standardUnit = null, ?string $units = null, ?string $labels = null, ?string $createdAt = null, ?string $updatedAt = null): array
+    public function productsMeasurementFamiliesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?string $standardUnit = null, ?string $units = null, ?string $labels = null, ?bool $active = null, ?string $createdAt = null, ?string $updatedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -2784,6 +2890,10 @@ class ProductsDataModel extends Service
             $apiParams['labels'] = $labels;
         }
 
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
+
         if (!is_null($createdAt)) {
             $apiParams['created_at'] = $createdAt;
         }
@@ -2819,12 +2929,13 @@ class ProductsDataModel extends Service
      *
      * @param string $code
      * @param string $standardUnit
+     * @param ?bool $active
      * @param ?array $labels
      * @param ?array $units
      * @throws RevenexxException
      * @return array
      */
-    public function productsMeasurementFamiliesCreate(string $code, string $standardUnit, ?array $labels = null, ?array $units = null): array
+    public function productsMeasurementFamiliesCreate(string $code, string $standardUnit, ?bool $active = null, ?array $labels = null, ?array $units = null): array
     {
         $apiPath = str_replace(
             [],
@@ -2835,6 +2946,10 @@ class ProductsDataModel extends Service
         $apiParams = [];
         $apiParams['code'] = $code;
         $apiParams['standard_unit'] = $standardUnit;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
         $apiParams['labels'] = $labels;
         $apiParams['units'] = $units;
 
@@ -2943,6 +3058,7 @@ class ProductsDataModel extends Service
      * `code` answers 409.
      *
      * @param string $id
+     * @param ?bool $active
      * @param ?string $code
      * @param ?array $labels
      * @param ?string $standardUnit
@@ -2950,7 +3066,7 @@ class ProductsDataModel extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function productsMeasurementFamiliesUpdate(string $id, ?string $code = null, ?array $labels = null, ?string $standardUnit = null, ?array $units = null): array
+    public function productsMeasurementFamiliesUpdate(string $id, ?bool $active = null, ?string $code = null, ?array $labels = null, ?string $standardUnit = null, ?array $units = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -2960,6 +3076,10 @@ class ProductsDataModel extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
 
         if (!is_null($code)) {
             $apiParams['code'] = $code;

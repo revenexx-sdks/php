@@ -17,6 +17,7 @@ GET https://api.revenexx.com/v1/payments
 | cart_id | string | The cart a payment pays for. Indexed. |  |
 | contact_id | string | The paying customer contact. Indexed. |  |
 | order_id | string | The order a payment is for, as the orders app knows it. Indexed — this is how an order finds what has been paid against it. |  |
+| organization_id | string | The buyer's organization, projected from the order when the payment was created. Indexed — one customer's payments across every order. |  |
 | status | string | Restrict to one lifecycle state. Indexed. |  |
 | order_ref | string | Exact external order reference. |  |
 | method_code | string | Exact code of the method the payment was made with. |  |
@@ -25,6 +26,7 @@ GET https://api.revenexx.com/v1/payments
 | dunning_stage | string | Restrict to one dunning stage — what the daily scan wrote. |  |
 | idempotency_key | string | Exact idempotency key. Unique per tenant, so this answers at most one row. |  |
 | external_id | string | Exact key of the system that booked the payment — the ERP's document number, not the provider's own transaction id. This is the reconciliation lookup. Not unique: a payment cannot be updated here, so several rows may legitimately carry one key, and this may answer more than one. |  |
+| reference | string | Exact reference — what the payment is called by: the provider transaction id, else the external id, else the order reference, else the method code. Indexed; the same value other apps' payment pickers show. |  |
 | source_synced_at | string | Exact instant a payment was last confirmed against its source. The index behind it is what makes a delta run cheap, and a delta run SORTS (`?order=source_synced_at.desc`) rather than naming one instant — `external_refs` and `source_data` carry no parameter at all, because such a column is compared as a whole document. |  |
 
 
@@ -49,7 +51,7 @@ POST https://api.revenexx.com/v1/payments
 | metadata | object | Free-form data to keep on the payment. Merged with the keys this app writes itself (`provider_method`, `return_url`, later the cancel/refund reasons), which win on a collision. |  |
 | method_code | string | The `code` of the payment method this payment was made with, copied at creation. Deliberately a code and not a foreign key: the ledger records what happened and has to outlive the configuration it happened under. It must name a method this tenant has configured; eligibility for the buyer context below is re-checked here, whatever the checkout showed. |  |
 | order_id | string | The order this payment is for, as the orders app knows it (its uuid). Optional. When it is sent, the payment is checked against the order before anything is written: its currency must be the order's (409 `currency_mismatch`), and together with every payment of the order that is created, requires_action, authorized or captured it must not exceed the order's `grand_total` (409 `amount_exceeds_order`) — several payments per order are fine. A `cancelled` order takes no payment (409 `order_not_payable`); every other order status passes. An order that does not exist is 400 `unknown_order`; an orders app that cannot be asked is 502 `orders_unavailable` and nothing is created. On a buyer's own call the order must be the buyer's (400 `buyer_mismatch`). Left out, the payment is accepted unchecked, as before 1.0 — a purchase under approval has no order yet. |  |
-| order_ref | string | The external order reference the checkout wrote onto the payment. It is what POST /payments/orders/{order_ref}/capture resolves and the fallback key a PSP webhook is matched on when it carries no transaction id — so an integration that leaves it null gives up both. Free text with no uniqueness: several payments may share one reference. |  |
+| order_ref | string | The external order reference the checkout wrote onto the payment. It is what POST /payments/orders/{order_ref}/capture resolves and the fallback key a PSP webhook is matched on when it carries no transaction id — so an integration that leaves it null gives up both. Free text with no uniqueness: several payments may share one reference. When a payment is created without `order_id`, a reference that names exactly one order of the tenant — its id or its number — in the payment's currency, with a total the payment fits into, links the payment to that order (`order_id`, `organization_id`); one that does not, or an orders app that does not answer within three seconds, leaves the payment unlinked and is never a refusal. |  |
 | return_url | string | Where the PSP sends the buyer back after a redirect or a 3-D Secure challenge. Kept in `metadata.return_url` and handed to the driver — a PSP method that needs a redirect and has none leaves the buyer stranded at the provider. |  |
 | source_data | object | What the source said about this payment, kept as it said it. `system` names it, `etag` is the token an `If-Match` write-back has to hand back — there is nowhere else to keep it between two runs — and `raw` holds the source fields this app does not model, so they survive a round trip instead of being lost. Free jsonb; nothing here is read by this app. |  |
 | source_synced_at | string | When this payment was last confirmed against the system that booked it. What a delta run asks for changes since, and what tells an operator a feed has gone quiet — a capture or a refund does not touch it, because it says when the SOURCE was last seen and not when the row moved. Indexed, and null for a payment no source owns. |  |
@@ -74,6 +76,21 @@ POST https://api.revenexx.com/v1/payments/errors/redact
 | --- | --- | --- | --- |
 | apply | boolean | Write the reclassified values. Defaults to false, which reports what WOULD change and touches nothing. |  |
 | limit | integer | How many payments to scan, oldest first. Defaults to 500, capped at 5000 — a tenant with more pre-taxonomy rows needs several runs, and re-running is free. |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/payments/orders/relink
+```
+
+** Resolves the `order_ref` of payments that name no `order_id` to the order it names — by id when it is one, otherwise by number through the orders app — and writes `order_id` and the order's `organization_id`, nothing else. A payment that already names its order but no organization gets the order's organization. A match is linked only when it can have been this payment's order: the same currency, an amount within the order's total, and an order no younger than the payment — a number a later order reuses is reported, never linked. It is the same resolution creating a payment now runs, for payments written before it did. Dry-run by default — reports what it would link and changes nothing until apply:true. Oldest first, `limit` rows a run; `after` continues from the `next` of the previous run. Idempotent: a linked payment is no longer scanned. An orders app that cannot be asked answers 502 `orders_unavailable` and the run stops where it was. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| after | string | Continue after this creation time — the `next` a previous run answered. Left out, the scan starts at the oldest payment. |  |
+| apply | boolean | Write the links. Defaults to false, which reports what WOULD be linked and touches nothing. |  |
+| limit | integer | How many payments without an organization to scan, oldest first. Defaults to 100, capped at 500. |  |
 
 
 ```http request

@@ -15,11 +15,12 @@ $promotionsPromotions = new PromotionsPromotions($client);
 
 $result = $promotionsPromotions->promotionsGroupsUpdate(
     id: '',
-    code: '',
-    name: '',
-    labels: [], // optional
-    metadata: [], // optional
+    active: true, // optional
+    code: '', // optional
+    labels: , // optional
+    metadata: , // optional
     mode: PromotionsGroupsCreateMode::STACK(), // optional
+    name: '', // optional
     parentId: '', // optional
     position: 1 // optional
 );```

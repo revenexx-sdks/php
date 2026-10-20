@@ -29,6 +29,8 @@ GET https://api.revenexx.com/v1/pages/delivery/page
 | slug | string | The page slug, or the slug of one of its translations, without a leading slash — the path segment the storefront routes. Either this or `id`. |  |
 | id | string | The page id, for a storefront that already holds one (from `GET /pages/delivery/pages`). Either this or `slug`. |  |
 | langcode | string | Language to resolve the tree for, e.g. `de`. Falls back to the page's source language per field, so a partly translated page still renders whole. |  |
+| audiences | string | Comma-separated audience codes the visitor belongs to, as the storefront resolved them for a signed-in contact (`POST /v1/audiences/memberships`). Absent means an anonymous visitor: only blocks naming no audience are shown. |  |
+| consents | string | Comma-separated consent purposes the consent manager holds for the visitor. A block or pop-up that names a `consent_purpose` is shown only when it is in this list. |  |
 
 
 ```http request
@@ -45,6 +47,21 @@ GET https://api.revenexx.com/v1/pages/delivery/pages
 | offset | integer | Row offset for pagination (default 0). |  |
 | order | string | Sort by one column: 'column' | 'column.asc' | 'column.desc'. A bare column sorts ascending. A column this entity does not have, or any other shape, is refused with 400. |  |
 | bundle | string | Exact page type — how a theme asks for just its landing pages. The value set belongs to the active theme. |  |
+
+
+```http request
+GET https://api.revenexx.com/v1/pages/delivery/popups
+```
+
+** What a storefront asks on every page: the pop-ups switched on, inside their window and visible to this visitor — `audiences` and `consents` as for a page; anonymous sees only those naming no audience — with their content resolved in `langcode`. The storefront applies the trigger and the frequency and posts impressions and clicks to the campaigns app (`POST /v1/campaigns/touches`). **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| langcode | string | Language to resolve the content for. Falls back to the source language. |  |
+| audiences | string | Comma-separated audience codes the visitor belongs to, as the storefront resolved them for a signed-in contact (`POST /v1/audiences/memberships`). Absent means an anonymous visitor: only blocks naming no audience are shown. |  |
+| consents | string | Comma-separated consent purposes the consent manager holds for the visitor. A block or pop-up that names a `consent_purpose` is shown only when it is in this list. |  |
 
 
 ```http request

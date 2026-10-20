@@ -217,6 +217,21 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodProcurementPurchaseRequestItemsOpen(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->procurement->procurementPurchaseRequestItemsOpen(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodProcurementPendingApprovalsList(): void {
 
         $data = array();
@@ -495,6 +510,21 @@ final class ProcurementTest extends TestCase {
         $response = $this->procurement->procurementSubmit(
             "",
             array()
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodProcurementSubmitCart(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->procurement->procurementSubmitCart(
+            ""
         );
 
         $this->assertSame($data, $response);

@@ -23,17 +23,18 @@ class ShippingValueLists extends Service
      * the app ever branched on the value, it only carried it. The set is the
      * tenant's rows now, and the first read seeds it, so this never answers
      * empty. Hand-rolled rather than a generic mount, because seeding is the
-     * point: it therefore honours limit/offset AND NOTHING ELSE. There is no
-     * `?code=` filter and no `order` — the rows always come back in `position`
-     * order, and a sort or a filter sent anyway is accepted, ignored, and
-     * answered 200.
+     * point: it therefore honours limit/offset and the `active` flag AND NOTHING
+     * ELSE. There is no `?code=` filter and no `order` — the rows always come
+     * back in `position` order, and a sort or another filter sent anyway is
+     * accepted, ignored, and answered 200.
      *
      * @param ?int $limit
      * @param ?int $offset
+     * @param ?bool $active
      * @throws RevenexxException
      * @return array
      */
-    public function shippingServiceLevelsList(?int $limit = null, ?int $offset = null): array
+    public function shippingServiceLevelsList(?int $limit = null, ?int $offset = null, ?bool $active = null): array
     {
         $apiPath = str_replace(
             [],
@@ -49,6 +50,10 @@ class ShippingValueLists extends Service
 
         if (!is_null($offset)) {
             $apiParams['offset'] = $offset;
+        }
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
         }
 
         $apiHeaders = [];
@@ -77,6 +82,7 @@ class ShippingValueLists extends Service
      *
      * @param string $code
      * @param string $title
+     * @param ?bool $active
      * @param ?string $description
      * @param ?array $descriptions
      * @param ?bool $isDefault
@@ -86,7 +92,7 @@ class ShippingValueLists extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function shippingServiceLevelsCreate(string $code, string $title, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?Tone $tone = null): array
+    public function shippingServiceLevelsCreate(string $code, string $title, ?bool $active = null, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?Tone $tone = null): array
     {
         $apiPath = str_replace(
             [],
@@ -97,6 +103,10 @@ class ShippingValueLists extends Service
         $apiParams = [];
         $apiParams['code'] = $code;
         $apiParams['title'] = $title;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
         $apiParams['description'] = $description;
         $apiParams['descriptions'] = $descriptions;
 
@@ -207,6 +217,7 @@ class ShippingValueLists extends Service
      * deliberate order means writing every row's position.
      *
      * @param string $id
+     * @param ?bool $active
      * @param ?string $description
      * @param ?array $descriptions
      * @param ?bool $isDefault
@@ -217,7 +228,7 @@ class ShippingValueLists extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function shippingServiceLevelsUpdate(string $id, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?string $title = null, ?Tone $tone = null): array
+    public function shippingServiceLevelsUpdate(string $id, ?bool $active = null, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?string $title = null, ?Tone $tone = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -227,6 +238,10 @@ class ShippingValueLists extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
         $apiParams['description'] = $description;
         $apiParams['descriptions'] = $descriptions;
 
@@ -340,14 +355,16 @@ class ShippingValueLists extends Service
      * key, in constraint order. 'source: table' means the values are the TENANT's
      * own rows (service-levels, weight-units), read per request and seeded on
      * first use, so a merchant may add one without a release of this app; those
-     * values also carry labels/descriptions, is_system and is_default, and
-     * weight-units carries the conversion factor. 'closed' says the set is
-     * exhaustive either way, so a value outside it is stale data rather than a
-     * missing label. `title` and `description` — the vocabulary's and every
-     * value's — are either one string or a locale map keyed by locale: curated
-     * copy carries the map, a value titled from its own key carries the string.
-     * Names: carrier-statuses, matrix-bases, pricing-types, service-levels,
-     * weight-units.
+     * values also carry labels/descriptions, is_system, is_default and active,
+     * and weight-units carries the conversion factor. A value the merchant set
+     * inactive is not under `values` (what a picker offers) but under `inactive`,
+     * in the same shape, so a stored code still resolves to its title. 'closed'
+     * says the set is exhaustive either way, so a value outside it is stale data
+     * rather than a missing label. `title` and `description` — the vocabulary's
+     * and every value's — are either one string or a locale map keyed by
+     * locale: curated copy carries the map, a value titled from its own key
+     * carries the string. Names: carrier-statuses, matrix-bases, pricing-types,
+     * service-levels, weight-units.
      *
      * @param ShippingVocabulariesGetName $name
      * @throws RevenexxException
@@ -381,16 +398,17 @@ class ShippingValueLists extends Service
      * one row is the BASE (kg, factor 1) — the anchor every other factor and
      * every stored rate tier is expressed in — and it is fixed at install.
      * Seeded on first read, so this never answers empty. Like the service levels
-     * it is hand-rolled and honours limit/offset AND NOTHING ELSE: no column
-     * filter, no `order`, always `position` order, and a sort sent anyway is
-     * ignored rather than refused.
+     * it is hand-rolled and honours limit/offset and the `active` flag AND
+     * NOTHING ELSE: no other column filter, no `order`, always `position` order,
+     * and a sort sent anyway is ignored rather than refused.
      *
      * @param ?int $limit
      * @param ?int $offset
+     * @param ?bool $active
      * @throws RevenexxException
      * @return array
      */
-    public function shippingWeightUnitsList(?int $limit = null, ?int $offset = null): array
+    public function shippingWeightUnitsList(?int $limit = null, ?int $offset = null, ?bool $active = null): array
     {
         $apiPath = str_replace(
             [],
@@ -406,6 +424,10 @@ class ShippingValueLists extends Service
 
         if (!is_null($offset)) {
             $apiParams['offset'] = $offset;
+        }
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
         }
 
         $apiHeaders = [];
@@ -430,6 +452,7 @@ class ShippingValueLists extends Service
      * @param string $code
      * @param float $factor
      * @param string $title
+     * @param ?bool $active
      * @param ?string $description
      * @param ?array $descriptions
      * @param ?bool $isDefault
@@ -439,7 +462,7 @@ class ShippingValueLists extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function shippingWeightUnitsCreate(string $code, float $factor, string $title, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?Tone $tone = null): array
+    public function shippingWeightUnitsCreate(string $code, float $factor, string $title, ?bool $active = null, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?Tone $tone = null): array
     {
         $apiPath = str_replace(
             [],
@@ -451,6 +474,10 @@ class ShippingValueLists extends Service
         $apiParams['code'] = $code;
         $apiParams['factor'] = $factor;
         $apiParams['title'] = $title;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
         $apiParams['description'] = $description;
         $apiParams['descriptions'] = $descriptions;
 
@@ -555,6 +582,7 @@ class ShippingValueLists extends Service
      * without touching another row.
      *
      * @param string $id
+     * @param ?bool $active
      * @param ?string $description
      * @param ?array $descriptions
      * @param ?float $factor
@@ -566,7 +594,7 @@ class ShippingValueLists extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function shippingWeightUnitsUpdate(string $id, ?string $description = null, ?array $descriptions = null, ?float $factor = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?string $title = null, ?Tone $tone = null): array
+    public function shippingWeightUnitsUpdate(string $id, ?bool $active = null, ?string $description = null, ?array $descriptions = null, ?float $factor = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?string $title = null, ?Tone $tone = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -576,6 +604,10 @@ class ShippingValueLists extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
         $apiParams['description'] = $description;
         $apiParams['descriptions'] = $descriptions;
 
@@ -605,6 +637,42 @@ class ShippingValueLists extends Service
 
         return $this->client->call(
             Client::METHOD_PUT,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * The only way the base moves. This unit takes factor 1 and the base flag,
+     * and every other factor is divided by its old factor in the same call, so
+     * each unit still weighs what it did. Rate tiers are left alone: they are
+     * keyed in the unit a market quotes in, never in the base. Every new factor
+     * is checked before the first write. Calling it on the base itself changes
+     * nothing.
+     *
+     * @param string $id
+     * @param array $data
+     * @throws RevenexxException
+     * @return array
+     */
+    public function shippingWeightUnitsMakeBase(string $id, array $data): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/shipping/weight-units/{id}/make-base'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+        $apiParams = \array_merge($apiParams, $data);
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
             $apiPath,
             $apiHeaders,
             $apiParams

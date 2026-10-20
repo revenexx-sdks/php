@@ -12,5 +12,6 @@ $client = (new Client())
 
 $customersValueLists = new CustomersValueLists($client);
 
-$result = $customersValueLists->customersAddressTypesList();
-```
+$result = $customersValueLists->customersAddressTypesList(
+    active: true // optional
+);```

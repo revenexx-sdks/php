@@ -21,5 +21,6 @@ $result = $markets->marketsClone(
     copyTaxClasses: true, // optional
     currency: 'EUR', // optional
     name: 'Northwind B2B', // optional
+    shipFromCountry: 'DE', // optional
     status: MarketStatus::ACTIVE() // optional
 );```

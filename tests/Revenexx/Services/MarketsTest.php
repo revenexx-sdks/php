@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\MarketsListStatus;
 use Revenexx\Enums\MarketStatus;
 use Revenexx\Enums\MarketsVocabularyName;
+use Revenexx\Enums\MarketsLocalesCreateStatus;
 
 final class MarketsTest extends TestCase {
     private $client;
@@ -164,6 +165,22 @@ final class MarketsTest extends TestCase {
         $response = $this->markets->marketsClone(
             "northwind",
             "northwind_b2b"
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodMarketsConfirmShipFrom(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->markets->marketsConfirmShipFrom(
+            "northwind",
+            array()
         );
 
         $this->assertSame($data, $response);

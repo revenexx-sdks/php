@@ -6,6 +6,7 @@ use Revenexx\RevenexxException;
 use Revenexx\Client;
 use Revenexx\Service;
 use Revenexx\InputFile;
+use Revenexx\Enums\Variant;
 
 class PaymentsProviders extends Service
 {
@@ -17,22 +18,25 @@ class PaymentsProviders extends Service
     /**
      * Answers the SVG document for a catalog provider code (a shipped
      * assets/logos/{code}.svg, otherwise a generated monogram tile), with
-     * content-type image/svg+xml and a one-day cache. It is the one route in this
-     * app that needs no tenant identity: the logos are bundled with the app
-     * rather than owned by anyone, so nothing here is tenant data and no key or
-     * tenant header is required to fetch one — which is what lets a storefront
-     * or a Cockpit screen point an <img> straight at it. Called directly on the
-     * app domain
+     * content-type image/svg+xml and a one-day cache. For a connector whose brand
+     * files are on the platform CDN it redirects (302) there instead: to the full
+     * logo, or with `?variant=symbol` to the square symbol. It is the one route
+     * in this app that needs no tenant identity: the logos are bundled with the
+     * app rather than owned by anyone, so nothing here is tenant data and no key
+     * or tenant header is required to fetch one — which is what lets a
+     * storefront or a Cockpit screen point an <img> straight at it. Called
+     * directly on the app domain
      * (https://revenexx-payments.apps.revenexx.io/payments/logos/stripe) the
      * response carries its real content-type; through the gateway the body is
      * passed through but labelled application/json, so use the app domain for
      * <img> sources.
      *
      * @param string $slug
+     * @param ?Variant $variant
      * @throws RevenexxException
      * @return array
      */
-    public function paymentsLogosGet(string $slug): array
+    public function paymentsLogosGet(string $slug, ?Variant $variant = null): array
     {
         $apiPath = str_replace(
             ['{slug}'],
@@ -42,6 +46,10 @@ class PaymentsProviders extends Service
 
         $apiParams = [];
         $apiParams['slug'] = $slug;
+
+        if (!is_null($variant)) {
+            $apiParams['variant'] = $variant;
+        }
 
         $apiHeaders = [];
 
@@ -167,21 +175,20 @@ class PaymentsProviders extends Service
     }
 
     /**
-     * The closed set of `provider` codes POST /payments/providers accepts —
-     * anything else is refused with 400 and a message listing these. It runs to
-     * roughly thirty connectors, and each entry says which `driver` moves the
-     * money for it: nearly all of them go through the one connector layer this
-     * app embeds, hyperswitch-prism, with the built-in mock PSP alongside for
-     * demos and E2E. Read it to build the picker on an "add provider" form and to
-     * know what a credentials form has to ask for: `auth_type` is the scheme the
-     * connector authenticates with and `credential_fields` are the KEY NAMES to
-     * put inside `credentials` (never values, which come from the PSP's own
-     * dashboard). It says nothing about this tenant: no credential, no enabled
-     * flag, no test mode — that is GET /payments/providers. Watch `available`:
-     * a code with `false` has no driver in this deployment yet, so it can be
-     * created and stored and every transaction through it fails with
-     * `provider_unavailable`. The list is app-shipped and identical for everyone,
-     * so it is safe to cache hard and it changes only with a release of this app.
+     * The connectors this app offers, presented for a picker: EU-headquartered
+     * providers first by rank (Novalnet and Mollie lead), then the rest of
+     * Europe, then everything else — every entry says its `region`,
+     * `hq_country` and whom it is `recommended_for`. Read it to build the "add
+     * provider" picker and the credentials form: `credential_schema` is the
+     * labelled list of keys to put inside `credentials` (with help text, whether
+     * each is required and whether it is a secret), and `credential_fields` the
+     * same names as a flat list. Codes POST /payments/providers accepts are these
+     * plus the built-in `mock`; nothing is listed that the bundled driver cannot
+     * run, and a code the app knows but does not offer is refused on create (422
+     * `provider_not_offered`). It says nothing secret about this tenant — only
+     * which codes it already has (`configured`, `addable`). `testable` says
+     * whether POST /payments/providers/{id}/check can check it. Answers an
+     * `ETag`; send it back as `If-None-Match` for a 304.
      *
      * @throws RevenexxException
      * @return array
@@ -353,6 +360,43 @@ class PaymentsProviders extends Service
 
         return $this->client->call(
             Client::METHOD_PUT,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * "Verbindung prüfen": one cheap authenticated call to the provider in the
+     * configuration's own environment (sandbox in test mode, live otherwise) —
+     * Stripe reads its balance, PayPal issues an access token, Novalnet reads the
+     * merchant details. Nothing is charged and nothing is created at the
+     * provider. The outcome is stored as `options.last_check` `{ at, ok, code,
+     * environment }` and answered with the configuration; `code` is ok,
+     * auth_failed, environment_mismatch (a live key on a test-mode provider or
+     * the reverse), missing_credentials, unreachable or provider_error.
+     * Credentials appear in no answer and no log. Only connectors the catalog
+     * marks `testable` can be checked.
+     *
+     * @param string $id
+     * @throws RevenexxException
+     * @return array
+     */
+    public function paymentsProvidersCheck(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/payments/providers/{id}/check'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_POST,
             $apiPath,
             $apiHeaders,
             $apiParams

@@ -6,9 +6,9 @@ use JsonSerializable;
 
 class Status implements JsonSerializable
 {
-    private static Status $INVITED;
-    private static Status $ACTIVE;
-    private static Status $BLOCKED;
+    private static Status $CONNECTED;
+    private static Status $ERROR;
+    private static Status $DISCONNECTED;
 
     private string $value;
 
@@ -27,25 +27,25 @@ class Status implements JsonSerializable
         return $this->value;
     }
 
-    public static function INVITED(): Status
+    public static function CONNECTED(): Status
     {
-        if (!isset(self::$INVITED)) {
-            self::$INVITED = new Status('invited');
+        if (!isset(self::$CONNECTED)) {
+            self::$CONNECTED = new Status('connected');
         }
-        return self::$INVITED;
+        return self::$CONNECTED;
     }
-    public static function ACTIVE(): Status
+    public static function ERROR(): Status
     {
-        if (!isset(self::$ACTIVE)) {
-            self::$ACTIVE = new Status('active');
+        if (!isset(self::$ERROR)) {
+            self::$ERROR = new Status('error');
         }
-        return self::$ACTIVE;
+        return self::$ERROR;
     }
-    public static function BLOCKED(): Status
+    public static function DISCONNECTED(): Status
     {
-        if (!isset(self::$BLOCKED)) {
-            self::$BLOCKED = new Status('blocked');
+        if (!isset(self::$DISCONNECTED)) {
+            self::$DISCONNECTED = new Status('disconnected');
         }
-        return self::$BLOCKED;
+        return self::$DISCONNECTED;
     }
 }

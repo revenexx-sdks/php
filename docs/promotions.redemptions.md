@@ -16,8 +16,10 @@ POST https://api.revenexx.com/v1/promotions/commit
 | currency | string | The currency, for a direct commitment. |  |
 | market | string | The market, carried onto the published fact. |  |
 | order_id | string | The order the redemptions are recorded against. |  |
+| order_number | string | The order number, kept on the ledger rows so a list can search it. |  |
 | organization_id | string | The company, for a direct commitment. |  |
 | promotions | array | What to record, for a commitment with no prior hold. |  |
+| redeemed_by | string | The buyer name, kept on the ledger rows so a list can search it. |  |
 | terms | object | Per promotion, the effects that produced it — what a re-decided return is settled against, because an order is a snapshot everywhere else in this platform. |  |
 
 
@@ -44,12 +46,15 @@ GET https://api.revenexx.com/v1/promotions/redemptions
 | id | string | Keep only rows whose `id` equals this. |  |
 | promotion_id | string | Keep only rows whose `promotion_id` equals this. |  |
 | voucher_id | string | Keep only rows whose `voucher_id` equals this. |  |
+| voucher_code | string | Keep only rows whose `voucher_code` equals this. |  |
+| batch_id | string | Keep only rows whose `batch_id` equals this. |  |
 | cart_id | string | Keep only rows whose `cart_id` equals this. |  |
 | order_id | string | Keep only rows whose `order_id` equals this. |  |
+| order_number | string | Keep only rows whose `order_number` equals this. |  |
 | contact_id | string | Keep only rows whose `contact_id` equals this. |  |
 | organization_id | string | Keep only rows whose `organization_id` equals this. |  |
+| redeemed_by | string | Keep only rows whose `redeemed_by` equals this. |  |
 | state | string | Keep only rows whose `state` equals this. |  |
-| currency | string | Keep only rows whose `currency` equals this. |  |
 
 
 ```http request
@@ -94,6 +99,7 @@ POST https://api.revenexx.com/v1/promotions/reserve
 | from_cart_id | string | A cart being merged into this one. Its hold is released in the same call, so the promotion is never scarcer than it really is. |  |
 | organization_id | string | The company they buy for. |  |
 | promotions | array | What this cart intends to use, as the evaluation answered it. |  |
+| redeemed_by | string | The buyer name as the caller shows it, kept on the ledger rows so a list can search it. |  |
 
 
 ```http request
@@ -110,5 +116,6 @@ POST https://api.revenexx.com/v1/promotions/returns
 | lines | array | Which lines came back. |  |
 | order_id | string | The order goods came back from. |  |
 | remaining_amounts | object | Per promotion, what the kept goods are owed — for a promotion that re-decides rather than reversing in proportion. |  |
+| remaining_lines | array | What the buyer kept. Given these, the answer says which bundles no longer form; without them it says nothing rather than guessing, because this app holds the redemption and order management holds the order. |  |
 | return_ref | string | The return identifier, so a repeated report credits nothing further. |  |
 

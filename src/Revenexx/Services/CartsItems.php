@@ -39,10 +39,11 @@ class CartsItems extends Service
      * @param ?int $limit
      * @param ?int $offset
      * @param ?string $order
+     * @param ?string $sessionKey
      * @throws RevenexxException
      * @return array
      */
-    public function cartsItemsList(string $cartId, ?string $id = null, ?CartItemType $type = null, ?string $productId = null, ?string $sku = null, ?string $name = null, ?float $quantity = null, ?string $unit = null, ?float $unitPrice = null, ?float $taxRate = null, ?float $lineTotal = null, ?int $position = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function cartsItemsList(string $cartId, ?string $id = null, ?CartItemType $type = null, ?string $productId = null, ?string $sku = null, ?string $name = null, ?float $quantity = null, ?string $unit = null, ?float $unitPrice = null, ?float $taxRate = null, ?float $lineTotal = null, ?int $position = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null, ?string $sessionKey = null): array
     {
         $apiPath = str_replace(
             ['{cart_id}'],
@@ -117,6 +118,10 @@ class CartsItems extends Service
             $apiParams['order'] = $order;
         }
 
+        if (!is_null($sessionKey)) {
+            $apiParams['session_key'] = $sessionKey;
+        }
+
         $apiHeaders = [];
 
         return $this->client->call(
@@ -145,6 +150,7 @@ class CartsItems extends Service
      * ten calls of one piece cannot walk past a limit one call of ten would hit.
      *
      * @param string $cartId
+     * @param ?string $sessionKey
      * @param ?array $configuration
      * @param ?string $currency
      * @param ?array $metadata
@@ -161,7 +167,7 @@ class CartsItems extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function cartsItemsCreate(string $cartId, ?array $configuration = null, ?string $currency = null, ?array $metadata = null, ?string $name = null, ?int $position = null, ?string $productId = null, ?float $quantity = null, ?string $sku = null, ?array $snapshot = null, ?float $taxRate = null, ?CartItemType $type = null, ?string $unit = null, ?float $unitPrice = null): array
+    public function cartsItemsCreate(string $cartId, ?string $sessionKey = null, ?array $configuration = null, ?string $currency = null, ?array $metadata = null, ?string $name = null, ?int $position = null, ?string $productId = null, ?float $quantity = null, ?string $sku = null, ?array $snapshot = null, ?float $taxRate = null, ?CartItemType $type = null, ?string $unit = null, ?float $unitPrice = null): array
     {
         $apiPath = str_replace(
             ['{cart_id}'],
@@ -171,6 +177,10 @@ class CartsItems extends Service
 
         $apiParams = [];
         $apiParams['cart_id'] = $cartId;
+
+        if (!is_null($sessionKey)) {
+            $apiParams['session_key'] = $sessionKey;
+        }
         $apiParams['configuration'] = $configuration;
         $apiParams['currency'] = $currency;
         $apiParams['metadata'] = $metadata;
@@ -215,10 +225,11 @@ class CartsItems extends Service
      *
      * @param string $cartId
      * @param array $items
+     * @param ?string $sessionKey
      * @throws RevenexxException
      * @return array
      */
-    public function cartsItemsReplace(string $cartId, array $items): array
+    public function cartsItemsReplace(string $cartId, array $items, ?string $sessionKey = null): array
     {
         $apiPath = str_replace(
             ['{cart_id}'],
@@ -230,11 +241,72 @@ class CartsItems extends Service
         $apiParams['cart_id'] = $cartId;
         $apiParams['items'] = $items;
 
+        if (!is_null($sessionKey)) {
+            $apiParams['session_key'] = $sessionKey;
+        }
+
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
 
         return $this->client->call(
             Client::METHOD_PUT,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * The operator's add-to-basket. The caller names an article and a quantity;
+     * the line is written with the article's name and SKU from the products
+     * catalogue and the price the prices app resolves for THIS cart's buyer —
+     * contact, organization, currency and market (the request's market, else the
+     * cart's own) — so a cart filled in a customer's name carries the prices
+     * that customer sees in the shop. This app still sets no price: it asks,
+     * exactly as a storefront asks before it adds. An agreed price may be stated
+     * as `unit_price`; the snapshot then keeps the resolved price beside it. From
+     * there the line goes the way every add goes — an identical product line at
+     * the same price folds into the existing one, the line limits apply and the
+     * totals are recomputed. It fails closed: an article prices cannot price for
+     * this buyer answers 422 `no_price` unless an agreed price was sent, and a
+     * tax rate that cannot be resolved is a refusal, never a line at 0 %. A
+     * request acting for a contact is refused with 403.
+     *
+     * @param string $cartId
+     * @param ?string $sessionKey
+     * @param ?string $productId
+     * @param ?float $quantity
+     * @param ?string $sku
+     * @param ?float $taxRate
+     * @param ?float $unitPrice
+     * @throws RevenexxException
+     * @return array
+     */
+    public function cartsItemsPriced(string $cartId, ?string $sessionKey = null, ?string $productId = null, ?float $quantity = null, ?string $sku = null, ?float $taxRate = null, ?float $unitPrice = null): array
+    {
+        $apiPath = str_replace(
+            ['{cart_id}'],
+            [$cartId],
+            '/v1/carts/{cart_id}/items/priced'
+        );
+
+        $apiParams = [];
+        $apiParams['cart_id'] = $cartId;
+
+        if (!is_null($sessionKey)) {
+            $apiParams['session_key'] = $sessionKey;
+        }
+        $apiParams['product_id'] = $productId;
+        $apiParams['quantity'] = $quantity;
+        $apiParams['sku'] = $sku;
+        $apiParams['tax_rate'] = $taxRate;
+        $apiParams['unit_price'] = $unitPrice;
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
             $apiPath,
             $apiHeaders,
             $apiParams
@@ -253,10 +325,11 @@ class CartsItems extends Service
      *
      * @param string $cartId
      * @param string $id
+     * @param ?string $sessionKey
      * @throws RevenexxException
      * @return array
      */
-    public function cartsItemsDelete(string $cartId, string $id): array
+    public function cartsItemsDelete(string $cartId, string $id, ?string $sessionKey = null): array
     {
         $apiPath = str_replace(
             ['{cart_id}', '{id}'],
@@ -267,6 +340,10 @@ class CartsItems extends Service
         $apiParams = [];
         $apiParams['cart_id'] = $cartId;
         $apiParams['id'] = $id;
+
+        if (!is_null($sessionKey)) {
+            $apiParams['session_key'] = $sessionKey;
+        }
 
         $apiHeaders = [];
 
@@ -292,10 +369,11 @@ class CartsItems extends Service
      *
      * @param string $cartId
      * @param string $id
+     * @param ?string $sessionKey
      * @throws RevenexxException
      * @return array
      */
-    public function cartsItemsGet(string $cartId, string $id): array
+    public function cartsItemsGet(string $cartId, string $id, ?string $sessionKey = null): array
     {
         $apiPath = str_replace(
             ['{cart_id}', '{id}'],
@@ -306,6 +384,10 @@ class CartsItems extends Service
         $apiParams = [];
         $apiParams['cart_id'] = $cartId;
         $apiParams['id'] = $id;
+
+        if (!is_null($sessionKey)) {
+            $apiParams['session_key'] = $sessionKey;
+        }
 
         $apiHeaders = [];
 
@@ -332,6 +414,7 @@ class CartsItems extends Service
      *
      * @param string $cartId
      * @param string $id
+     * @param ?string $sessionKey
      * @param ?array $configuration
      * @param ?string $currency
      * @param ?array $metadata
@@ -348,7 +431,7 @@ class CartsItems extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function cartsItemsUpdate(string $cartId, string $id, ?array $configuration = null, ?string $currency = null, ?array $metadata = null, ?string $name = null, ?int $position = null, ?string $productId = null, ?float $quantity = null, ?string $sku = null, ?array $snapshot = null, ?float $taxRate = null, ?CartItemType $type = null, ?string $unit = null, ?float $unitPrice = null): array
+    public function cartsItemsUpdate(string $cartId, string $id, ?string $sessionKey = null, ?array $configuration = null, ?string $currency = null, ?array $metadata = null, ?string $name = null, ?int $position = null, ?string $productId = null, ?float $quantity = null, ?string $sku = null, ?array $snapshot = null, ?float $taxRate = null, ?CartItemType $type = null, ?string $unit = null, ?float $unitPrice = null): array
     {
         $apiPath = str_replace(
             ['{cart_id}', '{id}'],
@@ -359,6 +442,10 @@ class CartsItems extends Service
         $apiParams = [];
         $apiParams['cart_id'] = $cartId;
         $apiParams['id'] = $id;
+
+        if (!is_null($sessionKey)) {
+            $apiParams['session_key'] = $sessionKey;
+        }
         $apiParams['configuration'] = $configuration;
         $apiParams['currency'] = $currency;
         $apiParams['metadata'] = $metadata;

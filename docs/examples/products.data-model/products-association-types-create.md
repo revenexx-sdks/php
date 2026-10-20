@@ -14,6 +14,7 @@ $productsDataModel = new ProductsDataModel($client);
 
 $result = $productsDataModel->productsAssociationTypesCreate(
     code: 'cross_sell',
+    active: true, // optional
     isQuantified: true, // optional
     isTwoWay: true, // optional
     labels: [

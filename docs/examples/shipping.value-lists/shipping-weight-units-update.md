@@ -15,6 +15,7 @@ $shippingValueLists = new ShippingValueLists($client);
 
 $result = $shippingValueLists->shippingWeightUnitsUpdate(
     id: '',
+    active: true, // optional
     description: 'When to pick this weight unit.', // optional
     descriptions: [
         'de' => 'Wann diese Option zu wählen ist.',

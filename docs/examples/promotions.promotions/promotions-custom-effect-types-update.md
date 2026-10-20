@@ -14,10 +14,11 @@ $promotionsPromotions = new PromotionsPromotions($client);
 
 $result = $promotionsPromotions->promotionsCustomEffectTypesUpdate(
     id: '',
-    name: '',
+    active: true, // optional
     carriesAmount: true, // optional
-    description: [], // optional
-    metadata: [], // optional
-    payloadShape: [], // optional
-    title: [] // optional
+    description: , // optional
+    metadata: , // optional
+    name: '', // optional
+    payloadShape: , // optional
+    title:  // optional
 );```

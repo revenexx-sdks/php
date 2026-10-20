@@ -7,6 +7,7 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\Collection as CollectionEnum;
+use Revenexx\Enums\SearchEventsType;
 
 final class SearchTest extends TestCase {
     private $client;
@@ -41,7 +42,7 @@ final class SearchTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->search->searchGetCollection(
-            CollectionEnum::PRODUCTS()
+            CollectionEnum::CATEGORIES()
         );
 
         $this->assertSame($data, $response);
@@ -56,7 +57,7 @@ final class SearchTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->search->searchSearchDocumentsGet(
-            CollectionEnum::PRODUCTS()
+            CollectionEnum::CATEGORIES()
         );
 
         $this->assertSame($data, $response);
@@ -71,7 +72,7 @@ final class SearchTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->search->searchSearchDocuments(
-            CollectionEnum::PRODUCTS()
+            CollectionEnum::CATEGORIES()
         );
 
         $this->assertSame($data, $response);
@@ -86,8 +87,24 @@ final class SearchTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->search->searchGetDocument(
-            CollectionEnum::PRODUCTS(),
+            CollectionEnum::CATEGORIES(),
             ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodSearchEvents(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->search->searchEvents(
+            "",
+            SearchEventsType::CLICK()
         );
 
         $this->assertSame($data, $response);
@@ -118,6 +135,51 @@ final class SearchTest extends TestCase {
 
         $response = $this->search->searchMultiSearch(
             array()
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodSearchQuery(): void {
+
+        $data = array(
+            "actions" => array(),
+            "facets" => array(),
+            "found" => 1,
+            "hits" => array(),
+            "ignored_filters" => array(),
+            "ignored_sort" => "",
+            "locale" => "",
+            "page" => 1,
+            "per_page" => 1,
+            "query_id" => "",
+            "search_time_ms" => 1);
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->search->searchQuery(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodSearchSuggest(): void {
+
+        $data = array(
+            "actions" => array(),
+            "groups" => array(),
+            "locale" => "",
+            "query_id" => "");
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->search->searchSuggest(
+            ""
         );
 
         $this->assertSame($data, $response);

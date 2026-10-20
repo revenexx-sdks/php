@@ -7,18 +7,21 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\Allocation;
-use Revenexx\Enums\PromotionsConditionsCreateKind;
+use Revenexx\Enums\AudiencesRulesCreateKind;
 use Revenexx\Enums\MatchMode;
 use Revenexx\Enums\PromotionsEffectsCreateKind;
 use Revenexx\Enums\TargetScope;
 use Revenexx\Enums\UnitChoice;
 use Revenexx\Enums\ValueType;
 use Revenexx\Enums\PromotionsGroupsCreateMode;
+use Revenexx\Enums\Trashed;
 use Revenexx\Enums\ConditionMatch;
 use Revenexx\Enums\Reach;
 use Revenexx\Enums\RecurrenceKind;
 use Revenexx\Enums\ReturnBehaviour;
 use Revenexx\Enums\PromotionsPromotionsCreateStatus;
+use Revenexx\Enums\PromotionsPromotionsCopyParts;
+use Revenexx\Enums\When;
 
 final class PromotionsPromotionsTest extends TestCase {
     private $client;
@@ -98,8 +101,6 @@ final class PromotionsPromotionsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->promotionsPromotions->promotionsBundlesUpdate(
-            "",
-            "",
             ""
         );
 
@@ -188,7 +189,6 @@ final class PromotionsPromotionsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->promotionsPromotions->promotionsConditionsUpdate(
-            "",
             ""
         );
 
@@ -263,7 +263,6 @@ final class PromotionsPromotionsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->promotionsPromotions->promotionsCustomEffectTypesUpdate(
-            "",
             ""
         );
 
@@ -338,7 +337,6 @@ final class PromotionsPromotionsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->promotionsPromotions->promotionsEffectsUpdate(
-            "",
             ""
         );
 
@@ -414,8 +412,6 @@ final class PromotionsPromotionsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->promotionsPromotions->promotionsGroupsUpdate(
-            "",
-            "",
             ""
         );
 
@@ -447,6 +443,48 @@ final class PromotionsPromotionsTest extends TestCase {
         $response = $this->promotionsPromotions->promotionsPromotionsCreate(
             "",
             ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPromotionsPromotionsOverlapCheck(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->promotionsPromotions->promotionsPromotionsOverlapCheck(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPromotionsPromotionsEmptyTrash(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->promotionsPromotions->promotionsPromotionsEmptyTrash(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPromotionsPromotionsPurge(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->promotionsPromotions->promotionsPromotionsPurge(
         );
 
         $this->assertSame($data, $response);
@@ -491,8 +529,6 @@ final class PromotionsPromotionsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->promotionsPromotions->promotionsPromotionsUpdate(
-            "",
-            "",
             ""
         );
 
@@ -529,6 +565,82 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodPromotionsPromotionsCopy(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->promotionsPromotions->promotionsPromotionsCopy(
+            "",
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPromotionsPromotionsEnd(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->promotionsPromotions->promotionsPromotionsEnd(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPromotionsPromotionsOverlaps(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->promotionsPromotions->promotionsPromotionsOverlaps(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPromotionsPromotionsOverview(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->promotionsPromotions->promotionsPromotionsOverview(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPromotionsPromotionsRestore(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->promotionsPromotions->promotionsPromotionsRestore(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodPromotionsPromotionsState(): void {
 
         $data = array();
@@ -538,6 +650,21 @@ final class PromotionsPromotionsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->promotionsPromotions->promotionsPromotionsState(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPromotionsPromotionsTimeline(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->promotionsPromotions->promotionsPromotionsTimeline(
             ""
         );
 

@@ -421,6 +421,22 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodPunchoutSessionsOrdered(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->punchout->punchoutSessionsOrdered(
+            "",
+            array()
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodPunchoutSessionsReturn(): void {
 
         $data = array();
@@ -432,6 +448,20 @@ final class PunchoutTest extends TestCase {
         $response = $this->punchout->punchoutSessionsReturn(
             "",
             array()
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPunchoutSetupGet(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->punchout->punchoutSetupGet(
         );
 
         $this->assertSame($data, $response);
@@ -568,7 +598,7 @@ final class PunchoutTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->punchout->punchoutVocabulariesGet(
-            PunchoutVocabulariesGetName::ENTRYPROBEOUTCOME()
+            PunchoutVocabulariesGetName::AUTHSTRATEGIES()
         );
 
         $this->assertSame($data, $response);

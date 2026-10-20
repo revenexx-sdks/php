@@ -35,7 +35,7 @@ POST https://api.revenexx.com/v1/promotions/batches
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | alphabet | string | The characters generated codes may use. The default omits the ones people confuse reading a code off paper. |  |
-| metadata | object | Free-form JSON a caller may keep on the row. Nothing here reads it. |  |
+| metadata | any | Free-form JSON a caller may keep on the row. Nothing here reads it. |  |
 | name | string | What the batch is called — the unit a mailing is accounted for by afterwards. |  |
 | pattern | string | The shape generated codes take. `#` draws a character from the alphabet; every other character is kept. |  |
 | promotion_id | string | The promotion this row belongs to. Deleting the promotion deletes it. |  |
@@ -76,7 +76,7 @@ PUT https://api.revenexx.com/v1/promotions/batches/{id}
 | --- | --- | --- | --- |
 | id | string | **Required** The row id, as it came back from the list. |  |
 | alphabet | string | The characters generated codes may use. The default omits the ones people confuse reading a code off paper. |  |
-| metadata | object | Free-form JSON a caller may keep on the row. Nothing here reads it. |  |
+| metadata | any | Free-form JSON a caller may keep on the row. Nothing here reads it. |  |
 | name | string | What the batch is called — the unit a mailing is accounted for by afterwards. |  |
 | pattern | string | The shape generated codes take. `#` draws a character from the alphabet; every other character is kept. |  |
 | promotion_id | string | The promotion this row belongs to. Deleting the promotion deletes it. |  |
@@ -86,10 +86,36 @@ PUT https://api.revenexx.com/v1/promotions/batches/{id}
 
 
 ```http request
+POST https://api.revenexx.com/v1/promotions/batches/{id}/disable
+```
+
+** Switching a batch off reaches every code it generated, which is the point of generating them as a batch: the batch and each of its active codes become `disabled`. Redemptions already committed stay; new ones are refused. Answers the batch with `disabled_codes`. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required** The row id, as it came back from the list. |  |
+
+
+```http request
 GET https://api.revenexx.com/v1/promotions/batches/{id}/export
 ```
 
 ** The codes are only useful once they are out of this system and in a mailing tool, so a batch that cannot leave was made for nobody. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required** The row id, as it came back from the list. |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/promotions/batches/{id}/export
+```
+
+** The same codes as the GET, as a file the Cockpit downloads as it is: `filename`, `content_type` (`text/csv`) and `content`, one code per line with its status, its limit, its uses and its end date. **
 
 ### Parameters
 
@@ -255,7 +281,7 @@ POST https://api.revenexx.com/v1/promotions/vouchers
 | contact_id | string | The person the code was issued to. Anybody else is refused — a personal apology code is worthless if it can be forwarded. |  |
 | currency | string | The currency a residual value is stated in. |  |
 | ends_at | string | When it expires. A merchant runs one promotion for a quarter and hands out codes that expire in a fortnight. |  |
-| metadata | object | Free-form JSON a caller may keep on the row. Nothing here reads it. |  |
+| metadata | any | Free-form JSON a caller may keep on the row. Nothing here reads it. |  |
 | organization_id | string | The company it was issued to. Any of its contacts may redeem it. |  |
 | promotion_id | string | The promotion this row belongs to. Deleting the promotion deletes it. |  |
 | reservation_limit | integer | How many reservations may be held at once. A reservation that never ran out would promise a limited code to everybody who asked. |  |
@@ -302,7 +328,7 @@ PUT https://api.revenexx.com/v1/promotions/vouchers/{id}
 | contact_id | string | The person the code was issued to. Anybody else is refused — a personal apology code is worthless if it can be forwarded. |  |
 | currency | string | The currency a residual value is stated in. |  |
 | ends_at | string | When it expires. A merchant runs one promotion for a quarter and hands out codes that expire in a fortnight. |  |
-| metadata | object | Free-form JSON a caller may keep on the row. Nothing here reads it. |  |
+| metadata | any | Free-form JSON a caller may keep on the row. Nothing here reads it. |  |
 | organization_id | string | The company it was issued to. Any of its contacts may redeem it. |  |
 | promotion_id | string | The promotion this row belongs to. Deleting the promotion deletes it. |  |
 | reservation_limit | integer | How many reservations may be held at once. A reservation that never ran out would promise a limited code to everybody who asked. |  |

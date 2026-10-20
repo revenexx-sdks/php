@@ -20,10 +20,11 @@ class Punchout extends Service
      * @param ?int $limit
      * @param ?int $offset
      * @param ?string $order
+     * @param ?string $fallbackContactId
      * @throws RevenexxException
      * @return array
      */
-    public function punchoutAccountsList(?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function punchoutAccountsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $fallbackContactId = null): array
     {
         $apiPath = str_replace(
             [],
@@ -45,6 +46,10 @@ class Punchout extends Service
             $apiParams['order'] = $order;
         }
 
+        if (!is_null($fallbackContactId)) {
+            $apiParams['fallback_contact_id'] = $fallbackContactId;
+        }
+
         $apiHeaders = [];
 
         return $this->client->call(
@@ -61,26 +66,31 @@ class Punchout extends Service
      * @param string $name
      * @param string $protocol
      * @param ?string $authStrategy
-     * @param ?array $behaviour
      * @param ?string $credentialDomain
      * @param ?string $credentialIdentity
      * @param ?string $credentialSecret
+     * @param ?bool $echoEntryParameters
      * @param ?bool $enabled
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?string $fallbackContactId
      * @param ?string $idsCustomerName
      * @param ?string $loginToken
+     * @param ?array $metadata
      * @param ?string $organizationId
      * @param ?string $protocolVersion
+     * @param ?string $purchaseMode
      * @param ?bool $secureOci
-     * @param ?int $sessionTtlMinutes
+     * @param ?int $sessionTtlOverrideMinutes
      * @param ?string $sharedSecret
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @param ?string $startPageUrl
      * @param ?string $unknownUserPolicy
-     * @param ?bool $urlThreading
      * @throws RevenexxException
      * @return array
      */
-    public function punchoutAccountsCreate(string $channelCode, string $code, string $name, string $protocol, ?string $authStrategy = null, ?array $behaviour = null, ?string $credentialDomain = null, ?string $credentialIdentity = null, ?string $credentialSecret = null, ?bool $enabled = null, ?string $fallbackContactId = null, ?string $idsCustomerName = null, ?string $loginToken = null, ?string $organizationId = null, ?string $protocolVersion = null, ?bool $secureOci = null, ?int $sessionTtlMinutes = null, ?string $sharedSecret = null, ?string $startPageUrl = null, ?string $unknownUserPolicy = null, ?bool $urlThreading = null): array
+    public function punchoutAccountsCreate(string $channelCode, string $code, string $name, string $protocol, ?string $authStrategy = null, ?string $credentialDomain = null, ?string $credentialIdentity = null, ?string $credentialSecret = null, ?bool $echoEntryParameters = null, ?bool $enabled = null, ?string $externalId = null, ?array $externalRefs = null, ?string $fallbackContactId = null, ?string $idsCustomerName = null, ?string $loginToken = null, ?array $metadata = null, ?string $organizationId = null, ?string $protocolVersion = null, ?string $purchaseMode = null, ?bool $secureOci = null, ?int $sessionTtlOverrideMinutes = null, ?string $sharedSecret = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $startPageUrl = null, ?string $unknownUserPolicy = null): array
     {
         $apiPath = str_replace(
             [],
@@ -93,74 +103,28 @@ class Punchout extends Service
         $apiParams['code'] = $code;
         $apiParams['name'] = $name;
         $apiParams['protocol'] = $protocol;
-
-        if (!is_null($authStrategy)) {
-            $apiParams['auth_strategy'] = $authStrategy;
-        }
-
-        if (!is_null($behaviour)) {
-            $apiParams['behaviour'] = $behaviour;
-        }
-
-        if (!is_null($credentialDomain)) {
-            $apiParams['credential_domain'] = $credentialDomain;
-        }
-
-        if (!is_null($credentialIdentity)) {
-            $apiParams['credential_identity'] = $credentialIdentity;
-        }
-
-        if (!is_null($credentialSecret)) {
-            $apiParams['credential_secret'] = $credentialSecret;
-        }
-
-        if (!is_null($enabled)) {
-            $apiParams['enabled'] = $enabled;
-        }
-
-        if (!is_null($fallbackContactId)) {
-            $apiParams['fallback_contact_id'] = $fallbackContactId;
-        }
-
-        if (!is_null($idsCustomerName)) {
-            $apiParams['ids_customer_name'] = $idsCustomerName;
-        }
-
-        if (!is_null($loginToken)) {
-            $apiParams['login_token'] = $loginToken;
-        }
-
-        if (!is_null($organizationId)) {
-            $apiParams['organization_id'] = $organizationId;
-        }
-
-        if (!is_null($protocolVersion)) {
-            $apiParams['protocol_version'] = $protocolVersion;
-        }
-
-        if (!is_null($secureOci)) {
-            $apiParams['secure_oci'] = $secureOci;
-        }
-
-        if (!is_null($sessionTtlMinutes)) {
-            $apiParams['session_ttl_minutes'] = $sessionTtlMinutes;
-        }
-
-        if (!is_null($sharedSecret)) {
-            $apiParams['shared_secret'] = $sharedSecret;
-        }
-
-        if (!is_null($startPageUrl)) {
-            $apiParams['start_page_url'] = $startPageUrl;
-        }
-
-        if (!is_null($unknownUserPolicy)) {
-            $apiParams['unknown_user_policy'] = $unknownUserPolicy;
-        }
-
-        if (!is_null($urlThreading)) {
-            $apiParams['url_threading'] = $urlThreading;
-        }
+        $apiParams['auth_strategy'] = $authStrategy;
+        $apiParams['credential_domain'] = $credentialDomain;
+        $apiParams['credential_identity'] = $credentialIdentity;
+        $apiParams['credential_secret'] = $credentialSecret;
+        $apiParams['echo_entry_parameters'] = $echoEntryParameters;
+        $apiParams['enabled'] = $enabled;
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
+        $apiParams['fallback_contact_id'] = $fallbackContactId;
+        $apiParams['ids_customer_name'] = $idsCustomerName;
+        $apiParams['login_token'] = $loginToken;
+        $apiParams['metadata'] = $metadata;
+        $apiParams['organization_id'] = $organizationId;
+        $apiParams['protocol_version'] = $protocolVersion;
+        $apiParams['purchase_mode'] = $purchaseMode;
+        $apiParams['secure_oci'] = $secureOci;
+        $apiParams['session_ttl_override_minutes'] = $sessionTtlOverrideMinutes;
+        $apiParams['shared_secret'] = $sharedSecret;
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
+        $apiParams['start_page_url'] = $startPageUrl;
+        $apiParams['unknown_user_policy'] = $unknownUserPolicy;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -228,30 +192,35 @@ class Punchout extends Service
     /**
      * @param string $id
      * @param ?string $authStrategy
-     * @param ?array $behaviour
      * @param ?string $channelCode
      * @param ?string $code
      * @param ?string $credentialDomain
      * @param ?string $credentialIdentity
      * @param ?string $credentialSecret
+     * @param ?bool $echoEntryParameters
      * @param ?bool $enabled
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?string $fallbackContactId
      * @param ?string $idsCustomerName
      * @param ?string $loginToken
+     * @param ?array $metadata
      * @param ?string $name
      * @param ?string $organizationId
      * @param ?string $protocol
      * @param ?string $protocolVersion
+     * @param ?string $purchaseMode
      * @param ?bool $secureOci
-     * @param ?int $sessionTtlMinutes
+     * @param ?int $sessionTtlOverrideMinutes
      * @param ?string $sharedSecret
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @param ?string $startPageUrl
      * @param ?string $unknownUserPolicy
-     * @param ?bool $urlThreading
      * @throws RevenexxException
      * @return array
      */
-    public function punchoutAccountsUpdate(string $id, ?string $authStrategy = null, ?array $behaviour = null, ?string $channelCode = null, ?string $code = null, ?string $credentialDomain = null, ?string $credentialIdentity = null, ?string $credentialSecret = null, ?bool $enabled = null, ?string $fallbackContactId = null, ?string $idsCustomerName = null, ?string $loginToken = null, ?string $name = null, ?string $organizationId = null, ?string $protocol = null, ?string $protocolVersion = null, ?bool $secureOci = null, ?int $sessionTtlMinutes = null, ?string $sharedSecret = null, ?string $startPageUrl = null, ?string $unknownUserPolicy = null, ?bool $urlThreading = null): array
+    public function punchoutAccountsUpdate(string $id, ?string $authStrategy = null, ?string $channelCode = null, ?string $code = null, ?string $credentialDomain = null, ?string $credentialIdentity = null, ?string $credentialSecret = null, ?bool $echoEntryParameters = null, ?bool $enabled = null, ?string $externalId = null, ?array $externalRefs = null, ?string $fallbackContactId = null, ?string $idsCustomerName = null, ?string $loginToken = null, ?array $metadata = null, ?string $name = null, ?string $organizationId = null, ?string $protocol = null, ?string $protocolVersion = null, ?string $purchaseMode = null, ?bool $secureOci = null, ?int $sessionTtlOverrideMinutes = null, ?string $sharedSecret = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $startPageUrl = null, ?string $unknownUserPolicy = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -261,14 +230,7 @@ class Punchout extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
-
-        if (!is_null($authStrategy)) {
-            $apiParams['auth_strategy'] = $authStrategy;
-        }
-
-        if (!is_null($behaviour)) {
-            $apiParams['behaviour'] = $behaviour;
-        }
+        $apiParams['auth_strategy'] = $authStrategy;
 
         if (!is_null($channelCode)) {
             $apiParams['channel_code'] = $channelCode;
@@ -277,74 +239,35 @@ class Punchout extends Service
         if (!is_null($code)) {
             $apiParams['code'] = $code;
         }
-
-        if (!is_null($credentialDomain)) {
-            $apiParams['credential_domain'] = $credentialDomain;
-        }
-
-        if (!is_null($credentialIdentity)) {
-            $apiParams['credential_identity'] = $credentialIdentity;
-        }
-
-        if (!is_null($credentialSecret)) {
-            $apiParams['credential_secret'] = $credentialSecret;
-        }
-
-        if (!is_null($enabled)) {
-            $apiParams['enabled'] = $enabled;
-        }
-
-        if (!is_null($fallbackContactId)) {
-            $apiParams['fallback_contact_id'] = $fallbackContactId;
-        }
-
-        if (!is_null($idsCustomerName)) {
-            $apiParams['ids_customer_name'] = $idsCustomerName;
-        }
-
-        if (!is_null($loginToken)) {
-            $apiParams['login_token'] = $loginToken;
-        }
+        $apiParams['credential_domain'] = $credentialDomain;
+        $apiParams['credential_identity'] = $credentialIdentity;
+        $apiParams['credential_secret'] = $credentialSecret;
+        $apiParams['echo_entry_parameters'] = $echoEntryParameters;
+        $apiParams['enabled'] = $enabled;
+        $apiParams['external_id'] = $externalId;
+        $apiParams['external_refs'] = $externalRefs;
+        $apiParams['fallback_contact_id'] = $fallbackContactId;
+        $apiParams['ids_customer_name'] = $idsCustomerName;
+        $apiParams['login_token'] = $loginToken;
+        $apiParams['metadata'] = $metadata;
 
         if (!is_null($name)) {
             $apiParams['name'] = $name;
         }
-
-        if (!is_null($organizationId)) {
-            $apiParams['organization_id'] = $organizationId;
-        }
+        $apiParams['organization_id'] = $organizationId;
 
         if (!is_null($protocol)) {
             $apiParams['protocol'] = $protocol;
         }
-
-        if (!is_null($protocolVersion)) {
-            $apiParams['protocol_version'] = $protocolVersion;
-        }
-
-        if (!is_null($secureOci)) {
-            $apiParams['secure_oci'] = $secureOci;
-        }
-
-        if (!is_null($sessionTtlMinutes)) {
-            $apiParams['session_ttl_minutes'] = $sessionTtlMinutes;
-        }
-
-        if (!is_null($sharedSecret)) {
-            $apiParams['shared_secret'] = $sharedSecret;
-        }
-
-        if (!is_null($startPageUrl)) {
-            $apiParams['start_page_url'] = $startPageUrl;
-        }
-
-        if (!is_null($unknownUserPolicy)) {
-            $apiParams['unknown_user_policy'] = $unknownUserPolicy;
-        }
-
-        if (!is_null($urlThreading)) {
-            $apiParams['url_threading'] = $urlThreading;
-        }
+        $apiParams['protocol_version'] = $protocolVersion;
+        $apiParams['purchase_mode'] = $purchaseMode;
+        $apiParams['secure_oci'] = $secureOci;
+        $apiParams['session_ttl_override_minutes'] = $sessionTtlOverrideMinutes;
+        $apiParams['shared_secret'] = $sharedSecret;
+        $apiParams['source_data'] = $sourceData;
+        $apiParams['source_synced_at'] = $sourceSyncedAt;
+        $apiParams['start_page_url'] = $startPageUrl;
+        $apiParams['unknown_user_policy'] = $unknownUserPolicy;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -1123,8 +1046,13 @@ class Punchout extends Service
      * @param ?array $entryIntent
      * @param ?array $entryPayload
      * @param ?string $externalUserId
+     * @param ?string $orderId
+     * @param ?string $orderNumber
+     * @param ?string $orderStatus
+     * @param ?string $orderedAt
      * @param ?string $organizationId
      * @param ?string $origin
+     * @param ?string $purchaseMode
      * @param ?string $returnMethod
      * @param ?string $returnUrl
      * @param ?string $secureSessionId
@@ -1135,7 +1063,7 @@ class Punchout extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function punchoutSessionsCreate(string $accountId, string $channelCode, string $expiresAt, string $protocol, string $psid, ?string $cartId = null, ?string $claimedAt = null, ?string $closedReason = null, ?string $contactId = null, ?string $correlationKey = null, ?string $entryAction = null, ?array $entryIntent = null, ?array $entryPayload = null, ?string $externalUserId = null, ?string $organizationId = null, ?string $origin = null, ?string $returnMethod = null, ?string $returnUrl = null, ?string $secureSessionId = null, ?string $secureSessionUsedAt = null, ?string $secureTransmissionId = null, ?string $status = null, ?string $transferredAt = null): array
+    public function punchoutSessionsCreate(string $accountId, string $channelCode, string $expiresAt, string $protocol, string $psid, ?string $cartId = null, ?string $claimedAt = null, ?string $closedReason = null, ?string $contactId = null, ?string $correlationKey = null, ?string $entryAction = null, ?array $entryIntent = null, ?array $entryPayload = null, ?string $externalUserId = null, ?string $orderId = null, ?string $orderNumber = null, ?string $orderStatus = null, ?string $orderedAt = null, ?string $organizationId = null, ?string $origin = null, ?string $purchaseMode = null, ?string $returnMethod = null, ?string $returnUrl = null, ?string $secureSessionId = null, ?string $secureSessionUsedAt = null, ?string $secureTransmissionId = null, ?string $status = null, ?string $transferredAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -1186,12 +1114,32 @@ class Punchout extends Service
             $apiParams['external_user_id'] = $externalUserId;
         }
 
+        if (!is_null($orderId)) {
+            $apiParams['order_id'] = $orderId;
+        }
+
+        if (!is_null($orderNumber)) {
+            $apiParams['order_number'] = $orderNumber;
+        }
+
+        if (!is_null($orderStatus)) {
+            $apiParams['order_status'] = $orderStatus;
+        }
+
+        if (!is_null($orderedAt)) {
+            $apiParams['ordered_at'] = $orderedAt;
+        }
+
         if (!is_null($organizationId)) {
             $apiParams['organization_id'] = $organizationId;
         }
 
         if (!is_null($origin)) {
             $apiParams['origin'] = $origin;
+        }
+
+        if (!is_null($purchaseMode)) {
+            $apiParams['purchase_mode'] = $purchaseMode;
         }
 
         if (!is_null($returnMethod)) {
@@ -1299,10 +1247,15 @@ class Punchout extends Service
      * @param ?array $entryPayload
      * @param ?string $expiresAt
      * @param ?string $externalUserId
+     * @param ?string $orderId
+     * @param ?string $orderNumber
+     * @param ?string $orderStatus
+     * @param ?string $orderedAt
      * @param ?string $organizationId
      * @param ?string $origin
      * @param ?string $protocol
      * @param ?string $psid
+     * @param ?string $purchaseMode
      * @param ?string $returnMethod
      * @param ?string $returnUrl
      * @param ?string $secureSessionId
@@ -1313,7 +1266,7 @@ class Punchout extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function punchoutSessionsUpdate(string $id, ?string $accountId = null, ?string $cartId = null, ?string $channelCode = null, ?string $claimedAt = null, ?string $closedReason = null, ?string $contactId = null, ?string $correlationKey = null, ?string $entryAction = null, ?array $entryIntent = null, ?array $entryPayload = null, ?string $expiresAt = null, ?string $externalUserId = null, ?string $organizationId = null, ?string $origin = null, ?string $protocol = null, ?string $psid = null, ?string $returnMethod = null, ?string $returnUrl = null, ?string $secureSessionId = null, ?string $secureSessionUsedAt = null, ?string $secureTransmissionId = null, ?string $status = null, ?string $transferredAt = null): array
+    public function punchoutSessionsUpdate(string $id, ?string $accountId = null, ?string $cartId = null, ?string $channelCode = null, ?string $claimedAt = null, ?string $closedReason = null, ?string $contactId = null, ?string $correlationKey = null, ?string $entryAction = null, ?array $entryIntent = null, ?array $entryPayload = null, ?string $expiresAt = null, ?string $externalUserId = null, ?string $orderId = null, ?string $orderNumber = null, ?string $orderStatus = null, ?string $orderedAt = null, ?string $organizationId = null, ?string $origin = null, ?string $protocol = null, ?string $psid = null, ?string $purchaseMode = null, ?string $returnMethod = null, ?string $returnUrl = null, ?string $secureSessionId = null, ?string $secureSessionUsedAt = null, ?string $secureTransmissionId = null, ?string $status = null, ?string $transferredAt = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -1372,6 +1325,22 @@ class Punchout extends Service
             $apiParams['external_user_id'] = $externalUserId;
         }
 
+        if (!is_null($orderId)) {
+            $apiParams['order_id'] = $orderId;
+        }
+
+        if (!is_null($orderNumber)) {
+            $apiParams['order_number'] = $orderNumber;
+        }
+
+        if (!is_null($orderStatus)) {
+            $apiParams['order_status'] = $orderStatus;
+        }
+
+        if (!is_null($orderedAt)) {
+            $apiParams['ordered_at'] = $orderedAt;
+        }
+
         if (!is_null($organizationId)) {
             $apiParams['organization_id'] = $organizationId;
         }
@@ -1386,6 +1355,10 @@ class Punchout extends Service
 
         if (!is_null($psid)) {
             $apiParams['psid'] = $psid;
+        }
+
+        if (!is_null($purchaseMode)) {
+            $apiParams['purchase_mode'] = $purchaseMode;
         }
 
         if (!is_null($returnMethod)) {
@@ -1431,14 +1404,16 @@ class Punchout extends Service
      * The start of a punchout visit in the shop. Resolves the buyer the external
      * system named to an ordinary contact — the named one, else the account's
      * fallback contact, else whatever the account's policy for an unknown name
-     * says — asks the app that owns buyer authentication to sign that contact
-     * in, and answers the secret together with the channel, the action and the
-     * cart the visit names. The secret is single-use and short-lived: redeem it
-     * server-side, and keep it out of a redirect URL, a browser history and a
-     * Referer. Answered exactly ONCE — the handle travelled through the
-     * external system in the clear. A second claim, an expired or revoked visit,
-     * one already handed back and a handle nobody minted all get the same answer,
-     * deliberately.
+     * says — gives the visit a cart of its own if it brought none (a new, empty
+     * one, owned by the visit's handle rather than by the contact, because one
+     * contact may carry several ERP users' visits at once), asks the app that
+     * owns buyer authentication to sign that contact in, and answers the secret
+     * together with the channel, the action and that cart. The secret is
+     * single-use and short-lived: redeem it server-side, and keep it out of a
+     * redirect URL, a browser history and a Referer. Answered exactly ONCE —
+     * the handle travelled through the external system in the clear. A second
+     * claim, an expired or revoked visit, one already handed back and a handle
+     * nobody minted all get the same answer, deliberately.
      *
      * @param string $psid
      * @param array $data
@@ -1469,6 +1444,46 @@ class Punchout extends Service
     }
 
     /**
+     * The other way an IDS visit ends, for an account whose purchase mode is
+     * order: the buyer checked out in the shop, and the order is an ORDINARY
+     * order placed through the ordinary checkout. Call it after the checkout.
+     * This app believes the orders app, not the caller: it reads the order the
+     * visit's cart became, records its id, number and status on the visit and
+     * closes it as ordered. An order awaiting the buyer organisation's approval
+     * counts — the cart is converted either way — and a later decline changes
+     * nothing here. A visit that ran out while the buyer checked out is still
+     * closed as ordered when the order was created before it ran out. A retried
+     * call answers the visit as it was closed.
+     *
+     * @param string $psid
+     * @param array $data
+     * @throws RevenexxException
+     * @return array
+     */
+    public function punchoutSessionsOrdered(string $psid, array $data): array
+    {
+        $apiPath = str_replace(
+            ['{psid}'],
+            [$psid],
+            '/v1/punchout/sessions/{psid}/ordered'
+        );
+
+        $apiParams = [];
+        $apiParams['psid'] = $psid;
+        $apiParams = \array_merge($apiParams, $data);
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
      * The end of a punchout visit. Answers where the cart goes, by which method
      * and encoding, and the mapped fields to submit — one shape for all three
      * protocols, whether that means dozens of named fields (OCI) or one field
@@ -1478,7 +1493,11 @@ class Punchout extends Service
      * it did. Records a transfer with its normalised lines and the exact payload,
      * mints a correlation key into that payload so an order arriving weeks later
      * can be matched to it, and closes the visit as transferred. Creates NO order
-     * and reserves NO stock — the procurement system has decided nothing. A
+     * and reserves NO stock — the procurement system has decided nothing. On an
+     * IDS account whose purchase mode is order_and_transfer the cart was already
+     * ordered through the ordinary checkout: the hand-back requires that order,
+     * reads it from the orders app, names it in the document (RueckgabeKZ,
+     * OrderConfNo) and on the transfer, and closes the visit as transferred. A
      * retried call answers the same payload and records no second transfer; a
      * visit that expired or was revoked is refused, with the same answer a handle
      * that never existed gets.
@@ -1505,6 +1524,34 @@ class Punchout extends Service
 
         return $this->client->call(
             Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * The steps are the ones cockpit.json declares under setup.steps: the shipped
+     * field mappings and the first punchout account. Each is done when its table
+     * holds a row, so none is marked by hand.
+     *
+     * @throws RevenexxException
+     * @return array
+     */
+    public function punchoutSetupGet(): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/punchout/setup'
+        );
+
+        $apiParams = [];
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
             $apiPath,
             $apiHeaders,
             $apiParams
@@ -1709,11 +1756,16 @@ class Punchout extends Service
      * @param ?string $cartId
      * @param ?string $contactId
      * @param ?string $currency
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?int $itemCount
      * @param ?string $matchedAt
      * @param ?string $matchedOrderId
      * @param ?string $organizationId
      * @param ?array $payload
+     * @param ?array $problems
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @param ?string $targetUrl
      * @param ?float $totalGross
      * @param ?float $totalNet
@@ -1721,7 +1773,7 @@ class Punchout extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function punchoutTransfersCreate(string $accountId, string $correlationKey, string $protocol, string $sessionId, ?string $cartId = null, ?string $contactId = null, ?string $currency = null, ?int $itemCount = null, ?string $matchedAt = null, ?string $matchedOrderId = null, ?string $organizationId = null, ?array $payload = null, ?string $targetUrl = null, ?float $totalGross = null, ?float $totalNet = null, ?string $transferredAt = null): array
+    public function punchoutTransfersCreate(string $accountId, string $correlationKey, string $protocol, string $sessionId, ?string $cartId = null, ?string $contactId = null, ?string $currency = null, ?string $externalId = null, ?array $externalRefs = null, ?int $itemCount = null, ?string $matchedAt = null, ?string $matchedOrderId = null, ?string $organizationId = null, ?array $payload = null, ?array $problems = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $targetUrl = null, ?float $totalGross = null, ?float $totalNet = null, ?string $transferredAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -1747,6 +1799,14 @@ class Punchout extends Service
             $apiParams['currency'] = $currency;
         }
 
+        if (!is_null($externalId)) {
+            $apiParams['external_id'] = $externalId;
+        }
+
+        if (!is_null($externalRefs)) {
+            $apiParams['external_refs'] = $externalRefs;
+        }
+
         if (!is_null($itemCount)) {
             $apiParams['item_count'] = $itemCount;
         }
@@ -1765,6 +1825,18 @@ class Punchout extends Service
 
         if (!is_null($payload)) {
             $apiParams['payload'] = $payload;
+        }
+
+        if (!is_null($problems)) {
+            $apiParams['problems'] = $problems;
+        }
+
+        if (!is_null($sourceData)) {
+            $apiParams['source_data'] = $sourceData;
+        }
+
+        if (!is_null($sourceSyncedAt)) {
+            $apiParams['source_synced_at'] = $sourceSyncedAt;
         }
 
         if (!is_null($targetUrl)) {
@@ -1827,13 +1899,18 @@ class Punchout extends Service
      * @param ?string $contactId
      * @param ?string $correlationKey
      * @param ?string $currency
+     * @param ?string $externalId
+     * @param ?array $externalRefs
      * @param ?int $itemCount
      * @param ?string $matchedAt
      * @param ?string $matchedOrderId
      * @param ?string $organizationId
      * @param ?array $payload
+     * @param ?array $problems
      * @param ?string $protocol
      * @param ?string $sessionId
+     * @param ?array $sourceData
+     * @param ?string $sourceSyncedAt
      * @param ?string $targetUrl
      * @param ?float $totalGross
      * @param ?float $totalNet
@@ -1841,7 +1918,7 @@ class Punchout extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function punchoutTransfersUpdate(string $id, ?string $accountId = null, ?string $cartId = null, ?string $contactId = null, ?string $correlationKey = null, ?string $currency = null, ?int $itemCount = null, ?string $matchedAt = null, ?string $matchedOrderId = null, ?string $organizationId = null, ?array $payload = null, ?string $protocol = null, ?string $sessionId = null, ?string $targetUrl = null, ?float $totalGross = null, ?float $totalNet = null, ?string $transferredAt = null): array
+    public function punchoutTransfersUpdate(string $id, ?string $accountId = null, ?string $cartId = null, ?string $contactId = null, ?string $correlationKey = null, ?string $currency = null, ?string $externalId = null, ?array $externalRefs = null, ?int $itemCount = null, ?string $matchedAt = null, ?string $matchedOrderId = null, ?string $organizationId = null, ?array $payload = null, ?array $problems = null, ?string $protocol = null, ?string $sessionId = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $targetUrl = null, ?float $totalGross = null, ?float $totalNet = null, ?string $transferredAt = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -1872,6 +1949,14 @@ class Punchout extends Service
             $apiParams['currency'] = $currency;
         }
 
+        if (!is_null($externalId)) {
+            $apiParams['external_id'] = $externalId;
+        }
+
+        if (!is_null($externalRefs)) {
+            $apiParams['external_refs'] = $externalRefs;
+        }
+
         if (!is_null($itemCount)) {
             $apiParams['item_count'] = $itemCount;
         }
@@ -1892,12 +1977,24 @@ class Punchout extends Service
             $apiParams['payload'] = $payload;
         }
 
+        if (!is_null($problems)) {
+            $apiParams['problems'] = $problems;
+        }
+
         if (!is_null($protocol)) {
             $apiParams['protocol'] = $protocol;
         }
 
         if (!is_null($sessionId)) {
             $apiParams['session_id'] = $sessionId;
+        }
+
+        if (!is_null($sourceData)) {
+            $apiParams['source_data'] = $sourceData;
+        }
+
+        if (!is_null($sourceSyncedAt)) {
+            $apiParams['source_synced_at'] = $sourceSyncedAt;
         }
 
         if (!is_null($targetUrl)) {
@@ -1931,8 +2028,12 @@ class Punchout extends Service
      * Discovery for the vocabulary routes: the enums this app enforces, each with
      * its name, its title and its description — and deliberately WITHOUT its
      * values, so a UI can cache this one small answer and fetch only the value
-     * sets it renders. Names: entry-probe-outcome, mapping-mutators,
-     * mapping-sources. Fetch one with GET /punchout/vocabularies/{name}.
+     * sets it renders. Names: auth-strategies, entry-actions,
+     * entry-probe-outcome, mapping-documents, mapping-emit, mapping-mutators,
+     * mapping-scopes, mapping-sources, mapping-target-kinds, origins,
+     * protocol-versions, protocols, purchase-modes, refusal-reasons,
+     * return-methods, session-statuses, unknown-user-policies. Fetch one with GET
+     * /punchout/vocabularies/{name}.
      *
      * @throws RevenexxException
      * @return array
@@ -1963,9 +2064,9 @@ class Punchout extends Service
      * out of the column's CHECK constraint, so the served set IS the set the
      * database accepts and the set the mapping engine understands — a mapping
      * editor offering anything else would produce silently empty fields.
-     * `mapping-sources` carries the 24 sources of ADR-0003 (three of them
+     * `mapping-sources` carries the 25 sources of ADR-0003 (three of them
      * namespaced `cxml.*`, offered only for a cXML account) and
-     * `mapping-mutators` the 17 chainable mutators; each value's description
+     * `mapping-mutators` the 20 chainable mutators; each value's description
      * names the config keys it reads and which of them are required. Answers 404
      * for an unknown name.
      *

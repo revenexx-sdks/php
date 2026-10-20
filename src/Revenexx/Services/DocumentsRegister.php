@@ -38,6 +38,7 @@ class DocumentsRegister extends Service
      * @param ?string $id
      * @param ?string $entityType
      * @param ?string $entityId
+     * @param ?string $organizationId
      * @param ?string $kind
      * @param ?string $number
      * @param ?DocumentsDocumentsListSource $source
@@ -62,7 +63,7 @@ class DocumentsRegister extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function documentsDocumentsList(?string $id = null, ?string $entityType = null, ?string $entityId = null, ?string $kind = null, ?string $number = null, ?DocumentsDocumentsListSource $source = null, ?string $storageAssetId = null, ?string $deliveryPath = null, ?string $externalUrl = null, ?string $filename = null, ?string $contentType = null, ?int $byteSize = null, ?string $issuedAt = null, ?string $dueDate = null, ?float $totalAmount = null, ?string $currency = null, ?Visibility $visibility = null, ?string $externalId = null, ?string $sourceSyncedAt = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function documentsDocumentsList(?string $id = null, ?string $entityType = null, ?string $entityId = null, ?string $organizationId = null, ?string $kind = null, ?string $number = null, ?DocumentsDocumentsListSource $source = null, ?string $storageAssetId = null, ?string $deliveryPath = null, ?string $externalUrl = null, ?string $filename = null, ?string $contentType = null, ?int $byteSize = null, ?string $issuedAt = null, ?string $dueDate = null, ?float $totalAmount = null, ?string $currency = null, ?Visibility $visibility = null, ?string $externalId = null, ?string $sourceSyncedAt = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             [],
@@ -82,6 +83,10 @@ class DocumentsRegister extends Service
 
         if (!is_null($entityId)) {
             $apiParams['entity_id'] = $entityId;
+        }
+
+        if (!is_null($organizationId)) {
+            $apiParams['organization_id'] = $organizationId;
         }
 
         if (!is_null($kind)) {
@@ -215,6 +220,7 @@ class DocumentsRegister extends Service
      * @param ?string $issuedAt
      * @param ?array $metadata
      * @param ?string $number
+     * @param ?string $organizationId
      * @param ?DocumentSource $source
      * @param ?array $sourceData
      * @param ?string $sourceSyncedAt
@@ -224,7 +230,7 @@ class DocumentsRegister extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function documentsDocumentsCreate(string $entityId, string $entityType, string $filename, string $kind, ?int $byteSize = null, ?string $contentType = null, ?string $currency = null, ?string $deliveryPath = null, ?string $dueDate = null, ?string $externalId = null, ?array $externalRefs = null, ?string $externalUrl = null, ?string $issuedAt = null, ?array $metadata = null, ?string $number = null, ?DocumentSource $source = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $storageAssetId = null, ?float $totalAmount = null, ?DocumentVisibility $visibility = null): array
+    public function documentsDocumentsCreate(string $entityId, string $entityType, string $filename, string $kind, ?int $byteSize = null, ?string $contentType = null, ?string $currency = null, ?string $deliveryPath = null, ?string $dueDate = null, ?string $externalId = null, ?array $externalRefs = null, ?string $externalUrl = null, ?string $issuedAt = null, ?array $metadata = null, ?string $number = null, ?string $organizationId = null, ?DocumentSource $source = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $storageAssetId = null, ?float $totalAmount = null, ?DocumentVisibility $visibility = null): array
     {
         $apiPath = str_replace(
             [],
@@ -248,6 +254,7 @@ class DocumentsRegister extends Service
         $apiParams['issued_at'] = $issuedAt;
         $apiParams['metadata'] = $metadata;
         $apiParams['number'] = $number;
+        $apiParams['organization_id'] = $organizationId;
 
         if (!is_null($source)) {
             $apiParams['source'] = $source;
@@ -380,6 +387,7 @@ class DocumentsRegister extends Service
      * @param ?string $kind
      * @param ?array $metadata
      * @param ?string $number
+     * @param ?string $organizationId
      * @param ?DocumentSource $source
      * @param ?array $sourceData
      * @param ?string $sourceSyncedAt
@@ -389,7 +397,7 @@ class DocumentsRegister extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function documentsDocumentsUpdate(string $id, ?int $byteSize = null, ?string $contentType = null, ?string $currency = null, ?string $deliveryPath = null, ?string $dueDate = null, ?string $entityId = null, ?string $entityType = null, ?string $externalId = null, ?array $externalRefs = null, ?string $externalUrl = null, ?string $filename = null, ?string $issuedAt = null, ?string $kind = null, ?array $metadata = null, ?string $number = null, ?DocumentSource $source = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $storageAssetId = null, ?float $totalAmount = null, ?DocumentVisibility $visibility = null): array
+    public function documentsDocumentsUpdate(string $id, ?int $byteSize = null, ?string $contentType = null, ?string $currency = null, ?string $deliveryPath = null, ?string $dueDate = null, ?string $entityId = null, ?string $entityType = null, ?string $externalId = null, ?array $externalRefs = null, ?string $externalUrl = null, ?string $filename = null, ?string $issuedAt = null, ?string $kind = null, ?array $metadata = null, ?string $number = null, ?string $organizationId = null, ?DocumentSource $source = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $storageAssetId = null, ?float $totalAmount = null, ?DocumentVisibility $visibility = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -426,6 +434,7 @@ class DocumentsRegister extends Service
         }
         $apiParams['metadata'] = $metadata;
         $apiParams['number'] = $number;
+        $apiParams['organization_id'] = $organizationId;
 
         if (!is_null($source)) {
             $apiParams['source'] = $source;

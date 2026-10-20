@@ -17,6 +17,7 @@ $result = $orderlists->orderlistsItemsUpdate(
     id: '',
     categorySlug: 'office-supplies', // optional
     costCenterId: 'CC-100', // optional
+    currency: 'EUR', // optional
     customSku: 'CUST-4711', // optional
     externalId: 'MERKZETTEL-20481/7', // optional
     externalRefs: [

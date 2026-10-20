@@ -264,6 +264,57 @@ GET https://api.revenexx.com/v1/pages/pages/{id}/revisions
 
 
 ```http request
+GET https://api.revenexx.com/v1/pages/popups
+```
+
+** The library items of the bundle `popup` — the Cockpit list, and the read the campaigns calendar makes for one campaign (`?campaign_ref=`). Never a soft-deleted one. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| limit | integer | Page size (default 50, max 200). |  |
+| offset | integer | Row offset for pagination (default 0). |  |
+| order | string | Sort by one column: 'column' | 'column.asc' | 'column.desc'. A bare column sorts ascending. A column this entity does not have, or any other shape, is refused with 400. |  |
+| campaign_ref | string | Only the pop-ups one campaign claimed. |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/pages/popups
+```
+
+** A pop-up is a library item of the bundle `popup`: `tree` is its content (edited like any library item), `popup` how it appears, `campaign_ref` the campaign it counts for. The settings are checked here; the storefront reads the live ones from `GET /pages/delivery/popups`. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| campaign_ref | string | The campaign it belongs to. |  |
+| label | string | What the pop-up is called in the library. |  |
+| metadata | object | The item's own bag, stored as given. |  |
+| popup | object | How a pop-up appears. Unknown keys are refused (400 `invalid_popup`). |  |
+| tree | object | The content as a block tree `{ bundle, props, props_i18n, children }`. Default an empty `popup` block. |  |
+
+
+```http request
+PUT https://api.revenexx.com/v1/pages/popups/{id}
+```
+
+** Partial update. `popup` is merged over what is stored and then checked whole, so a caller may send only what it changes; `campaign_ref: null` releases it from its campaign. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required** The pop-up (library item) id. |  |
+| campaign_ref | string | Claim for a campaign, or null to release. |  |
+| label | string | A new name. |  |
+| metadata | object | Replace the bag. |  |
+| popup | object | What changes; merged over the stored settings and checked whole. |  |
+| tree | object | Replace the content. |  |
+
+
+```http request
 POST https://api.revenexx.com/v1/pages/seed
 ```
 

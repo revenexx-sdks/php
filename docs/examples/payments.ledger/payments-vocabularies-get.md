@@ -14,5 +14,5 @@ $client = (new Client())
 $paymentsLedger = new PaymentsLedger($client);
 
 $result = $paymentsLedger->paymentsVocabulariesGet(
-    name: PaymentsVocabulariesGetName::DUNNINGSTAGES()
+    name: PaymentsVocabulariesGetName::CONNECTIONSTATES()
 );```

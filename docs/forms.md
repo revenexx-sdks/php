@@ -19,6 +19,8 @@ Paging is `limit`/`offset` with a single-column `order`. The default page is 50 
 | name | string | Filter to one form by its exact name. Whole-value equality and case-sensitive — there is no substring search on this API. |  |
 | slug | string | Filter to one form by its slug — unique per tenant, so this is how a storefront resolves a form without knowing its id. `?slug=contact&status=live&limit=1` is the call the cover BFF makes for every rendered form. |  |
 | status | string | Filter to one lifecycle status. `?status=live` is the set the storefront may render; `?status=draft` is what is still being built. |  |
+| campaign_ref | string | Filter to the forms one campaign claimed — what the campaigns calendar reads (`?campaign_ref={campaign_id}`). |  |
+| lead_stage | string | Filter to the forms that file their senders at one contact stage. |  |
 | created_at | string | Filter to forms created at EXACTLY this instant. Equality, not a range: a date alone matches only a row whose timestamp is exactly that, so it selects nothing for a whole day. To read by time, sort instead (`order=created_at.desc`) and page. A value the data plane cannot read as a timestamp is refused with 400 `invalid_value`. |  |
 | updated_at | string | Filter to forms last written at EXACTLY this instant — the same equality-not-range caveat as `created_at`. |  |
 | limit | integer | Page size. Default 50; a value above 200 is clamped to 200 rather than refused, and `page.limit` says what was applied. |  |
@@ -40,6 +42,7 @@ An unbounded definition is a storefront page nobody can load, so the tenant sets
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
+| campaign_ref | string | The campaign this form belongs to — the id of a campaign in the campaigns app, written by that app when it claims the form (`PUT /v1/forms/{id} { campaign_ref }`, null releases it). Copied onto every submission as `campaign_ref`, and used as the contact's `lead_source_ref`. Null for a form no campaign claimed. Not a uuid → 400. |  |
 | definition | array | The form itself: a FormKit schema, held as a flat ARRAY of nodes (it defaults to `[]`, never to an object) and rendered verbatim by the storefront.
 
 Read it as the field list. Every node carrying a non-empty `name` collects one value and writes it into a submission's `data` under exactly that name — the example below produces `{"company": …, "email": …, "message": …}` — while `$el` content nodes and `$rxStep` step markers collect nothing. Order is render order, and a `$rxStep` marker starts a new wizard step.
@@ -47,6 +50,7 @@ Read it as the field list. Every node carrying a non-empty `name` collects one v
 See the `FormKitNode` schema for what a node may carry.
 
 On the way IN a node is any object: this is unconstrained jsonb, FormKit owns the grammar, and the one rule this app applies is the tenant's `max_form_fields` ceiling counted over the nodes with a non-empty `name`. Anything that is not an array at all is a 400. |  |
+| lead_stage | string | The contact stage a sender is filed at in the customers app: a person not known yet is created at this stage, a subscriber (or a bare contact nobody placed) is moved to it, anybody further along is left where they are. Default 'lead'; a newsletter form says 'subscriber'; null means the form files no contact at all (an RMA form, a job application). |  |
 | metadata | object | Free-form metadata on the FORM, which this app neither reads nor writes: yours to key however an integration needs, stored and returned verbatim. (The metadata this app does write is on a SUBMISSION — see `FormSubmissionMetadata`.) |  |
 | name | string | What this form is called in the Cockpit's form list. Operator-facing only — the storefront never renders it, so renaming a form breaks no page. |  |
 | settings | object | Submit label, success message, per-form notify email, post-submit actions, translations — see the `FormSettings` schema for every key that is read. Unconstrained jsonb on the way in: nothing here is required and no key is refused. |  |
@@ -84,6 +88,10 @@ Paging is `limit`/`offset` with a single-column `order`: the default page is 50,
 | form_slug | string | Filter to one form's inbox by slug — the denormalised copy, so neither a join nor a prior lookup of the form is needed. |  |
 | source | string | Filter to one origin, exactly as it was recorded — normally the page path the storefront sent. Whole-value equality, so it selects one page and not a prefix. |  |
 | status | string | Filter to one inbox status. `?status=new` is the unread inbox; `?status=spam` is what the honeypot caught. |  |
+| contact_id | string | Filter to one person's submissions — the audiences rule `form_submitted` and a contact's timeline read this. |  |
+| page_url | string | Filter to one page, by its exact URL. |  |
+| campaign_ref | string | Filter to the submissions one campaign brought in. |  |
+| lead_stage | string | Filter to the submissions filed at one contact stage. |  |
 | created_at | string | Filter to submissions that arrived at EXACTLY this instant. Equality, not a range, so this is not how a date span is read — sort (`order=created_at.desc`) and page for that, and use POST /forms/submissions/prune for anything age-based. |  |
 | updated_at | string | Filter to submissions last written at EXACTLY this instant — the same equality-not-range caveat as `created_at`. |  |
 | limit | integer | Page size. Default 50; a value above 200 is clamped to 200 rather than refused, and `page.limit` says what was applied. |  |
@@ -107,6 +115,7 @@ The notification recipient is resolved once, here: the form's own notify_email, 
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
+| campaign_ref | string | Create only: the campaign the visitor came through, when the storefront resolved one from the UTM campaign. Used only when the form itself belongs to no campaign. |  |
 | data | object | What the visitor typed — the substance of the submission, and the reason this row is the payload of `form.submitted`.
 
 It is an object keyed by the `name` of the definition node that collected each value, so the keys of a submission are the named nodes of its form's `definition` and nothing else. There is no fixed set of keys across forms: a contact form yields `{name, email, message}`, a price request whatever its operator built.
@@ -115,8 +124,12 @@ The VALUE type follows the input type, which is why this object is not typed fur
 
 Two values are NOT here: the honeypot field, if the tenant configured one, is stripped before the row is written (it is a trap, not an answer the visitor gave), and the resolved notification recipient lives in `metadata`, not in what somebody typed. |  |
 | form_id | string | The form this submission was made against. It is resolved at insert, so an id no form in this tenant holds is a 404 and nothing is stored — a submission with no form is a lead nobody can read. Required on a create: it is the only thing that says which form was filled in. |  |
+| ip | string | Create only: the visitor's address, handed to the consent app as proof of the opt-in and NOT stored on the submission. |  |
+| locale | string | Create only: the language the visitor read the form in — handed to the consent app for the confirmation mail. |  |
 | metadata | object | Free-form metadata, yours to key as an integration needs. The resolved notification recipient is merged OVER it at insert, so `notify_email` and `notify_source` sent here are overwritten — see the `FormSubmissionMetadata` schema. |  |
+| page_url | string | Create only: the page the form was sent from. Stored as `page_url`. |  |
 | source | string | Where the submission came from. The storefront sends the `window.location.pathname` of the page that carried the form, so this is normally a path rather than an absolute URL; any other surface (an app, an import) puts its own name here. Null when the caller sent none. |  |
+| user_agent | string | Create only: the visitor's browser, handed to the consent app with the opt-in and NOT stored on the submission. |  |
 
 
 ```http request
@@ -291,6 +304,7 @@ Moving `slug` is the edit to think about twice. It is unique per tenant, so a re
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The form, by id. |  |
+| campaign_ref | string | The campaign this form belongs to — the id of a campaign in the campaigns app, written by that app when it claims the form (`PUT /v1/forms/{id} { campaign_ref }`, null releases it). Copied onto every submission as `campaign_ref`, and used as the contact's `lead_source_ref`. Null for a form no campaign claimed. Not a uuid → 400. |  |
 | definition | array | The form itself: a FormKit schema, held as a flat ARRAY of nodes (it defaults to `[]`, never to an object) and rendered verbatim by the storefront.
 
 Read it as the field list. Every node carrying a non-empty `name` collects one value and writes it into a submission's `data` under exactly that name — the example below produces `{"company": …, "email": …, "message": …}` — while `$el` content nodes and `$rxStep` step markers collect nothing. Order is render order, and a `$rxStep` marker starts a new wizard step.
@@ -298,6 +312,7 @@ Read it as the field list. Every node carrying a non-empty `name` collects one v
 See the `FormKitNode` schema for what a node may carry.
 
 On the way IN a node is any object: this is unconstrained jsonb, FormKit owns the grammar, and the one rule this app applies is the tenant's `max_form_fields` ceiling counted over the nodes with a non-empty `name`. Anything that is not an array at all is a 400. |  |
+| lead_stage | string | The contact stage a sender is filed at in the customers app: a person not known yet is created at this stage, a subscriber (or a bare contact nobody placed) is moved to it, anybody further along is left where they are. Default 'lead'; a newsletter form says 'subscriber'; null means the form files no contact at all (an RMA form, a job application). |  |
 | metadata | object | Free-form metadata on the FORM, which this app neither reads nor writes: yours to key however an integration needs, stored and returned verbatim. (The metadata this app does write is on a SUBMISSION — see `FormSubmissionMetadata`.) |  |
 | name | string | What this form is called in the Cockpit's form list. Operator-facing only — the storefront never renders it, so renaming a form breaks no page. |  |
 | settings | object | Submit label, success message, per-form notify email, post-submit actions, translations — see the `FormSettings` schema for every key that is read. Unconstrained jsonb on the way in: nothing here is required and no key is refused. |  |

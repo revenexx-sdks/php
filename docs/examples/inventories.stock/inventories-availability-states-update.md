@@ -15,6 +15,7 @@ $inventoriesStock = new InventoriesStock($client);
 
 $result = $inventoriesStock->inventoriesAvailabilityStatesUpdate(
     id: '',
+    active: true, // optional
     code: 'on_order', // optional
     description: 'Replenishment is on its way; the expected date says when.', // optional
     descriptions: [

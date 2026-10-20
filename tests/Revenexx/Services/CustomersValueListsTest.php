@@ -168,6 +168,81 @@ final class CustomersValueListsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodCustomersContactLifecycleStagesList(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersValueLists->customersContactLifecycleStagesList(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersContactLifecycleStagesCreate(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersValueLists->customersContactLifecycleStagesCreate(
+            "",
+            "Lead"
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersContactLifecycleStagesDelete(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersValueLists->customersContactLifecycleStagesDelete(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersContactLifecycleStagesGet(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersValueLists->customersContactLifecycleStagesGet(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersContactLifecycleStagesUpdate(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersValueLists->customersContactLifecycleStagesUpdate(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodCustomersContactPointKindsList(): void {
 
         $data = array();

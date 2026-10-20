@@ -49,6 +49,8 @@ class Forms extends Service
      * @param ?string $name
      * @param ?string $slug
      * @param ?FormStatus $status
+     * @param ?string $campaignRef
+     * @param ?string $leadStage
      * @param ?string $createdAt
      * @param ?string $updatedAt
      * @param ?int $limit
@@ -57,7 +59,7 @@ class Forms extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function formsList(?string $id = null, ?string $name = null, ?string $slug = null, ?FormStatus $status = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function formsList(?string $id = null, ?string $name = null, ?string $slug = null, ?FormStatus $status = null, ?string $campaignRef = null, ?string $leadStage = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             [],
@@ -81,6 +83,14 @@ class Forms extends Service
 
         if (!is_null($status)) {
             $apiParams['status'] = $status;
+        }
+
+        if (!is_null($campaignRef)) {
+            $apiParams['campaign_ref'] = $campaignRef;
+        }
+
+        if (!is_null($leadStage)) {
+            $apiParams['lead_stage'] = $leadStage;
         }
 
         if (!is_null($createdAt)) {
@@ -136,14 +146,16 @@ class Forms extends Service
      *
      * @param string $name
      * @param string $slug
+     * @param ?string $campaignRef
      * @param ?array $definition
+     * @param ?string $leadStage
      * @param ?array $metadata
      * @param ?array $settings
      * @param ?FormStatus $status
      * @throws RevenexxException
      * @return array
      */
-    public function formsCreate(string $name, string $slug, ?array $definition = null, ?array $metadata = null, ?array $settings = null, ?FormStatus $status = null): array
+    public function formsCreate(string $name, string $slug, ?string $campaignRef = null, ?array $definition = null, ?string $leadStage = null, ?array $metadata = null, ?array $settings = null, ?FormStatus $status = null): array
     {
         $apiPath = str_replace(
             [],
@@ -154,10 +166,12 @@ class Forms extends Service
         $apiParams = [];
         $apiParams['name'] = $name;
         $apiParams['slug'] = $slug;
+        $apiParams['campaign_ref'] = $campaignRef;
 
         if (!is_null($definition)) {
             $apiParams['definition'] = $definition;
         }
+        $apiParams['lead_stage'] = $leadStage;
         $apiParams['metadata'] = $metadata;
         $apiParams['settings'] = $settings;
 
@@ -245,6 +259,10 @@ class Forms extends Service
      * @param ?string $formSlug
      * @param ?string $source
      * @param ?FormSubmissionStatus $status
+     * @param ?string $contactId
+     * @param ?string $pageUrl
+     * @param ?string $campaignRef
+     * @param ?string $leadStage
      * @param ?string $createdAt
      * @param ?string $updatedAt
      * @param ?int $limit
@@ -253,7 +271,7 @@ class Forms extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function formsSubmissionsList(?string $id = null, ?string $formId = null, ?string $formSlug = null, ?string $source = null, ?FormSubmissionStatus $status = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function formsSubmissionsList(?string $id = null, ?string $formId = null, ?string $formSlug = null, ?string $source = null, ?FormSubmissionStatus $status = null, ?string $contactId = null, ?string $pageUrl = null, ?string $campaignRef = null, ?string $leadStage = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             [],
@@ -281,6 +299,22 @@ class Forms extends Service
 
         if (!is_null($status)) {
             $apiParams['status'] = $status;
+        }
+
+        if (!is_null($contactId)) {
+            $apiParams['contact_id'] = $contactId;
+        }
+
+        if (!is_null($pageUrl)) {
+            $apiParams['page_url'] = $pageUrl;
+        }
+
+        if (!is_null($campaignRef)) {
+            $apiParams['campaign_ref'] = $campaignRef;
+        }
+
+        if (!is_null($leadStage)) {
+            $apiParams['lead_stage'] = $leadStage;
         }
 
         if (!is_null($createdAt)) {
@@ -344,12 +378,17 @@ class Forms extends Service
      *
      * @param array $data
      * @param string $formId
+     * @param ?string $campaignRef
+     * @param ?string $ip
+     * @param ?string $locale
      * @param ?array $metadata
+     * @param ?string $pageUrl
      * @param ?string $source
+     * @param ?string $userAgent
      * @throws RevenexxException
      * @return array
      */
-    public function formsSubmissionsCreate(array $data, string $formId, ?array $metadata = null, ?string $source = null): array
+    public function formsSubmissionsCreate(array $data, string $formId, ?string $campaignRef = null, ?string $ip = null, ?string $locale = null, ?array $metadata = null, ?string $pageUrl = null, ?string $source = null, ?string $userAgent = null): array
     {
         $apiPath = str_replace(
             [],
@@ -360,8 +399,13 @@ class Forms extends Service
         $apiParams = [];
         $apiParams['data'] = $data;
         $apiParams['form_id'] = $formId;
+        $apiParams['campaign_ref'] = $campaignRef;
+        $apiParams['ip'] = $ip;
+        $apiParams['locale'] = $locale;
         $apiParams['metadata'] = $metadata;
+        $apiParams['page_url'] = $pageUrl;
         $apiParams['source'] = $source;
+        $apiParams['user_agent'] = $userAgent;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -808,7 +852,9 @@ class Forms extends Service
      * what that copy is for.
      *
      * @param string $id
+     * @param ?string $campaignRef
      * @param ?array $definition
+     * @param ?string $leadStage
      * @param ?array $metadata
      * @param ?string $name
      * @param ?array $settings
@@ -817,7 +863,7 @@ class Forms extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function formsUpdate(string $id, ?array $definition = null, ?array $metadata = null, ?string $name = null, ?array $settings = null, ?string $slug = null, ?FormStatus $status = null): array
+    public function formsUpdate(string $id, ?string $campaignRef = null, ?array $definition = null, ?string $leadStage = null, ?array $metadata = null, ?string $name = null, ?array $settings = null, ?string $slug = null, ?FormStatus $status = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -827,10 +873,12 @@ class Forms extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+        $apiParams['campaign_ref'] = $campaignRef;
 
         if (!is_null($definition)) {
             $apiParams['definition'] = $definition;
         }
+        $apiParams['lead_stage'] = $leadStage;
         $apiParams['metadata'] = $metadata;
 
         if (!is_null($name)) {

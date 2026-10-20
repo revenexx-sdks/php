@@ -6,6 +6,7 @@ use Revenexx\Client;
 use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
+use Revenexx\Enums\ProductsListTrashed;
 use Revenexx\Enums\RuleMatch;
 use Revenexx\Enums\CategoriesRuleMatch;
 use Revenexx\Enums\CategoryRuleMatch;
@@ -60,6 +61,20 @@ final class ProductsCategoriesTest extends TestCase {
 
         $response = $this->productsCategories->productsCategoriesRulesRecomputeAll(
             array()
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodProductsCategoriesEmptyTrash(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->productsCategories->productsCategoriesEmptyTrash(
         );
 
         $this->assertSame($data, $response);
@@ -135,6 +150,21 @@ final class ProductsCategoriesTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->productsCategories->productsCategoriesUpdate(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodProductsCategoriesRestore(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->productsCategories->productsCategoriesRestore(
             ""
         );
 

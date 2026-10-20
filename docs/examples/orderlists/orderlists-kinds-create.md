@@ -16,6 +16,7 @@ $orderlists = new Orderlists($client);
 $result = $orderlists->orderlistsKindsCreate(
     code: 'reagents',
     title: 'Reagent list',
+    active: true, // optional
     description: 'Chemicals ordered against a standing lab protocol.', // optional
     descriptions: [
         'de' => 'Chemikalien, die nach einem festen Laborprotokoll bestellt werden.',

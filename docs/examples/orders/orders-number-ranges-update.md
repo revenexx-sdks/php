@@ -14,9 +14,14 @@ $orders = new Orders($client);
 
 $result = $orders->ordersNumberRangesUpdate(
     id: '',
+    active: true, // optional
     channelId: '', // optional
     code: 'order', // optional
     counter: 123, // optional
+    labels: [
+        'de' => 'Bestellnummern',
+        'en' => 'Order numbers'
+    ], // optional
     metadata: [
         'owner' => 'erp-sync'
     ], // optional
@@ -24,5 +29,6 @@ $result = $orders->ordersNumberRangesUpdate(
     positionStep: 10, // optional
     prefix: 'ORD-', // optional
     step: 1, // optional
-    suffix: '' // optional
+    suffix: '', // optional
+    title: 'Order numbers' // optional
 );```

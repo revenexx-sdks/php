@@ -18,6 +18,7 @@ $cartsIo = new CartsIo($client);
 
 $result = $cartsIo->cartsIoProfilesUpdate(
     id: '',
+    active: true, // optional
     applyMode: CartIoApplyMode::INSERT(), // optional
     direction: CartIoDirection::IMPORT(), // optional
     entity: CartIoEntity::CARTS(), // optional

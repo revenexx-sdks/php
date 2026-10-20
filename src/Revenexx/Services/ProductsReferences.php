@@ -41,6 +41,7 @@ class ProductsReferences extends Service
      * @param ?string $code
      * @param ?string $labels
      * @param ?string $image
+     * @param ?bool $active
      * @param ?string $externalId
      * @param ?string $externalRefs
      * @param ?string $sourceSyncedAt
@@ -51,7 +52,7 @@ class ProductsReferences extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function productsReferenceEntitiesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?string $labels = null, ?string $image = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $metadata = null, ?string $createdAt = null, ?string $updatedAt = null): array
+    public function productsReferenceEntitiesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?string $labels = null, ?string $image = null, ?bool $active = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $metadata = null, ?string $createdAt = null, ?string $updatedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -87,6 +88,10 @@ class ProductsReferences extends Service
 
         if (!is_null($image)) {
             $apiParams['image'] = $image;
+        }
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
         }
 
         if (!is_null($externalId)) {
@@ -144,6 +149,7 @@ class ProductsReferences extends Service
      * answers 409.
      *
      * @param string $code
+     * @param ?bool $active
      * @param ?string $externalId
      * @param ?array $externalRefs
      * @param ?string $image
@@ -154,7 +160,7 @@ class ProductsReferences extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function productsReferenceEntitiesCreate(string $code, ?string $externalId = null, ?array $externalRefs = null, ?string $image = null, ?array $labels = null, ?array $metadata = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
+    public function productsReferenceEntitiesCreate(string $code, ?bool $active = null, ?string $externalId = null, ?array $externalRefs = null, ?string $image = null, ?array $labels = null, ?array $metadata = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -164,6 +170,10 @@ class ProductsReferences extends Service
 
         $apiParams = [];
         $apiParams['code'] = $code;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
         $apiParams['external_id'] = $externalId;
         $apiParams['external_refs'] = $externalRefs;
         $apiParams['image'] = $image;
@@ -282,6 +292,7 @@ class ProductsReferences extends Service
      * `code` answers 409.
      *
      * @param string $id
+     * @param ?bool $active
      * @param ?string $code
      * @param ?string $externalId
      * @param ?array $externalRefs
@@ -293,7 +304,7 @@ class ProductsReferences extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function productsReferenceEntitiesUpdate(string $id, ?string $code = null, ?string $externalId = null, ?array $externalRefs = null, ?string $image = null, ?array $labels = null, ?array $metadata = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
+    public function productsReferenceEntitiesUpdate(string $id, ?bool $active = null, ?string $code = null, ?string $externalId = null, ?array $externalRefs = null, ?string $image = null, ?array $labels = null, ?array $metadata = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -303,6 +314,10 @@ class ProductsReferences extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
 
         if (!is_null($code)) {
             $apiParams['code'] = $code;
@@ -354,6 +369,7 @@ class ProductsReferences extends Service
      * @param ?string $code
      * @param ?string $labels
      * @param ?string $attributeValues
+     * @param ?bool $active
      * @param ?string $externalId
      * @param ?string $externalRefs
      * @param ?string $sourceSyncedAt
@@ -363,7 +379,7 @@ class ProductsReferences extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function productsReferenceEntityRecordsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $referenceEntityId = null, ?string $code = null, ?string $labels = null, ?string $attributeValues = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $createdAt = null, ?string $updatedAt = null): array
+    public function productsReferenceEntityRecordsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $referenceEntityId = null, ?string $code = null, ?string $labels = null, ?string $attributeValues = null, ?bool $active = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $createdAt = null, ?string $updatedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -403,6 +419,10 @@ class ProductsReferences extends Service
 
         if (!is_null($attributeValues)) {
             $apiParams['attribute_values'] = $attributeValues;
+        }
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
         }
 
         if (!is_null($externalId)) {
@@ -458,6 +478,7 @@ class ProductsReferences extends Service
      *
      * @param string $code
      * @param string $referenceEntityId
+     * @param ?bool $active
      * @param ?array $attributeValues
      * @param ?string $externalId
      * @param ?array $externalRefs
@@ -467,7 +488,7 @@ class ProductsReferences extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function productsReferenceEntityRecordsCreate(string $code, string $referenceEntityId, ?array $attributeValues = null, ?string $externalId = null, ?array $externalRefs = null, ?array $labels = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
+    public function productsReferenceEntityRecordsCreate(string $code, string $referenceEntityId, ?bool $active = null, ?array $attributeValues = null, ?string $externalId = null, ?array $externalRefs = null, ?array $labels = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -478,6 +499,10 @@ class ProductsReferences extends Service
         $apiParams = [];
         $apiParams['code'] = $code;
         $apiParams['reference_entity_id'] = $referenceEntityId;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
 
         if (!is_null($attributeValues)) {
             $apiParams['attribute_values'] = $attributeValues;
@@ -598,6 +623,7 @@ class ProductsReferences extends Service
      * `reference_entity_id` and `code` answers 409.
      *
      * @param string $id
+     * @param ?bool $active
      * @param ?array $attributeValues
      * @param ?string $code
      * @param ?string $externalId
@@ -609,7 +635,7 @@ class ProductsReferences extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function productsReferenceEntityRecordsUpdate(string $id, ?array $attributeValues = null, ?string $code = null, ?string $externalId = null, ?array $externalRefs = null, ?array $labels = null, ?string $referenceEntityId = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
+    public function productsReferenceEntityRecordsUpdate(string $id, ?bool $active = null, ?array $attributeValues = null, ?string $code = null, ?string $externalId = null, ?array $externalRefs = null, ?array $labels = null, ?string $referenceEntityId = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -619,6 +645,10 @@ class ProductsReferences extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
 
         if (!is_null($attributeValues)) {
             $apiParams['attribute_values'] = $attributeValues;

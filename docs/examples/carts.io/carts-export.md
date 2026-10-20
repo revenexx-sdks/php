@@ -15,6 +15,7 @@ $cartsIo = new CartsIo($client);
 
 $result = $cartsIo->cartsExport(
     id: '',
+    sessionKey: 'a1b2c3d4e5f6', // optional
     format: CartExportFormat::JSON(), // optional
     profileId: '' // optional
 );```

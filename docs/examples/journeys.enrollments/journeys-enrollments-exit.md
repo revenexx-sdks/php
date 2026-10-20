@@ -1,0 +1,18 @@
+```php
+<?php
+
+use Revenexx\Client;
+use Revenexx\Services\JourneysEnrollments;
+
+$client = (new Client())
+    ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
+    ->setTenant('<TENANT_SLUG>') // Your tenant slug
+    ->setApiKeyAuth('<API_KEY>') // A gateway-managed scoped API key (rvxk_…).
+;
+
+$journeysEnrollments = new JourneysEnrollments($client);
+
+$result = $journeysEnrollments->journeysEnrollmentsExit(
+    id: '',
+    data: []
+);```

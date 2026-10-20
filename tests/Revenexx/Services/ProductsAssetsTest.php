@@ -6,7 +6,10 @@ use Revenexx\Client;
 use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
+use Revenexx\Enums\ProductsListTrashed;
 use Revenexx\Enums\DocumentsDocumentsListSource;
+use Revenexx\Enums\License;
+use Revenexx\Enums\AssetsLicense;
 use Revenexx\Enums\AssetsSource;
 
 final class ProductsAssetsTest extends TestCase {
@@ -43,6 +46,20 @@ final class ProductsAssetsTest extends TestCase {
         $response = $this->productsAssets->productsAssetsCreate(
             "",
             "acme-4711-blk_packshot_1"
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodProductsAssetsEmptyTrash(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->productsAssets->productsAssetsEmptyTrash(
         );
 
         $this->assertSame($data, $response);
@@ -87,6 +104,21 @@ final class ProductsAssetsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->productsAssets->productsAssetsUpdate(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodProductsAssetsRestore(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->productsAssets->productsAssetsRestore(
             ""
         );
 

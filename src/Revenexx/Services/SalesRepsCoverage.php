@@ -38,6 +38,7 @@ class SalesRepsCoverage extends Service
      * @param ?string $title
      * @param ?string $description
      * @param ?bool $isDefault
+     * @param ?bool $active
      * @param ?Tone $tone
      * @param ?int $position
      * @param ?bool $isSystem
@@ -49,7 +50,7 @@ class SalesRepsCoverage extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function salesRepsAssignmentRolesList(?string $id = null, ?string $code = null, ?string $title = null, ?string $description = null, ?bool $isDefault = null, ?Tone $tone = null, ?int $position = null, ?bool $isSystem = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function salesRepsAssignmentRolesList(?string $id = null, ?string $code = null, ?string $title = null, ?string $description = null, ?bool $isDefault = null, ?bool $active = null, ?Tone $tone = null, ?int $position = null, ?bool $isSystem = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             [],
@@ -77,6 +78,10 @@ class SalesRepsCoverage extends Service
 
         if (!is_null($isDefault)) {
             $apiParams['is_default'] = $isDefault;
+        }
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
         }
 
         if (!is_null($tone)) {
@@ -139,6 +144,7 @@ class SalesRepsCoverage extends Service
      *
      * @param string $code
      * @param string $title
+     * @param ?bool $active
      * @param ?string $description
      * @param ?array $descriptions
      * @param ?bool $isDefault
@@ -149,7 +155,7 @@ class SalesRepsCoverage extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function salesRepsAssignmentRolesCreate(string $code, string $title, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?bool $isSystem = null, ?array $labels = null, ?int $position = null, ?Tone $tone = null): array
+    public function salesRepsAssignmentRolesCreate(string $code, string $title, ?bool $active = null, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?bool $isSystem = null, ?array $labels = null, ?int $position = null, ?Tone $tone = null): array
     {
         $apiPath = str_replace(
             [],
@@ -160,6 +166,10 @@ class SalesRepsCoverage extends Service
         $apiParams = [];
         $apiParams['code'] = $code;
         $apiParams['title'] = $title;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
         $apiParams['description'] = $description;
         $apiParams['descriptions'] = $descriptions;
 
@@ -246,10 +256,12 @@ class SalesRepsCoverage extends Service
      * rather than as a missing label — but it reads no title and no tone for it
      * either, and a screen that was showing "Inside sales" starts showing a bare
      * code. Move the rows onto another role first (PUT
-     * /sales-reps/assignments/{id}), or leave the role in place and give it a
-     * `title` that says it is retired. Deleting all of them is undone by the next
-     * read of GET /sales-reps/vocabularies/assignment-roles, which seeds the
-     * shipped set back into an empty table.
+     * /sales-reps/assignments/{id}), or keep the role and switch it off with
+     * `active: false` (PUT /sales-reps/assignment-roles/{id}), which stops it
+     * being offered and leaves every row that carries it resolving. Deleting all
+     * of them is undone by the next read of GET
+     * /sales-reps/vocabularies/assignment-roles, which seeds the shipped set back
+     * into an empty table.
      *
      * @param string $id
      * @throws RevenexxException
@@ -330,9 +342,14 @@ class SalesRepsCoverage extends Service
      * row stores it and nothing points at it, so moving it leaves every row that
      * named the old value carrying a code the vocabulary no longer resolves. A
      * role this app seeded may be edited exactly like one the tenant added;
-     * `is_system` records who put it there and licenses nothing.
+     * `is_system` records who put it there and licenses nothing. `active: false`
+     * retires a role without deleting it: coverage that carries it keeps it and
+     * its title still resolves, but no picker offers it and no new coverage is
+     * given it. That is the safe alternative to the delete. The one refusal is
+     * the default role, which has to stay active.
      *
      * @param string $id
+     * @param ?bool $active
      * @param ?string $code
      * @param ?string $description
      * @param ?array $descriptions
@@ -345,7 +362,7 @@ class SalesRepsCoverage extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function salesRepsAssignmentRolesUpdate(string $id, ?string $code = null, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?bool $isSystem = null, ?array $labels = null, ?int $position = null, ?string $title = null, ?Tone $tone = null): array
+    public function salesRepsAssignmentRolesUpdate(string $id, ?bool $active = null, ?string $code = null, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?bool $isSystem = null, ?array $labels = null, ?int $position = null, ?string $title = null, ?Tone $tone = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -355,6 +372,10 @@ class SalesRepsCoverage extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
 
         if (!is_null($code)) {
             $apiParams['code'] = $code;
@@ -491,7 +512,9 @@ class SalesRepsCoverage extends Service
      * guard and the pre-flight read only makes the refusal readable. `rep_code`
      * has to name a rep this tenant keeps, checked on every write because there
      * is no foreign key to do it: the reference is by code precisely so an import
-     * can write coverage before it has read an id out of this app. There is
+     * can write coverage before it has read an id out of this app.
+     * `organization_id` has to name an organization the customers app keeps —
+     * asked of that app, and not refused when it cannot be asked. There is
      * deliberately no update route — changing either half of the pair is a
      * different pair.
      *
@@ -754,7 +777,10 @@ class SalesRepsCoverage extends Service
      * has never had it. `closed` is true all the same: the set is exhaustive at
      * this moment, so a value outside it is stale data rather than a missing
      * label — which is exactly the state a coverage row is left in when the
-     * role it names is deleted. Names: assignment-roles.
+     * role it names is deleted. A role the merchant switched off is answered
+     * under `inactive` and not under `values`, because `values` is what a picker
+     * offers; `inactive` is there so a screen can still render the title and tone
+     * of coverage that already carries one. Names: assignment-roles.
      *
      * @param SalesRepsVocabulariesGetName $name
      * @throws RevenexxException

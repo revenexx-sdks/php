@@ -22,6 +22,7 @@ $result = $orders->ordersReturnReasonsList(
     tone: OrderVocabularyTone::NEUTRAL(), // optional
     position: 3, // optional
     isSystem: true, // optional
+    active: true, // optional
     createdAt: '2026-01-01T12:00:00Z', // optional
     updatedAt: '2026-01-01T12:00:00Z', // optional
     limit: 50, // optional

@@ -14,5 +14,6 @@ $shippingValueLists = new ShippingValueLists($client);
 
 $result = $shippingValueLists->shippingWeightUnitsList(
     limit: 1, // optional
-    offset: 1 // optional
+    offset: 1, // optional
+    active: true // optional
 );```

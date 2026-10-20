@@ -15,11 +15,11 @@ $promotionsVouchers = new PromotionsVouchers($client);
 
 $result = $promotionsVouchers->promotionsBatchesUpdate(
     id: '',
-    name: '',
-    promotionId: '',
     alphabet: '', // optional
-    metadata: [], // optional
+    metadata: , // optional
+    name: '', // optional
     pattern: '', // optional
+    promotionId: '', // optional
     requestRef: '', // optional
     requested: 1, // optional
     status: PromotionsBatchesCreateStatus::ACTIVE() // optional

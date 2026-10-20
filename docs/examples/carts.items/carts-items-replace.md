@@ -14,5 +14,6 @@ $cartsItems = new CartsItems($client);
 
 $result = $cartsItems->cartsItemsReplace(
     cartId: '',
-    items: []
+    items: [],
+    sessionKey: 'a1b2c3d4e5f6' // optional
 );```

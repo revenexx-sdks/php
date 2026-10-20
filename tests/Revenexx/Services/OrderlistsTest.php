@@ -244,6 +244,22 @@ final class OrderlistsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodOrderlistsTransferOwner(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->orderlists->orderlistsTransferOwner(
+            "",
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodOrderlistsItemsList(): void {
 
         $data = array();

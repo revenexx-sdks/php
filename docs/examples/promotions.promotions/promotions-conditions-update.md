@@ -3,7 +3,7 @@
 
 use Revenexx\Client;
 use Revenexx\Services\PromotionsPromotions;
-use Revenexx\Enums\PromotionsConditionsCreateKind;
+use Revenexx\Enums\AudiencesRulesCreateKind;
 use Revenexx\Enums\MatchMode;
 
 $client = (new Client())
@@ -16,17 +16,17 @@ $promotionsPromotions = new PromotionsPromotions($client);
 
 $result = $promotionsPromotions->promotionsConditionsUpdate(
     id: '',
-    promotionId: '',
     addend: 9.99, // optional
-    compareValue: [], // optional
-    compareValueTo: [], // optional
+    compareValue: , // optional
+    compareValueTo: , // optional
     comparison: '', // optional
     factor: 9.99, // optional
-    kind: PromotionsConditionsCreateKind::GROUP(), // optional
+    kind: AudiencesRulesCreateKind::GROUP(), // optional
     matchMode: MatchMode::ALL(), // optional
     negate: true, // optional
     parentId: '', // optional
     position: 1, // optional
+    promotionId: '', // optional
     rightSubject: '', // optional
     subject: '' // optional
 );```

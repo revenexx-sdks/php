@@ -14,5 +14,5 @@ $client = (new Client())
 $search = new Search($client);
 
 $result = $search->searchGetCollection(
-    collection: CollectionEnum::PRODUCTS()
+    collection: CollectionEnum::CATEGORIES()
 );```

@@ -8,6 +8,7 @@ use Revenexx\Service;
 use Revenexx\InputFile;
 use Revenexx\Enums\CartStatus;
 use Revenexx\Enums\CartMergeStrategy;
+use Revenexx\Enums\CartOrderingChannel;
 use Revenexx\Enums\Name;
 
 class Carts extends Service
@@ -34,12 +35,20 @@ class Carts extends Service
      * @param ?string $name
      * @param ?CartStatus $status
      * @param ?string $contactId
+     * @param ?string $organizationId
      * @param ?string $sessionKey
+     * @param ?bool $isGuest
      * @param ?string $channelId
      * @param ?string $currency
      * @param ?bool $isCurrent
      * @param ?int $itemCount
      * @param ?float $subtotal
+     * @param ?float $discountTotal
+     * @param ?float $shippingTotal
+     * @param ?float $taxTotal
+     * @param ?float $grandTotal
+     * @param ?string $shippingMethod
+     * @param ?string $totalsComputedAt
      * @param ?string $abandonedAt
      * @param ?string $orderedAt
      * @param ?string $orderRef
@@ -52,7 +61,7 @@ class Carts extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function cartsList(?string $id = null, ?string $name = null, ?CartStatus $status = null, ?string $contactId = null, ?string $sessionKey = null, ?string $channelId = null, ?string $currency = null, ?bool $isCurrent = null, ?int $itemCount = null, ?float $subtotal = null, ?string $abandonedAt = null, ?string $orderedAt = null, ?string $orderRef = null, ?string $mergedIntoCartId = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function cartsList(?string $id = null, ?string $name = null, ?CartStatus $status = null, ?string $contactId = null, ?string $organizationId = null, ?string $sessionKey = null, ?bool $isGuest = null, ?string $channelId = null, ?string $currency = null, ?bool $isCurrent = null, ?int $itemCount = null, ?float $subtotal = null, ?float $discountTotal = null, ?float $shippingTotal = null, ?float $taxTotal = null, ?float $grandTotal = null, ?string $shippingMethod = null, ?string $totalsComputedAt = null, ?string $abandonedAt = null, ?string $orderedAt = null, ?string $orderRef = null, ?string $mergedIntoCartId = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             [],
@@ -78,8 +87,16 @@ class Carts extends Service
             $apiParams['contact_id'] = $contactId;
         }
 
+        if (!is_null($organizationId)) {
+            $apiParams['organization_id'] = $organizationId;
+        }
+
         if (!is_null($sessionKey)) {
             $apiParams['session_key'] = $sessionKey;
+        }
+
+        if (!is_null($isGuest)) {
+            $apiParams['is_guest'] = $isGuest;
         }
 
         if (!is_null($channelId)) {
@@ -100,6 +117,30 @@ class Carts extends Service
 
         if (!is_null($subtotal)) {
             $apiParams['subtotal'] = $subtotal;
+        }
+
+        if (!is_null($discountTotal)) {
+            $apiParams['discount_total'] = $discountTotal;
+        }
+
+        if (!is_null($shippingTotal)) {
+            $apiParams['shipping_total'] = $shippingTotal;
+        }
+
+        if (!is_null($taxTotal)) {
+            $apiParams['tax_total'] = $taxTotal;
+        }
+
+        if (!is_null($grandTotal)) {
+            $apiParams['grand_total'] = $grandTotal;
+        }
+
+        if (!is_null($shippingMethod)) {
+            $apiParams['shipping_method'] = $shippingMethod;
+        }
+
+        if (!is_null($totalsComputedAt)) {
+            $apiParams['totals_computed_at'] = $totalsComputedAt;
         }
 
         if (!is_null($abandonedAt)) {
@@ -164,17 +205,19 @@ class Carts extends Service
      * current in the same call, which clears the flag on every sibling of the
      * same owner. Lines are added afterwards, one call each or one bulk replace.
      *
+     * @param ?array $attribution
      * @param ?string $channelId
      * @param ?string $contactId
      * @param ?string $currency
      * @param ?bool $isCurrent
      * @param ?array $metadata
      * @param ?string $name
+     * @param ?string $organizationId
      * @param ?string $sessionKey
      * @throws RevenexxException
      * @return array
      */
-    public function cartsCreate(?string $channelId = null, ?string $contactId = null, ?string $currency = null, ?bool $isCurrent = null, ?array $metadata = null, ?string $name = null, ?string $sessionKey = null): array
+    public function cartsCreate(?array $attribution = null, ?string $channelId = null, ?string $contactId = null, ?string $currency = null, ?bool $isCurrent = null, ?array $metadata = null, ?string $name = null, ?string $organizationId = null, ?string $sessionKey = null): array
     {
         $apiPath = str_replace(
             [],
@@ -183,12 +226,17 @@ class Carts extends Service
         );
 
         $apiParams = [];
+
+        if (!is_null($attribution)) {
+            $apiParams['attribution'] = $attribution;
+        }
         $apiParams['channel_id'] = $channelId;
         $apiParams['contact_id'] = $contactId;
         $apiParams['currency'] = $currency;
         $apiParams['is_current'] = $isCurrent;
         $apiParams['metadata'] = $metadata;
         $apiParams['name'] = $name;
+        $apiParams['organization_id'] = $organizationId;
         $apiParams['session_key'] = $sessionKey;
 
         $apiHeaders = [];
@@ -220,12 +268,13 @@ class Carts extends Service
      *
      * @param string $contactId
      * @param string $sessionKey
+     * @param ?string $organizationId
      * @param ?CartMergeStrategy $strategy
      * @param ?string $targetCartId
      * @throws RevenexxException
      * @return array
      */
-    public function cartsClaim(string $contactId, string $sessionKey, ?CartMergeStrategy $strategy = null, ?string $targetCartId = null): array
+    public function cartsClaim(string $contactId, string $sessionKey, ?string $organizationId = null, ?CartMergeStrategy $strategy = null, ?string $targetCartId = null): array
     {
         $apiPath = str_replace(
             [],
@@ -236,6 +285,7 @@ class Carts extends Service
         $apiParams = [];
         $apiParams['contact_id'] = $contactId;
         $apiParams['session_key'] = $sessionKey;
+        $apiParams['organization_id'] = $organizationId;
         $apiParams['strategy'] = $strategy;
         $apiParams['target_cart_id'] = $targetCartId;
 
@@ -244,6 +294,63 @@ class Carts extends Service
 
         return $this->client->call(
             Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Which promotion and voucher codes the buyers' open carts still hold, and
+     * how many carts hold each. Promotions asks this before it deletes a
+     * promotion for good (RAD-247): a code typed into a cart that can still
+     * become an order would point at nothing once the promotion is gone. Open
+     * means `active` or `abandoned` (abandoned is reversible) unless `status`
+     * says otherwise. A code is matched trimmed and case-insensitively and
+     * reported in that form, upper-cased — a tenant whose codes are
+     * case-sensitive gets a count that is at worst too high. `code` narrows the
+     * answer to the codes asked about; without it every held code is listed.
+     * `carts` counts the distinct carts behind the listed codes across all pages.
+     * Codes come sorted, paged like every list here. A read for the back office
+     * and for other apps: the answer names no cart and no owner.
+     *
+     * @param ?string $code
+     * @param ?string $status
+     * @param ?int $limit
+     * @param ?int $offset
+     * @throws RevenexxException
+     * @return array
+     */
+    public function cartsHeldCodes(?string $code = null, ?string $status = null, ?int $limit = null, ?int $offset = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/carts/held-codes'
+        );
+
+        $apiParams = [];
+
+        if (!is_null($code)) {
+            $apiParams['code'] = $code;
+        }
+
+        if (!is_null($status)) {
+            $apiParams['status'] = $status;
+        }
+
+        if (!is_null($limit)) {
+            $apiParams['limit'] = $limit;
+        }
+
+        if (!is_null($offset)) {
+            $apiParams['offset'] = $offset;
+        }
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
             $apiPath,
             $apiHeaders,
             $apiParams
@@ -306,10 +413,11 @@ class Carts extends Service
      *
      * @param string $sourceCartId
      * @param string $targetCartId
+     * @param ?string $sessionKey
      * @throws RevenexxException
      * @return array
      */
-    public function cartsMerge(string $sourceCartId, string $targetCartId): array
+    public function cartsMerge(string $sourceCartId, string $targetCartId, ?string $sessionKey = null): array
     {
         $apiPath = str_replace(
             [],
@@ -320,6 +428,66 @@ class Carts extends Service
         $apiParams = [];
         $apiParams['source_cart_id'] = $sourceCartId;
         $apiParams['target_cart_id'] = $targetCartId;
+
+        if (!is_null($sessionKey)) {
+            $apiParams['session_key'] = $sessionKey;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * The operator's create: an order taken by phone, fax, mail or in the field
+     * starts here. It opens an ordinary active cart OWNED BY THE CONTACT, booked
+     * to the organization, with how the order arrived and the operator's note in
+     * `metadata` (`on_behalf`, `ordering_channel`, `note`, `opened_at`). Every
+     * rule of carts.create applies unchanged — the currency resolved once and
+     * written, and a second active cart refused with 409 while
+     * `multi_cart_enabled` is off. The cart is never made current, so the buyer's
+     * own basket stays where it was. Lines follow through carts.items.priced,
+     * which prices them for this customer as the shop would; the checkout is the
+     * one every stored cart takes, procurement's submit-cart, which applies the
+     * customer's approval rules and budgets and places the order. A request
+     * acting FOR a contact is refused with 403: a buyer opens their own carts
+     * through carts.create.
+     *
+     * @param string $contactId
+     * @param ?CartOrderingChannel $channel
+     * @param ?string $channelId
+     * @param ?string $currency
+     * @param ?string $name
+     * @param ?string $note
+     * @param ?string $organizationId
+     * @throws RevenexxException
+     * @return array
+     */
+    public function cartsOnBehalf(string $contactId, ?CartOrderingChannel $channel = null, ?string $channelId = null, ?string $currency = null, ?string $name = null, ?string $note = null, ?string $organizationId = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/carts/on-behalf'
+        );
+
+        $apiParams = [];
+        $apiParams['contact_id'] = $contactId;
+
+        if (!is_null($channel)) {
+            $apiParams['channel'] = $channel;
+        }
+        $apiParams['channel_id'] = $channelId;
+        $apiParams['currency'] = $currency;
+        $apiParams['name'] = $name;
+        $apiParams['note'] = $note;
+        $apiParams['organization_id'] = $organizationId;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -425,10 +593,11 @@ class Carts extends Service
      * `dry_run`.
      *
      * @param string $id
+     * @param ?string $sessionKey
      * @throws RevenexxException
      * @return array
      */
-    public function cartsDelete(string $id): array
+    public function cartsDelete(string $id, ?string $sessionKey = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -438,6 +607,10 @@ class Carts extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($sessionKey)) {
+            $apiParams['session_key'] = $sessionKey;
+        }
 
         $apiHeaders = [];
 
@@ -463,10 +636,11 @@ class Carts extends Service
      * into.
      *
      * @param string $id
+     * @param ?string $sessionKey
      * @throws RevenexxException
      * @return array
      */
-    public function cartsGet(string $id): array
+    public function cartsGet(string $id, ?string $sessionKey = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -476,6 +650,10 @@ class Carts extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($sessionKey)) {
+            $apiParams['session_key'] = $sessionKey;
+        }
 
         $apiHeaders = [];
 
@@ -488,8 +666,13 @@ class Carts extends Service
     }
 
     /**
-     * The four columns a cart's own editing screen owns, and only those: `name`,
-     * `currency`, `channel_id` and `metadata`. Everything else about a cart is
+     * The columns a cart's own editing screen owns — `name`, `currency`,
+     * `channel_id`, `metadata` and `voucher_codes` — and the pricing the
+     * storefront hands in after asking promotions and shipping: `discount_lines`,
+     * `shipping_total`, `shipping_method`. A change to the vouchers or the
+     * pricing recomputes `discount_total`, `tax_total`, `grand_total` and
+     * `totals_computed_at`; those four are the cart's own and a payload naming
+     * one answers 400 `server_owned_field`. Everything else about a cart is
      * either derived or a lifecycle move, and both are deliberately out of reach
      * here — `item_count` and `subtotal` are recomputed from the lines,
      * `status` travels through the action routes (activate, abandon, reopen,
@@ -503,14 +686,21 @@ class Carts extends Service
      * holds no money and answers 409 once it does.
      *
      * @param string $id
+     * @param ?string $sessionKey
+     * @param ?array $attribution
      * @param ?string $channelId
      * @param ?string $currency
+     * @param ?array $discountLines
      * @param ?array $metadata
      * @param ?string $name
+     * @param ?string $organizationId
+     * @param ?string $shippingMethod
+     * @param ?float $shippingTotal
+     * @param ?array $voucherCodes
      * @throws RevenexxException
      * @return array
      */
-    public function cartsUpdate(string $id, ?string $channelId = null, ?string $currency = null, ?array $metadata = null, ?string $name = null): array
+    public function cartsUpdate(string $id, ?string $sessionKey = null, ?array $attribution = null, ?string $channelId = null, ?string $currency = null, ?array $discountLines = null, ?array $metadata = null, ?string $name = null, ?string $organizationId = null, ?string $shippingMethod = null, ?float $shippingTotal = null, ?array $voucherCodes = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -520,16 +710,32 @@ class Carts extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($sessionKey)) {
+            $apiParams['session_key'] = $sessionKey;
+        }
+
+        if (!is_null($attribution)) {
+            $apiParams['attribution'] = $attribution;
+        }
         $apiParams['channel_id'] = $channelId;
 
         if (!is_null($currency)) {
             $apiParams['currency'] = $currency;
         }
+        $apiParams['discount_lines'] = $discountLines;
         $apiParams['metadata'] = $metadata;
 
         if (!is_null($name)) {
             $apiParams['name'] = $name;
         }
+        $apiParams['organization_id'] = $organizationId;
+        $apiParams['shipping_method'] = $shippingMethod;
+
+        if (!is_null($shippingTotal)) {
+            $apiParams['shipping_total'] = $shippingTotal;
+        }
+        $apiParams['voucher_codes'] = $voucherCodes;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -555,10 +761,11 @@ class Carts extends Service
      * actually holds.
      *
      * @param string $id
+     * @param ?string $sessionKey
      * @throws RevenexxException
      * @return array
      */
-    public function cartsAbandon(string $id): array
+    public function cartsAbandon(string $id, ?string $sessionKey = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -568,6 +775,10 @@ class Carts extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($sessionKey)) {
+            $apiParams['session_key'] = $sessionKey;
+        }
 
         $apiHeaders = [];
 
@@ -590,10 +801,11 @@ class Carts extends Service
      * cart, so an owner can legitimately have no current cart at all.
      *
      * @param string $id
+     * @param ?string $sessionKey
      * @throws RevenexxException
      * @return array
      */
-    public function cartsActivate(string $id): array
+    public function cartsActivate(string $id, ?string $sessionKey = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -603,6 +815,10 @@ class Carts extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($sessionKey)) {
+            $apiParams['session_key'] = $sessionKey;
+        }
 
         $apiHeaders = [];
 
@@ -628,10 +844,11 @@ class Carts extends Service
      *
      * @param string $id
      * @param string $targetCartId
+     * @param ?string $sessionKey
      * @throws RevenexxException
      * @return array
      */
-    public function cartsMergeInto(string $id, string $targetCartId): array
+    public function cartsMergeInto(string $id, string $targetCartId, ?string $sessionKey = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -642,6 +859,10 @@ class Carts extends Service
         $apiParams = [];
         $apiParams['id'] = $id;
         $apiParams['target_cart_id'] = $targetCartId;
+
+        if (!is_null($sessionKey)) {
+            $apiParams['session_key'] = $sessionKey;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -672,11 +893,12 @@ class Carts extends Service
      * BEFORE anything is written.
      *
      * @param string $id
+     * @param ?string $sessionKey
      * @param ?string $orderRef
      * @throws RevenexxException
      * @return array
      */
-    public function cartsOrder(string $id, ?string $orderRef = null): array
+    public function cartsOrder(string $id, ?string $sessionKey = null, ?string $orderRef = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -686,6 +908,10 @@ class Carts extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($sessionKey)) {
+            $apiParams['session_key'] = $sessionKey;
+        }
         $apiParams['order_ref'] = $orderRef;
 
         $apiHeaders = [];
@@ -712,10 +938,11 @@ class Carts extends Service
      * holds.
      *
      * @param string $id
+     * @param ?string $sessionKey
      * @throws RevenexxException
      * @return array
      */
-    public function cartsReopen(string $id): array
+    public function cartsReopen(string $id, ?string $sessionKey = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -725,6 +952,10 @@ class Carts extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($sessionKey)) {
+            $apiParams['session_key'] = $sessionKey;
+        }
 
         $apiHeaders = [];
 

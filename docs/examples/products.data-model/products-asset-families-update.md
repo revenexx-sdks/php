@@ -14,6 +14,7 @@ $productsDataModel = new ProductsDataModel($client);
 
 $result = $productsDataModel->productsAssetFamiliesUpdate(
     id: '',
+    active: true, // optional
     code: 'packshots', // optional
     labels: [
         'de' => 'Packshots',

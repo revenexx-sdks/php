@@ -19,6 +19,9 @@ GET https://api.revenexx.com/v1/customers/contact_events
 | subject | string | Filter to rows whose `subject` is exactly this value. One line a person can scan in a timeline. Required for an activity; a decision row carries the app's own wording. |  |
 | actor | string | Filter to rows whose `actor` is exactly this value. Who logged the entry — free text as the client supplied it (operator id or email). Null for a row the app wrote itself. |  |
 | occurred_at | string | Exact timestamp equality on when it happened — there is no range filter on this API. Use `order=occurred_at.desc` with limit/offset to walk a timeline. |  |
+| due_at | string | Exact timestamp equality — this API has no range filter. To bound a period, sort with `order` and page. When a follow-up is due. Null for an entry that is not a follow-up. |  |
+| assignee | string | Filter to rows whose `assignee` is exactly this value. Who does the follow-up, as the caller named them. Null when nobody was named. |  |
+| done_at | string | Exact timestamp equality — this API has no range filter. To bound a period, sort with `order` and page. When the follow-up was done — set by POST /customers/contact_events/{id}/done. Null while it is open. |  |
 | created_at | string | Exact timestamp equality — this API has no range filter. To bound a period, sort with `order` and page. When the row was written. Together with `occurred_at` this is what tells a late entry from a live one. |  |
 | limit | integer | Page size (default 50, max 200). |  |
 | offset | integer | Row offset for pagination (default 0). |  |
@@ -58,19 +61,37 @@ GET https://api.revenexx.com/v1/customers/contacts
 | job_title | string | Filter to rows whose `job_title` is exactly this value. What this person does at the company — free text on purpose, because it is a title and not a grant. The permission ladder is `role`; overloading a job title with authority silently un-grants everyone the day the ledger is enforced. |  |
 | role | string | Filter by role. One of the tenant's own roles (GET /customers/roles) — a tenant that never edited the ledger has viewer, requester, buyer, approver, admin. |  |
 | status | string | Filter by status. |  |
-| order_approval_mode | string | Filter to rows whose `order_approval_mode` is exactly this value. How far `orders.approve` reaches for this person: 'none' (no order — the default), 'limited' (up to `order_approval_limit`) or 'unlimited'. Meaningful only with a role that grants `orders.approve`; the grant comes from the role, the reach from here. |  |
-| order_approval_limit | number | Filter to rows whose `order_approval_limit` is exactly this value. Amount ceiling for this person, in the market's currency: with the `orders.approve` permission it is the most they may sign off. Set exactly when `order_approval_mode` is 'limited', and then above 0; null otherwise. An amount, never a grant — the grant comes from the role. |  |
+| shop_access | string | Filter to rows whose `shop_access` is exactly this value. Whether this person can buy in the shop, in one word: 'can_order', 'invited' (the invitation went out), 'pending' (an application nobody decided), 'blocked' (access revoked) or 'none' (never invited, or rejected). Derived from `status`, `registration_status` and `invited_at`, never written. |  |
+| invited_at | string | Exact timestamp equality — this API has no range filter. To bound a period, sort with `order` and page. When the last shop invitation was sent. Set by POST …/invite and …/reinvite; null while none went out. |  |
+| access_blocked_reason | string | Filter to rows whose `access_blocked_reason` is exactly this value. Why this person's shop access was revoked, in the tenant's default language. Set by POST …/revoke-access, cleared by …/restore-access. |  |
+| order_approval_mode | string | Filter to rows whose `order_approval_mode` is exactly this value. How far `orders.approve` is meant to reach for this person: 'none' (the default), 'limited' (up to `order_approval_limit`) or 'unlimited'. Meaningful only with a role that grants `orders.approve`; the grant comes from the role. Recorded for the merchant and for procurement's tiered sign-off; the orders app does not read it — whoever holds orders.approve approves or rejects a colleague's order of any amount. |  |
+| order_approval_limit | number | Filter to rows whose `order_approval_limit` is exactly this value. Amount ceiling for this person, in the market's currency: with the `orders.approve` permission it is the most they are meant to sign off. Set exactly when `order_approval_mode` is 'limited', and then above 0; null otherwise. An amount, never a grant — the grant comes from the role. Recorded for the merchant and for procurement's tiered sign-off; the orders app does not read it — whoever holds orders.approve approves or rejects a colleague's order of any amount. |  |
 | registration_status | string | Filter by registration state. `pending` IS the approval inbox — there is no second entity for it. |  |
 | registration_decided_at | string | Exact timestamp equality — this API has no range filter. To bound a period, sort with `order` and page. When a merchant approved or rejected the application. Null while nobody has decided. |  |
 | registration_decided_by | string | Filter to rows whose `registration_decided_by` is exactly this value. Who decided — free text as the deciding client supplied it (an operator id or an email address), not a resolvable user reference. |  |
 | registration_reason | string | Filter to rows whose `registration_reason` is exactly this value. Why the application was declined. Always recorded here; whether the APPLICANT is ever told it is the tenant's `registration_reason_disclosed` setting, because that is a legal decision and not a template one. |  |
 | locale | string | Filter to rows whose `locale` is exactly this value. The language this person is written to in — BCP 47, and one of the store's configured locales. Null falls back to the store default. |  |
+| consent_marketing | boolean | Filter to rows whose `consent_marketing` is exactly this value. Whether this person may be sent marketing email. A MIRROR of the consent app (revenexx/marketing-consents): true while the person holds at least one confirmed email subscription there, written by this app from that app's events and its hourly sweep. What a contact segment for a campaign selects on. False until they say yes. Where the consent app is not installed, an import or an edit may still set it. |  |
+| lifecycle_stage | string | Filter to rows whose `lifecycle_stage` is exactly this value. Where this PERSON stands in the marketing and sales funnel — a separate axis from the company's stage and from shop access. One of the tenant's contact lifecycle stages (GET /customers/contact-lifecycle-stages), seeded subscriber, lead, mql, sql, opportunity, customer. Null for a person nobody placed in the funnel. Every change is announced as `contact.lifecycle_changed`. |  |
+| lifecycle_changed_at | string | Exact timestamp equality — this API has no range filter. To bound a period, sort with `order` and page. When `lifecycle_stage` last changed. Written by this app. |  |
+| lead_source | string | Filter to rows whose `lead_source` is exactly this value. How the person first came: form, campaign, import, trade_fair, newsletter, referral or manual. Null when nobody said. |  |
+| lead_source_ref | string | Filter to rows whose `lead_source_ref` is exactly this value. What exactly they came through — a campaign id, `form:{form_id}:{submission_id}`, a fair code. Free text the caller supplied; a campaign counts a lead whose ref is its id. |  |
+| owner_id | string | Filter to rows whose `owner_id` is exactly this value. The sales rep who owns this person, as the rep CODE of the sales-reps app. Set by POST /customers/contacts/{contact_id}/handover or an edit. |  |
+| lead_score | integer | Filter to rows whose `lead_score` is exactly this value. A score marketing writes — a whole number from 0, higher is warmer. Null until something scores the person; this app computes nothing. |  |
+| consent_marketing_synced_at | string | Exact timestamp equality — this API has no range filter. To bound a period, sort with `order` and page. When the consent mirror last changed `consent_marketing`. Null while the mirror never touched the row. |  |
 | is_primary | boolean | Filter to the primary contacts — with `organization_id`, the one person a merchant calls first at that company. |  |
 | external_user_id | string | Find the contact behind a platform user id. What a storefront session resolves with when it has an auth id and needs the customer record. |  |
 | external_id | string | Filter to rows whose `external_id` is exactly this value. Id of this person in the system the record came from — an ERP contact number, a CRM id. Nullable, because a contact created in the shop has none and never will, and unique per tenant where it is set, which is what lets a repeated import find the row it wrote last time instead of adding a second one. Distinct from `external_user_id`, which points at the platform account: this one points OUT of the platform. |  |
 | source_synced_at | string | Exact timestamp equality — this API has no range filter. To bound a period, sort with `order` and page. When this row was last confirmed against its source. What a delta run asks for changes since, and what tells an operator that a feed has gone quiet — a row edited in the Cockpit does not touch it, because it says when the SOURCE was last seen, not when the row changed. Null for a row no source owns. |  |
+| deleted_at | string | Exact timestamp equality — this API has no range filter. To bound a period, sort with `order` and page. When this person was moved to the trash, or null while it is live. A person in the trash is left out of every list unless `trashed` asks for it, cannot sign in or be signed in for, and is deleted for good by a second DELETE or by the daily purge. |  |
+| deleted_by | string | Filter to rows whose `deleted_by` is exactly this value. Who moved it to the trash, as the platform named them — an email, or `system`. Null while it is live. |  |
+| deleted_by_id | string | Filter to rows whose `deleted_by_id` is exactly this value. The platform subject of whoever moved it to the trash. Kept beside the name so the person can be pseudonymised later without losing who acted. Null while it is live, and for the system. |  |
+| trash_batch | string | Filter to rows whose `trash_batch` is exactly this value. The trash action this record went with. An organization and the contacts it took along share one; a restore brings back exactly the records that carry it. |  |
+| purge_at | string | Exact timestamp equality — this API has no range filter. To bound a period, sort with `order` and page. When the daily purge deletes it for good unless it is restored first: `deleted_at` plus the tenant's trash retention (90 days unless the tenant says otherwise). Null while it is live. |  |
+| purge_blocked_reason | string | Filter to rows whose `purge_blocked_reason` is exactly this value. Why the purge could not delete it for good — an open order, a quote, a price list another app still holds. Null when nothing stopped it. Cleared by a restore. |  |
 | created_at | string | Exact timestamp equality — this API has no range filter. To bound a period, sort with `order` and page. When this person record was created in this app. |  |
 | updated_at | string | Exact timestamp equality — this API has no range filter. To bound a period, sort with `order` and page. When any column of this row last changed. |  |
+| trashed | string | Whether the trash is part of the answer. `exclude` (the default) leaves records in the trash out, `only` answers the trash itself, `include` both. A call acting for a buyer is always `exclude`. |  |
 | limit | integer | Page size (default 50, max 200). |  |
 | offset | integer | Row offset for pagination (default 0). |  |
 | order | string | Sort by one column: 'column' | 'column.asc' | 'column.desc'. A bare column sorts ascending. Anything else is refused with 400. |  |
@@ -94,13 +115,20 @@ POST https://api.revenexx.com/v1/customers/contacts
 | job_title | string | What this person does at the company — free text on purpose, because it is a title and not a grant. The permission ladder is `role`; overloading a job title with authority silently un-grants everyone the day the ledger is enforced. |  |
 | last_name | string | Family name. Optional for the same reason. |  |
 | locale | string | The language this person is written to in — BCP 47, and one of the store's configured locales. Null falls back to the store default. |  |
-| order_approval_limit | number | Amount ceiling for this person, in the market's currency: with the `orders.approve` permission it is the most they may sign off. Set exactly when `order_approval_mode` is 'limited', and then above 0; null otherwise. An amount, never a grant — the grant comes from the role. Required with `order_approval_mode` 'limited' and refused with any other mode (400 `limited_mode_requires_limit` / `limit_requires_limited_mode`). |  |
-| order_approval_mode | string | How far `orders.approve` reaches for this person: 'none' (no order — the default), 'limited' (up to `order_approval_limit`) or 'unlimited'. Meaningful only with a role that grants `orders.approve`; the grant comes from the role, the reach from here. Default 'none'. Leaving 'limited' without sending `order_approval_limit` clears the amount. |  |
+| order_approval_limit | number | Amount ceiling for this person, in the market's currency: with the `orders.approve` permission it is the most they are meant to sign off. Set exactly when `order_approval_mode` is 'limited', and then above 0; null otherwise. An amount, never a grant — the grant comes from the role. Recorded for the merchant and for procurement's tiered sign-off; the orders app does not read it — whoever holds orders.approve approves or rejects a colleague's order of any amount. Required with `order_approval_mode` 'limited' and refused with any other mode (400 `limited_mode_requires_limit` / `limit_requires_limited_mode`). |  |
+| order_approval_mode | string | How far `orders.approve` is meant to reach for this person: 'none' (the default), 'limited' (up to `order_approval_limit`) or 'unlimited'. Meaningful only with a role that grants `orders.approve`; the grant comes from the role. Recorded for the merchant and for procurement's tiered sign-off; the orders app does not read it — whoever holds orders.approve approves or rejects a colleague's order of any amount. Default 'none'. Leaving 'limited' without sending `order_approval_limit` clears the amount. |  |
 | organization_id | string | The company this person belongs to. NULL is a legitimate state, not a defect: a standalone buyer with no company behind them. Deleting the organization sets this null and keeps the person. Membership is mirrored to the platform team. |  |
 | phone | string | Direct number of this person, as somebody typed it — free text, no format is enforced or normalized. E.164 is what an integration should send. |  |
 | registration_status | string | Where this person's own application stands: 'approved' (the default, and what an open store creates), 'pending' while a merchant has yet to decide, 'rejected' once they declined. Only the approve/reject routes move it; it is ignored on an ordinary update. On CREATE only, and only to file the contact as an application: 'pending' creates the platform user disabled and routes the contact through approve/reject. |  |
 | role | string | The person's role INSIDE its organization, and the only thing permissions are derived from. One of the tenant's own roles (GET /customers/roles); a tenant that never edited the ledger has viewer, requester, buyer, approver, admin. Also the team role on the platform mirror. There is no global role — the same person in two companies is two contacts. A tenant that never edited the ledger has viewer, requester, buyer, approver, admin; a create without a role gets the one flagged as default, and a role the tenant does not keep is a 400. |  |
 | status | string | Whether this person may act: 'invited' has been created but has not accepted, 'active' works, 'blocked' cannot log in. A create through the API defaults to 'invited'; a self-registration in an open store lands 'active'. Default 'invited' on create. |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/customers/contacts/trash/empty
+```
+
+** Deletes every contact in the trash for good, oldest first and at most fifty per call, each checked on its own exactly like a second DELETE. A contact something still blocks stays in the trash and is listed with the reason; the rest go. POST again while `more` is true. An administrator's right, never a buyer's. **
 
 
 ```http request
@@ -147,7 +175,7 @@ POST https://api.revenexx.com/v1/customers/contacts/{contact_id}/invite
 | --- | --- | --- | --- |
 | contact_id | string | **Required** The person being told. They are already a member — this only sends the message. |  |
 | invited_by | string | Who did the inviting, as the recipient should read it. Absent, the company name is used — "Beispiel GmbH invited you" reads better than the name of somebody they have never heard of. Ignored on a buyer's call: the mail then names the buyer, because a name in the shop's own mail is a claim the shop makes. |  |
-| url | string | Where the invitation points — the storefront sign-in, normally. There is no token in it: the person is already a member and only has to sign in. |  |
+| url | string | Where the invitation points — the storefront sign-in, normally. There is no token in it: the person is already a member and only has to sign in. Absent, the shop's first link origin is used, and `invited_at` is stamped either way. |  |
 
 
 ```http request
@@ -174,7 +202,7 @@ POST https://api.revenexx.com/v1/customers/contacts/{contact_id}/registration/ap
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | contact_id | string | **Required** The applicant. It is the CONTACT that is approved — the organization it founded is unblocked with it. |  |
-| decided_by | string | Who approved it — recorded on the contact and carried in the event. Free text (operator id or email); this app does not resolve it. |  |
+| decided_by | string | Who approved it — recorded on the contact and carried in the event. Free text (operator id or email). An operator the gateway authenticated is recorded as themselves instead, so the Cockpit sends none. |  |
 
 
 ```http request
@@ -188,15 +216,59 @@ POST https://api.revenexx.com/v1/customers/contacts/{contact_id}/registration/re
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | contact_id | string | **Required** The applicant being declined. |  |
-| decided_by | string | Who rejected it — recorded on the contact and carried in the event. |  |
+| decided_by | string | Who rejected it — recorded on the contact and carried in the event. An operator the gateway authenticated is recorded as themselves instead. |  |
 | reason | string | Why the application was declined. Always stored on the contact. It only reaches the APPLICANT when the tenant's registration_reason_disclosed setting is on — the event payload then carries it, and so does the 403 the login answers. |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/customers/contacts/{contact_id}/reinvite
+```
+
+** For somebody who has not taken the first invitation up: the same mail again, and `invited_at` moves. Only while the shop access says 'invited'. Without a `url` the shop's first link origin is where it points. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| contact_id | string | **Required** The person whose invitation is sent again. |  |
+| url | string | Where the invitation points. The first link origin when absent. |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/customers/contacts/{contact_id}/restore-access
+```
+
+** The status returns to 'active', the reason is cleared, and the login is switched on again — unless the person is an application nobody decided, whose login stays off until approval. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| contact_id | string | **Required** The person whose access comes back. |  |
+| actor | string | Who gave it back. |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/customers/contacts/{contact_id}/revoke-access
+```
+
+** The login is switched off, the status becomes 'blocked' with the reason, and `contact.blocked` is published — the same as an edit to 'blocked', with the reason on the record and on the timeline. The record, the role and the history stay. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| contact_id | string | **Required** The person whose access is revoked. |  |
+| actor | string | Who revoked it. |  |
+| note | string | What happened, in the merchant's own words. Stored on the timeline entry. |  |
+| reason | string | Why the access is revoked. Stored as its words in the tenant's default language. |  |
 
 
 ```http request
 DELETE https://api.revenexx.com/v1/customers/contacts/{id}
 ```
 
-** A contact is a PERSON, and the unit that logs in: one platform user, one email address, one role held inside its organization. A contact without an organization is a standalone buyer rather than an error, and two people at the same company are two contacts sharing an `organization_id`. Removes the person and their platform login, so they can no longer sign in anywhere. Their company keeps trading; use `status: "blocked"` instead when the intent is to stop one person without erasing what they did. Deleting one takes every `contact_events` and `addresses` row that points at it with it — the foreign keys decide, not this route. **
+** A contact is a PERSON, and the unit that logs in: one platform user, one email address, one role held inside its organization. A contact without an organization is a standalone buyer rather than an error, and two people at the same company are two contacts sharing an `organization_id`. The first DELETE moves the contact to the trash: it keeps everything that points at it, leaves every list, and can no longer sign in or be signed in for. The person's platform login is switched off and every session ended, but kept — so a restore needs no new invitation. A second DELETE on a contact already in the trash deletes it for good, with its platform user — refused while another app still holds an open order, quote, purchase request or approval, an enabled punchout account, a punchout account naming the person as its fallback contact, a customer price list, an active cost centre or a personal voucher. An app that does not answer blocks too. The daily purge runs the same delete once the tenant's trash retention has run out. **
 
 ### Parameters
 
@@ -236,12 +308,38 @@ PUT https://api.revenexx.com/v1/customers/contacts/{id}
 | job_title | string | What this person does at the company — free text on purpose, because it is a title and not a grant. The permission ladder is `role`; overloading a job title with authority silently un-grants everyone the day the ledger is enforced. |  |
 | last_name | string | Family name. Optional for the same reason. |  |
 | locale | string | The language this person is written to in — BCP 47, and one of the store's configured locales. Null falls back to the store default. |  |
-| order_approval_limit | number | Amount ceiling for this person, in the market's currency: with the `orders.approve` permission it is the most they may sign off. Set exactly when `order_approval_mode` is 'limited', and then above 0; null otherwise. An amount, never a grant — the grant comes from the role. Required with `order_approval_mode` 'limited' and refused with any other mode (400 `limited_mode_requires_limit` / `limit_requires_limited_mode`). |  |
-| order_approval_mode | string | How far `orders.approve` reaches for this person: 'none' (no order — the default), 'limited' (up to `order_approval_limit`) or 'unlimited'. Meaningful only with a role that grants `orders.approve`; the grant comes from the role, the reach from here. Default 'none'. Leaving 'limited' without sending `order_approval_limit` clears the amount. |  |
+| order_approval_limit | number | Amount ceiling for this person, in the market's currency: with the `orders.approve` permission it is the most they are meant to sign off. Set exactly when `order_approval_mode` is 'limited', and then above 0; null otherwise. An amount, never a grant — the grant comes from the role. Recorded for the merchant and for procurement's tiered sign-off; the orders app does not read it — whoever holds orders.approve approves or rejects a colleague's order of any amount. Required with `order_approval_mode` 'limited' and refused with any other mode (400 `limited_mode_requires_limit` / `limit_requires_limited_mode`). |  |
+| order_approval_mode | string | How far `orders.approve` is meant to reach for this person: 'none' (the default), 'limited' (up to `order_approval_limit`) or 'unlimited'. Meaningful only with a role that grants `orders.approve`; the grant comes from the role. Recorded for the merchant and for procurement's tiered sign-off; the orders app does not read it — whoever holds orders.approve approves or rejects a colleague's order of any amount. Default 'none'. Leaving 'limited' without sending `order_approval_limit` clears the amount. |  |
 | organization_id | string | The company this person belongs to. NULL is a legitimate state, not a defect: a standalone buyer with no company behind them. Deleting the organization sets this null and keeps the person. Membership is mirrored to the platform team. |  |
 | phone | string | Direct number of this person, as somebody typed it — free text, no format is enforced or normalized. E.164 is what an integration should send. |  |
 | role | string | The person's role INSIDE its organization, and the only thing permissions are derived from. One of the tenant's own roles (GET /customers/roles); a tenant that never edited the ledger has viewer, requester, buyer, approver, admin. Also the team role on the platform mirror. There is no global role — the same person in two companies is two contacts. A tenant that never edited the ledger has viewer, requester, buyer, approver, admin; a create without a role gets the one flagged as default, and a role the tenant does not keep is a 400. |  |
 | status | string | Whether this person may act: 'invited' has been created but has not accepted, 'active' works, 'blocked' cannot log in. A create through the API defaults to 'invited'; a self-registration in an open store lands 'active'. Default 'invited' on create. |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/customers/contacts/{id}/erase
+```
+
+** „Personendaten löschen“ — a person's erasure request under Art. 17 GDPR. It skips the trash: the contact is deleted for good right away, in the trash or not, with its platform user, its addresses and its timeline. The same checks as a final delete apply, because an open order keeps its buyer until it is closed (Art. 17(3)(b)); documents already issued keep their own snapshot in the apps that hold them. Pseudonymising the person in the record history is not done by this call yet — `history_pseudonymised` says so. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required** The person to erase. |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/customers/contacts/{id}/restore
+```
+
+** Brings a contact back from the trash and switches its login back on unless the record itself says no (blocked, or an undecided registration). Refused while its organization is in the trash: restoring the organization brings back the contacts that went with it. Needs the same right as the delete. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required** The contact to restore. |  |
 
 
 ```http request

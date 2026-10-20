@@ -22,6 +22,7 @@ Answered from the gateway's tenant cache for up to 30 minutes and dropped the mo
 | code | string | Exact match on `code`. The entity's stable identifier — a domain of records the catalog POINTS AT instead of duplicating, so a brand is edited once and not on nine thousand products. Unique per tenant. |  |
 | labels | string | Exact match on `labels`. What the entity is called, per language tag — the heading over its record list. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
 | image | string | Exact match on `image`. A delivery path or URL for the entity's own icon. Cosmetic — nothing in this app resolves it. |  |
+| active | boolean | Exact match on `active`. False when the merchant retired this entry. Records that already carry it keep it and every read still answers it, so a stored reference keeps resolving. It is no longer assigned anew: a write that newly names it answers 409 `entry_inactive`, and choice lists leave it out — filter a list with `?active=true` to build a picker. Default true. |  |
 | external_id | string | Exact match on `external_id`. The key this domain has in the system that owns it — the register a brand or manufacturer list is maintained in. Unique per tenant where set. |  |
 | external_refs | string | Exact match on `external_refs`. Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
 | source_synced_at | string | Exact match on `source_synced_at`. When this row was last CONFIRMED against its source — not when it last changed. A delta run asks for everything it has not seen since its last pass, and over 25 000 products that is the difference between an index scan and reading the whole catalog, which is the reason the column is indexed. An edit made here leaves it alone, so a value that has stopped moving says the feed has gone quiet, not that nobody works the record. Null for a row no source owns. |  |
@@ -45,6 +46,7 @@ A domain of records the catalog POINTS AT instead of duplicating — brands, man
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
+| active | boolean | False when the merchant retired this entry. Records that already carry it keep it and every read still answers it, so a stored reference keeps resolving. It is no longer assigned anew: a write that newly names it answers 409 `entry_inactive`, and choice lists leave it out — filter a list with `?active=true` to build a picker. Default true. |  |
 | code | string | The entity's stable identifier — a domain of records the catalog POINTS AT instead of duplicating, so a brand is edited once and not on nine thousand products. Unique per tenant. |  |
 | external_id | string | The key this domain has in the system that owns it — the register a brand or manufacturer list is maintained in. Unique per tenant where set. |  |
 | external_refs | object | Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. |  |
@@ -106,6 +108,7 @@ A body that names nothing writable is refused with 400 rather than answered as a
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The `reference_entities` row to address, by id. It names a row THIS TENANT holds, so no example is published — a uuid this app invented would document a call that answers 404, and a real one would be another tenant's data. Read one from `GET /v1/products/reference_entities`. An id no reference entitie of this tenant carries answers 404; a malformed one answers 400 before the route is reached. |  |
+| active | boolean | False when the merchant retired this entry. Records that already carry it keep it and every read still answers it, so a stored reference keeps resolving. It is no longer assigned anew: a write that newly names it answers 409 `entry_inactive`, and choice lists leave it out — filter a list with `?active=true` to build a picker. Default true. |  |
 | code | string | The entity's stable identifier — a domain of records the catalog POINTS AT instead of duplicating, so a brand is edited once and not on nine thousand products. Unique per tenant. |  |
 | external_id | string | The key this domain has in the system that owns it — the register a brand or manufacturer list is maintained in. Unique per tenant where set. |  |
 | external_refs | object | Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. |  |
@@ -138,6 +141,7 @@ Answered from the gateway's tenant cache for up to 30 minutes and dropped the mo
 | code | string | Exact match on `code`. The record's stable identifier — the value a product stores when it points at this record, the same way a select stores an option code. Unique within the entity. |  |
 | labels | string | Exact match on `labels`. What the record is called, per language tag — the text a picker shows while the code is what gets written. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
 | attribute_values | string | Exact match on `attribute_values`. Every attribute value the record carries, in ONE jsonb document — the core of an attribute-driven PIM. A record's properties are not columns here: they are rows in `attributes`, selected per family by `family_attributes`, and their values live under their attribute CODE inside this object. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
+| active | boolean | Exact match on `active`. False when the merchant retired this entry. Records that already carry it keep it and every read still answers it, so a stored reference keeps resolving. It is no longer assigned anew: a write that newly names it answers 409 `entry_inactive`, and choice lists leave it out — filter a list with `?active=true` to build a picker. Default true. |  |
 | external_id | string | Exact match on `external_id`. The key this record has in the system that owns it — a manufacturer number in the ERP, a supplier row keyed by GLN, a brand id in the PIM. Unique per tenant where set, so a brand list re-imports without founding a second Acme. Distinct from `code`, which is the value a product stores when it points here. |  |
 | external_refs | string | Exact match on `external_refs`. Every OTHER system that knows this row, keyed by system name — a second PIM, a supplier's feed, a GTIN register. `external_id` is the system that OWNS the row; this is the rest, so the next identifier standard costs a key in here rather than a column and a migration. It filters the way every jsonb column of this app filters: the WHOLE document is compared, so there is no asking for one key — read the row by `external_id` and take this off the answer. The whole jsonb document is compared, serialized as JSON — this is equality, not a path or containment query, and `null` cannot be matched this way. A value that does not parse as JSON is refused with 400 `invalid_value`, naming this filter, before the request reaches the data plane. |  |
 | source_synced_at | string | Exact match on `source_synced_at`. When this row was last CONFIRMED against its source — not when it last changed. A delta run asks for everything it has not seen since its last pass, and over 25 000 products that is the difference between an index scan and reading the whole catalog, which is the reason the column is indexed. An edit made here leaves it alone, so a value that has stopped moving says the feed has gone quiet, not that nobody works the record. Null for a row no source owns. |  |
@@ -160,18 +164,21 @@ One record of a reference entity — one brand, one manufacturer. A product that
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
+| active | boolean | False when the merchant retired this entry. Records that already carry it keep it and every read still answers it, so a stored reference keeps resolving. It is no longer assigned anew: a write that newly names it answers 409 `entry_inactive`, and choice lists leave it out — filter a list with `?active=true` to build a picker. Default true. |  |
 | attribute_values | object | Every attribute value the record carries, in ONE jsonb document — the core of an attribute-driven PIM. A record's properties are not columns here: they are rows in `attributes`, selected per family by `family_attributes`, and their values live under their attribute CODE inside this object.
 
 Four buckets, and an attribute's own flags decide which one it writes to:
 
   `common`                    the attribute is neither localizable nor scopable — one value, full stop.
                               `{"common": {"net_weight": 2.4, "colour": "black"}}`
-  `locale_specific`           `localizable`: one value per language tag.
-                              `{"locale_specific": {"de_DE": {"name": "Akku-Bohrschrauber"}}}`
+  `locale_specific`           `localizable`: one value per locale key.
+                              `{"locale_specific": {"de": {"name": "Akku-Bohrschrauber"}}}`
   `channel_specific`          `scopable`: one value per channel.
                               `{"channel_specific": {"b2b": {"minimum_order_quantity": 6}}}`
-  `channel_locale_specific`   both: one value per channel AND language tag.
-                              `{"channel_locale_specific": {"b2b": {"de_DE": {"description": "…"}}}}`
+  `channel_locale_specific`   both: one value per channel AND locale key.
+                              `{"channel_locale_specific": {"b2b": {"de": {"description": "…"}}}}`
+
+A locale key is the WRITE KEY of this tenant's locale policy (`GET /v1/markets/locale-policy`, `locales[].write`): the bare language (`de`) when the tenant keys translations by language, the full locale (`de-DE`) when it keys them by region. Another spelling of the same locale (`de_DE`, `de-de`, `deu`) is accepted and stored under that key; a language no market of the tenant configures is refused with 422 `unknown_locale`, a bare language two regional keys share with 422 `ambiguous_locale`, and anything that is not a language tag with 422 `invalid_locale`. The database refuses any key that is not `xx` or `xx-YY` whichever way it is written.
 
 A reader takes the most specific bucket that carries the code and falls back through locale, then channel, then `common`. `common` is always last and always consulted, because early imports wrote everything there whatever an attribute's flags said — a reader that skipped it reports an imported catalog as empty. `GET /products/attribute-schema` answers, per field, the exact path a value belongs at (`storage.path`) and that full fallback order (`from`), so no client has to re-derive any of this.
 
@@ -240,18 +247,21 @@ A body that names nothing writable is refused with 400 rather than answered as a
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The `reference_entity_records` row to address, by id. It names a row THIS TENANT holds, so no example is published — a uuid this app invented would document a call that answers 404, and a real one would be another tenant's data. Read one from `GET /v1/products/reference_entity_records`. An id no reference entity record of this tenant carries answers 404; a malformed one answers 400 before the route is reached. |  |
+| active | boolean | False when the merchant retired this entry. Records that already carry it keep it and every read still answers it, so a stored reference keeps resolving. It is no longer assigned anew: a write that newly names it answers 409 `entry_inactive`, and choice lists leave it out — filter a list with `?active=true` to build a picker. Default true. |  |
 | attribute_values | object | Every attribute value the record carries, in ONE jsonb document — the core of an attribute-driven PIM. A record's properties are not columns here: they are rows in `attributes`, selected per family by `family_attributes`, and their values live under their attribute CODE inside this object.
 
 Four buckets, and an attribute's own flags decide which one it writes to:
 
   `common`                    the attribute is neither localizable nor scopable — one value, full stop.
                               `{"common": {"net_weight": 2.4, "colour": "black"}}`
-  `locale_specific`           `localizable`: one value per language tag.
-                              `{"locale_specific": {"de_DE": {"name": "Akku-Bohrschrauber"}}}`
+  `locale_specific`           `localizable`: one value per locale key.
+                              `{"locale_specific": {"de": {"name": "Akku-Bohrschrauber"}}}`
   `channel_specific`          `scopable`: one value per channel.
                               `{"channel_specific": {"b2b": {"minimum_order_quantity": 6}}}`
-  `channel_locale_specific`   both: one value per channel AND language tag.
-                              `{"channel_locale_specific": {"b2b": {"de_DE": {"description": "…"}}}}`
+  `channel_locale_specific`   both: one value per channel AND locale key.
+                              `{"channel_locale_specific": {"b2b": {"de": {"description": "…"}}}}`
+
+A locale key is the WRITE KEY of this tenant's locale policy (`GET /v1/markets/locale-policy`, `locales[].write`): the bare language (`de`) when the tenant keys translations by language, the full locale (`de-DE`) when it keys them by region. Another spelling of the same locale (`de_DE`, `de-de`, `deu`) is accepted and stored under that key; a language no market of the tenant configures is refused with 422 `unknown_locale`, a bare language two regional keys share with 422 `ambiguous_locale`, and anything that is not a language tag with 422 `invalid_locale`. The database refuses any key that is not `xx` or `xx-YY` whichever way it is written.
 
 A reader takes the most specific bucket that carries the code and falls back through locale, then channel, then `common`. `common` is always last and always consulted, because early imports wrote everything there whatever an attribute's flags said — a reader that skipped it reports an imported catalog as empty. `GET /products/attribute-schema` answers, per field, the exact path a value belongs at (`storage.path`) and that full fallback order (`from`), so no client has to re-derive any of this.
 

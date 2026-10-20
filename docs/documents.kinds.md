@@ -16,6 +16,7 @@ GET https://api.revenexx.com/v1/documents/kinds
 | title | string | Filter to rows whose `title` is exactly this value. What the value is called for a person, in the tenant's working language. At least one character. A locale map goes in `labels`. |  |
 | description | string | Filter to rows whose `description` is exactly this value. One sentence a person reads under the title — what this value is for. Optional. |  |
 | is_default | boolean | Filter to the default kind. Exactly one row carries the flag, so `true` answers one. |  |
+| active | boolean | Filter by whether the kind is still offered. `true` is what a picker for a new document shows; `false` lists the kinds a merchant retired. |  |
 | tone | string | Filter to rows whose `tone` is exactly this value. The badge colour a screen renders this value in — semantic, not a hex code: the vocabulary says what a value MEANS and the client decides what 'warning' looks like in its own design system. One of 'neutral', 'info', 'success', 'warning', 'danger'. |  |
 | position | integer | Filter to rows whose `position` is exactly this value. Sort order in a select or a list, ascending. Values that tie fall back to their code, so a table where every position is 0 is still in a stable order. |  |
 | is_system | boolean | Filter by whether this app seeded the value. `false` is the set a merchant added themselves. |  |
@@ -36,6 +37,7 @@ POST https://api.revenexx.com/v1/documents/kinds
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
+| active | boolean | Whether the value is still offered for a new record. An inactive value stays valid on every document that already carries it and keeps its title, but it is left out of the values the vocabulary offers and a new document may not take it on. The default cannot be inactive: deactivating it, or making an inactive value the default, is refused with 409. Every value is active until a merchant says otherwise. Defaults to `true` on create. `false` retires the kind from new documents; the default may not be retired. |  |
 | code | string | The value's stable identifier, and the string a document stores in `kind`. Lowercase letters, digits, `-` and `_`, starting with a letter. Unique per tenant and FIXED once created: renaming it would orphan every document carrying it, so an edit that changes it is refused and the title is what a merchant renames. |  |
 | description | string | One sentence a person reads under the title — what this value is for. Optional. |  |
 | descriptions | object | The description per language tag. Falls back to `description` when a tag is missing. |  |
@@ -96,6 +98,7 @@ PUT https://api.revenexx.com/v1/documents/kinds/{id}
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The document kind to edit. |  |
+| active | boolean | Whether the value is still offered for a new record. An inactive value stays valid on every document that already carries it and keeps its title, but it is left out of the values the vocabulary offers and a new document may not take it on. The default cannot be inactive: deactivating it, or making an inactive value the default, is refused with 409. Every value is active until a merchant says otherwise. Defaults to `true` on create. `false` retires the kind from new documents; the default may not be retired. |  |
 | code | string | The value's stable identifier, and the string a document stores in `kind`. Lowercase letters, digits, `-` and `_`, starting with a letter. Unique per tenant and FIXED once created: renaming it would orphan every document carrying it, so an edit that changes it is refused and the title is what a merchant renames. |  |
 | description | string | One sentence a person reads under the title — what this value is for. Optional. |  |
 | descriptions | object | The description per language tag. Falls back to `description` when a tag is missing. |  |

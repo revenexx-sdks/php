@@ -14,6 +14,7 @@ $productsDataModel = new ProductsDataModel($client);
 
 $result = $productsDataModel->productsFamiliesUpdate(
     id: '',
+    active: true, // optional
     code: 'power_tools', // optional
     externalId: 'EC001234', // optional
     externalRefs: [

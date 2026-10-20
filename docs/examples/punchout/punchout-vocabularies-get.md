@@ -14,5 +14,5 @@ $client = (new Client())
 $punchout = new Punchout($client);
 
 $result = $punchout->punchoutVocabulariesGet(
-    name: PunchoutVocabulariesGetName::ENTRYPROBEOUTCOME()
+    name: PunchoutVocabulariesGetName::AUTHSTRATEGIES()
 );```

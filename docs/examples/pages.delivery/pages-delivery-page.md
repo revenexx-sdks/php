@@ -15,5 +15,7 @@ $pagesDelivery = new PagesDelivery($client);
 $result = $pagesDelivery->pagesDeliveryPage(
     slug: 'about-us', // optional
     id: '', // optional
-    langcode: 'de' // optional
+    langcode: 'de', // optional
+    audiences: 'newsletter-de,stammkunden', // optional
+    consents: 'marketing,analytics' // optional
 );```

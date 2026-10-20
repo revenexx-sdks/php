@@ -6,6 +6,7 @@ use Revenexx\RevenexxException;
 use Revenexx\Client;
 use Revenexx\Service;
 use Revenexx\InputFile;
+use Revenexx\Enums\Discarded;
 use Revenexx\Enums\BudgetType;
 use Revenexx\Enums\Conditions;
 use Revenexx\Enums\CostCentersRestrictionsCreateType;
@@ -87,10 +88,11 @@ class CostCenters extends Service
      * @param ?int $limit
      * @param ?int $offset
      * @param ?string $order
+     * @param ?Discarded $discarded
      * @throws RevenexxException
      * @return array
      */
-    public function costCentersBudgetsList(?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function costCentersBudgetsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?Discarded $discarded = null): array
     {
         $apiPath = str_replace(
             [],
@@ -110,6 +112,10 @@ class CostCenters extends Service
 
         if (!is_null($order)) {
             $apiParams['order'] = $order;
+        }
+
+        if (!is_null($discarded)) {
+            $apiParams['discarded'] = $discarded;
         }
 
         $apiHeaders = [];
@@ -322,6 +328,37 @@ class CostCenters extends Service
         $apiParams['currency'] = $currency;
         $apiParams['note'] = $note;
         $apiParams['target'] = $target;
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * @param string $id
+     * @param ?string $actor
+     * @param ?string $note
+     * @throws RevenexxException
+     * @return array
+     */
+    public function costCentersBudgetsDiscard(string $id, ?string $actor = null, ?string $note = null): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/cost-centers/budgets/{id}/discard'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+        $apiParams['actor'] = $actor;
+        $apiParams['note'] = $note;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -805,6 +842,32 @@ class CostCenters extends Service
 
         return $this->client->call(
             Client::METHOD_PUT,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * @param string $id
+     * @throws RevenexxException
+     * @return array
+     */
+    public function costCentersCostCentersArchive(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/cost-centers/cost-centers/{id}/archive'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_POST,
             $apiPath,
             $apiHeaders,
             $apiParams

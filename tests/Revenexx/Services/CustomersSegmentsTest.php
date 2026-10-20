@@ -9,6 +9,8 @@ use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\Source;
 use Revenexx\Enums\SegmentMemberSource;
 use Revenexx\Enums\RuleMatch;
+use Revenexx\Enums\MemberType;
+use Revenexx\Enums\Trashed;
 use Revenexx\Enums\SegmentRuleMatch;
 use Revenexx\Enums\Target;
 
@@ -119,7 +121,6 @@ final class CustomersSegmentsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->customersSegments->customersSegmentsCreate(
-            "key_accounts"
         );
 
         $this->assertSame($data, $response);
@@ -135,6 +136,20 @@ final class CustomersSegmentsTest extends TestCase {
 
         $response = $this->customersSegments->customersSegmentsRulesRecomputeAll(
             array()
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersSegmentsTrashEmpty(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersSegments->customersSegmentsTrashEmpty(
         );
 
         $this->assertSame($data, $response);
@@ -179,6 +194,21 @@ final class CustomersSegmentsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->customersSegments->customersSegmentsUpdate(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersSegmentsRestore(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersSegments->customersSegmentsRestore(
             ""
         );
 

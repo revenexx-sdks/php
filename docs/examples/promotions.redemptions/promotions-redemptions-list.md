@@ -19,10 +19,13 @@ $result = $promotionsRedemptions->promotionsRedemptionsList(
     id: '', // optional
     promotionId: '', // optional
     voucherId: '', // optional
+    voucherCode: '', // optional
+    batchId: '', // optional
     cartId: '', // optional
     orderId: '', // optional
+    orderNumber: '', // optional
     contactId: '', // optional
     organizationId: '', // optional
-    state: '', // optional
-    currency: '' // optional
+    redeemedBy: '', // optional
+    state: '' // optional
 );```

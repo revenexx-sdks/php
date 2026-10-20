@@ -17,6 +17,7 @@ $result = $customersSegments->customersSegmentMembersList(
     id: '', // optional
     segmentId: '', // optional
     organizationId: '', // optional
+    contactId: '', // optional
     source: Source::MANUAL(), // optional
     createdAt: '2026-01-01T12:00:00Z', // optional
     limit: 1, // optional

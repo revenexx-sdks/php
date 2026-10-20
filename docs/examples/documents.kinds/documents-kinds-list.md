@@ -19,6 +19,7 @@ $result = $documentsKinds->documentsKindsList(
     title: 'Invoice', // optional
     description: 'What the buyer owes for an order.', // optional
     isDefault: true, // optional
+    active: true, // optional
     tone: Tone::NEUTRAL(), // optional
     position: 0, // optional
     isSystem: true, // optional

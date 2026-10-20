@@ -273,6 +273,50 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodPagesPopupsList(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->pages->pagesPopupsList(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPagesPopupsCreate(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->pages->pagesPopupsCreate(
+            "Newsletter-Anmeldung Herbst"
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPagesPopupsUpdate(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->pages->pagesPopupsUpdate(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodPagesSeed(): void {
 
         $data = array();

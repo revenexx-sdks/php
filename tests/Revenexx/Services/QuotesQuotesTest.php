@@ -7,7 +7,9 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\Origin;
+use Revenexx\Enums\QuotesQuotesCopyParts;
 use Revenexx\Enums\Audience;
+use Revenexx\Enums\QuotesQuotesVocabularyName;
 
 final class QuotesQuotesTest extends TestCase {
     private $client;
@@ -16,6 +18,21 @@ final class QuotesQuotesTest extends TestCase {
     protected function setUp(): void {
         $this->client = Mockery::mock(Client::class);
         $this->quotesQuotes = new QuotesQuotes($this->client);
+    }
+
+    public function testMethodQuotesQuotesOpenItems(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->quotesQuotes->quotesQuotesOpenItems(
+            ""
+        );
+
+        $this->assertSame($data, $response);
     }
 
     public function testMethodQuotesQuotesList(): void {
@@ -57,6 +74,21 @@ final class QuotesQuotesTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->quotesQuotes->quotesQuotesGet(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodQuotesQuotesCopy(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->quotesQuotes->quotesQuotesCopy(
             ""
         );
 
@@ -118,6 +150,21 @@ final class QuotesQuotesTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->quotesQuotes->quotesQuotesVocabularies(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodQuotesQuotesVocabulary(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->quotesQuotes->quotesQuotesVocabulary(
+            QuotesQuotesVocabularyName::ACTOR()
         );
 
         $this->assertSame($data, $response);

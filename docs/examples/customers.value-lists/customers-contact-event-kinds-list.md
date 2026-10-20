@@ -12,5 +12,6 @@ $client = (new Client())
 
 $customersValueLists = new CustomersValueLists($client);
 
-$result = $customersValueLists->customersContactEventKindsList();
-```
+$result = $customersValueLists->customersContactEventKindsList(
+    active: true // optional
+);```

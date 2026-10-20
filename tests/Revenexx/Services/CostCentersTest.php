@@ -6,6 +6,7 @@ use Revenexx\Client;
 use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
+use Revenexx\Enums\Discarded;
 use Revenexx\Enums\BudgetType;
 use Revenexx\Enums\Conditions;
 use Revenexx\Enums\CostCentersRestrictionsCreateType;
@@ -133,6 +134,21 @@ final class CostCentersTest extends TestCase {
 
         $response = $this->costCenters->costCentersBudgetsAdjust(
             "",
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCostCentersBudgetsDiscard(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->costCenters->costCentersBudgetsDiscard(
             ""
         );
 
@@ -312,6 +328,21 @@ final class CostCentersTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->costCenters->costCentersCostCentersUpdate(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCostCentersCostCentersArchive(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->costCenters->costCentersCostCentersArchive(
             ""
         );
 

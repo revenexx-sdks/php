@@ -326,22 +326,24 @@ class Channels extends Service
      * itself on first read, so the list is never empty and a channel can always
      * carry a type. Rows come back in `position` order, always: this route is not
      * the generic list mount and takes no `order` — `limit` and `offset` are
-     * the whole of its query, and it takes no filters, so a caller looking for
-     * one code reads the list and matches. The set is bounded: a tenant keeps at
-     * most 200 types, which is the size this app can check a channel's type
-     * against in one query, and POST /channels/types refuses the 201st rather
-     * than build a set it could not read back. `page.total` counts the rows that
-     * exist, not the ones this answer carries, and the order is total —
-     * `position` then `code`, because `position` is not unique and an order that
-     * leaves rows tied is one the database is free to answer differently on the
-     * next page, which is how a walk serves a row twice and skips another.
+     * the whole of its query, and it takes one filter, `active`, and no other, so
+     * a caller looking for one code reads the list and matches. The set is
+     * bounded: a tenant keeps at most 200 types, which is the size this app can
+     * check a channel's type against in one query, and POST /channels/types
+     * refuses the 201st rather than build a set it could not read back.
+     * `page.total` counts the rows that exist, not the ones this answer carries,
+     * and the order is total — `position` then `code`, because `position` is
+     * not unique and an order that leaves rows tied is one the database is free
+     * to answer differently on the next page, which is how a walk serves a row
+     * twice and skips another.
      *
      * @param ?int $limit
      * @param ?int $offset
+     * @param ?bool $active
      * @throws RevenexxException
      * @return array
      */
-    public function channelsTypesList(?int $limit = null, ?int $offset = null): array
+    public function channelsTypesList(?int $limit = null, ?int $offset = null, ?bool $active = null): array
     {
         $apiPath = str_replace(
             [],
@@ -357,6 +359,10 @@ class Channels extends Service
 
         if (!is_null($offset)) {
             $apiParams['offset'] = $offset;
+        }
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
         }
 
         $apiHeaders = [];
@@ -389,6 +395,7 @@ class Channels extends Service
      *
      * @param string $code
      * @param string $title
+     * @param ?bool $active
      * @param ?string $description
      * @param ?array $descriptions
      * @param ?bool $isDefault
@@ -398,7 +405,7 @@ class Channels extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function channelsTypesCreate(string $code, string $title, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?ChannelTypeTone $tone = null): array
+    public function channelsTypesCreate(string $code, string $title, ?bool $active = null, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?ChannelTypeTone $tone = null): array
     {
         $apiPath = str_replace(
             [],
@@ -409,6 +416,10 @@ class Channels extends Service
         $apiParams = [];
         $apiParams['code'] = $code;
         $apiParams['title'] = $title;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
         $apiParams['description'] = $description;
         $apiParams['descriptions'] = $descriptions;
 
@@ -437,34 +448,35 @@ class Channels extends Service
     }
 
     /**
-     * Retiring a type IS deleting the row — there is no retired flag on
-     * `channel_types` — which is why the two things that would make a deletion
-     * destructive are refused instead of allowed: a type at least one channel
-     * still carries is a 409, and so is the last remaining type. There is no
-     * foreign key behind `channels.type`, so those two checks are not a
-     * convenience on top of the database, they ARE the integrity. Move the
-     * channels to another type first and the delete goes through. Nothing else
-     * goes with it. A type has no dependents once no channel names it: no rows in
-     * this app point at it and none in Baseline do either, since assignments are
-     * made against a channel `code`, never a type. Deleting the type the tenant
-     * had flagged as default is allowed, and the flag is handed to the next type
-     * by position rather than left unheld, so a channel created afterwards still
-     * has something to fall back to. Because the guard is a read followed by a
-     * write with no transaction between them, and no constraint underneath it, a
-     * channel created against this type in the same instant can survive it. Worth
-     * knowing what that leaves, since it is not what "orphaned" usually means:
-     * the channel keeps working. `channels.type` is a stored string that nothing
-     * joins on, so the channel still reads, still filters under `?type=` by that
-     * same string, and still resolves in /channels/context and POST
-     * /channels/visibility — neither of which consults `type` at all. What it
-     * loses is its label, because the types vocabulary is built from the rows and
-     * there is no longer one to render a badge from. An update that does not
-     * mention `type` leaves the value alone; naming it is refused, which is how
-     * the channel is moved to a type that exists. One thing the deletion frees is
-     * wider than the tenant: `channel_types.code` is unique on the column alone,
-     * so the code becomes available platform-wide, not just here. And the seed
-     * does not know the row is gone — POST /channels/defaults and a re-install
-     * both put a deleted SEEDED type back, by design; see that operation.
+     * Retiring a type is `active: false` on an update (RAD-255); deleting removes
+     * the row, which is why the two things that would make a deletion destructive
+     * are refused instead of allowed: a type at least one channel still carries
+     * is a 409, and so is the last remaining type. There is no foreign key behind
+     * `channels.type`, so those two checks are not a convenience on top of the
+     * database, they ARE the integrity. Move the channels to another type first
+     * and the delete goes through. Nothing else goes with it. A type has no
+     * dependents once no channel names it: no rows in this app point at it and
+     * none in Baseline do either, since assignments are made against a channel
+     * `code`, never a type. Deleting the type the tenant had flagged as default
+     * is allowed, and the flag is handed to the next ACTIVE type by position
+     * rather than left unheld, so a channel created afterwards still has
+     * something to fall back to; with no other active type the delete is refused.
+     * Because the guard is a read followed by a write with no transaction between
+     * them, and no constraint underneath it, a channel created against this type
+     * in the same instant can survive it. Worth knowing what that leaves, since
+     * it is not what "orphaned" usually means: the channel keeps working.
+     * `channels.type` is a stored string that nothing joins on, so the channel
+     * still reads, still filters under `?type=` by that same string, and still
+     * resolves in /channels/context and POST /channels/visibility — neither of
+     * which consults `type` at all. What it loses is its label, because the types
+     * vocabulary is built from the rows and there is no longer one to render a
+     * badge from. An update that does not mention `type` leaves the value alone;
+     * naming it is refused, which is how the channel is moved to a type that
+     * exists. One thing the deletion frees is wider than the tenant:
+     * `channel_types.code` is unique on the column alone, so the code becomes
+     * available platform-wide, not just here. And the seed does not know the row
+     * is gone — POST /channels/defaults and a re-install both put a deleted
+     * SEEDED type back, by design; see that operation.
      *
      * @param string $id
      * @throws RevenexxException
@@ -553,6 +565,7 @@ class Channels extends Service
      * one a channel created without one gets.
      *
      * @param string $id
+     * @param ?bool $active
      * @param ?string $description
      * @param ?array $descriptions
      * @param ?bool $isDefault
@@ -563,7 +576,7 @@ class Channels extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function channelsTypesUpdate(string $id, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?string $title = null, ?ChannelTypeTone $tone = null): array
+    public function channelsTypesUpdate(string $id, ?bool $active = null, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?string $title = null, ?ChannelTypeTone $tone = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -573,6 +586,10 @@ class Channels extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
         $apiParams['description'] = $description;
         $apiParams['descriptions'] = $descriptions;
 

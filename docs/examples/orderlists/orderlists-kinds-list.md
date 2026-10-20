@@ -14,5 +14,6 @@ $orderlists = new Orderlists($client);
 
 $result = $orderlists->orderlistsKindsList(
     limit: 50, // optional
-    offset: 0 // optional
+    offset: 0, // optional
+    active: true // optional
 );```

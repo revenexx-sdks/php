@@ -78,6 +78,20 @@ final class PaymentsLedgerTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodPaymentsOrdersRelink(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->paymentsLedger->paymentsOrdersRelink(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodPaymentsOrdersCapture(): void {
 
         $data = array();
@@ -116,7 +130,7 @@ final class PaymentsLedgerTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->paymentsLedger->paymentsVocabulariesGet(
-            PaymentsVocabulariesGetName::DUNNINGSTAGES()
+            PaymentsVocabulariesGetName::CONNECTIONSTATES()
         );
 
         $this->assertSame($data, $response);

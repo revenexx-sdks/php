@@ -19,17 +19,17 @@ $promotionsPromotions = new PromotionsPromotions($client);
 $result = $promotionsPromotions->promotionsEffectsCreate(
     promotionId: '',
     amount: 9.99, // optional
-    appliesTo: [], // optional
+    appliesTo: , // optional
     bundleId: '', // optional
-    customPayload: [], // optional
+    customPayload: , // optional
     customShapeVersion: 1, // optional
     customTypeId: '', // optional
     freeItemQuantity: 1, // optional
-    freeItems: [], // optional
+    freeItems: , // optional
     kind: PromotionsEffectsCreateKind::DISCOUNT(), // optional
     maxDiscount: 9.99, // optional
-    message: [], // optional
-    metadata: [], // optional
+    message: , // optional
+    metadata: , // optional
     position: 1, // optional
     requiresChoice: true, // optional
     spread: true, // optional

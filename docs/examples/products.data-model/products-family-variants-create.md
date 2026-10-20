@@ -15,6 +15,7 @@ $productsDataModel = new ProductsDataModel($client);
 $result = $productsDataModel->productsFamilyVariantsCreate(
     code: 'clothing_by_colour_size',
     familyId: '',
+    active: true, // optional
     axes: [
         '0' => 'colour',
         '1' => 'size'

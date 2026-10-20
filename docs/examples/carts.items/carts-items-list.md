@@ -30,5 +30,6 @@ $result = $cartsItems->cartsItemsList(
     updatedAt: '2026-01-01T12:00:00Z', // optional
     limit: 1, // optional
     offset: 1, // optional
-    order: 'created_at.desc' // optional
+    order: 'created_at.desc', // optional
+    sessionKey: 'a1b2c3d4e5f6' // optional
 );```

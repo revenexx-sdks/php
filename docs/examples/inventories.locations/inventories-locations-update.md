@@ -16,10 +16,14 @@ $inventoriesLocations = new InventoriesLocations($client);
 $result = $inventoriesLocations->inventoriesLocationsUpdate(
     id: '',
     address: [
-        'city' => 'Nuremberg',
-        'country' => 'DE',
-        'postal_code' => '90402',
-        'street' => 'Industriering 4'
+        'address_line1' => 'Industriering 4',
+        'country_code' => 'DE',
+        'formatted' => [
+            '0' => 'Industriering 4',
+            '1' => '90402 Nuremberg'
+        ],
+        'locality' => 'Nuremberg',
+        'postal_code' => '90402'
     ], // optional
     code: 'main', // optional
     enabled: true, // optional

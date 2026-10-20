@@ -4,7 +4,7 @@
 use Revenexx\Client;
 use Revenexx\Services\Messaging;
 use Revenexx\Enums\Scope;
-use Revenexx\Enums\Reason;
+use Revenexx\Enums\SuppressionIndexReason;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -17,7 +17,7 @@ $messaging = new Messaging($client);
 $result = $messaging->suppressionIndex(
     channel: '', // optional
     scope: Scope::ALL(), // optional
-    reason: Reason::HARDBOUNCE(), // optional
+    reason: SuppressionIndexReason::HARDBOUNCE(), // optional
     address: '', // optional
     limit: 1 // optional
 );```

@@ -488,6 +488,55 @@ class Procurement extends Service
     }
 
     /**
+     * The lines of purchase requests still going somewhere — waiting, or
+     * approved and not yet ordered — that name one product. Asked before a
+     * product is deleted for good (RAD-247): a request that names it would become
+     * an order line pointing at nothing. `status` widens or narrows which request
+     * states count. Each line carries its request's `request_number` and
+     * `request_status`; lines are ordered by request number, then position. Not
+     * narrowed for a storefront contact, like every read address here.
+     *
+     * @param string $productId
+     * @param ?string $status
+     * @param ?int $limit
+     * @param ?int $offset
+     * @throws RevenexxException
+     * @return array
+     */
+    public function procurementPurchaseRequestItemsOpen(string $productId, ?string $status = null, ?int $limit = null, ?int $offset = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/procurement/open-request-items'
+        );
+
+        $apiParams = [];
+        $apiParams['product_id'] = $productId;
+
+        if (!is_null($status)) {
+            $apiParams['status'] = $status;
+        }
+
+        if (!is_null($limit)) {
+            $apiParams['limit'] = $limit;
+        }
+
+        if (!is_null($offset)) {
+            $apiParams['offset'] = $offset;
+        }
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
      * @param ?int $limit
      * @param ?int $offset
      * @param ?string $order
@@ -1016,6 +1065,7 @@ class Procurement extends Service
      * @param ?string $number
      * @param ?string $organizationId
      * @param ?array $payment
+     * @param ?string $senderCountry
      * @param ?array $shipping
      * @param ?array $shippingAddress
      * @param ?float $shippingTotal
@@ -1025,7 +1075,7 @@ class Procurement extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function procurementPurchaseRequestsUpdate(string $id, ?array $billingAddress = null, ?array $buyer = null, ?string $cartId = null, ?string $channelId = null, ?string $contactId = null, ?string $currency = null, ?string $customerOrderNumber = null, ?string $externalRef = null, ?float $grandTotal = null, ?int $itemCount = null, ?array $metadata = null, ?string $number = null, ?string $organizationId = null, ?array $payment = null, ?array $shipping = null, ?array $shippingAddress = null, ?float $shippingTotal = null, ?float $subtotal = null, ?float $taxTotal = null, ?array $userData = null): array
+    public function procurementPurchaseRequestsUpdate(string $id, ?array $billingAddress = null, ?array $buyer = null, ?string $cartId = null, ?string $channelId = null, ?string $contactId = null, ?string $currency = null, ?string $customerOrderNumber = null, ?string $externalRef = null, ?float $grandTotal = null, ?int $itemCount = null, ?array $metadata = null, ?string $number = null, ?string $organizationId = null, ?array $payment = null, ?string $senderCountry = null, ?array $shipping = null, ?array $shippingAddress = null, ?float $shippingTotal = null, ?float $subtotal = null, ?float $taxTotal = null, ?array $userData = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -1061,6 +1111,7 @@ class Procurement extends Service
         }
         $apiParams['organization_id'] = $organizationId;
         $apiParams['payment'] = $payment;
+        $apiParams['sender_country'] = $senderCountry;
         $apiParams['shipping'] = $shipping;
         $apiParams['shipping_address'] = $shippingAddress;
 
@@ -1215,13 +1266,14 @@ class Procurement extends Service
      * @param ?array $metadata
      * @param ?string $organizationId
      * @param ?array $payment
+     * @param ?string $senderCountry
      * @param ?array $shipping
      * @param ?array $shippingAddress
      * @param ?array $userData
      * @throws RevenexxException
      * @return array
      */
-    public function procurementSubmit(string $cartId, array $items, ?array $billingAddress = null, ?array $buyer = null, ?string $channelId = null, ?string $contactId = null, ?string $currency = null, ?string $customerOrderNumber = null, ?string $externalRef = null, ?array $metadata = null, ?string $organizationId = null, ?array $payment = null, ?array $shipping = null, ?array $shippingAddress = null, ?array $userData = null): array
+    public function procurementSubmit(string $cartId, array $items, ?array $billingAddress = null, ?array $buyer = null, ?string $channelId = null, ?string $contactId = null, ?string $currency = null, ?string $customerOrderNumber = null, ?string $externalRef = null, ?array $metadata = null, ?string $organizationId = null, ?array $payment = null, ?string $senderCountry = null, ?array $shipping = null, ?array $shippingAddress = null, ?array $userData = null): array
     {
         $apiPath = str_replace(
             [],
@@ -1245,9 +1297,41 @@ class Procurement extends Service
         $apiParams['metadata'] = $metadata;
         $apiParams['organization_id'] = $organizationId;
         $apiParams['payment'] = $payment;
+        $apiParams['sender_country'] = $senderCountry;
         $apiParams['shipping'] = $shipping;
         $apiParams['shipping_address'] = $shippingAddress;
         $apiParams['user_data'] = $userData;
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * @param string $cartId
+     * @param ?string $costCenterId
+     * @param ?string $customerOrderNumber
+     * @throws RevenexxException
+     * @return array
+     */
+    public function procurementSubmitCart(string $cartId, ?string $costCenterId = null, ?string $customerOrderNumber = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/procurement/submit-cart'
+        );
+
+        $apiParams = [];
+        $apiParams['cart_id'] = $cartId;
+        $apiParams['cost_center_id'] = $costCenterId;
+        $apiParams['customer_order_number'] = $customerOrderNumber;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';

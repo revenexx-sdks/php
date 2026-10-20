@@ -86,8 +86,21 @@ final class PromotionsVouchersTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->promotionsVouchers->promotionsBatchesUpdate(
-            "",
-            "",
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPromotionsBatchesDisable(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->promotionsVouchers->promotionsBatchesDisable(
             ""
         );
 
@@ -103,6 +116,21 @@ final class PromotionsVouchersTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->promotionsVouchers->promotionsBatchesExport(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPromotionsBatchesExportFile(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->promotionsVouchers->promotionsBatchesExportFile(
             ""
         );
 
@@ -225,7 +253,6 @@ final class PromotionsVouchersTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->promotionsVouchers->promotionsVoucherReservationsUpdate(
-            "",
             ""
         );
 
@@ -301,8 +328,6 @@ final class PromotionsVouchersTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->promotionsVouchers->promotionsVouchersUpdate(
-            "",
-            "",
             ""
         );
 

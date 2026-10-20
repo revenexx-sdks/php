@@ -17,15 +17,17 @@ class QuotesRanges extends Service
 
     /**
      * The counters quote numbers are drawn from. A market points at one by its
-     * `code`; the app seeds `quote` with the prefix `ANG-`.
+     * `code`; the app seeds `quote` with the prefix `ANG-`. Every range is
+     * listed, switched off or not, unless `active` asks for one kind.
      *
      * @param ?int $limit
      * @param ?int $offset
      * @param ?string $order
+     * @param ?bool $active
      * @throws RevenexxException
      * @return array
      */
-    public function quotesRangesList(?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function quotesRangesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?bool $active = null): array
     {
         $apiPath = str_replace(
             [],
@@ -47,6 +49,10 @@ class QuotesRanges extends Service
             $apiParams['order'] = $order;
         }
 
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
+
         $apiHeaders = [];
 
         return $this->client->call(
@@ -62,20 +68,23 @@ class QuotesRanges extends Service
      * another. The code is unique per tenant.
      *
      * @param string $code
+     * @param ?bool $active
      * @param ?int $counter
      * @param ?string $createdAt
      * @param ?string $id
+     * @param ?array $labels
      * @param ?int $padding
      * @param ?int $positionStep
      * @param ?string $prefix
      * @param ?int $step
      * @param ?string $suffix
      * @param ?string $tenantId
+     * @param ?string $title
      * @param ?string $updatedAt
      * @throws RevenexxException
      * @return array
      */
-    public function quotesRangesCreate(string $code, ?int $counter = null, ?string $createdAt = null, ?string $id = null, ?int $padding = null, ?int $positionStep = null, ?string $prefix = null, ?int $step = null, ?string $suffix = null, ?string $tenantId = null, ?string $updatedAt = null): array
+    public function quotesRangesCreate(string $code, ?bool $active = null, ?int $counter = null, ?string $createdAt = null, ?string $id = null, ?array $labels = null, ?int $padding = null, ?int $positionStep = null, ?string $prefix = null, ?int $step = null, ?string $suffix = null, ?string $tenantId = null, ?string $title = null, ?string $updatedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -85,6 +94,10 @@ class QuotesRanges extends Service
 
         $apiParams = [];
         $apiParams['code'] = $code;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
 
         if (!is_null($counter)) {
             $apiParams['counter'] = $counter;
@@ -97,6 +110,7 @@ class QuotesRanges extends Service
         if (!is_null($id)) {
             $apiParams['id'] = $id;
         }
+        $apiParams['labels'] = $labels;
 
         if (!is_null($padding)) {
             $apiParams['padding'] = $padding;
@@ -121,6 +135,7 @@ class QuotesRanges extends Service
         if (!is_null($tenantId)) {
             $apiParams['tenant_id'] = $tenantId;
         }
+        $apiParams['title'] = $title;
 
         if (!is_null($updatedAt)) {
             $apiParams['updated_at'] = $updatedAt;
@@ -140,7 +155,8 @@ class QuotesRanges extends Service
     /**
      * Creates the `quote` range if it is missing. Idempotent, and what an
      * integration calls first — the install event does not reliably fire on a
-     * marketplace install.
+     * marketplace install. A range that exists is left as it is, so one a
+     * merchant switched off stays off.
      *
      * @param ?array $library
      * @param ?array $menus
@@ -242,21 +258,24 @@ class QuotesRanges extends Service
      * unique index then refuses.
      *
      * @param string $id
+     * @param ?bool $active
      * @param ?string $code
      * @param ?int $counter
      * @param ?string $createdAt
      * @param ?string $idBody
+     * @param ?array $labels
      * @param ?int $padding
      * @param ?int $positionStep
      * @param ?string $prefix
      * @param ?int $step
      * @param ?string $suffix
      * @param ?string $tenantId
+     * @param ?string $title
      * @param ?string $updatedAt
      * @throws RevenexxException
      * @return array
      */
-    public function quotesRangesUpdate(string $id, ?string $code = null, ?int $counter = null, ?string $createdAt = null, ?string $idBody = null, ?int $padding = null, ?int $positionStep = null, ?string $prefix = null, ?int $step = null, ?string $suffix = null, ?string $tenantId = null, ?string $updatedAt = null): array
+    public function quotesRangesUpdate(string $id, ?bool $active = null, ?string $code = null, ?int $counter = null, ?string $createdAt = null, ?string $idBody = null, ?array $labels = null, ?int $padding = null, ?int $positionStep = null, ?string $prefix = null, ?int $step = null, ?string $suffix = null, ?string $tenantId = null, ?string $title = null, ?string $updatedAt = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -266,6 +285,10 @@ class QuotesRanges extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
 
         if (!is_null($code)) {
             $apiParams['code'] = $code;
@@ -282,6 +305,7 @@ class QuotesRanges extends Service
         if (!is_null($idBody)) {
             $apiParams['id'] = $idBody;
         }
+        $apiParams['labels'] = $labels;
 
         if (!is_null($padding)) {
             $apiParams['padding'] = $padding;
@@ -306,6 +330,7 @@ class QuotesRanges extends Service
         if (!is_null($tenantId)) {
             $apiParams['tenant_id'] = $tenantId;
         }
+        $apiParams['title'] = $title;
 
         if (!is_null($updatedAt)) {
             $apiParams['updated_at'] = $updatedAt;

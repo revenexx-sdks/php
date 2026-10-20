@@ -19,6 +19,7 @@ $result = $salesRepsCoverage->salesRepsAssignmentRolesList(
     title: 'Field sales', // optional
     description: 'Visits the customer. The rep who travels to the account.', // optional
     isDefault: true, // optional
+    active: true, // optional
     tone: Tone::NEUTRAL(), // optional
     position: 1, // optional
     isSystem: true, // optional

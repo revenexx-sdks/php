@@ -13,5 +13,6 @@ $client = (new Client())
 $carts = new Carts($client);
 
 $result = $carts->cartsGet(
-    id: ''
+    id: '',
+    sessionKey: 'a1b2c3d4e5f6' // optional
 );```

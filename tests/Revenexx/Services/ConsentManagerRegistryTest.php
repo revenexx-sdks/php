@@ -6,7 +6,7 @@ use Revenexx\Client;
 use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
-use Revenexx\Enums\Kind;
+use Revenexx\Enums\ConsentManagerCookiesListKind;
 use Revenexx\Enums\LegalBasis;
 use Revenexx\Enums\GoogleSignals;
 use Revenexx\Enums\LegalBasisOverride;

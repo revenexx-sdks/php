@@ -3,6 +3,7 @@
 
 use Revenexx\Client;
 use Revenexx\Services\CostCenters;
+use Revenexx\Enums\Discarded;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -15,5 +16,6 @@ $costCenters = new CostCenters($client);
 $result = $costCenters->costCentersBudgetsList(
     limit: 1, // optional
     offset: 1, // optional
-    order: '' // optional
+    order: '', // optional
+    discarded: Discarded::INCLUDE() // optional
 );```

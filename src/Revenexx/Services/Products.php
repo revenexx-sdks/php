@@ -6,8 +6,13 @@ use Revenexx\RevenexxException;
 use Revenexx\Client;
 use Revenexx\Service;
 use Revenexx\InputFile;
+use Revenexx\Enums\ProductsListTrashed;
 use Revenexx\Enums\ProductsListKind;
+use Revenexx\Enums\ProductsListStatus;
 use Revenexx\Enums\ProductsKind;
+use Revenexx\Enums\ProductsStatus;
+use Revenexx\Enums\ProductsChannelsAssignMode;
+use Revenexx\Enums\ProductsCopyParts;
 
 class Products extends Service
 {
@@ -31,25 +36,34 @@ class Products extends Service
      * that is NOT a column is dropped rather than refused, and the `filter`
      * object echoes the ones that were understood — that echo is the only way
      * to tell an unfiltered answer from an empty one. It reads rows exactly as
-     * they are stored: no join is resolved, no jsonb value is unpacked, and
-     * soft-deleted products are included — filter on `deleted_at` to read the
-     * live catalog, or use `GET /products/grid`, which excludes them.
+     * they are stored: no join is resolved, no jsonb value is unpacked.
+     * 
+     * Records in the trash are left out: `trashed=only` reads the trash itself,
+     * `trashed=include` both. Any other value of `trashed` is refused with 400.
      *
      * @param ?int $limit
      * @param ?int $offset
      * @param ?string $order
+     * @param ?ProductsListTrashed $trashed
      * @param ?string $id
      * @param ?string $sku
      * @param ?ProductsListKind $kind
      * @param ?string $parentId
      * @param ?string $familyId
      * @param ?string $familyVariantId
+     * @param ?string $manufacturerId
      * @param ?bool $enabled
+     * @param ?ProductsListStatus $status
+     * @param ?string $statusChangedAt
+     * @param ?string $channelRelease
+     * @param ?string $channels
      * @param ?string $taxClass
+     * @param ?string $baseValues
      * @param ?string $attributeValues
      * @param ?string $label
      * @param ?string $quantifiedAssociations
      * @param ?string $completeness
+     * @param ?bool $manufacturerGpsrComplete
      * @param ?string $externalId
      * @param ?string $externalRefs
      * @param ?string $sourceSyncedAt
@@ -57,10 +71,15 @@ class Products extends Service
      * @param ?string $createdAt
      * @param ?string $updatedAt
      * @param ?string $deletedAt
+     * @param ?string $deletedBy
+     * @param ?string $deletedById
+     * @param ?string $trashBatch
+     * @param ?string $purgeAt
+     * @param ?string $purgeBlockedReason
      * @throws RevenexxException
      * @return array
      */
-    public function productsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $sku = null, ?ProductsListKind $kind = null, ?string $parentId = null, ?string $familyId = null, ?string $familyVariantId = null, ?bool $enabled = null, ?string $taxClass = null, ?string $attributeValues = null, ?string $label = null, ?string $quantifiedAssociations = null, ?string $completeness = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $createdAt = null, ?string $updatedAt = null, ?string $deletedAt = null): array
+    public function productsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?ProductsListTrashed $trashed = null, ?string $id = null, ?string $sku = null, ?ProductsListKind $kind = null, ?string $parentId = null, ?string $familyId = null, ?string $familyVariantId = null, ?string $manufacturerId = null, ?bool $enabled = null, ?ProductsListStatus $status = null, ?string $statusChangedAt = null, ?string $channelRelease = null, ?string $channels = null, ?string $taxClass = null, ?string $baseValues = null, ?string $attributeValues = null, ?string $label = null, ?string $quantifiedAssociations = null, ?string $completeness = null, ?bool $manufacturerGpsrComplete = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $createdAt = null, ?string $updatedAt = null, ?string $deletedAt = null, ?string $deletedBy = null, ?string $deletedById = null, ?string $trashBatch = null, ?string $purgeAt = null, ?string $purgeBlockedReason = null): array
     {
         $apiPath = str_replace(
             [],
@@ -80,6 +99,10 @@ class Products extends Service
 
         if (!is_null($order)) {
             $apiParams['order'] = $order;
+        }
+
+        if (!is_null($trashed)) {
+            $apiParams['trashed'] = $trashed;
         }
 
         if (!is_null($id)) {
@@ -106,12 +129,36 @@ class Products extends Service
             $apiParams['family_variant_id'] = $familyVariantId;
         }
 
+        if (!is_null($manufacturerId)) {
+            $apiParams['manufacturer_id'] = $manufacturerId;
+        }
+
         if (!is_null($enabled)) {
             $apiParams['enabled'] = $enabled;
         }
 
+        if (!is_null($status)) {
+            $apiParams['status'] = $status;
+        }
+
+        if (!is_null($statusChangedAt)) {
+            $apiParams['status_changed_at'] = $statusChangedAt;
+        }
+
+        if (!is_null($channelRelease)) {
+            $apiParams['channel_release'] = $channelRelease;
+        }
+
+        if (!is_null($channels)) {
+            $apiParams['channels'] = $channels;
+        }
+
         if (!is_null($taxClass)) {
             $apiParams['tax_class'] = $taxClass;
+        }
+
+        if (!is_null($baseValues)) {
+            $apiParams['base_values'] = $baseValues;
         }
 
         if (!is_null($attributeValues)) {
@@ -128,6 +175,10 @@ class Products extends Service
 
         if (!is_null($completeness)) {
             $apiParams['completeness'] = $completeness;
+        }
+
+        if (!is_null($manufacturerGpsrComplete)) {
+            $apiParams['manufacturer_gpsr_complete'] = $manufacturerGpsrComplete;
         }
 
         if (!is_null($externalId)) {
@@ -156,6 +207,26 @@ class Products extends Service
 
         if (!is_null($deletedAt)) {
             $apiParams['deleted_at'] = $deletedAt;
+        }
+
+        if (!is_null($deletedBy)) {
+            $apiParams['deleted_by'] = $deletedBy;
+        }
+
+        if (!is_null($deletedById)) {
+            $apiParams['deleted_by_id'] = $deletedById;
+        }
+
+        if (!is_null($trashBatch)) {
+            $apiParams['trash_batch'] = $trashBatch;
+        }
+
+        if (!is_null($purgeAt)) {
+            $apiParams['purge_at'] = $purgeAt;
+        }
+
+        if (!is_null($purgeBlockedReason)) {
+            $apiParams['purge_blocked_reason'] = $purgeBlockedReason;
         }
 
         $apiHeaders = [];
@@ -189,27 +260,42 @@ class Products extends Service
      * true, so an import cannot publish twenty thousand unfinished products the
      * moment it lands, and a product that names no family gets the
      * `default_product_family` one. An explicit value in the body always wins
-     * over both.
+     * over both. It also takes three keys that are no column — `name`,
+     * `category_id` and `copy_from` — for the two-step create, and stamps
+     * `status_changed_at`.
      *
      * @param string $sku
      * @param ?array $attributeValues
+     * @param ?array $baseValues
+     * @param ?string $categoryId
+     * @param ?array $channelRelease
+     * @param ?array $channels
      * @param ?array $completeness
+     * @param ?string $copyFrom
      * @param ?string $deletedAt
+     * @param ?string $deletedBy
+     * @param ?string $deletedById
      * @param ?bool $enabled
      * @param ?string $externalId
      * @param ?array $externalRefs
      * @param ?string $familyId
      * @param ?string $familyVariantId
      * @param ?ProductsKind $kind
+     * @param ?string $manufacturerId
+     * @param ?string $name
      * @param ?string $parentId
+     * @param ?string $purgeAt
+     * @param ?string $purgeBlockedReason
      * @param ?array $quantifiedAssociations
      * @param ?array $sourceData
      * @param ?string $sourceSyncedAt
+     * @param ?ProductsStatus $status
      * @param ?string $taxClass
+     * @param ?string $trashBatch
      * @throws RevenexxException
      * @return array
      */
-    public function productsCreate(string $sku, ?array $attributeValues = null, ?array $completeness = null, ?string $deletedAt = null, ?bool $enabled = null, ?string $externalId = null, ?array $externalRefs = null, ?string $familyId = null, ?string $familyVariantId = null, ?ProductsKind $kind = null, ?string $parentId = null, ?array $quantifiedAssociations = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $taxClass = null): array
+    public function productsCreate(string $sku, ?array $attributeValues = null, ?array $baseValues = null, ?string $categoryId = null, ?array $channelRelease = null, ?array $channels = null, ?array $completeness = null, ?string $copyFrom = null, ?string $deletedAt = null, ?string $deletedBy = null, ?string $deletedById = null, ?bool $enabled = null, ?string $externalId = null, ?array $externalRefs = null, ?string $familyId = null, ?string $familyVariantId = null, ?ProductsKind $kind = null, ?string $manufacturerId = null, ?string $name = null, ?string $parentId = null, ?string $purgeAt = null, ?string $purgeBlockedReason = null, ?array $quantifiedAssociations = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?ProductsStatus $status = null, ?string $taxClass = null, ?string $trashBatch = null): array
     {
         $apiPath = str_replace(
             [],
@@ -223,8 +309,27 @@ class Products extends Service
         if (!is_null($attributeValues)) {
             $apiParams['attribute_values'] = $attributeValues;
         }
+
+        if (!is_null($baseValues)) {
+            $apiParams['base_values'] = $baseValues;
+        }
+
+        if (!is_null($categoryId)) {
+            $apiParams['category_id'] = $categoryId;
+        }
+        $apiParams['channel_release'] = $channelRelease;
+
+        if (!is_null($channels)) {
+            $apiParams['channels'] = $channels;
+        }
         $apiParams['completeness'] = $completeness;
+
+        if (!is_null($copyFrom)) {
+            $apiParams['copy_from'] = $copyFrom;
+        }
         $apiParams['deleted_at'] = $deletedAt;
+        $apiParams['deleted_by'] = $deletedBy;
+        $apiParams['deleted_by_id'] = $deletedById;
 
         if (!is_null($enabled)) {
             $apiParams['enabled'] = $enabled;
@@ -237,11 +342,23 @@ class Products extends Service
         if (!is_null($kind)) {
             $apiParams['kind'] = $kind;
         }
+        $apiParams['manufacturer_id'] = $manufacturerId;
+
+        if (!is_null($name)) {
+            $apiParams['name'] = $name;
+        }
         $apiParams['parent_id'] = $parentId;
+        $apiParams['purge_at'] = $purgeAt;
+        $apiParams['purge_blocked_reason'] = $purgeBlockedReason;
         $apiParams['quantified_associations'] = $quantifiedAssociations;
         $apiParams['source_data'] = $sourceData;
         $apiParams['source_synced_at'] = $sourceSyncedAt;
+
+        if (!is_null($status)) {
+            $apiParams['status'] = $status;
+        }
         $apiParams['tax_class'] = $taxClass;
+        $apiParams['trash_batch'] = $trashBatch;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -741,11 +858,70 @@ class Products extends Service
     }
 
     /**
+     * What this app needs once before it is ready, as the checklist the Cockpit's
+     * „Einrichtung“ shows: every step of `cockpit.json#setup`, done or not. A
+     * step is done when what it names exists — at least one live row of a
+     * table, or a setting with a value.
+     *
+     * @throws RevenexxException
+     * @return array
+     */
+    public function productsSetup(): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/products/setup'
+        );
+
+        $apiParams = [];
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Deletes the products in the trash for good, oldest first, up to 200 per
+     * call, each through the same checks as a second `DELETE`. One that is held
+     * is reported with its reason and the rest go on; `more` says another call
+     * has work left. Refused with 403 for a storefront contact.
+     *
+     * @throws RevenexxException
+     * @return array
+     */
+    public function productsEmptyTrash(): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/products/trash/empty'
+        );
+
+        $apiParams = [];
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
      * The index of the enums this app ENFORCES — `product-kinds`,
-     * `membership-sources`, `rule-matches`, `asset-sources` — served by the app
-     * that owns the CHECK constraint each one is parsed out of, so a UI never has
-     * to keep its own copy of a status map and watch it drift. Names and titles
-     * only: fetch one by name for its values, badge tones and descriptions.
+     * `product-status`, `membership-sources`, `rule-matches`, `asset-sources`,
+     * `asset-licenses` — served by the app that owns the CHECK constraint each
+     * one is parsed out of, so a UI never has to keep its own copy of a status
+     * map and watch it drift. Names and titles only: fetch one by name for its
+     * values, badge tones and descriptions.
      * 
      * The set is a fixed property of this app rather than tenant data, so it is
      * the same list for every tenant. `attributes.type` is deliberately absent:
@@ -808,20 +984,25 @@ class Products extends Service
     }
 
     /**
-     * Deletes one product by id. It is a hard delete — the row is gone, and the
-     * answer is a confirmation rather than a result to branch on.
+     * Moves one product to the trash — or, called on one that is already there,
+     * deletes it for good.
      * 
-     * It takes what hangs off it: product category memberships (`product_id`),
-     * product associations (`product_id` and `target_product_id`) are deleted
-     * with it. `products.parent_id` is set to null instead, so the rows that
-     * pointed at it survive the delete rather than going with it.
+     * The first call stamps the product, and the variants of a model go with it;
+     * all of them share one `trash_batch` and come back together on `POST
+     * …/{id}/restore`. Nothing that points at it changes: its assignments stay
+     * and stop acting, and the answer lists them as warnings with a count. Its
+     * sku stays reserved while it is in the trash.
      * 
-     * An id no product of this tenant carries answers 404; there is no 409,
-     * because every foreign key pointing at this entity resolves itself on delete
-     * rather than blocking one. `products.deleted_at` is a SOFT-delete marker
-     * that the grid and every category-rule evaluation honour, but no route in
-     * this app ever writes it — to soft-delete instead, `PUT /products/{id}`
-     * with a `deleted_at`.
+     * The second call deletes it for good, with the rows of its group, and only
+     * then do the cascades and `*.deleted` happen. It is refused with 409 while a
+     * blocker holds: stock on hand or an active reservation in inventories, a
+     * position of an open quote in quotes, or a line of an open purchase request
+     * in procurement holds it; price entries are a warning, because prices
+     * removes them when the product is deleted. A blocker that could not be
+     * checked counts as one. It is refused with 403 for a storefront contact —
+     * deleting for good is back-office work.
+     * 
+     * An id no product of this tenant carries answers 404.
      *
      * @param string $id
      * @throws RevenexxException
@@ -915,24 +1096,34 @@ class Products extends Service
      *
      * @param string $id
      * @param ?array $attributeValues
+     * @param ?array $baseValues
+     * @param ?array $channelRelease
+     * @param ?array $channels
      * @param ?array $completeness
      * @param ?string $deletedAt
+     * @param ?string $deletedBy
+     * @param ?string $deletedById
      * @param ?bool $enabled
      * @param ?string $externalId
      * @param ?array $externalRefs
      * @param ?string $familyId
      * @param ?string $familyVariantId
      * @param ?ProductsKind $kind
+     * @param ?string $manufacturerId
      * @param ?string $parentId
+     * @param ?string $purgeAt
+     * @param ?string $purgeBlockedReason
      * @param ?array $quantifiedAssociations
      * @param ?string $sku
      * @param ?array $sourceData
      * @param ?string $sourceSyncedAt
+     * @param ?ProductsStatus $status
      * @param ?string $taxClass
+     * @param ?string $trashBatch
      * @throws RevenexxException
      * @return array
      */
-    public function productsUpdate(string $id, ?array $attributeValues = null, ?array $completeness = null, ?string $deletedAt = null, ?bool $enabled = null, ?string $externalId = null, ?array $externalRefs = null, ?string $familyId = null, ?string $familyVariantId = null, ?ProductsKind $kind = null, ?string $parentId = null, ?array $quantifiedAssociations = null, ?string $sku = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $taxClass = null): array
+    public function productsUpdate(string $id, ?array $attributeValues = null, ?array $baseValues = null, ?array $channelRelease = null, ?array $channels = null, ?array $completeness = null, ?string $deletedAt = null, ?string $deletedBy = null, ?string $deletedById = null, ?bool $enabled = null, ?string $externalId = null, ?array $externalRefs = null, ?string $familyId = null, ?string $familyVariantId = null, ?ProductsKind $kind = null, ?string $manufacturerId = null, ?string $parentId = null, ?string $purgeAt = null, ?string $purgeBlockedReason = null, ?array $quantifiedAssociations = null, ?string $sku = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?ProductsStatus $status = null, ?string $taxClass = null, ?string $trashBatch = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -946,8 +1137,19 @@ class Products extends Service
         if (!is_null($attributeValues)) {
             $apiParams['attribute_values'] = $attributeValues;
         }
+
+        if (!is_null($baseValues)) {
+            $apiParams['base_values'] = $baseValues;
+        }
+        $apiParams['channel_release'] = $channelRelease;
+
+        if (!is_null($channels)) {
+            $apiParams['channels'] = $channels;
+        }
         $apiParams['completeness'] = $completeness;
         $apiParams['deleted_at'] = $deletedAt;
+        $apiParams['deleted_by'] = $deletedBy;
+        $apiParams['deleted_by_id'] = $deletedById;
 
         if (!is_null($enabled)) {
             $apiParams['enabled'] = $enabled;
@@ -960,7 +1162,10 @@ class Products extends Service
         if (!is_null($kind)) {
             $apiParams['kind'] = $kind;
         }
+        $apiParams['manufacturer_id'] = $manufacturerId;
         $apiParams['parent_id'] = $parentId;
+        $apiParams['purge_at'] = $purgeAt;
+        $apiParams['purge_blocked_reason'] = $purgeBlockedReason;
         $apiParams['quantified_associations'] = $quantifiedAssociations;
 
         if (!is_null($sku)) {
@@ -968,13 +1173,99 @@ class Products extends Service
         }
         $apiParams['source_data'] = $sourceData;
         $apiParams['source_synced_at'] = $sourceSyncedAt;
+
+        if (!is_null($status)) {
+            $apiParams['status'] = $status;
+        }
         $apiParams['tax_class'] = $taxClass;
+        $apiParams['trash_batch'] = $trashBatch;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
 
         return $this->client->call(
             Client::METHOD_PUT,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Sets one attribute's value on one product — what a bulk „Attribute
+     * bearbeiten“ over a selection calls once per product. With `locale` the
+     * value goes under that language (re-keyed to the tenant's write key like any
+     * write); with `locale: "all"` or none it goes into the common bucket, the
+     * same in every language. The rest of the product's values stay as they are.
+     *
+     * @param string $id
+     * @param string $attribute
+     * @param mixed $value
+     * @param ?string $locale
+     * @throws RevenexxException
+     * @return array
+     */
+    public function productsAttributeSet(string $id, string $attribute, mixed $value, ?string $locale = null): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/products/{id}/attribute-value'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+        $apiParams['attribute'] = $attribute;
+        $apiParams['value'] = $value;
+
+        if (!is_null($locale)) {
+            $apiParams['locale'] = $locale;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Adds, removes or replaces channel codes on one product's `channels` —
+     * what a bulk „Kanäle zuordnen“ over a selection calls once per product.
+     * The codes are the channels app's; this app stores them as sent, trimmed,
+     * each once, and does not ask the channels app whether they exist.
+     *
+     * @param string $id
+     * @param array $channels
+     * @param ?ProductsChannelsAssignMode $mode
+     * @throws RevenexxException
+     * @return array
+     */
+    public function productsChannelsAssign(string $id, array $channels, ?ProductsChannelsAssignMode $mode = null): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/products/{id}/channels'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+        $apiParams['channels'] = $channels;
+
+        if (!is_null($mode)) {
+            $apiParams['mode'] = $mode;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
             $apiPath,
             $apiHeaders,
             $apiParams
@@ -1005,6 +1296,50 @@ class Products extends Service
         $apiParams = [];
         $apiParams['id'] = $id;
         $apiParams = \array_merge($apiParams, $data);
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Creates a copy of one product under a new SKU and answers 201 with the new
+     * row. The copy keeps the name and starts as a switched-off draft without a
+     * GTIN, release or completeness. `parts` adds what else comes along:
+     * `attributes` (every value but files and images), `images` (the file and
+     * image values), `variants` (each variant copied under the new model, its SKU
+     * prefixed with the new one) and `categories` (the hand-picked memberships;
+     * rule memberships follow from the next recompute). Movement data is never
+     * copied, and prices live in the prices app. There is no transaction across
+     * rows: if a later step fails, what this call created is deleted again.
+     *
+     * @param string $id
+     * @param string $sku
+     * @param ?array $parts
+     * @throws RevenexxException
+     * @return array
+     */
+    public function productsCopy(string $id, string $sku, ?array $parts = null): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/products/{id}/copy'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+        $apiParams['sku'] = $sku;
+
+        if (!is_null($parts)) {
+            $apiParams['parts'] = $parts;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -1053,6 +1388,75 @@ class Products extends Service
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Links one product to a manufacturer record and copies the manufacturer's
+     * GPSR state onto the product (`manufacturer_gpsr_complete`) — what a bulk
+     * „Hersteller setzen“ calls once per product. A plain `PUT
+     * /products/{id}` with `manufacturer_id` does the same; this route exists so
+     * a bulk action has a body of one field and an answer that names the
+     * manufacturer. It does not create a manufacturer.
+     *
+     * @param string $id
+     * @param string $manufacturerId
+     * @throws RevenexxException
+     * @return array
+     */
+    public function productsManufacturerAssign(string $id, string $manufacturerId): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/products/{id}/manufacturer'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+        $apiParams['manufacturer_id'] = $manufacturerId;
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Brings a product back from the trash, together with every record that went
+     * with it (its `trash_batch`). A record trashed on its own before stays in
+     * the trash. Everything that pointed at it acts again as it did, because
+     * nothing was changed when it went.
+     * 
+     * Restoring needs the same right as deleting.
+     *
+     * @param string $id
+     * @throws RevenexxException
+     * @return array
+     */
+    public function productsRestore(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/products/{id}/restore'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
 
         return $this->client->call(
             Client::METHOD_POST,

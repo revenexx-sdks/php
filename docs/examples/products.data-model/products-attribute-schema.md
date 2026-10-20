@@ -19,7 +19,7 @@ $result = $productsDataModel->productsAttributeSchema(
     familyCode: '', // optional
     entityType: EntityType::PRODUCT(), // optional
     entityRef: 'brand', // optional
-    locale: 'de_DE', // optional
+    locale: 'de', // optional
     channel: 'b2b', // optional
     kind: ProductsListKind::SIMPLE() // optional
 );```

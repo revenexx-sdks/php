@@ -21,6 +21,9 @@ $result = $customersContacts->customersContactEventsList(
     subject: 'Called about the annual requirement', // optional
     actor: 'vertrieb@example.com', // optional
     occurredAt: '2026-01-01T12:00:00Z', // optional
+    dueAt: '2026-01-01T12:00:00Z', // optional
+    assignee: '', // optional
+    doneAt: '2026-01-01T12:00:00Z', // optional
     createdAt: '2026-01-01T12:00:00Z', // optional
     limit: 1, // optional
     offset: 1, // optional

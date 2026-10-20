@@ -4,10 +4,10 @@ namespace Revenexx\Enums;
 
 use JsonSerializable;
 
-class PromotionsConditionsCreateKind implements JsonSerializable
+class AudienceRuleWriteKind implements JsonSerializable
 {
-    private static PromotionsConditionsCreateKind $GROUP;
-    private static PromotionsConditionsCreateKind $QUESTION;
+    private static AudienceRuleWriteKind $GROUP;
+    private static AudienceRuleWriteKind $QUESTION;
 
     private string $value;
 
@@ -26,17 +26,17 @@ class PromotionsConditionsCreateKind implements JsonSerializable
         return $this->value;
     }
 
-    public static function GROUP(): PromotionsConditionsCreateKind
+    public static function GROUP(): AudienceRuleWriteKind
     {
         if (!isset(self::$GROUP)) {
-            self::$GROUP = new PromotionsConditionsCreateKind('group');
+            self::$GROUP = new AudienceRuleWriteKind('group');
         }
         return self::$GROUP;
     }
-    public static function QUESTION(): PromotionsConditionsCreateKind
+    public static function QUESTION(): AudienceRuleWriteKind
     {
         if (!isset(self::$QUESTION)) {
-            self::$QUESTION = new PromotionsConditionsCreateKind('question');
+            self::$QUESTION = new AudienceRuleWriteKind('question');
         }
         return self::$QUESTION;
     }

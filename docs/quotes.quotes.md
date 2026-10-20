@@ -2,6 +2,22 @@
 
 
 ```http request
+GET https://api.revenexx.com/v1/quotes/open-items
+```
+
+** Every position of an open quote that names one product, across all quotes — what `products` asks before it deletes a product for good, so a quote still being negotiated holds the delete (RAD-247). Open means requested, in review, quoted or partially accepted unless `status` says otherwise. Each row is the position with its quote's `quote_number` and `quote_status`; newest quote first, then by position. A call the gateway attributes to a buyer reads only that buyer's organisation's quotes. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| product_id | string | **Required** The catalogue product the positions name. |  |
+| status | string | Which quote states count as open, separated by commas. Default `requested,in_review,quoted,partially_accepted`. |  |
+| limit | integer | Page size (default 50, max 200). A larger value is clamped rather than refused. |  |
+| offset | integer | Row offset for pagination (default 0). Page with `page.total` and `page.hasMore`. |  |
+
+
+```http request
 GET https://api.revenexx.com/v1/quotes/quotes
 ```
 
@@ -34,7 +50,7 @@ POST https://api.revenexx.com/v1/quotes/quotes
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
-| billing_address | object | Where an invoice would go. |  |
+| billing_address | object | Where an invoice would go, in the platform address type (customers app). The old flat shape (`street`, `zip`, `city`, `country`, …) is accepted and mapped first. An address read back may be sent again: the old keys beside the type are dropped. Checked against the country's rules; an invalid one answers 400 naming the field. |  |
 | buyer | object | Name and address of the customer. |  |
 | contact_id | string | Who the quote is for. |  |
 | currency | string | ISO 4217 code every amount is read in. |  |
@@ -46,7 +62,7 @@ POST https://api.revenexx.com/v1/quotes/quotes
 | owner_id | string | Who at the merchant owns it. Taken from the caller identity when left out. |  |
 | reason | string | What the quote is about. |  |
 | seller_note | string | What the merchant wants the customer to read. |  |
-| shipping_address | object | Where the goods would go. |  |
+| shipping_address | object | Where the goods would go, in the platform address type (customers app). The old flat shape (`street`, `zip`, `city`, `country`, …) is accepted and mapped first. An address read back may be sent again: the old keys beside the type are dropped. Checked against the country's rules; an invalid one answers 400 naming the field. |  |
 | source_data | object | What the source said, kept as it said it: `{"system": …, "etag": …, "raw": {…}}`. The `etag` is what a write-back has to hand back in `If-Match`. |  |
 | source_synced_at | string | When this quote was last confirmed against its source. |  |
 
@@ -62,6 +78,20 @@ GET https://api.revenexx.com/v1/quotes/quotes/{id}
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The quote. |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/quotes/quotes/{id}/copy
+```
+
+** Opens a new quote from an existing one, as the desk's own work: it takes the next number, starts `in_review` with revision 1 and no request date, keeps the customer, the addresses, the carriage and the notes, and carries none of the original's decisions, deadline, cart or source keys. `parts: ["items"]` (the default) copies the positions with their prices and discounts, every decision open again. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required** The quote to copy. |  |
+| parts | array | What to copy along. `items` is the only part. |  |
 
 
 ```http request
@@ -101,7 +131,7 @@ POST https://api.revenexx.com/v1/quotes/request
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
-| billing_address | object | Where an invoice would go. |  |
+| billing_address | object | Where an invoice would go, in the platform address type (customers app). The old flat shape (`street`, `zip`, `city`, `country`, …) is accepted and mapped first. An address read back may be sent again: the old keys beside the type are dropped. Checked against the country's rules; an invalid one answers 400 naming the field. |  |
 | buyer | object | Name and address of who is asking. |  |
 | buyer_note | string | What the buyer wants to say about the request. |  |
 | cart_id | string | The cart this came from, for the trail back. |  |
@@ -113,7 +143,7 @@ POST https://api.revenexx.com/v1/quotes/request
 | metadata | object | Free-form data carried with the quote. |  |
 | organization_id | string | Which company they buy for. |  |
 | reason | string | Why a quote is being asked for — too heavy to ship, price on request, a volume the list does not cover. |  |
-| shipping_address | object | Where the goods would go. |  |
+| shipping_address | object | Where the goods would go, in the platform address type (customers app). The old flat shape (`street`, `zip`, `city`, `country`, …) is accepted and mapped first. An address read back may be sent again: the old keys beside the type are dropped. Checked against the country's rules; an invalid one answers 400 naming the field. |  |
 | source_data | object | What the source said, kept as it said it: `{"system": …, "etag": …, "raw": {…}}`. The `etag` is what a write-back has to hand back in `If-Match`. |  |
 | source_synced_at | string | When this quote was last confirmed against its source. |  |
 
@@ -123,4 +153,17 @@ GET https://api.revenexx.com/v1/quotes/vocabularies
 ```
 
 ** The values this app accepts, so a client renders a picker instead of guessing: the statuses a quote can stand in, what a position's decision can be, and why a price is what it is. **
+
+
+```http request
+GET https://api.revenexx.com/v1/quotes/vocabularies/{name}
+```
+
+** One list, value by value, with the title a person reads in English and German, a badge tone and whether the value ends a quote. The lists backed by a database constraint are closed and carry exactly the values the database accepts; the trail's entry kinds and actors are written only by this app and are served as known values, not as a promise that nothing else appears. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| name | string | **Required** Which list. |  |
 

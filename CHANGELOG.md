@@ -1,3 +1,6 @@
+## v0.3.0
+- Regenerated from the latest API specification
+
 ## v0.2.0
 - Service method signatures changed: 244 parameter types differ, and optional parameters moved position ($param2 to $param10 renamed in many methods). Pass optional arguments by name, not by position, and re-check any typed call sites. Also regenerated with code-safe description escaping 
 

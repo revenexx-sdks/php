@@ -121,6 +121,7 @@ class ShippingMethods extends Service
      * @param string $name
      * @param ?string $carrier
      * @param ?string $carrierId
+     * @param ?array $checkoutNotes
      * @param ?array $countries
      * @param ?string $currency
      * @param ?string $description
@@ -144,7 +145,7 @@ class ShippingMethods extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function shippingMethodsCreate(string $code, string $name, ?string $carrier = null, ?string $carrierId = null, ?array $countries = null, ?string $currency = null, ?string $description = null, ?bool $enabled = null, ?int $etaDaysMax = null, ?int $etaDaysMin = null, ?string $externalId = null, ?array $externalRefs = null, ?float $freeAbove = null, ?array $labels = null, ?string $matrixAttribute = null, ?ShippingMethodMatrixBasis $matrixBasis = null, ?array $metadata = null, ?int $position = null, ?float $price = null, ?ShippingMethodPricingType $pricingType = null, ?float $quoteAbove = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $taxClass = null): array
+    public function shippingMethodsCreate(string $code, string $name, ?string $carrier = null, ?string $carrierId = null, ?array $checkoutNotes = null, ?array $countries = null, ?string $currency = null, ?string $description = null, ?bool $enabled = null, ?int $etaDaysMax = null, ?int $etaDaysMin = null, ?string $externalId = null, ?array $externalRefs = null, ?float $freeAbove = null, ?array $labels = null, ?string $matrixAttribute = null, ?ShippingMethodMatrixBasis $matrixBasis = null, ?array $metadata = null, ?int $position = null, ?float $price = null, ?ShippingMethodPricingType $pricingType = null, ?float $quoteAbove = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $taxClass = null): array
     {
         $apiPath = str_replace(
             [],
@@ -157,6 +158,7 @@ class ShippingMethods extends Service
         $apiParams['name'] = $name;
         $apiParams['carrier'] = $carrier;
         $apiParams['carrier_id'] = $carrierId;
+        $apiParams['checkout_notes'] = $checkoutNotes;
         $apiParams['countries'] = $countries;
 
         if (!is_null($currency)) {
@@ -330,6 +332,7 @@ class ShippingMethods extends Service
      * @param string $id
      * @param ?string $carrier
      * @param ?string $carrierId
+     * @param ?array $checkoutNotes
      * @param ?string $code
      * @param ?array $countries
      * @param ?string $currency
@@ -355,7 +358,7 @@ class ShippingMethods extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function shippingMethodsUpdate(string $id, ?string $carrier = null, ?string $carrierId = null, ?string $code = null, ?array $countries = null, ?string $currency = null, ?string $description = null, ?bool $enabled = null, ?int $etaDaysMax = null, ?int $etaDaysMin = null, ?string $externalId = null, ?array $externalRefs = null, ?float $freeAbove = null, ?array $labels = null, ?string $matrixAttribute = null, ?ShippingMethodMatrixBasis $matrixBasis = null, ?array $metadata = null, ?string $name = null, ?int $position = null, ?float $price = null, ?ShippingMethodPricingType $pricingType = null, ?float $quoteAbove = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $taxClass = null): array
+    public function shippingMethodsUpdate(string $id, ?string $carrier = null, ?string $carrierId = null, ?array $checkoutNotes = null, ?string $code = null, ?array $countries = null, ?string $currency = null, ?string $description = null, ?bool $enabled = null, ?int $etaDaysMax = null, ?int $etaDaysMin = null, ?string $externalId = null, ?array $externalRefs = null, ?float $freeAbove = null, ?array $labels = null, ?string $matrixAttribute = null, ?ShippingMethodMatrixBasis $matrixBasis = null, ?array $metadata = null, ?string $name = null, ?int $position = null, ?float $price = null, ?ShippingMethodPricingType $pricingType = null, ?float $quoteAbove = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $taxClass = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -367,6 +370,7 @@ class ShippingMethods extends Service
         $apiParams['id'] = $id;
         $apiParams['carrier'] = $carrier;
         $apiParams['carrier_id'] = $carrierId;
+        $apiParams['checkout_notes'] = $checkoutNotes;
 
         if (!is_null($code)) {
             $apiParams['code'] = $code;

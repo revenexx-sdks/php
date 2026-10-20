@@ -35,6 +35,7 @@ class DocumentsKinds extends Service
      * @param ?string $title
      * @param ?string $description
      * @param ?bool $isDefault
+     * @param ?bool $active
      * @param ?Tone $tone
      * @param ?int $position
      * @param ?bool $isSystem
@@ -46,7 +47,7 @@ class DocumentsKinds extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function documentsKindsList(?string $id = null, ?string $code = null, ?string $title = null, ?string $description = null, ?bool $isDefault = null, ?Tone $tone = null, ?int $position = null, ?bool $isSystem = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function documentsKindsList(?string $id = null, ?string $code = null, ?string $title = null, ?string $description = null, ?bool $isDefault = null, ?bool $active = null, ?Tone $tone = null, ?int $position = null, ?bool $isSystem = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             [],
@@ -74,6 +75,10 @@ class DocumentsKinds extends Service
 
         if (!is_null($isDefault)) {
             $apiParams['is_default'] = $isDefault;
+        }
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
         }
 
         if (!is_null($tone)) {
@@ -134,6 +139,7 @@ class DocumentsKinds extends Service
      *
      * @param string $code
      * @param string $title
+     * @param ?bool $active
      * @param ?string $description
      * @param ?array $descriptions
      * @param ?bool $isDefault
@@ -143,7 +149,7 @@ class DocumentsKinds extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function documentsKindsCreate(string $code, string $title, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?DocumentKindTone $tone = null): array
+    public function documentsKindsCreate(string $code, string $title, ?bool $active = null, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?DocumentKindTone $tone = null): array
     {
         $apiPath = str_replace(
             [],
@@ -154,6 +160,7 @@ class DocumentsKinds extends Service
         $apiParams = [];
         $apiParams['code'] = $code;
         $apiParams['title'] = $title;
+        $apiParams['active'] = $active;
         $apiParams['description'] = $description;
         $apiParams['descriptions'] = $descriptions;
         $apiParams['is_default'] = $isDefault;
@@ -305,6 +312,7 @@ class DocumentsKinds extends Service
      * put the row there and grants it no protection.
      *
      * @param string $id
+     * @param ?bool $active
      * @param ?string $code
      * @param ?string $description
      * @param ?array $descriptions
@@ -316,7 +324,7 @@ class DocumentsKinds extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function documentsKindsUpdate(string $id, ?string $code = null, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?string $title = null, ?DocumentKindTone $tone = null): array
+    public function documentsKindsUpdate(string $id, ?bool $active = null, ?string $code = null, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?string $title = null, ?DocumentKindTone $tone = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -326,6 +334,7 @@ class DocumentsKinds extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+        $apiParams['active'] = $active;
 
         if (!is_null($code)) {
             $apiParams['code'] = $code;

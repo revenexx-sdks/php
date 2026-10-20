@@ -15,6 +15,7 @@ $markets = new Markets($client);
 $result = $markets->marketsTaxClassesUpdate(
     marketId: '',
     id: '',
+    active: true, // optional
     code: 'standard', // optional
     isDefault: true, // optional
     labels: [

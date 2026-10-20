@@ -6,10 +6,10 @@ use JsonSerializable;
 
 class Reason implements JsonSerializable
 {
-    private static Reason $HARDBOUNCE;
-    private static Reason $COMPLAINT;
-    private static Reason $UNSUBSCRIBE;
-    private static Reason $MANUAL;
+    private static Reason $LEFTCOMPANY;
+    private static Reason $MISUSE;
+    private static Reason $CUSTOMERREQUEST;
+    private static Reason $OTHER;
 
     private string $value;
 
@@ -28,32 +28,32 @@ class Reason implements JsonSerializable
         return $this->value;
     }
 
-    public static function HARDBOUNCE(): Reason
+    public static function LEFTCOMPANY(): Reason
     {
-        if (!isset(self::$HARDBOUNCE)) {
-            self::$HARDBOUNCE = new Reason('hard_bounce');
+        if (!isset(self::$LEFTCOMPANY)) {
+            self::$LEFTCOMPANY = new Reason('left_company');
         }
-        return self::$HARDBOUNCE;
+        return self::$LEFTCOMPANY;
     }
-    public static function COMPLAINT(): Reason
+    public static function MISUSE(): Reason
     {
-        if (!isset(self::$COMPLAINT)) {
-            self::$COMPLAINT = new Reason('complaint');
+        if (!isset(self::$MISUSE)) {
+            self::$MISUSE = new Reason('misuse');
         }
-        return self::$COMPLAINT;
+        return self::$MISUSE;
     }
-    public static function UNSUBSCRIBE(): Reason
+    public static function CUSTOMERREQUEST(): Reason
     {
-        if (!isset(self::$UNSUBSCRIBE)) {
-            self::$UNSUBSCRIBE = new Reason('unsubscribe');
+        if (!isset(self::$CUSTOMERREQUEST)) {
+            self::$CUSTOMERREQUEST = new Reason('customer_request');
         }
-        return self::$UNSUBSCRIBE;
+        return self::$CUSTOMERREQUEST;
     }
-    public static function MANUAL(): Reason
+    public static function OTHER(): Reason
     {
-        if (!isset(self::$MANUAL)) {
-            self::$MANUAL = new Reason('manual');
+        if (!isset(self::$OTHER)) {
+            self::$OTHER = new Reason('other');
         }
-        return self::$MANUAL;
+        return self::$OTHER;
     }
 }

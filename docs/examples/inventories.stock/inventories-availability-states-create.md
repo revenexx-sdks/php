@@ -16,6 +16,7 @@ $inventoriesStock = new InventoriesStock($client);
 $result = $inventoriesStock->inventoriesAvailabilityStatesCreate(
     code: 'on_order',
     title: 'On order',
+    active: true, // optional
     description: 'Replenishment is on its way; the expected date says when.', // optional
     descriptions: [
         'de' => 'Nachschub ist unterwegs.',

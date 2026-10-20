@@ -14,6 +14,7 @@ GET https://api.revenexx.com/v1/customers/segment_members
 | id | string | Filter to rows whose `id` is exactly this value. Primary key of the membership row. |  |
 | segment_id | string | Filter to one segment — its members. |  |
 | organization_id | string | Filter to one company — the segments it belongs to. The same route answers both questions. |  |
+| contact_id | string | Filter to rows whose `contact_id` is exactly this value. The member person, in a contact segment. Null in an organization segment. |  |
 | source | string | Filter by how the membership came about. `manual` is the hand-picked set a recompute will never touch, `sync` the set an import from the owning system wrote, and `rule` the only one a recompute rewrites. |  |
 | created_at | string | Exact timestamp equality — this API has no range filter. To bound a period, sort with `order` and page. When the organization joined the segment. |  |
 | limit | integer | Page size (default 50, max 200). |  |
@@ -25,7 +26,7 @@ GET https://api.revenexx.com/v1/customers/segment_members
 POST https://api.revenexx.com/v1/customers/segment_members
 ```
 
-** One organization inside one segment, plus the record of how it got there: `source: "manual"` for a company somebody put in, `source: "rule"` for one the rule engine matched. That distinction is what lets a recompute rewrite its own rows and leave every hand-picked one alone. Adds a company to a segment BY HAND. The row is `source: "manual"`, which is what protects it: a rule recompute rewrites the rule-derived rows of that segment and never touches this one. A create cannot omit `segment_id` and `organization_id`; everything else is optional or defaulted by the database. Two rows of this tenant may not share the combination of `segment_id` + `organization_id`. **
+** One organization inside one segment, plus the record of how it got there: `source: "manual"` for a company somebody put in, `source: "rule"` for one the rule engine matched. That distinction is what lets a recompute rewrite its own rows and leave every hand-picked one alone. Adds a company to a segment BY HAND. The row is `source: "manual"`, which is what protects it: a rule recompute rewrites the rule-derived rows of that segment and never touches this one. A create cannot omit `segment_id` and `organization_id`; everything else is optional or defaulted by the database. Two rows of this tenant may not share the combination of `segment_id` + `organization_id` (while contact_id IS NULL) or the combination of `segment_id` + `contact_id` (while contact_id IS NOT NULL). **
 
 ### Parameters
 
@@ -67,7 +68,7 @@ GET https://api.revenexx.com/v1/customers/segment_members/{id}
 PUT https://api.revenexx.com/v1/customers/segment_members/{id}
 ```
 
-** One organization inside one segment, plus the record of how it got there: `source: "manual"` for a company somebody put in, `source: "rule"` for one the rule engine matched. That distinction is what lets a recompute rewrite its own rows and leave every hand-picked one alone. A partial update. In practice there is little to change — a membership is a pair of ids — so this exists for the `source` correction rather than as the normal path. Two rows of this tenant may not share the combination of `segment_id` + `organization_id`. **
+** One organization inside one segment, plus the record of how it got there: `source: "manual"` for a company somebody put in, `source: "rule"` for one the rule engine matched. That distinction is what lets a recompute rewrite its own rows and leave every hand-picked one alone. A partial update. In practice there is little to change — a membership is a pair of ids — so this exists for the `source` correction rather than as the normal path. Two rows of this tenant may not share the combination of `segment_id` + `organization_id` (while contact_id IS NULL) or the combination of `segment_id` + `contact_id` (while contact_id IS NOT NULL). **
 
 ### Parameters
 
@@ -92,12 +93,21 @@ GET https://api.revenexx.com/v1/customers/segments
 | id | string | Filter to rows whose `id` is exactly this value. Primary key of the segment. |  |
 | code | string | Filter by exact segment code. |  |
 | position | integer | Filter to rows whose `position` is exactly this value. Sort order in the cockpit, ascending. Ties fall back to insertion order. |  |
+| active | boolean | Filter to rows whose `active` is exactly this value. False when the merchant retired the segment. Its memberships stay exactly as they are and it still applies wherever it is named; it is only no longer offered as a choice, and its rules are not recomputed — neither by the schedule nor by hand — until it is active again. `?active=true` is the list of segments a picker should offer. |  |
 | rule_match | string | Filter to rows whose `rule_match` is exactly this value. How the conditions combine: 'all' (default) is AND, 'any' is OR. Null means the same as 'all'. |  |
+| member_type | string | Filter to rows whose `member_type` is exactly this value. What the segment holds: 'organization' (companies, the default) or 'contact' (people, each row naming their company too). Fixed once the segment has members. |  |
 | rules_computed_at | string | Exact timestamp equality — this API has no range filter. To bound a period, sort with `order` and page. When the rule last finished a COMPLETE recompute. Null after a rule change, and while a chunked recompute is still running — so it doubles as "are the rule memberships trustworthy right now?". |  |
 | external_id | string | Filter to rows whose `external_id` is exactly this value. The key this group has in the system that owns it — an ERP price group, discount group or bonus group arrives as a segment, and this is what it was called there. Unique per tenant where set. |  |
 | source_synced_at | string | Exact timestamp equality — this API has no range filter. To bound a period, sort with `order` and page. When this row was last confirmed against its source. What a delta run asks for changes since, and what tells an operator that a feed has gone quiet — a row edited in the Cockpit does not touch it, because it says when the SOURCE was last seen, not when the row changed. Null for a row no source owns. |  |
+| deleted_at | string | Exact timestamp equality — this API has no range filter. To bound a period, sort with `order` and page. When this segment was moved to the trash, or null while it is live. A segment in the trash is left out of every list unless `trashed` asks for it, so it stops applying: its memberships stay but act nowhere, its rules are not recomputed, and its code stays reserved. A second DELETE or the daily purge deletes it for good. |  |
+| deleted_by | string | Filter to rows whose `deleted_by` is exactly this value. Who moved it to the trash, as the platform named them — an email, or `system`. Null while it is live. |  |
+| deleted_by_id | string | Filter to rows whose `deleted_by_id` is exactly this value. The platform subject of whoever moved it to the trash. Kept beside the name so the person can be pseudonymised later without losing who acted. Null while it is live, and for the system. |  |
+| trash_batch | string | Filter to rows whose `trash_batch` is exactly this value. The trash action this record went with. An organization and the contacts it took along share one; a restore brings back exactly the records that carry it. |  |
+| purge_at | string | Exact timestamp equality — this API has no range filter. To bound a period, sort with `order` and page. When the daily purge deletes it for good unless it is restored first: `deleted_at` plus the tenant's trash retention (90 days unless the tenant says otherwise). Null while it is live. |  |
+| purge_blocked_reason | string | Filter to rows whose `purge_blocked_reason` is exactly this value. Why the purge could not delete it for good — an active price list or promotion that still names its code, or a check nobody answered. Null when nothing stopped it. Cleared by a restore. |  |
 | created_at | string | Exact timestamp equality — this API has no range filter. To bound a period, sort with `order` and page. When the segment was created. |  |
 | updated_at | string | Exact timestamp equality — this API has no range filter. To bound a period, sort with `order` and page. When any column of this row last changed. |  |
+| trashed | string | Whether the trash is part of the answer. `exclude` (the default) leaves records in the trash out, `only` answers the trash itself, `include` both. A call acting for a buyer is always `exclude`. |  |
 | limit | integer | Page size (default 50, max 200). |  |
 | offset | integer | Row offset for pagination (default 0). |  |
 | order | string | Sort by one column: 'column' | 'column.asc' | 'column.desc'. A bare column sorts ascending. Anything else is refused with 400. |  |
@@ -113,6 +123,7 @@ POST https://api.revenexx.com/v1/customers/segments
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
+| active | boolean | False when the merchant retired the segment. Its memberships stay exactly as they are and it still applies wherever it is named; it is only no longer offered as a choice, and its rules are not recomputed — neither by the schedule nor by hand — until it is active again. `?active=true` is the list of segments a picker should offer. Default true. |  |
 | code | string | Stable identifier, unique per tenant — what other apps and integrations name the segment by. Free text, but lowercase with underscores is the convention every seeded vocabulary follows. |  |
 | created_at | string | When the segment was created. Accepted on create only from a call naming no acting contact — an operator, an import, an ERP carrying a record over with its original date. A buyer sending it, or any update changing it, is a 400 `server_owned_field`. |  |
 | labels | object | Localized display names keyed by language tag. Null means nobody translated it and a client falls back to showing the code. |  |
@@ -135,10 +146,17 @@ POST https://api.revenexx.com/v1/customers/segments/rules/recompute-all
 
 
 ```http request
+POST https://api.revenexx.com/v1/customers/segments/trash/empty
+```
+
+** Deletes every segment in the trash for good, oldest first and at most fifty per call, each checked on its own exactly like a second DELETE. A segment an active price list or promotion still names stays in the trash and is listed with the reason; the rest go. POST again while `more` is true. An administrator's right, never a buyer's. **
+
+
+```http request
 DELETE https://api.revenexx.com/v1/customers/segments/{id}
 ```
 
-** A segment is a named group of ORGANIZATIONS — never of people — built by hand, by rule, or both at once. It is what a price list, a campaign or a shipping option is pointed at when the answer is "these customers, not those". Removes the segment. Anything in another app that points at its `code` — a price list, a campaign — is left pointing at nothing, because no app may hold a foreign key into another (ADR-0055). Deleting one takes every `segment_members` row that points at it with it — the foreign keys decide, not this route. **
+** A segment is a named group of ORGANIZATIONS — never of people — built by hand, by rule, or both at once. It is what a price list, a campaign or a shipping option is pointed at when the answer is "these customers, not those". The first DELETE moves the segment to the trash. Nothing is refused there: its memberships stay but stop applying, its rules are no longer recomputed, its market assignment stays, and its `code` stays reserved, so a restore loses nothing. The answer warns, with counts, about the members, and about the price lists and promotions that name the code. A second DELETE on a segment already in the trash deletes it for good, with its memberships — refused while an ACTIVE price list or an ACTIVE promotion still names its code. An app that does not answer blocks too; an app the tenant has not installed blocks nothing. The daily purge runs the same delete once the tenant's trash retention has run out. **
 
 ### Parameters
 
@@ -171,11 +189,25 @@ PUT https://api.revenexx.com/v1/customers/segments/{id}
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The segment to update. |  |
+| active | boolean | False when the merchant retired the segment. Its memberships stay exactly as they are and it still applies wherever it is named; it is only no longer offered as a choice, and its rules are not recomputed — neither by the schedule nor by hand — until it is active again. `?active=true` is the list of segments a picker should offer. Default true. |  |
 | code | string | Stable identifier, unique per tenant — what other apps and integrations name the segment by. Free text, but lowercase with underscores is the convention every seeded vocabulary follows. |  |
 | labels | object | Localized display names keyed by language tag. Null means nobody translated it and a client falls back to showing the code. |  |
 | position | integer | Sort order in the cockpit, ascending. Ties fall back to insertion order. Default 0. |  |
 | rule_match | string | How the conditions combine: 'all' (default) is AND, 'any' is OR. Null means the same as 'all'. |  |
 | rules | object | The selector that decides membership, stored verbatim. Null means the segment is manual-only. The same rule language product categories use, evaluated over organization columns, `setting:<key>` entries and the organization_metrics projection — so 'no order in 365 days' is expressible without joining the orders app. Null makes the segment manual-only. Changing it does not move a single membership — run the recompute. |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/customers/segments/{id}/restore
+```
+
+** Brings a segment back from the trash. Its memberships, its market assignment and every price list or promotion naming its code apply again as they did, because nothing was changed when it went. Needs the same right as the delete. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required** The segment to restore. |  |
 
 
 ```http request

@@ -36,6 +36,7 @@ GET https://api.revenexx.com/v1/cost-centers/budgets
 | limit | integer | Page size (default 50, max 200). |  |
 | offset | integer | Row offset for pagination (default 0). |  |
 | order | string | Sort as 'column.asc' | 'column.desc', e.g. 'created_at.desc'. |  |
+| discarded | string | Discarded drafts are left out by default. 'include' lists them among the rest, 'only' lists nothing else. Any other value is refused with 400. |  |
 
 
 ```http request
@@ -115,6 +116,19 @@ POST https://api.revenexx.com/v1/cost-centers/budgets/{id}/adjust
 | currency | string | ISO 4217 code the amount is stated in. Omit to be read in the cost centre's (or the personal limit's) own currency; a code that differs from it is refused with 409 currency_mismatch. |  |
 | note | string |  |  |
 | target | number |  |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/cost-centers/budgets/{id}/discard
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required**  |  |
+| actor | string |  |  |
+| note | string |  |  |
 
 
 ```http request
@@ -292,6 +306,17 @@ PUT https://api.revenexx.com/v1/cost-centers/cost-centers/{id}
 | organization_id | string |  |  |
 | source_data | object | What the source said about this cost centre, kept as it said it: `{"system": …, "etag": …, "raw": {…}}`. The `etag` is what a write-back has to send back in `If-Match`, and there is nowhere else to keep it between two runs. `raw` holds the source fields this app does not model — a responsible department, an account range — so an edit here does not silently throw them away. |  |
 | source_synced_at | string | When this cost centre was last confirmed against its source. A delta run asks the source for what changed since it, and a controller reads it to see that a feed has gone quiet. An edit made HERE does not touch it — it records when the source was last seen, not when the row changed — so a stale value beside a fresh `updated_at` means somebody is maintaining by hand what the ERP has stopped delivering. |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/cost-centers/cost-centers/{id}/archive
+```
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required**  |  |
 
 
 ```http request

@@ -35,6 +35,7 @@ POST https://api.revenexx.com/v1/shipping/methods
 | --- | --- | --- | --- |
 | carrier | string | Carrier CODE, kept from before shipping_carriers existed. Looked up in the carrier table when carrier_id is not set, so an existing value keeps working and gains a tracking template; a code nobody maintains is still reported as a plain name. |  |
 | carrier_id | string | The carrier this method ships with. Wins over `carrier` and supplies the tracking template, pickup cut-off, handling time and transit days. |  |
+| checkout_notes | object | The note the checkout prints under the method, per language — a delivery hint the name and description do not carry. A flat map keyed by locale — the Cockpit falls back to `en`. Null means the row has no translations and every client shows the untranslated column instead. |  |
 | code | string | Stable method code, unique per tenant (e.g. standard, express). What a checkout and an order line store, so it is the value every integration joins on. |  |
 | countries | array | The countries this method may be offered into. ISO 3166-1 alpha-2 codes; null or an empty array means no restriction. Compared without regard to case, so a lower-case entry still matches; anything but a two-letter code is refused with 400 `invalid_countries`. Declared as an array rather than the bare object a jsonb column derives to — this one is always a list. ANDed with the carrier's own reach. |  |
 | currency | string | ISO 4217 code (default EUR) the price, the free-above threshold and the tiers are in. Exactly three characters — the column says so. Every rate carries it, and a rate request naming another currency is not offered this method: this app converts nothing. |  |
@@ -105,6 +106,7 @@ PUT https://api.revenexx.com/v1/shipping/methods/{id}
 | id | string | **Required** The row id. |  |
 | carrier | string | Carrier CODE, kept from before shipping_carriers existed. Looked up in the carrier table when carrier_id is not set, so an existing value keeps working and gains a tracking template; a code nobody maintains is still reported as a plain name. |  |
 | carrier_id | string | The carrier this method ships with. Wins over `carrier` and supplies the tracking template, pickup cut-off, handling time and transit days. |  |
+| checkout_notes | object | The note the checkout prints under the method, per language — a delivery hint the name and description do not carry. A flat map keyed by locale — the Cockpit falls back to `en`. Null means the row has no translations and every client shows the untranslated column instead. |  |
 | code | string | Stable method code, unique per tenant (e.g. standard, express). What a checkout and an order line store, so it is the value every integration joins on. |  |
 | countries | array | The countries this method may be offered into. ISO 3166-1 alpha-2 codes; null or an empty array means no restriction. Compared without regard to case, so a lower-case entry still matches; anything but a two-letter code is refused with 400 `invalid_countries`. Declared as an array rather than the bare object a jsonb column derives to — this one is always a list. ANDed with the carrier's own reach. |  |
 | currency | string | ISO 4217 code (default EUR) the price, the free-above threshold and the tiers are in. Exactly three characters — the column says so. Every rate carries it, and a rate request naming another currency is not offered this method: this app converts nothing. |  |
@@ -260,7 +262,7 @@ POST https://api.revenexx.com/v1/shipping/rates
 | order_value_net | number | Order value excluding tax. Compared against free-above thresholds, and measured by order_value matrices, when free_above_compares is 'net'. |  |
 | quantity | number | Total quantity — measure for quantity matrices. Below 0 is refused with 400 `negative_measure`. |  |
 | weight | number | Total weight — measure for weight matrices. Read in weight_unit and converted to the unit the tiers are keyed in. Below 0 is refused with 400 `negative_measure`. |  |
-| weight_unit | string | The unit `weight` is expressed in, as a CODE into the tenant's own weight units (GET /shipping/weight-units). Omitted, it is the unit this market quotes in. A unit the tenant does not keep is a 400 — a mis-read weight prices the wrong bracket silently, and guessing is worse than refusing. |  |
+| weight_unit | string | The unit `weight` is expressed in, as a CODE into the tenant's own weight units (GET /shipping/weight-units). Omitted, it is the unit this market quotes in. A unit the tenant does not keep is a 400; one the merchant retired is a 409 (`weight_unit_inactive`) unless it is the unit this market still quotes in — a mis-read weight prices the wrong bracket silently, and guessing is worse than refusing. |  |
 
 
 ```http request

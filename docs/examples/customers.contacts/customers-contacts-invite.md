@@ -14,6 +14,6 @@ $customersContacts = new CustomersContacts($client);
 
 $result = $customersContacts->customersContactsInvite(
     contactId: '',
-    url: 'https://shop.example.com/anmelden',
-    invitedBy: '' // optional
+    invitedBy: '', // optional
+    url: 'https://shop.example.com/anmelden' // optional
 );```

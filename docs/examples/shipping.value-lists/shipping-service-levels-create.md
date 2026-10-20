@@ -16,6 +16,7 @@ $shippingValueLists = new ShippingValueLists($client);
 $result = $shippingValueLists->shippingServiceLevelsCreate(
     code: 'night_courier',
     title: 'Night courier',
+    active: true, // optional
     description: 'When to pick this service level.', // optional
     descriptions: [
         'de' => 'Wann diese Option zu wählen ist.',

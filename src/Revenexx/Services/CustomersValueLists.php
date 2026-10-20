@@ -22,13 +22,16 @@ class CustomersValueLists extends Service
      * fresh install is seeded with billing, shipping, and the set seeds on first
      * read too, so the page is never empty and `addresses.type` always has a
      * value it may carry. The whole set comes back in one page in the tenant's
-     * own order — this route takes no limit/offset/order and no column filters,
-     * so `page` describes the full set and `filter` is always empty.
+     * own order — this route takes no limit/offset/order, so `page` describes
+     * the full set. Retired values are included; `?active=true` answers only the
+     * values on offer, `?active=false` only the retired ones. No other filter is
+     * taken.
      *
+     * @param ?bool $active
      * @throws RevenexxException
      * @return array
      */
-    public function customersAddressTypesList(): array
+    public function customersAddressTypesList(?bool $active = null): array
     {
         $apiPath = str_replace(
             [],
@@ -37,6 +40,10 @@ class CustomersValueLists extends Service
         );
 
         $apiParams = [];
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
 
         $apiHeaders = [];
 
@@ -58,6 +65,7 @@ class CustomersValueLists extends Service
      *
      * @param string $code
      * @param string $title
+     * @param ?bool $active
      * @param ?string $description
      * @param ?array $descriptions
      * @param ?bool $isDefault
@@ -67,7 +75,7 @@ class CustomersValueLists extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function customersAddressTypesCreate(string $code, string $title, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?Tone $tone = null): array
+    public function customersAddressTypesCreate(string $code, string $title, ?bool $active = null, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?Tone $tone = null): array
     {
         $apiPath = str_replace(
             [],
@@ -78,6 +86,10 @@ class CustomersValueLists extends Service
         $apiParams = [];
         $apiParams['code'] = $code;
         $apiParams['title'] = $title;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
         $apiParams['description'] = $description;
         $apiParams['descriptions'] = $descriptions;
 
@@ -182,6 +194,7 @@ class CustomersValueLists extends Service
      * any other, and re-seeding leaves the rename alone.
      *
      * @param string $id
+     * @param ?bool $active
      * @param ?string $description
      * @param ?array $descriptions
      * @param ?bool $isDefault
@@ -192,7 +205,7 @@ class CustomersValueLists extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function customersAddressTypesUpdate(string $id, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?string $title = null, ?Tone $tone = null): array
+    public function customersAddressTypesUpdate(string $id, ?bool $active = null, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?string $title = null, ?Tone $tone = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -202,6 +215,10 @@ class CustomersValueLists extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
         $apiParams['description'] = $description;
         $apiParams['descriptions'] = $descriptions;
 
@@ -240,13 +257,15 @@ class CustomersValueLists extends Service
      * task, and the set seeds on first read too, so the page is never empty and
      * `contact_events.kind` always has a value it may carry. The whole set comes
      * back in one page in the tenant's own order — this route takes no
-     * limit/offset/order and no column filters, so `page` describes the full set
-     * and `filter` is always empty.
+     * limit/offset/order, so `page` describes the full set. Retired values are
+     * included; `?active=true` answers only the values on offer, `?active=false`
+     * only the retired ones. No other filter is taken.
      *
+     * @param ?bool $active
      * @throws RevenexxException
      * @return array
      */
-    public function customersContactEventKindsList(): array
+    public function customersContactEventKindsList(?bool $active = null): array
     {
         $apiPath = str_replace(
             [],
@@ -255,6 +274,10 @@ class CustomersValueLists extends Service
         );
 
         $apiParams = [];
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
 
         $apiHeaders = [];
 
@@ -276,6 +299,7 @@ class CustomersValueLists extends Service
      *
      * @param string $code
      * @param string $title
+     * @param ?bool $active
      * @param ?string $description
      * @param ?array $descriptions
      * @param ?bool $isDefault
@@ -285,7 +309,7 @@ class CustomersValueLists extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function customersContactEventKindsCreate(string $code, string $title, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?Tone $tone = null): array
+    public function customersContactEventKindsCreate(string $code, string $title, ?bool $active = null, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?Tone $tone = null): array
     {
         $apiPath = str_replace(
             [],
@@ -296,6 +320,10 @@ class CustomersValueLists extends Service
         $apiParams = [];
         $apiParams['code'] = $code;
         $apiParams['title'] = $title;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
         $apiParams['description'] = $description;
         $apiParams['descriptions'] = $descriptions;
 
@@ -400,6 +428,7 @@ class CustomersValueLists extends Service
      * like any other, and re-seeding leaves the rename alone.
      *
      * @param string $id
+     * @param ?bool $active
      * @param ?string $description
      * @param ?array $descriptions
      * @param ?bool $isDefault
@@ -410,7 +439,7 @@ class CustomersValueLists extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function customersContactEventKindsUpdate(string $id, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?string $title = null, ?Tone $tone = null): array
+    public function customersContactEventKindsUpdate(string $id, ?bool $active = null, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?string $title = null, ?Tone $tone = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -420,6 +449,247 @@ class CustomersValueLists extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
+        $apiParams['description'] = $description;
+        $apiParams['descriptions'] = $descriptions;
+
+        if (!is_null($isDefault)) {
+            $apiParams['is_default'] = $isDefault;
+        }
+        $apiParams['labels'] = $labels;
+
+        if (!is_null($position)) {
+            $apiParams['position'] = $position;
+        }
+
+        if (!is_null($title)) {
+            $apiParams['title'] = $title;
+        }
+
+        if (!is_null($tone)) {
+            $apiParams['tone'] = $tone;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_PUT,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Where a PERSON stands in the marketing and sales funnel, apart from the
+     * company's stage. The marketing apps name the six seeded codes; a merchant
+     * may rename them and add steps of their own. A fresh install is seeded with
+     * subscriber, lead, mql, sql, opportunity, customer, and the set seeds on
+     * first read too, so the page is never empty and `contacts.lifecycle_stage`
+     * always has a value it may carry. The whole set comes back in one page in
+     * the tenant's own order — this route takes no limit/offset/order, so
+     * `page` describes the full set. Retired values are included; `?active=true`
+     * answers only the values on offer, `?active=false` only the retired ones. No
+     * other filter is taken.
+     *
+     * @param ?bool $active
+     * @throws RevenexxException
+     * @return array
+     */
+    public function customersContactLifecycleStagesList(?bool $active = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/customers/contact-lifecycle-stages'
+        );
+
+        $apiParams = [];
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Extends this tenant's contact stages set with a value of their own — the
+     * whole reason these four stopped being CHECK constraints. Where a PERSON
+     * stands in the marketing and sales funnel, apart from the company's stage.
+     * The marketing apps name the six seeded codes; a merchant may rename them
+     * and add steps of their own. The code is lowercase and becomes what
+     * `contacts.lifecycle_stage` stores; it cannot be changed afterwards, because
+     * every record carrying it would be orphaned.
+     *
+     * @param string $code
+     * @param string $title
+     * @param ?bool $active
+     * @param ?string $description
+     * @param ?array $descriptions
+     * @param ?bool $isDefault
+     * @param ?array $labels
+     * @param ?int $position
+     * @param ?Tone $tone
+     * @throws RevenexxException
+     * @return array
+     */
+    public function customersContactLifecycleStagesCreate(string $code, string $title, ?bool $active = null, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?Tone $tone = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/customers/contact-lifecycle-stages'
+        );
+
+        $apiParams = [];
+        $apiParams['code'] = $code;
+        $apiParams['title'] = $title;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
+        $apiParams['description'] = $description;
+        $apiParams['descriptions'] = $descriptions;
+
+        if (!is_null($isDefault)) {
+            $apiParams['is_default'] = $isDefault;
+        }
+        $apiParams['labels'] = $labels;
+
+        if (!is_null($position)) {
+            $apiParams['position'] = $position;
+        }
+
+        if (!is_null($tone)) {
+            $apiParams['tone'] = $tone;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Takes a value out of the contact stages set. There is no foreign key behind
+     * `contacts.lifecycle_stage` — one added to a table that starts empty fails
+     * the migration of every existing tenant — so this route IS the integrity:
+     * it refuses while any record still carries the code, and it refuses to empty
+     * the set. Retiring a value that is in use is therefore a two-step job: move
+     * the records onto another value first, then remove it.
+     *
+     * @param string $id
+     * @throws RevenexxException
+     * @return array
+     */
+    public function customersContactLifecycleStagesDelete(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/customers/contact-lifecycle-stages/{id}'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_DELETE,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * One value of the contact stages set, by its id — its code, its fallback
+     * title, the per-language `labels` an operator reads and the badge `tone` a
+     * client renders it with. Where a PERSON stands in the marketing and sales
+     * funnel, apart from the company's stage. The marketing apps name the six
+     * seeded codes; a merchant may rename them and add steps of their own.
+     * Reading one value is the rare path: `GET
+     * /customers/contact-lifecycle-stages` answers the whole set in a single
+     * page, which is what a select needs.
+     *
+     * @param string $id
+     * @throws RevenexxException
+     * @return array
+     */
+    public function customersContactLifecycleStagesGet(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/customers/contact-lifecycle-stages/{id}'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Everything about a value except the value itself: its titles, its help
+     * text, its badge tone, its `position` in the select, and which one of the
+     * set is the default. The `code` is immutable, so no record carrying it is
+     * ever orphaned by an edit here — a merchant who retitles `lead` to wording
+     * of their own changes what people READ and nothing about what
+     * `contacts.lifecycle_stage` stores. Seeded values (`is_system`) are
+     * renameable like any other, and re-seeding leaves the rename alone.
+     *
+     * @param string $id
+     * @param ?bool $active
+     * @param ?string $description
+     * @param ?array $descriptions
+     * @param ?bool $isDefault
+     * @param ?array $labels
+     * @param ?int $position
+     * @param ?string $title
+     * @param ?Tone $tone
+     * @throws RevenexxException
+     * @return array
+     */
+    public function customersContactLifecycleStagesUpdate(string $id, ?bool $active = null, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?string $title = null, ?Tone $tone = null): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/customers/contact-lifecycle-stages/{id}'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
         $apiParams['description'] = $description;
         $apiParams['descriptions'] = $descriptions;
 
@@ -457,13 +727,16 @@ class CustomersValueLists extends Service
      * adds theirs. A fresh install is seeded with invoice, order_confirmation,
      * shipping_notice, dunning, and the set seeds on first read too, so the page
      * is never empty. The whole set comes back in one page in the tenant's own
-     * order — this route takes no limit/offset/order and no column filters, so
-     * `page` describes the full set and `filter` is always empty.
+     * order — this route takes no limit/offset/order, so `page` describes the
+     * full set. Retired values are included; `?active=true` answers only the
+     * values on offer, `?active=false` only the retired ones. No other filter is
+     * taken.
      *
+     * @param ?bool $active
      * @throws RevenexxException
      * @return array
      */
-    public function customersContactPointKindsList(): array
+    public function customersContactPointKindsList(?bool $active = null): array
     {
         $apiPath = str_replace(
             [],
@@ -472,6 +745,10 @@ class CustomersValueLists extends Service
         );
 
         $apiParams = [];
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
 
         $apiHeaders = [];
 
@@ -493,6 +770,7 @@ class CustomersValueLists extends Service
      *
      * @param string $code
      * @param string $title
+     * @param ?bool $active
      * @param ?string $description
      * @param ?array $descriptions
      * @param ?bool $isDefault
@@ -502,7 +780,7 @@ class CustomersValueLists extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function customersContactPointKindsCreate(string $code, string $title, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?Tone $tone = null): array
+    public function customersContactPointKindsCreate(string $code, string $title, ?bool $active = null, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?Tone $tone = null): array
     {
         $apiPath = str_replace(
             [],
@@ -513,6 +791,10 @@ class CustomersValueLists extends Service
         $apiParams = [];
         $apiParams['code'] = $code;
         $apiParams['title'] = $title;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
         $apiParams['description'] = $description;
         $apiParams['descriptions'] = $descriptions;
 
@@ -617,6 +899,7 @@ class CustomersValueLists extends Service
      * like any other, and re-seeding leaves the rename alone.
      *
      * @param string $id
+     * @param ?bool $active
      * @param ?string $description
      * @param ?array $descriptions
      * @param ?bool $isDefault
@@ -627,7 +910,7 @@ class CustomersValueLists extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function customersContactPointKindsUpdate(string $id, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?string $title = null, ?Tone $tone = null): array
+    public function customersContactPointKindsUpdate(string $id, ?bool $active = null, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?string $title = null, ?Tone $tone = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -637,6 +920,10 @@ class CustomersValueLists extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
         $apiParams['description'] = $description;
         $apiParams['descriptions'] = $descriptions;
 
@@ -669,13 +956,13 @@ class CustomersValueLists extends Service
     }
 
     /**
-     * What the app.installed event runs. It fills all 5 of the value sets a
+     * What the app.installed event runs. It fills all 6 of the value sets a
      * tenant needs before anything else works — the payment terms, the address
-     * types, the lifecycle stages, the activity types and the recipient types —
-     * in one call. Idempotent by code: a set that already has its rows is left
-     * completely alone, so a re-delivered event and a merchant's renames both
-     * survive. A tenant installed before these tables existed is seeded lazily
-     * instead, by the first read that finds one empty.
+     * types, the lifecycle stages, the contact stages, the activity types and the
+     * recipient types — in one call. Idempotent by code: a set that already has
+     * its rows is left completely alone, so a re-delivered event and a merchant's
+     * renames both survive. A tenant installed before these tables existed is
+     * seeded lazily instead, by the first read that finds one empty.
      *
      * @param array $data
      * @throws RevenexxException
@@ -709,14 +996,16 @@ class CustomersValueLists extends Service
      * seeded with lead, prospect, customer, churned, and the set seeds on first
      * read too, so the page is never empty and `organizations.lifecycle_stage`
      * always has a value it may carry. The whole set comes back in one page in
-     * the tenant's own order — this route takes no limit/offset/order and no
-     * column filters, so `page` describes the full set and `filter` is always
-     * empty.
+     * the tenant's own order — this route takes no limit/offset/order, so
+     * `page` describes the full set. Retired values are included; `?active=true`
+     * answers only the values on offer, `?active=false` only the retired ones. No
+     * other filter is taken.
      *
+     * @param ?bool $active
      * @throws RevenexxException
      * @return array
      */
-    public function customersLifecycleStagesList(): array
+    public function customersLifecycleStagesList(?bool $active = null): array
     {
         $apiPath = str_replace(
             [],
@@ -725,6 +1014,10 @@ class CustomersValueLists extends Service
         );
 
         $apiParams = [];
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
 
         $apiHeaders = [];
 
@@ -746,6 +1039,7 @@ class CustomersValueLists extends Service
      *
      * @param string $code
      * @param string $title
+     * @param ?bool $active
      * @param ?string $description
      * @param ?array $descriptions
      * @param ?bool $isDefault
@@ -755,7 +1049,7 @@ class CustomersValueLists extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function customersLifecycleStagesCreate(string $code, string $title, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?Tone $tone = null): array
+    public function customersLifecycleStagesCreate(string $code, string $title, ?bool $active = null, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?Tone $tone = null): array
     {
         $apiPath = str_replace(
             [],
@@ -766,6 +1060,10 @@ class CustomersValueLists extends Service
         $apiParams = [];
         $apiParams['code'] = $code;
         $apiParams['title'] = $title;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
         $apiParams['description'] = $description;
         $apiParams['descriptions'] = $descriptions;
 
@@ -869,6 +1167,7 @@ class CustomersValueLists extends Service
      * renameable like any other, and re-seeding leaves the rename alone.
      *
      * @param string $id
+     * @param ?bool $active
      * @param ?string $description
      * @param ?array $descriptions
      * @param ?bool $isDefault
@@ -879,7 +1178,7 @@ class CustomersValueLists extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function customersLifecycleStagesUpdate(string $id, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?string $title = null, ?Tone $tone = null): array
+    public function customersLifecycleStagesUpdate(string $id, ?bool $active = null, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?string $title = null, ?Tone $tone = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -889,6 +1188,10 @@ class CustomersValueLists extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
         $apiParams['description'] = $description;
         $apiParams['descriptions'] = $descriptions;
 
@@ -927,13 +1230,15 @@ class CustomersValueLists extends Service
      * the set seeds on first read too, so the page is never empty and
      * `organizations.payment_terms` always has a value it may carry. The whole
      * set comes back in one page in the tenant's own order — this route takes
-     * no limit/offset/order and no column filters, so `page` describes the full
-     * set and `filter` is always empty.
+     * no limit/offset/order, so `page` describes the full set. Retired values are
+     * included; `?active=true` answers only the values on offer, `?active=false`
+     * only the retired ones. No other filter is taken.
      *
+     * @param ?bool $active
      * @throws RevenexxException
      * @return array
      */
-    public function customersPaymentTermsList(): array
+    public function customersPaymentTermsList(?bool $active = null): array
     {
         $apiPath = str_replace(
             [],
@@ -942,6 +1247,10 @@ class CustomersValueLists extends Service
         );
 
         $apiParams = [];
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
 
         $apiHeaders = [];
 
@@ -963,6 +1272,7 @@ class CustomersValueLists extends Service
      *
      * @param string $code
      * @param string $title
+     * @param ?bool $active
      * @param ?string $description
      * @param ?array $descriptions
      * @param ?bool $isDefault
@@ -972,7 +1282,7 @@ class CustomersValueLists extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function customersPaymentTermsCreate(string $code, string $title, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?Tone $tone = null): array
+    public function customersPaymentTermsCreate(string $code, string $title, ?bool $active = null, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?Tone $tone = null): array
     {
         $apiPath = str_replace(
             [],
@@ -983,6 +1293,10 @@ class CustomersValueLists extends Service
         $apiParams = [];
         $apiParams['code'] = $code;
         $apiParams['title'] = $title;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
         $apiParams['description'] = $description;
         $apiParams['descriptions'] = $descriptions;
 
@@ -1086,6 +1400,7 @@ class CustomersValueLists extends Service
      * renameable like any other, and re-seeding leaves the rename alone.
      *
      * @param string $id
+     * @param ?bool $active
      * @param ?string $description
      * @param ?array $descriptions
      * @param ?bool $isDefault
@@ -1096,7 +1411,7 @@ class CustomersValueLists extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function customersPaymentTermsUpdate(string $id, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?string $title = null, ?Tone $tone = null): array
+    public function customersPaymentTermsUpdate(string $id, ?bool $active = null, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?string $title = null, ?Tone $tone = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -1106,6 +1421,10 @@ class CustomersValueLists extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
         $apiParams['description'] = $description;
         $apiParams['descriptions'] = $descriptions;
 
@@ -1142,12 +1461,13 @@ class CustomersValueLists extends Service
      * a name, a title and a description. The VALUES are deliberately left out —
      * this is the call that says which vocabularies exist, and the detail route
      * is the one that answers what is in them. Names: address-types,
-     * contact-event-kinds, contact-point-kinds, contact-statuses,
-     * credit-limit-modes, lifecycle-stages, locales, order-approval-modes,
-     * organization-statuses, payment-terms, registration-statuses, roles,
-     * rule-matches, segment-sources, shipping-advice. Fetch one with GET
-     * /customers/vocabularies/{name}; a client holding the qualified pair
-     * 'customers.<name>' builds that URL from the pair alone.
+     * contact-event-kinds, contact-lifecycle-stages, contact-point-kinds,
+     * contact-statuses, credit-limit-modes, lead-sources, lifecycle-stages,
+     * locales, order-approval-modes, organization-statuses, payment-terms,
+     * permissions, registration-statuses, roles, rule-matches,
+     * segment-member-types, segment-sources, shipping-advice, shop-access. Fetch
+     * one with GET /customers/vocabularies/{name}; a client holding the qualified
+     * pair 'customers.<name>' builds that URL from the pair alone.
      *
      * @throws RevenexxException
      * @return array
@@ -1181,17 +1501,22 @@ class CustomersValueLists extends Service
      * a value added to the constraint appears here even before anyone labels it,
      * titled from its own key. 'table' — the values are the TENANT's own rows
      * (payment terms, address types, lifecycle stages, activity types, roles), so
-     * they carry labels/descriptions per locale, is_system and is_default, and a
-     * merchant may add to them without a release of this app. 'tenant'/'defaults'
-     * are the two answers for a set the merchant configures but may not extend.
-     * Either way 'closed' is true: the set is exhaustive at this moment, so a
-     * value outside it is stale data rather than a missing label. Values come
-     * back in the order a select should offer them — lifecycle order for a
-     * status, the merchant's own position for a table. Names: address-types,
-     * contact-event-kinds, contact-point-kinds, contact-statuses,
-     * credit-limit-modes, lifecycle-stages, locales, order-approval-modes,
-     * organization-statuses, payment-terms, registration-statuses, roles,
-     * rule-matches, segment-sources, shipping-advice.
+     * they carry labels/descriptions per locale, is_system, is_default and
+     * active, and a merchant may add to them without a release of this app. A
+     * value the merchant retired (active: false) is not in 'values', which is
+     * what a picker offers; it is in 'inactive', in the same shape, so a screen
+     * still renders the title of a record that carries one from this one answer.
+     * 'tenant'/'defaults' are the two answers for a set the merchant configures
+     * but may not extend. Either way 'closed' is true: the set is exhaustive at
+     * this moment, so a value in neither 'values' nor 'inactive' is stale data
+     * rather than a missing label. Values come back in the order a select should
+     * offer them — lifecycle order for a status, the merchant's own position
+     * for a table. Names: address-types, contact-event-kinds,
+     * contact-lifecycle-stages, contact-point-kinds, contact-statuses,
+     * credit-limit-modes, lead-sources, lifecycle-stages, locales,
+     * order-approval-modes, organization-statuses, payment-terms, permissions,
+     * registration-statuses, roles, rule-matches, segment-member-types,
+     * segment-sources, shipping-advice, shop-access.
      *
      * @param CustomersVocabulariesGetName $name
      * @throws RevenexxException

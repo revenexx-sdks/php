@@ -15,6 +15,7 @@ $productsDataModel = new ProductsDataModel($client);
 $result = $productsDataModel->productsAttributesCreate(
     code: 'net_weight',
     type: 'select',
+    active: true, // optional
     config: [
         'reference_entity' => 'brand'
     ], // optional

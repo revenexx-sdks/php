@@ -6,7 +6,7 @@ use Revenexx\RevenexxException;
 use Revenexx\Client;
 use Revenexx\Service;
 use Revenexx\InputFile;
-use Revenexx\Enums\Kind;
+use Revenexx\Enums\ConsentManagerCookiesListKind;
 use Revenexx\Enums\LegalBasis;
 use Revenexx\Enums\GoogleSignals;
 use Revenexx\Enums\LegalBasisOverride;
@@ -105,7 +105,7 @@ class ConsentManagerRegistry extends Service
      * @param ?string $id
      * @param ?string $vendorId
      * @param ?string $name
-     * @param ?Kind $kind
+     * @param ?ConsentManagerCookiesListKind $kind
      * @param ?string $host
      * @param ?int $position
      * @param ?string $createdAt
@@ -116,7 +116,7 @@ class ConsentManagerRegistry extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function consentManagerCookiesList(?string $id = null, ?string $vendorId = null, ?string $name = null, ?Kind $kind = null, ?string $host = null, ?int $position = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function consentManagerCookiesList(?string $id = null, ?string $vendorId = null, ?string $name = null, ?ConsentManagerCookiesListKind $kind = null, ?string $host = null, ?int $position = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             [],
@@ -188,12 +188,12 @@ class ConsentManagerRegistry extends Service
      * @param ?array $description
      * @param ?array $duration
      * @param ?string $host
-     * @param ?Kind $kind
+     * @param ?ConsentManagerCookiesListKind $kind
      * @param ?int $position
      * @throws RevenexxException
      * @return array
      */
-    public function consentManagerCookiesCreate(string $name, string $vendorId, ?array $description = null, ?array $duration = null, ?string $host = null, ?Kind $kind = null, ?int $position = null): array
+    public function consentManagerCookiesCreate(string $name, string $vendorId, ?array $description = null, ?array $duration = null, ?string $host = null, ?ConsentManagerCookiesListKind $kind = null, ?int $position = null): array
     {
         $apiPath = str_replace(
             [],
@@ -290,14 +290,14 @@ class ConsentManagerRegistry extends Service
      * @param ?array $description
      * @param ?array $duration
      * @param ?string $host
-     * @param ?Kind $kind
+     * @param ?ConsentManagerCookiesListKind $kind
      * @param ?string $name
      * @param ?int $position
      * @param ?string $vendorId
      * @throws RevenexxException
      * @return array
      */
-    public function consentManagerCookiesUpdate(string $id, ?array $description = null, ?array $duration = null, ?string $host = null, ?Kind $kind = null, ?string $name = null, ?int $position = null, ?string $vendorId = null): array
+    public function consentManagerCookiesUpdate(string $id, ?array $description = null, ?array $duration = null, ?string $host = null, ?ConsentManagerCookiesListKind $kind = null, ?string $name = null, ?int $position = null, ?string $vendorId = null): array
     {
         $apiPath = str_replace(
             ['{id}'],

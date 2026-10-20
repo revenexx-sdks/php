@@ -73,25 +73,24 @@ class InventoriesStock extends Service
     /**
      * THE stock call of this app, and a batch one: name any number of items and
      * each comes back with `on_hand`, `reserved` and the derived `available`
-     * (their difference, computed on read and stored nowhere), summed across the
-     * locations in scope and broken down per location, plus `orderable` —
-     * whether this much of it can be promised at this moment. An item this app
-     * has never seen is NOT an error: it comes back tracked:false, and the
-     * storefront decides whether an untracked item sells freely. It answers the
-     * two facts a buyer would otherwise telephone sales about, per location and
-     * rolled up for the item: `expected_at`, when it is due back, and
-     * `availability_code`, what the source system says about it as one of the
-     * codes this tenant keeps — and `orderable` weighs that code's `orderable`
-     * policy as well as the quantity, with `unorderable_reason` saying which of
-     * the two said no. It is also the most customised surface this product has in
-     * the field. A tenant whose stock really lives in an ERP — SAP live stock
-     * is the ordinary case, not the exotic one — replaces exactly this one
-     * capability, 1:1, with a custom app through the gateway's capability
-     * override, while every other route here keeps doing the stock-keeping CRUD
-     * unchanged. That is why the request and response shapes below read as a
-     * contract to be implemented rather than as an implementation detail:
-     * whatever ends up answering this path has to answer in these terms, these
-     * six fields included.
+     * (their difference), summed across the locations in scope and broken down
+     * per location, plus `orderable` — whether this much of it can be promised
+     * at this moment. An item this app has never seen is NOT an error: it comes
+     * back tracked:false, and the storefront decides whether an untracked item
+     * sells freely. It answers the two facts a buyer would otherwise telephone
+     * sales about, per location and rolled up for the item: `expected_at`, when
+     * it is due back, and `availability_code`, what the source system says about
+     * it as one of the codes this tenant keeps — and `orderable` weighs that
+     * code's `orderable` policy as well as the quantity, with
+     * `unorderable_reason` saying which of the two said no. It is also the most
+     * customised surface this product has in the field. A tenant whose stock
+     * really lives in an ERP — SAP live stock is the ordinary case, not the
+     * exotic one — replaces exactly this one capability, 1:1, with a custom app
+     * through the gateway's capability override, while every other route here
+     * keeps doing the stock-keeping CRUD unchanged. That is why the request and
+     * response shapes below read as a contract to be implemented rather than as
+     * an implementation detail: whatever ends up answering this path has to
+     * answer in these terms, these six fields included.
      *
      * @param ?array $items
      * @param ?string $locationCode
@@ -161,6 +160,7 @@ class InventoriesStock extends Service
      * @param ?string $descriptions
      * @param ?bool $orderable
      * @param ?bool $isDefault
+     * @param ?bool $active
      * @param ?Tone $tone
      * @param ?int $position
      * @param ?bool $isSystem
@@ -169,7 +169,7 @@ class InventoriesStock extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function inventoriesAvailabilityStatesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?string $title = null, ?string $description = null, ?string $labels = null, ?string $descriptions = null, ?bool $orderable = null, ?bool $isDefault = null, ?Tone $tone = null, ?int $position = null, ?bool $isSystem = null, ?string $createdAt = null, ?string $updatedAt = null): array
+    public function inventoriesAvailabilityStatesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?string $title = null, ?string $description = null, ?string $labels = null, ?string $descriptions = null, ?bool $orderable = null, ?bool $isDefault = null, ?bool $active = null, ?Tone $tone = null, ?int $position = null, ?bool $isSystem = null, ?string $createdAt = null, ?string $updatedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -221,6 +221,10 @@ class InventoriesStock extends Service
 
         if (!is_null($isDefault)) {
             $apiParams['is_default'] = $isDefault;
+        }
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
         }
 
         if (!is_null($tone)) {
@@ -279,6 +283,7 @@ class InventoriesStock extends Service
      *
      * @param string $code
      * @param string $title
+     * @param ?bool $active
      * @param ?string $description
      * @param ?array $descriptions
      * @param ?bool $isDefault
@@ -290,7 +295,7 @@ class InventoriesStock extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function inventoriesAvailabilityStatesCreate(string $code, string $title, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?bool $isSystem = null, ?array $labels = null, ?bool $orderable = null, ?int $position = null, ?AvailabilityStateTone $tone = null): array
+    public function inventoriesAvailabilityStatesCreate(string $code, string $title, ?bool $active = null, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?bool $isSystem = null, ?array $labels = null, ?bool $orderable = null, ?int $position = null, ?AvailabilityStateTone $tone = null): array
     {
         $apiPath = str_replace(
             [],
@@ -301,6 +306,10 @@ class InventoriesStock extends Service
         $apiParams = [];
         $apiParams['code'] = $code;
         $apiParams['title'] = $title;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
         $apiParams['description'] = $description;
         $apiParams['descriptions'] = $descriptions;
 
@@ -448,6 +457,7 @@ class InventoriesStock extends Service
      * value exactly as it answers a second insert.
      *
      * @param string $id
+     * @param ?bool $active
      * @param ?string $code
      * @param ?string $description
      * @param ?array $descriptions
@@ -461,7 +471,7 @@ class InventoriesStock extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function inventoriesAvailabilityStatesUpdate(string $id, ?string $code = null, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?bool $isSystem = null, ?array $labels = null, ?bool $orderable = null, ?int $position = null, ?string $title = null, ?AvailabilityStateTone $tone = null): array
+    public function inventoriesAvailabilityStatesUpdate(string $id, ?bool $active = null, ?string $code = null, ?string $description = null, ?array $descriptions = null, ?bool $isDefault = null, ?bool $isSystem = null, ?array $labels = null, ?bool $orderable = null, ?int $position = null, ?string $title = null, ?AvailabilityStateTone $tone = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -471,6 +481,10 @@ class InventoriesStock extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
 
         if (!is_null($code)) {
             $apiParams['code'] = $code;
@@ -824,14 +838,18 @@ class InventoriesStock extends Service
      * neither of which is the sellable one: `on_hand` is what is physically there
      * INCLUDING everything already promised, and `reserved` is what has been
      * promised — it never reduces `on_hand`. What may still be sold is their
-     * difference, and it is derived on read and never stored, so there is no
-     * `available` column to read, filter or order by. This is the operator's view
-     * — the whole book, filtered by location or by item — not the shop's: a
-     * storefront asking "can I sell five of this" wants POST
+     * difference, `available`, which the database works out from the two on every
+     * write (a generated column): it can be read, filtered and ordered by, and
+     * never written. `below_reorder` beside it is true while `available` is at or
+     * below the row's OWN `reorder_point` (above 0); the tenant default is not
+     * part of it, which is what GET /inventories/reorder-alerts adds. This is the
+     * operator's view — the whole book, filtered by location or by item — not
+     * the shop's: a storefront asking "can I sell five of this" wants POST
      * /inventories/availability, which sums an item across locations and answers
      * `orderable` instead of leaving the caller to subtract. Two things this list
      * will not do: it has no range filters, so "everything running low" is GET
-     * /inventories/reorder-alerts and not a query here; and it does not promise
+     * /inventories/reorder-alerts (which also applies the tenant default) or, for
+     * rows with their own point, `?below_reorder=true`; and it does not promise
      * one row per item per location — no unique index enforces that. POST
      * /inventories/stock refuses a duplicate with a 409, but that is a check and
      * not a constraint, so a row written past it, or one that predates the guard,
@@ -847,6 +865,8 @@ class InventoriesStock extends Service
      * @param ?string $sku
      * @param ?float $onHand
      * @param ?float $reserved
+     * @param ?float $available
+     * @param ?bool $belowReorder
      * @param ?float $reorderPoint
      * @param ?string $expectedAt
      * @param ?string $availabilityCode
@@ -860,7 +880,7 @@ class InventoriesStock extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function inventoriesStockList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $locationId = null, ?string $productId = null, ?string $sku = null, ?float $onHand = null, ?float $reserved = null, ?float $reorderPoint = null, ?string $expectedAt = null, ?string $availabilityCode = null, ?string $metadata = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $createdAt = null, ?string $updatedAt = null): array
+    public function inventoriesStockList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $locationId = null, ?string $productId = null, ?string $sku = null, ?float $onHand = null, ?float $reserved = null, ?float $available = null, ?bool $belowReorder = null, ?float $reorderPoint = null, ?string $expectedAt = null, ?string $availabilityCode = null, ?string $metadata = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $createdAt = null, ?string $updatedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -904,6 +924,14 @@ class InventoriesStock extends Service
 
         if (!is_null($reserved)) {
             $apiParams['reserved'] = $reserved;
+        }
+
+        if (!is_null($available)) {
+            $apiParams['available'] = $available;
+        }
+
+        if (!is_null($belowReorder)) {
+            $apiParams['below_reorder'] = $belowReorder;
         }
 
         if (!is_null($reorderPoint)) {
@@ -1019,31 +1047,35 @@ class InventoriesStock extends Service
      * location, and it carries two numbers, neither of which is the sellable one:
      * `on_hand` is what is physically there INCLUDING everything already
      * promised, and `reserved` is what has been promised — it never reduces
-     * `on_hand`. What may still be sold is their difference, and it is derived on
-     * read and never stored, so there is no `available` column to read, filter or
-     * order by. A deleted balance is not recoverable: the ledger is the audit
-     * trail, not the source of truth, and nothing in this app ever replays it to
-     * rebuild a number — so the next receipt for the same item here creates a
-     * FRESH row at zero, standing next to movements that say otherwise. That used
-     * to be a trap a caller discovered afterwards. It is a stated property now,
-     * because the route REFUSES while the row still holds anything, and answers
-     * 409 with what it holds. The two things that block are the location delete's
-     * two, asked of one row. A reservation still `active` against this item at
-     * this location is the sharper one: /release and /commit look their stock row
-     * up by (location, item) on the very next call and would find nothing, so the
-     * hold would lower no `reserved` and /commit would book the whole quantity as
-     * a shortfall — orphaned immediately rather than eventually. `on_hand`
-     * above zero is the stronger one: deleting a LOCATION at least meant "close
-     * this warehouse" and took the balances as a side effect of the cascade,
-     * while this row IS the balance, so the delete can only ever mean "no longer
-     * tracked here" — true once the number is zero and a lie while it is not.
-     * POST /inventories/stock/{id}/adjust to zero is the operation that makes it
-     * true, and it BOOKS the movement, so the stock leaves through the ledger
-     * instead of vanishing with the row. Nothing points at it by foreign key, so
-     * the database takes nothing else with it. History therefore never blocks and
-     * is never deleted — the ledger is keyed on (location, item) and never on
-     * this id, so its bookings survive a row that is gone, BY DESIGN, exactly as
-     * they survive a location that is gone.
+     * `on_hand`. What may still be sold is their difference, `available`, which
+     * the database works out from the two on every write (a generated column): it
+     * can be read, filtered and ordered by, and never written. `below_reorder`
+     * beside it is true while `available` is at or below the row's OWN
+     * `reorder_point` (above 0); the tenant default is not part of it, which is
+     * what GET /inventories/reorder-alerts adds. A deleted balance is not
+     * recoverable: the ledger is the audit trail, not the source of truth, and
+     * nothing in this app ever replays it to rebuild a number — so the next
+     * receipt for the same item here creates a FRESH row at zero, standing next
+     * to movements that say otherwise. That used to be a trap a caller discovered
+     * afterwards. It is a stated property now, because the route REFUSES while
+     * the row still holds anything, and answers 409 with what it holds. The two
+     * things that block are the location delete's two, asked of one row. A
+     * reservation still `active` against this item at this location is the
+     * sharper one: /release and /commit look their stock row up by (location,
+     * item) on the very next call and would find nothing, so the hold would lower
+     * no `reserved` and /commit would book the whole quantity as a shortfall —
+     * orphaned immediately rather than eventually. `on_hand` above zero is the
+     * stronger one: deleting a LOCATION at least meant "close this warehouse" and
+     * took the balances as a side effect of the cascade, while this row IS the
+     * balance, so the delete can only ever mean "no longer tracked here" — true
+     * once the number is zero and a lie while it is not. POST
+     * /inventories/stock/{id}/adjust to zero is the operation that makes it true,
+     * and it BOOKS the movement, so the stock leaves through the ledger instead
+     * of vanishing with the row. Nothing points at it by foreign key, so the
+     * database takes nothing else with it. History therefore never blocks and is
+     * never deleted — the ledger is keyed on (location, item) and never on this
+     * id, so its bookings survive a row that is gone, BY DESIGN, exactly as they
+     * survive a location that is gone.
      *
      * @param string $id
      * @throws RevenexxException
@@ -1075,13 +1107,16 @@ class InventoriesStock extends Service
      * neither of which is the sellable one: `on_hand` is what is physically there
      * INCLUDING everything already promised, and `reserved` is what has been
      * promised — it never reduces `on_hand`. What may still be sold is their
-     * difference, and it is derived on read and never stored, so there is no
-     * `available` column to read, filter or order by. Read it to see one item's
-     * position at one place, and to get the id the two row-scoped routes take:
-     * POST /inventories/stock/{id}/adjust corrects this balance, and GET
-     * /inventories/reorder-alerts reports it by this id. What it does not answer
-     * is how the balance got here — that is GET /inventories/movements filtered
-     * by the location and item on this row, because a movement points at
+     * difference, `available`, which the database works out from the two on every
+     * write (a generated column): it can be read, filtered and ordered by, and
+     * never written. `below_reorder` beside it is true while `available` is at or
+     * below the row's OWN `reorder_point` (above 0); the tenant default is not
+     * part of it, which is what GET /inventories/reorder-alerts adds. Read it to
+     * see one item's position at one place, and to get the id the two row-scoped
+     * routes take: POST /inventories/stock/{id}/adjust corrects this balance, and
+     * GET /inventories/reorder-alerts reports it by this id. What it does not
+     * answer is how the balance got here — that is GET /inventories/movements
+     * filtered by the location and item on this row, because a movement points at
      * (location, item) and never at a stock row id.
      *
      * @param string $id

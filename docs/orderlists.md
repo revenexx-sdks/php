@@ -55,7 +55,7 @@ POST https://api.revenexx.com/v1/orderlists/defaults
 GET https://api.revenexx.com/v1/orderlists/kinds
 ```
 
-** What a saved list may be FOR — the tenant's own taxonomy, and the set every `kind` on a list is drawn from. This used to be a CHECK constraint, which meant a merchant who keeps reagent lists or sample lists needed a release of this app to say so — and the app never branched on the value, it only checked membership. The set is the tenant's rows now. Reading this route on a tenant that has none seeds them, so it never answers an empty set on a fresh install and a client may treat the first read as the install step it no longer has to make. Rows come back in `position` order, ascending, which is the order a select should offer them in, and each carries the `is_default` flag that decides what a create with no `kind` falls back to. It takes NO filters: `limit` and `offset` are the only query keys it reads, and any other is ignored rather than refused — which is also why this collection alone answers no `filter` echo, since echoing an empty one would be noise. The `code` on each row, not the `id`, is what `lists.kind` stores and what `?kind=` on GET /orderlists matches. **
+** What a saved list may be FOR — the tenant's own taxonomy, and the set every `kind` on a list is drawn from. This used to be a CHECK constraint, which meant a merchant who keeps reagent lists or sample lists needed a release of this app to say so — and the app never branched on the value, it only checked membership. The set is the tenant's rows now. Reading this route on a tenant that has none seeds them, so it never answers an empty set on a fresh install and a client may treat the first read as the install step it no longer has to make. Rows come back in `position` order, ascending, which is the order a select should offer them in, and each carries the `is_default` flag that decides what a create with no `kind` falls back to. Its one filter is `active`: omitted, every kind is answered, the retired ones included, so a screen rendering a list's stored kind finds it; `?active=true` is what a picker for a new list reads. Besides it, `limit` and `offset` are the only query keys it reads, and any other is ignored rather than refused — which is also why this collection answers no `filter` echo. The `code` on each row, not the `id`, is what `lists.kind` stores and what `?kind=` on GET /orderlists matches. **
 
 ### Parameters
 
@@ -63,6 +63,7 @@ GET https://api.revenexx.com/v1/orderlists/kinds
 | --- | --- | --- | --- |
 | limit | integer | Page size (default 50, max 200). A larger value is clamped rather than refused. |  |
 | offset | integer | Row offset for pagination (default 0). |  |
+| active | boolean | `true` answers only the kinds a new list may take — what a picker offers; `false` only the kinds a merchant retired. Omitted, every kind is answered, active or not. Anything other than true or false is a 400. |  |
 
 
 ```http request
@@ -75,10 +76,11 @@ POST https://api.revenexx.com/v1/orderlists/kinds
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
+| active | boolean | Whether a new list may take this kind. Omitted means true. |  |
 | code | string | What `lists.kind` will store. Lowercased on the way in and immutable afterwards — a merchant who wants a different code creates a new kind and moves the lists over. |  |
 | description | string | What this kind is for, in one sentence — the line a select shows under the title. |  |
 | descriptions | object | Localized descriptions, keyed by language tag. |  |
-| is_default | boolean | Promote this kind; the previous default is demoted. |  |
+| is_default | boolean | Promote this kind; the previous default is demoted. Refused with 409 together with `active: false`. |  |
 | labels | object | Localized titles, keyed by language tag. |  |
 | position | integer | Where the kind sits in a select, ascending. Omitted means 0, which puts it first among the unpositioned. |  |
 | title | string | What a person reads. `labels` adds the localized forms on top; this one is the fallback. |  |
@@ -122,6 +124,7 @@ PUT https://api.revenexx.com/v1/orderlists/kinds/{id}
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The list kind, by id. |  |
+| active | boolean | False retires the kind from new lists; the lists that carry it keep it. The default kind cannot be deactivated. |  |
 | description | string | What this kind is for, in one sentence. Explicit null clears it. |  |
 | descriptions | object | Localized descriptions, keyed by language tag. Replaces the whole map rather than merging into it. |  |
 | is_default | boolean | True promotes this kind and demotes the previous default — the same move POST /orderlists/kinds/{id}/make-default makes on its own. False is accepted only on a kind that is not the default: the flag moves by promoting another kind. |  |
@@ -232,6 +235,20 @@ POST https://api.revenexx.com/v1/orderlists/{id}/cart
 
 
 ```http request
+POST https://api.revenexx.com/v1/orderlists/{id}/transfer-owner
+```
+
+** The buyer who kept a list has left, and the list is still how the company orders: this hands it to another contact of the same organization, with its positions, kind and sharing exactly as they were. Back office only — a buyer can neither give a list away nor take a colleague's, so a call with an acting contact is a 403. The new owner has to be a contact the customers app knows and, when the list belongs to an organization, one of that organization's contacts; only the customers app can say either, so this route asks it (customers.contacts.get) and refuses when it cannot be asked rather than moving a list out of the account it is shared in. The stored owner name follows the new owner. Naming the owner the list already has changes nothing and answers the list. The tenant's `max_lists_per_owner` applies to the new owner as it does on a create. This is the only way a list changes owner: PUT /orderlists/{id} refuses `owner_id`. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| id | string | **Required** The order list, by id. |  |
+| owner_id | string | The contact who keeps the list from now on. A contact of the list's organization. |  |
+
+
+```http request
 GET https://api.revenexx.com/v1/orderlists/{list_id}/items
 ```
 
@@ -250,6 +267,7 @@ GET https://api.revenexx.com/v1/orderlists/{list_id}/items
 | quantity | number | Exact-match filter on `quantity`. An exact quantity, which is a needle-in-a-haystack filter — there is no range filter on this collection. |  |
 | unit | string | Exact-match filter on `unit`. One unit, in the tenant's own words. Open text, so the value must match what was written. |  |
 | price | number | Exact-match filter on `price`. An exact snapshotted unit price. Equality on a decimal, so it finds the rows written at exactly this price and nothing near it. |  |
+| currency | string | Exact-match filter on `currency`. An exact ISO 4217 code, upper case, as stored. |  |
 | tax_rate | number | Exact-match filter on `tax_rate`. An exact VAT rate as a percent (19 = 19 %). |  |
 | cost_center_id | string | Exact-match filter on `cost_center_id`. Every position booked to one cost centre, as the tenant's ERP names it. The filter a controller uses to see what a department has saved up. |  |
 | position_texts | string | Exact-match filter on `position_texts`. The whole notes ARRAY, serialized as JSON — equality on the document, not a search inside it. |  |
@@ -282,6 +300,7 @@ POST https://api.revenexx.com/v1/orderlists/{list_id}/items
 | list_id | string | **Required** The list the position belongs to. An id no list in this tenant has — or one the caller may not read — answers 404. |  |
 | category_slug | string | The catalogue category the article sat in when the position was saved, as a slug. Kept so a long list can be grouped the way the shop groups it without a call to the catalogue. |  |
 | cost_center_id | string | The cost centre this position books to, as the tenant's ERP names it. Free text and not our enum. A cart line has no column for it, so the cart conversion carries it in the line snapshot. |  |
+| currency | string | The ISO 4217 code `price` is in, upper case. Named by the caller, or — when a position with a price names none — the currency the prices app quotes in for the request (the market's, else the tenant's default), asked once per write; EUR when the prices app cannot be asked or the position has no price. Informational like `price`: the cart conversion takes its own `currency`. |  |
 | custom_sku | string | The buyer's OWN article number for this article — what their purchasing system calls it, which is rarely what the shop calls it. Free text, and the field a B2B buyer searches their own lists by. |  |
 | external_id | string | The id this position has in the system that OWNS it — the line as the shop this tenant migrated from numbered it, usually the old list id and the line number. Unique per tenant where it is set. It is what makes a re-run of the migration update the line rather than append a second one, which on a list of two hundred positions is the difference between a correction and a mess. |  |
 | external_refs | object | Every OTHER system that knows this position, keyed by system name. Answered on read and carrying no query parameter of its own — a jsonb field is compared as a WHOLE document, so a filter over part of one is refused. Look the position up by `external_id` and read this off the answer. |  |
@@ -357,6 +376,7 @@ PUT https://api.revenexx.com/v1/orderlists/{list_id}/items/{id}
 | id | string | **Required** The position, by id. A position that belongs to another list answers 404. |  |
 | category_slug | string | The catalogue category the article sat in when the position was saved, as a slug. Kept so a long list can be grouped the way the shop groups it without a call to the catalogue. |  |
 | cost_center_id | string | The cost centre this position books to, as the tenant's ERP names it. Free text and not our enum. A cart line has no column for it, so the cart conversion carries it in the line snapshot. |  |
+| currency | string | The ISO 4217 code `price` is in, upper case. Named by the caller, or — when a position with a price names none — the currency the prices app quotes in for the request (the market's, else the tenant's default), asked once per write; EUR when the prices app cannot be asked or the position has no price. Informational like `price`: the cart conversion takes its own `currency`. |  |
 | custom_sku | string | The buyer's OWN article number for this article — what their purchasing system calls it, which is rarely what the shop calls it. Free text, and the field a B2B buyer searches their own lists by. |  |
 | external_id | string | The id this position has in the system that OWNS it — the line as the shop this tenant migrated from numbered it, usually the old list id and the line number. Unique per tenant where it is set. It is what makes a re-run of the migration update the line rather than append a second one, which on a list of two hundred positions is the difference between a correction and a mess. |  |
 | external_refs | object | Every OTHER system that knows this position, keyed by system name. Answered on read and carrying no query parameter of its own — a jsonb field is compared as a WHOLE document, so a filter over part of one is refused. Look the position up by `external_id` and read this off the answer. |  |

@@ -12,6 +12,7 @@ GET https://api.revenexx.com/v1/punchout/accounts
 | limit | integer | Page size (default 50, max 200). |  |
 | offset | integer | Row offset for pagination (default 0). |  |
 | order | string | Sort as 'column.asc' | 'column.desc', e.g. 'created_at.desc'. |  |
+| fallback_contact_id | string | The accounts that sign an unnamed buyer in as this contact. Asked by customers before a contact is deleted for good: an account whose fallback is gone turns every buyer the ERP does not name away. Applied and echoed in `filter`; any account, enabled or not. |  |
 
 
 ```http request
@@ -22,27 +23,32 @@ POST https://api.revenexx.com/v1/punchout/accounts
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
-| auth_strategy | string |  |  |
-| behaviour | object |  |  |
+| auth_strategy | string | Null is ignored: a new account takes the default, a corrected one keeps its value. |  |
 | channel_code | string |  |  |
 | code | string |  |  |
 | credential_domain | string |  |  |
 | credential_identity | string |  |  |
 | credential_secret | string |  |  |
-| enabled | boolean |  |  |
+| echo_entry_parameters | boolean | OCI only: send the entry call's own query parameters back with the hand-back, for an SRM that expects them. Credential parameters are never sent back. Null is ignored: a new account takes the default, a corrected one keeps its value. |  |
+| enabled | boolean | Null is ignored: a new account takes the default, a corrected one keeps its value. |  |
+| external_id | string | The key this punchout account has in the system that OWNS it. An account is a partner identity, and the procurement platform on the other side knows the relationship by an id of its own — a supplier id, a vendor number, an IDS customer name. Unique per tenant where it is set, so a repeated import updates the account it wrote last time instead of adding a second one. `code` is what this shop calls the partner; this is what the partner calls itself. Null for an account an operator typed in, which is the ordinary case. |  |
+| external_refs | object | Every OTHER system that knows this partner, keyed by system name — the ERP's vendor number beside the procurement platform's supplier id, because one customer commonly reaches this shop through both. `external_id` is the leading system; this is the rest, and the next one costs no column. Not something to search on: this contract publishes no column filter at all, and the store compares such a field as a whole document — look the account up by `external_id` and read this off the answer. |  |
 | fallback_contact_id | string |  |  |
 | ids_customer_name | string |  |  |
 | login_token | string |  |  |
+| metadata | object | Free-form jsonb this tenant owns, and the extension point this entity has never had — anything about the partner relationship that this app does not model, up to the day it earns a column. Nothing here is read when a visit is served: the account's own columns are what the app acts on, `source_data` is what the source said, and this is what you say. |  |
 | name | string |  |  |
 | organization_id | string |  |  |
 | protocol | string |  |  |
-| protocol_version | string |  |  |
-| secure_oci | boolean |  |  |
-| session_ttl_minutes | integer |  |  |
+| protocol_version | string | The version of its protocol the account speaks — one of GET /punchout/vocabularies/protocol-versions for that protocol: OCI 4.0 or 5.0 (it decides which fields a hand-back carries), an IDS version this shop answers `SV` with. A cXML account states none; each cXML document carries its own. Any other value is refused. Omitted means the protocol's default. |  |
+| purchase_mode | string | Null is ignored: a new account takes the default, a corrected one keeps its value. |  |
+| secure_oci | boolean | Null is ignored: a new account takes the default, a corrected one keeps its value. |  |
+| session_ttl_override_minutes | integer | How long a visit of this account stays open, overriding the tenant's `session_ttl_minutes` setting. Null — the ordinary case — means the tenant's lifetime. |  |
 | shared_secret | string |  |  |
-| start_page_url | string |  |  |
-| unknown_user_policy | string |  |  |
-| url_threading | boolean |  |  |
+| source_data | object | What the source said about this account, kept as it said it. Carries the ETag a write-back has to hand back in `If-Match`, and the source fields this app does not model — without it those are lost on the first edit made here. Not a place for anything the partner authenticates with: what an ERP sends to get in is written to the account's own write-only fields, which no route answers. |  |
+| source_synced_at | string | When this account was last confirmed against its source. A delta run asks for changes since it, and an operator reads it to see that a feed has gone quiet. Editing the account here does not touch it: it says when the SOURCE was last seen, not when the row changed. Null for an account no source owns. |  |
+| start_page_url | string | Where a buyer of THIS account lands after entry, overriding the tenant's `storefront_url` setting. Leave it empty: the entry URL is derived from the storefront address (`entry_url`), and an override is for a buyer who should land on a page of their own. Its host is the host the entry URL is derived from. |  |
+| unknown_user_policy | string | Null is ignored: a new account takes the default, a corrected one keeps its value. |  |
 
 
 ```http request
@@ -76,27 +82,32 @@ PUT https://api.revenexx.com/v1/punchout/accounts/{id}
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required**  |  |
-| auth_strategy | string |  |  |
-| behaviour | object |  |  |
+| auth_strategy | string | Null is ignored: a new account takes the default, a corrected one keeps its value. |  |
 | channel_code | string |  |  |
 | code | string |  |  |
 | credential_domain | string |  |  |
 | credential_identity | string |  |  |
 | credential_secret | string |  |  |
-| enabled | boolean |  |  |
+| echo_entry_parameters | boolean | OCI only: send the entry call's own query parameters back with the hand-back, for an SRM that expects them. Credential parameters are never sent back. Null is ignored: a new account takes the default, a corrected one keeps its value. |  |
+| enabled | boolean | Null is ignored: a new account takes the default, a corrected one keeps its value. |  |
+| external_id | string | The key this punchout account has in the system that OWNS it. An account is a partner identity, and the procurement platform on the other side knows the relationship by an id of its own — a supplier id, a vendor number, an IDS customer name. Unique per tenant where it is set, so a repeated import updates the account it wrote last time instead of adding a second one. `code` is what this shop calls the partner; this is what the partner calls itself. Null for an account an operator typed in, which is the ordinary case. |  |
+| external_refs | object | Every OTHER system that knows this partner, keyed by system name — the ERP's vendor number beside the procurement platform's supplier id, because one customer commonly reaches this shop through both. `external_id` is the leading system; this is the rest, and the next one costs no column. Not something to search on: this contract publishes no column filter at all, and the store compares such a field as a whole document — look the account up by `external_id` and read this off the answer. |  |
 | fallback_contact_id | string |  |  |
 | ids_customer_name | string |  |  |
 | login_token | string |  |  |
+| metadata | object | Free-form jsonb this tenant owns, and the extension point this entity has never had — anything about the partner relationship that this app does not model, up to the day it earns a column. Nothing here is read when a visit is served: the account's own columns are what the app acts on, `source_data` is what the source said, and this is what you say. |  |
 | name | string |  |  |
 | organization_id | string |  |  |
 | protocol | string |  |  |
-| protocol_version | string |  |  |
-| secure_oci | boolean |  |  |
-| session_ttl_minutes | integer |  |  |
+| protocol_version | string | The version of its protocol the account speaks — one of GET /punchout/vocabularies/protocol-versions for that protocol: OCI 4.0 or 5.0 (it decides which fields a hand-back carries), an IDS version this shop answers `SV` with. A cXML account states none; each cXML document carries its own. Any other value is refused. Omitted means the protocol's default. |  |
+| purchase_mode | string | Null is ignored: a new account takes the default, a corrected one keeps its value. |  |
+| secure_oci | boolean | Null is ignored: a new account takes the default, a corrected one keeps its value. |  |
+| session_ttl_override_minutes | integer | How long a visit of this account stays open, overriding the tenant's `session_ttl_minutes` setting. Null — the ordinary case — means the tenant's lifetime. |  |
 | shared_secret | string |  |  |
-| start_page_url | string |  |  |
-| unknown_user_policy | string |  |  |
-| url_threading | boolean |  |  |
+| source_data | object | What the source said about this account, kept as it said it. Carries the ETag a write-back has to hand back in `If-Match`, and the source fields this app does not model — without it those are lost on the first edit made here. Not a place for anything the partner authenticates with: what an ERP sends to get in is written to the account's own write-only fields, which no route answers. |  |
+| source_synced_at | string | When this account was last confirmed against its source. A delta run asks for changes since it, and an operator reads it to see that a feed has gone quiet. Editing the account here does not touch it: it says when the SOURCE was last seen, not when the row changed. Null for an account no source owns. |  |
+| start_page_url | string | Where a buyer of THIS account lands after entry, overriding the tenant's `storefront_url` setting. Leave it empty: the entry URL is derived from the storefront address (`entry_url`), and an override is for a buyer who should land on a page of their own. Its host is the host the entry URL is derived from. |  |
+| unknown_user_policy | string | Null is ignored: a new account takes the default, a corrected one keeps its value. |  |
 
 
 ```http request
@@ -362,10 +373,15 @@ POST https://api.revenexx.com/v1/punchout/sessions
 | entry_payload | object |  |  |
 | expires_at | string |  |  |
 | external_user_id | string |  |  |
+| order_id | string |  |  |
+| order_number | string |  |  |
+| order_status | string |  |  |
+| ordered_at | string |  |  |
 | organization_id | string |  |  |
 | origin | string |  |  |
 | protocol | string |  |  |
 | psid | string |  |  |
+| purchase_mode | string |  |  |
 | return_method | string |  |  |
 | return_url | string |  |  |
 | secure_session_id | string |  |  |
@@ -418,10 +434,15 @@ PUT https://api.revenexx.com/v1/punchout/sessions/{id}
 | entry_payload | object |  |  |
 | expires_at | string |  |  |
 | external_user_id | string |  |  |
+| order_id | string |  |  |
+| order_number | string |  |  |
+| order_status | string |  |  |
+| ordered_at | string |  |  |
 | organization_id | string |  |  |
 | origin | string |  |  |
 | protocol | string |  |  |
 | psid | string |  |  |
+| purchase_mode | string |  |  |
 | return_method | string |  |  |
 | return_url | string |  |  |
 | secure_session_id | string |  |  |
@@ -435,7 +456,21 @@ PUT https://api.revenexx.com/v1/punchout/sessions/{id}
 POST https://api.revenexx.com/v1/punchout/sessions/{psid}/claim
 ```
 
-** The start of a punchout visit in the shop. Resolves the buyer the external system named to an ordinary contact — the named one, else the account's fallback contact, else whatever the account's policy for an unknown name says — asks the app that owns buyer authentication to sign that contact in, and answers the secret together with the channel, the action and the cart the visit names. The secret is single-use and short-lived: redeem it server-side, and keep it out of a redirect URL, a browser history and a Referer. Answered exactly ONCE — the handle travelled through the external system in the clear. A second claim, an expired or revoked visit, one already handed back and a handle nobody minted all get the same answer, deliberately. **
+** The start of a punchout visit in the shop. Resolves the buyer the external system named to an ordinary contact — the named one, else the account's fallback contact, else whatever the account's policy for an unknown name says — gives the visit a cart of its own if it brought none (a new, empty one, owned by the visit's handle rather than by the contact, because one contact may carry several ERP users' visits at once), asks the app that owns buyer authentication to sign that contact in, and answers the secret together with the channel, the action and that cart. The secret is single-use and short-lived: redeem it server-side, and keep it out of a redirect URL, a browser history and a Referer. Answered exactly ONCE — the handle travelled through the external system in the clear. A second claim, an expired or revoked visit, one already handed back and a handle nobody minted all get the same answer, deliberately. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| psid | string | **Required**  |  |
+| data | object | Request body |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/punchout/sessions/{psid}/ordered
+```
+
+** The other way an IDS visit ends, for an account whose purchase mode is order: the buyer checked out in the shop, and the order is an ORDINARY order placed through the ordinary checkout. Call it after the checkout. This app believes the orders app, not the caller: it reads the order the visit's cart became, records its id, number and status on the visit and closes it as ordered. An order awaiting the buyer organisation's approval counts — the cart is converted either way — and a later decline changes nothing here. A visit that ran out while the buyer checked out is still closed as ordered when the order was created before it ran out. A retried call answers the visit as it was closed. **
 
 ### Parameters
 
@@ -449,7 +484,7 @@ POST https://api.revenexx.com/v1/punchout/sessions/{psid}/claim
 POST https://api.revenexx.com/v1/punchout/sessions/{psid}/return
 ```
 
-** The end of a punchout visit. Answers where the cart goes, by which method and encoding, and the mapped fields to submit — one shape for all three protocols, whether that means dozens of named fields (OCI) or one field holding a whole document (cXML, IDS). The payload is ANSWERED, never posted from here: a request from this app carries none of the buyer's ERP session, and the protocols that expect a browser form post would reject it even if it did. Records a transfer with its normalised lines and the exact payload, mints a correlation key into that payload so an order arriving weeks later can be matched to it, and closes the visit as transferred. Creates NO order and reserves NO stock — the procurement system has decided nothing. A retried call answers the same payload and records no second transfer; a visit that expired or was revoked is refused, with the same answer a handle that never existed gets. **
+** The end of a punchout visit. Answers where the cart goes, by which method and encoding, and the mapped fields to submit — one shape for all three protocols, whether that means dozens of named fields (OCI) or one field holding a whole document (cXML, IDS). The payload is ANSWERED, never posted from here: a request from this app carries none of the buyer's ERP session, and the protocols that expect a browser form post would reject it even if it did. Records a transfer with its normalised lines and the exact payload, mints a correlation key into that payload so an order arriving weeks later can be matched to it, and closes the visit as transferred. Creates NO order and reserves NO stock — the procurement system has decided nothing. On an IDS account whose purchase mode is order_and_transfer the cart was already ordered through the ordinary checkout: the hand-back requires that order, reads it from the orders app, names it in the document (RueckgabeKZ, OrderConfNo) and on the transfer, and closes the visit as transferred. A retried call answers the same payload and records no second transfer; a visit that expired or was revoked is refused, with the same answer a handle that never existed gets. **
 
 ### Parameters
 
@@ -457,6 +492,13 @@ POST https://api.revenexx.com/v1/punchout/sessions/{psid}/return
 | --- | --- | --- | --- |
 | psid | string | **Required**  |  |
 | data | object | Request body |  |
+
+
+```http request
+GET https://api.revenexx.com/v1/punchout/setup
+```
+
+** The steps are the ones cockpit.json declares under setup.steps: the shipped field mappings and the first punchout account. Each is done when its table holds a row, so none is marked by hand. **
 
 
 ```http request
@@ -533,13 +575,18 @@ POST https://api.revenexx.com/v1/punchout/transfers
 | contact_id | string |  |  |
 | correlation_key | string |  |  |
 | currency | string |  |  |
+| external_id | string | The id the receiving system has for this hand-back — a cXML `PayloadID`, the reference an ERP answers the posted cart with. It is the idempotency key of the protocol rather than of this app: unique per tenant where it is set, so a hand-back a buyer's browser replays cannot leave a second transfer on record. Distinct from `correlation_key`, which this app mints and stamps on the visit before the mapping runs — that one is ours and is always there, this one is theirs and is filled by whoever records the receipt. |  |
+| external_refs | object | Every other system that knows this hand-back, keyed by system name — the procurement platform's own id beside the order number the ERP later gives it. `external_id` is the leading system; this is the rest. Not something to search on: this contract publishes no column filter at all, and the store compares such a field as a whole document. |  |
 | item_count | integer |  |  |
 | matched_at | string |  |  |
 | matched_order_id | string |  |  |
 | organization_id | string |  |  |
 | payload | object |  |  |
+| problems | array | Every field the payload is missing, and why: a mapping that failed, or a value the protocol's type could not take. Empty when nothing is missing. `transfer.degraded` announces the same, once. |  |
 | protocol | string |  |  |
 | session_id | string |  |  |
+| source_data | object | What the receiving system said back, kept as it said it — the acknowledgement, its ETag, and the fields of it this app does not model. A transfer is evidence and is added to but never rewritten, so this is where a later answer about it goes rather than over `payload`, which is what was handed over and must stay as it was handed over. |  |
+| source_synced_at | string | When this transfer was last confirmed against the system that received it — what an acknowledgement run stamps, and what tells an operator that the receipts have stopped arriving. Null while nobody has confirmed it, which is every transfer this app writes on its own: a hand-back answers a payload for a browser to submit, and whether it arrived is somebody else's answer. |  |
 | target_url | string |  |  |
 | total_gross | number |  |  |
 | total_net | number |  |  |
@@ -571,13 +618,18 @@ PUT https://api.revenexx.com/v1/punchout/transfers/{id}
 | contact_id | string |  |  |
 | correlation_key | string |  |  |
 | currency | string |  |  |
+| external_id | string | The id the receiving system has for this hand-back — a cXML `PayloadID`, the reference an ERP answers the posted cart with. It is the idempotency key of the protocol rather than of this app: unique per tenant where it is set, so a hand-back a buyer's browser replays cannot leave a second transfer on record. Distinct from `correlation_key`, which this app mints and stamps on the visit before the mapping runs — that one is ours and is always there, this one is theirs and is filled by whoever records the receipt. |  |
+| external_refs | object | Every other system that knows this hand-back, keyed by system name — the procurement platform's own id beside the order number the ERP later gives it. `external_id` is the leading system; this is the rest. Not something to search on: this contract publishes no column filter at all, and the store compares such a field as a whole document. |  |
 | item_count | integer |  |  |
 | matched_at | string |  |  |
 | matched_order_id | string |  |  |
 | organization_id | string |  |  |
 | payload | object |  |  |
+| problems | array | Every field the payload is missing, and why: a mapping that failed, or a value the protocol's type could not take. Empty when nothing is missing. `transfer.degraded` announces the same, once. |  |
 | protocol | string |  |  |
 | session_id | string |  |  |
+| source_data | object | What the receiving system said back, kept as it said it — the acknowledgement, its ETag, and the fields of it this app does not model. A transfer is evidence and is added to but never rewritten, so this is where a later answer about it goes rather than over `payload`, which is what was handed over and must stay as it was handed over. |  |
+| source_synced_at | string | When this transfer was last confirmed against the system that received it — what an acknowledgement run stamps, and what tells an operator that the receipts have stopped arriving. Null while nobody has confirmed it, which is every transfer this app writes on its own: a hand-back answers a payload for a browser to submit, and whether it arrived is somebody else's answer. |  |
 | target_url | string |  |  |
 | total_gross | number |  |  |
 | total_net | number |  |  |
@@ -588,14 +640,14 @@ PUT https://api.revenexx.com/v1/punchout/transfers/{id}
 GET https://api.revenexx.com/v1/punchout/vocabularies
 ```
 
-** Discovery for the vocabulary routes: the enums this app enforces, each with its name, its title and its description — and deliberately WITHOUT its values, so a UI can cache this one small answer and fetch only the value sets it renders. Names: entry-probe-outcome, mapping-mutators, mapping-sources. Fetch one with GET /punchout/vocabularies/{name}. **
+** Discovery for the vocabulary routes: the enums this app enforces, each with its name, its title and its description — and deliberately WITHOUT its values, so a UI can cache this one small answer and fetch only the value sets it renders. Names: auth-strategies, entry-actions, entry-probe-outcome, mapping-documents, mapping-emit, mapping-mutators, mapping-scopes, mapping-sources, mapping-target-kinds, origins, protocol-versions, protocols, purchase-modes, refusal-reasons, return-methods, session-statuses, unknown-user-policies. Fetch one with GET /punchout/vocabularies/{name}. **
 
 
 ```http request
 GET https://api.revenexx.com/v1/punchout/vocabularies/{name}
 ```
 
-** One vocabulary in full: every permitted value with its title, its description and the badge tone a UI colours it with. The values are read out of the column's CHECK constraint, so the served set IS the set the database accepts and the set the mapping engine understands — a mapping editor offering anything else would produce silently empty fields. `mapping-sources` carries the 24 sources of ADR-0003 (three of them namespaced `cxml.*`, offered only for a cXML account) and `mapping-mutators` the 17 chainable mutators; each value's description names the config keys it reads and which of them are required. Answers 404 for an unknown name. **
+** One vocabulary in full: every permitted value with its title, its description and the badge tone a UI colours it with. The values are read out of the column's CHECK constraint, so the served set IS the set the database accepts and the set the mapping engine understands — a mapping editor offering anything else would produce silently empty fields. `mapping-sources` carries the 25 sources of ADR-0003 (three of them namespaced `cxml.*`, offered only for a cXML account) and `mapping-mutators` the 20 chainable mutators; each value's description names the config keys it reads and which of them are required. Answers 404 for an unknown name. **
 
 ### Parameters
 

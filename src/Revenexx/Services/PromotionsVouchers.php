@@ -111,7 +111,7 @@ class PromotionsVouchers extends Service
      * @param string $name
      * @param string $promotionId
      * @param ?string $alphabet
-     * @param ?array $metadata
+     * @param ?mixed $metadata
      * @param ?string $pattern
      * @param ?string $requestRef
      * @param ?int $requested
@@ -119,7 +119,7 @@ class PromotionsVouchers extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function promotionsBatchesCreate(string $name, string $promotionId, ?string $alphabet = null, ?array $metadata = null, ?string $pattern = null, ?string $requestRef = null, ?int $requested = null, ?PromotionsBatchesCreateStatus $status = null): array
+    public function promotionsBatchesCreate(string $name, string $promotionId, ?string $alphabet = null, mixed $metadata = null, ?string $pattern = null, ?string $requestRef = null, ?int $requested = null, ?PromotionsBatchesCreateStatus $status = null): array
     {
         $apiPath = str_replace(
             [],
@@ -130,22 +130,13 @@ class PromotionsVouchers extends Service
         $apiParams = [];
         $apiParams['name'] = $name;
         $apiParams['promotion_id'] = $promotionId;
-
-        if (!is_null($alphabet)) {
-            $apiParams['alphabet'] = $alphabet;
-        }
+        $apiParams['alphabet'] = $alphabet;
 
         if (!is_null($metadata)) {
             $apiParams['metadata'] = $metadata;
         }
-
-        if (!is_null($pattern)) {
-            $apiParams['pattern'] = $pattern;
-        }
-
-        if (!is_null($requestRef)) {
-            $apiParams['request_ref'] = $requestRef;
-        }
+        $apiParams['pattern'] = $pattern;
+        $apiParams['request_ref'] = $requestRef;
 
         if (!is_null($requested)) {
             $apiParams['requested'] = $requested;
@@ -220,18 +211,18 @@ class PromotionsVouchers extends Service
 
     /**
      * @param string $id
-     * @param string $name
-     * @param string $promotionId
      * @param ?string $alphabet
-     * @param ?array $metadata
+     * @param ?mixed $metadata
+     * @param ?string $name
      * @param ?string $pattern
+     * @param ?string $promotionId
      * @param ?string $requestRef
      * @param ?int $requested
      * @param ?PromotionsBatchesCreateStatus $status
      * @throws RevenexxException
      * @return array
      */
-    public function promotionsBatchesUpdate(string $id, string $name, string $promotionId, ?string $alphabet = null, ?array $metadata = null, ?string $pattern = null, ?string $requestRef = null, ?int $requested = null, ?PromotionsBatchesCreateStatus $status = null): array
+    public function promotionsBatchesUpdate(string $id, ?string $alphabet = null, mixed $metadata = null, ?string $name = null, ?string $pattern = null, ?string $promotionId = null, ?string $requestRef = null, ?int $requested = null, ?PromotionsBatchesCreateStatus $status = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -241,24 +232,21 @@ class PromotionsVouchers extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
-        $apiParams['name'] = $name;
-        $apiParams['promotion_id'] = $promotionId;
-
-        if (!is_null($alphabet)) {
-            $apiParams['alphabet'] = $alphabet;
-        }
+        $apiParams['alphabet'] = $alphabet;
 
         if (!is_null($metadata)) {
             $apiParams['metadata'] = $metadata;
         }
 
-        if (!is_null($pattern)) {
-            $apiParams['pattern'] = $pattern;
+        if (!is_null($name)) {
+            $apiParams['name'] = $name;
         }
+        $apiParams['pattern'] = $pattern;
 
-        if (!is_null($requestRef)) {
-            $apiParams['request_ref'] = $requestRef;
+        if (!is_null($promotionId)) {
+            $apiParams['promotion_id'] = $promotionId;
         }
+        $apiParams['request_ref'] = $requestRef;
 
         if (!is_null($requested)) {
             $apiParams['requested'] = $requested;
@@ -273,6 +261,37 @@ class PromotionsVouchers extends Service
 
         return $this->client->call(
             Client::METHOD_PUT,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Switching a batch off reaches every code it generated, which is the point
+     * of generating them as a batch: the batch and each of its active codes
+     * become `disabled`. Redemptions already committed stay; new ones are
+     * refused. Answers the batch with `disabled_codes`.
+     *
+     * @param string $id
+     * @throws RevenexxException
+     * @return array
+     */
+    public function promotionsBatchesDisable(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/promotions/batches/{id}/disable'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_POST,
             $apiPath,
             $apiHeaders,
             $apiParams
@@ -302,6 +321,36 @@ class PromotionsVouchers extends Service
 
         return $this->client->call(
             Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * The same codes as the GET, as a file the Cockpit downloads as it is:
+     * `filename`, `content_type` (`text/csv`) and `content`, one code per line
+     * with its status, its limit, its uses and its end date.
+     *
+     * @param string $id
+     * @throws RevenexxException
+     * @return array
+     */
+    public function promotionsBatchesExportFile(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/promotions/batches/{id}/export'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_POST,
             $apiPath,
             $apiHeaders,
             $apiParams
@@ -516,18 +565,9 @@ class PromotionsVouchers extends Service
 
         $apiParams = [];
         $apiParams['voucher_id'] = $voucherId;
-
-        if (!is_null($contactId)) {
-            $apiParams['contact_id'] = $contactId;
-        }
-
-        if (!is_null($expiresAt)) {
-            $apiParams['expires_at'] = $expiresAt;
-        }
-
-        if (!is_null($organizationId)) {
-            $apiParams['organization_id'] = $organizationId;
-        }
+        $apiParams['contact_id'] = $contactId;
+        $apiParams['expires_at'] = $expiresAt;
+        $apiParams['organization_id'] = $organizationId;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -594,14 +634,14 @@ class PromotionsVouchers extends Service
 
     /**
      * @param string $id
-     * @param string $voucherId
      * @param ?string $contactId
      * @param ?string $expiresAt
      * @param ?string $organizationId
+     * @param ?string $voucherId
      * @throws RevenexxException
      * @return array
      */
-    public function promotionsVoucherReservationsUpdate(string $id, string $voucherId, ?string $contactId = null, ?string $expiresAt = null, ?string $organizationId = null): array
+    public function promotionsVoucherReservationsUpdate(string $id, ?string $contactId = null, ?string $expiresAt = null, ?string $organizationId = null, ?string $voucherId = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -611,18 +651,12 @@ class PromotionsVouchers extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
-        $apiParams['voucher_id'] = $voucherId;
+        $apiParams['contact_id'] = $contactId;
+        $apiParams['expires_at'] = $expiresAt;
+        $apiParams['organization_id'] = $organizationId;
 
-        if (!is_null($contactId)) {
-            $apiParams['contact_id'] = $contactId;
-        }
-
-        if (!is_null($expiresAt)) {
-            $apiParams['expires_at'] = $expiresAt;
-        }
-
-        if (!is_null($organizationId)) {
-            $apiParams['organization_id'] = $organizationId;
+        if (!is_null($voucherId)) {
+            $apiParams['voucher_id'] = $voucherId;
         }
 
         $apiHeaders = [];
@@ -747,7 +781,7 @@ class PromotionsVouchers extends Service
      * @param ?string $contactId
      * @param ?string $currency
      * @param ?string $endsAt
-     * @param ?array $metadata
+     * @param ?mixed $metadata
      * @param ?string $organizationId
      * @param ?int $reservationLimit
      * @param ?bool $reservationRequired
@@ -758,7 +792,7 @@ class PromotionsVouchers extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function promotionsVouchersCreate(string $code, string $promotionId, ?string $batchId = null, ?string $contactId = null, ?string $currency = null, ?string $endsAt = null, ?array $metadata = null, ?string $organizationId = null, ?int $reservationLimit = null, ?bool $reservationRequired = null, ?float $residualValue = null, ?string $startsAt = null, ?PromotionsBatchesCreateStatus $status = null, ?int $usageLimit = null): array
+    public function promotionsVouchersCreate(string $code, string $promotionId, ?string $batchId = null, ?string $contactId = null, ?string $currency = null, ?string $endsAt = null, mixed $metadata = null, ?string $organizationId = null, ?int $reservationLimit = null, ?bool $reservationRequired = null, ?float $residualValue = null, ?string $startsAt = null, ?PromotionsBatchesCreateStatus $status = null, ?int $usageLimit = null): array
     {
         $apiPath = str_replace(
             [],
@@ -769,46 +803,22 @@ class PromotionsVouchers extends Service
         $apiParams = [];
         $apiParams['code'] = $code;
         $apiParams['promotion_id'] = $promotionId;
-
-        if (!is_null($batchId)) {
-            $apiParams['batch_id'] = $batchId;
-        }
-
-        if (!is_null($contactId)) {
-            $apiParams['contact_id'] = $contactId;
-        }
-
-        if (!is_null($currency)) {
-            $apiParams['currency'] = $currency;
-        }
-
-        if (!is_null($endsAt)) {
-            $apiParams['ends_at'] = $endsAt;
-        }
+        $apiParams['batch_id'] = $batchId;
+        $apiParams['contact_id'] = $contactId;
+        $apiParams['currency'] = $currency;
+        $apiParams['ends_at'] = $endsAt;
 
         if (!is_null($metadata)) {
             $apiParams['metadata'] = $metadata;
         }
-
-        if (!is_null($organizationId)) {
-            $apiParams['organization_id'] = $organizationId;
-        }
-
-        if (!is_null($reservationLimit)) {
-            $apiParams['reservation_limit'] = $reservationLimit;
-        }
+        $apiParams['organization_id'] = $organizationId;
+        $apiParams['reservation_limit'] = $reservationLimit;
 
         if (!is_null($reservationRequired)) {
             $apiParams['reservation_required'] = $reservationRequired;
         }
-
-        if (!is_null($residualValue)) {
-            $apiParams['residual_value'] = $residualValue;
-        }
-
-        if (!is_null($startsAt)) {
-            $apiParams['starts_at'] = $startsAt;
-        }
+        $apiParams['residual_value'] = $residualValue;
+        $apiParams['starts_at'] = $startsAt;
 
         if (!is_null($status)) {
             $apiParams['status'] = $status;
@@ -883,14 +893,14 @@ class PromotionsVouchers extends Service
 
     /**
      * @param string $id
-     * @param string $code
-     * @param string $promotionId
      * @param ?string $batchId
+     * @param ?string $code
      * @param ?string $contactId
      * @param ?string $currency
      * @param ?string $endsAt
-     * @param ?array $metadata
+     * @param ?mixed $metadata
      * @param ?string $organizationId
+     * @param ?string $promotionId
      * @param ?int $reservationLimit
      * @param ?bool $reservationRequired
      * @param ?float $residualValue
@@ -900,7 +910,7 @@ class PromotionsVouchers extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function promotionsVouchersUpdate(string $id, string $code, string $promotionId, ?string $batchId = null, ?string $contactId = null, ?string $currency = null, ?string $endsAt = null, ?array $metadata = null, ?string $organizationId = null, ?int $reservationLimit = null, ?bool $reservationRequired = null, ?float $residualValue = null, ?string $startsAt = null, ?PromotionsBatchesCreateStatus $status = null, ?int $usageLimit = null): array
+    public function promotionsVouchersUpdate(string $id, ?string $batchId = null, ?string $code = null, ?string $contactId = null, ?string $currency = null, ?string $endsAt = null, mixed $metadata = null, ?string $organizationId = null, ?string $promotionId = null, ?int $reservationLimit = null, ?bool $reservationRequired = null, ?float $residualValue = null, ?string $startsAt = null, ?PromotionsBatchesCreateStatus $status = null, ?int $usageLimit = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -910,48 +920,30 @@ class PromotionsVouchers extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
-        $apiParams['code'] = $code;
-        $apiParams['promotion_id'] = $promotionId;
+        $apiParams['batch_id'] = $batchId;
 
-        if (!is_null($batchId)) {
-            $apiParams['batch_id'] = $batchId;
+        if (!is_null($code)) {
+            $apiParams['code'] = $code;
         }
-
-        if (!is_null($contactId)) {
-            $apiParams['contact_id'] = $contactId;
-        }
-
-        if (!is_null($currency)) {
-            $apiParams['currency'] = $currency;
-        }
-
-        if (!is_null($endsAt)) {
-            $apiParams['ends_at'] = $endsAt;
-        }
+        $apiParams['contact_id'] = $contactId;
+        $apiParams['currency'] = $currency;
+        $apiParams['ends_at'] = $endsAt;
 
         if (!is_null($metadata)) {
             $apiParams['metadata'] = $metadata;
         }
+        $apiParams['organization_id'] = $organizationId;
 
-        if (!is_null($organizationId)) {
-            $apiParams['organization_id'] = $organizationId;
+        if (!is_null($promotionId)) {
+            $apiParams['promotion_id'] = $promotionId;
         }
-
-        if (!is_null($reservationLimit)) {
-            $apiParams['reservation_limit'] = $reservationLimit;
-        }
+        $apiParams['reservation_limit'] = $reservationLimit;
 
         if (!is_null($reservationRequired)) {
             $apiParams['reservation_required'] = $reservationRequired;
         }
-
-        if (!is_null($residualValue)) {
-            $apiParams['residual_value'] = $residualValue;
-        }
-
-        if (!is_null($startsAt)) {
-            $apiParams['starts_at'] = $startsAt;
-        }
+        $apiParams['residual_value'] = $residualValue;
+        $apiParams['starts_at'] = $startsAt;
 
         if (!is_null($status)) {
             $apiParams['status'] = $status;

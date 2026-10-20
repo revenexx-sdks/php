@@ -8,6 +8,7 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\CartStatus;
 use Revenexx\Enums\CartMergeStrategy;
+use Revenexx\Enums\CartOrderingChannel;
 use Revenexx\Enums\Name;
 
 final class CartsTest extends TestCase {
@@ -63,6 +64,20 @@ final class CartsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodCartsHeldCodes(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->carts->cartsHeldCodes(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodCartsMaintenanceRun(): void {
 
         $data = array();
@@ -87,6 +102,21 @@ final class CartsTest extends TestCase {
 
         $response = $this->carts->cartsMerge(
             "",
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCartsOnBehalf(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->carts->cartsOnBehalf(
             ""
         );
 

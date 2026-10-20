@@ -6,12 +6,16 @@ use Revenexx\Client;
 use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
-use Revenexx\Enums\Status;
+use Revenexx\Enums\CustomersContactsListStatus;
+use Revenexx\Enums\ShopAccess;
 use Revenexx\Enums\OrderApprovalMode;
 use Revenexx\Enums\RegistrationStatus;
+use Revenexx\Enums\LeadSource;
+use Revenexx\Enums\Trashed;
 use Revenexx\Enums\CustomersContactsCreateRegistrationStatus;
 use Revenexx\Enums\ContactStatus;
 use Revenexx\Enums\ContactActivityKind;
+use Revenexx\Enums\Reason;
 
 final class CustomersContactsTest extends TestCase {
     private $client;
@@ -80,6 +84,20 @@ final class CustomersContactsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodCustomersContactsTrashEmpty(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersContacts->customersContactsTrashEmpty(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodCustomersContactsEventsCreate(): void {
 
         $data = array();
@@ -120,8 +138,7 @@ final class CustomersContactsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->customersContacts->customersContactsInvite(
-            "",
-            "https://shop.example.com/anmelden"
+            ""
         );
 
         $this->assertSame($data, $response);
@@ -173,6 +190,52 @@ final class CustomersContactsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodCustomersContactsReinvite(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersContacts->customersContactsReinvite(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersContactsRestoreAccess(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersContacts->customersContactsRestoreAccess(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersContactsRevokeAccess(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersContacts->customersContactsRevokeAccess(
+            "",
+            Reason::LEFTCOMPANY()
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodCustomersContactsDelete(): void {
 
         $data = array();
@@ -212,6 +275,36 @@ final class CustomersContactsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->customersContacts->customersContactsUpdate(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersContactsErase(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersContacts->customersContactsErase(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersContactsRestore(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersContacts->customersContactsRestore(
             ""
         );
 

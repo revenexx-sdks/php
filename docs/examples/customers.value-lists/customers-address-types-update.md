@@ -15,6 +15,7 @@ $customersValueLists = new CustomersValueLists($client);
 
 $result = $customersValueLists->customersAddressTypesUpdate(
     id: '',
+    active: true, // optional
     description: 'Where the goods go.', // optional
     descriptions: [
         'de' => 'Wohin die Ware geliefert wird.',

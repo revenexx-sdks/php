@@ -16,5 +16,6 @@ $orders = new Orders($client);
 $result = $orders->ordersPaymentStatusUpdate(
     id: '',
     status: OrderPaymentStatus::OPEN(),
-    paymentId: 'pay_000000000001' // optional
+    paymentId: 'pay_000000000001', // optional
+    transactionReference: 'pay_000000000001' // optional
 );```

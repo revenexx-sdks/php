@@ -27,13 +27,15 @@ class PromotionsRedemptions extends Service
      * @param ?string $contactId
      * @param ?string $currency
      * @param ?string $market
+     * @param ?string $orderNumber
      * @param ?string $organizationId
      * @param ?array $promotions
+     * @param ?string $redeemedBy
      * @param ?array $terms
      * @throws RevenexxException
      * @return array
      */
-    public function promotionsRedemptionsCommit(string $orderId, ?string $cartId = null, ?string $contactId = null, ?string $currency = null, ?string $market = null, ?string $organizationId = null, ?array $promotions = null, ?array $terms = null): array
+    public function promotionsRedemptionsCommit(string $orderId, ?string $cartId = null, ?string $contactId = null, ?string $currency = null, ?string $market = null, ?string $orderNumber = null, ?string $organizationId = null, ?array $promotions = null, ?string $redeemedBy = null, ?array $terms = null): array
     {
         $apiPath = str_replace(
             [],
@@ -60,12 +62,20 @@ class PromotionsRedemptions extends Service
             $apiParams['market'] = $market;
         }
 
+        if (!is_null($orderNumber)) {
+            $apiParams['order_number'] = $orderNumber;
+        }
+
         if (!is_null($organizationId)) {
             $apiParams['organization_id'] = $organizationId;
         }
 
         if (!is_null($promotions)) {
             $apiParams['promotions'] = $promotions;
+        }
+
+        if (!is_null($redeemedBy)) {
+            $apiParams['redeemed_by'] = $redeemedBy;
         }
 
         if (!is_null($terms)) {
@@ -124,16 +134,19 @@ class PromotionsRedemptions extends Service
      * @param ?string $id
      * @param ?string $promotionId
      * @param ?string $voucherId
+     * @param ?string $voucherCode
+     * @param ?string $batchId
      * @param ?string $cartId
      * @param ?string $orderId
+     * @param ?string $orderNumber
      * @param ?string $contactId
      * @param ?string $organizationId
+     * @param ?string $redeemedBy
      * @param ?string $state
-     * @param ?string $currency
      * @throws RevenexxException
      * @return array
      */
-    public function promotionsRedemptionsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $promotionId = null, ?string $voucherId = null, ?string $cartId = null, ?string $orderId = null, ?string $contactId = null, ?string $organizationId = null, ?string $state = null, ?string $currency = null): array
+    public function promotionsRedemptionsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $promotionId = null, ?string $voucherId = null, ?string $voucherCode = null, ?string $batchId = null, ?string $cartId = null, ?string $orderId = null, ?string $orderNumber = null, ?string $contactId = null, ?string $organizationId = null, ?string $redeemedBy = null, ?string $state = null): array
     {
         $apiPath = str_replace(
             [],
@@ -167,12 +180,24 @@ class PromotionsRedemptions extends Service
             $apiParams['voucher_id'] = $voucherId;
         }
 
+        if (!is_null($voucherCode)) {
+            $apiParams['voucher_code'] = $voucherCode;
+        }
+
+        if (!is_null($batchId)) {
+            $apiParams['batch_id'] = $batchId;
+        }
+
         if (!is_null($cartId)) {
             $apiParams['cart_id'] = $cartId;
         }
 
         if (!is_null($orderId)) {
             $apiParams['order_id'] = $orderId;
+        }
+
+        if (!is_null($orderNumber)) {
+            $apiParams['order_number'] = $orderNumber;
         }
 
         if (!is_null($contactId)) {
@@ -183,12 +208,12 @@ class PromotionsRedemptions extends Service
             $apiParams['organization_id'] = $organizationId;
         }
 
-        if (!is_null($state)) {
-            $apiParams['state'] = $state;
+        if (!is_null($redeemedBy)) {
+            $apiParams['redeemed_by'] = $redeemedBy;
         }
 
-        if (!is_null($currency)) {
-            $apiParams['currency'] = $currency;
+        if (!is_null($state)) {
+            $apiParams['state'] = $state;
         }
 
         $apiHeaders = [];
@@ -285,10 +310,11 @@ class PromotionsRedemptions extends Service
      * @param ?string $fromCartId
      * @param ?string $organizationId
      * @param ?array $promotions
+     * @param ?string $redeemedBy
      * @throws RevenexxException
      * @return array
      */
-    public function promotionsRedemptionsReserve(string $cartId, ?string $contactId = null, ?string $currency = null, ?string $fromCartId = null, ?string $organizationId = null, ?array $promotions = null): array
+    public function promotionsRedemptionsReserve(string $cartId, ?string $contactId = null, ?string $currency = null, ?string $fromCartId = null, ?string $organizationId = null, ?array $promotions = null, ?string $redeemedBy = null): array
     {
         $apiPath = str_replace(
             [],
@@ -319,6 +345,10 @@ class PromotionsRedemptions extends Service
             $apiParams['promotions'] = $promotions;
         }
 
+        if (!is_null($redeemedBy)) {
+            $apiParams['redeemed_by'] = $redeemedBy;
+        }
+
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
 
@@ -341,11 +371,12 @@ class PromotionsRedemptions extends Service
      * @param ?bool $all
      * @param ?array $lines
      * @param ?array $remainingAmounts
+     * @param ?array $remainingLines
      * @param ?string $returnRef
      * @throws RevenexxException
      * @return array
      */
-    public function promotionsRedemptionsReturns(string $orderId, ?bool $all = null, ?array $lines = null, ?array $remainingAmounts = null, ?string $returnRef = null): array
+    public function promotionsRedemptionsReturns(string $orderId, ?bool $all = null, ?array $lines = null, ?array $remainingAmounts = null, ?array $remainingLines = null, ?string $returnRef = null): array
     {
         $apiPath = str_replace(
             [],
@@ -366,6 +397,10 @@ class PromotionsRedemptions extends Service
 
         if (!is_null($remainingAmounts)) {
             $apiParams['remaining_amounts'] = $remainingAmounts;
+        }
+
+        if (!is_null($remainingLines)) {
+            $apiParams['remaining_lines'] = $remainingLines;
         }
 
         if (!is_null($returnRef)) {

@@ -25,5 +25,6 @@ $result = $promotionsPromotions->promotionsConditionsList(
     subject: '', // optional
     comparison: '', // optional
     rightSubject: '', // optional
+    summary: '', // optional
     position: '' // optional
 );```

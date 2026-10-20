@@ -6,11 +6,8 @@ use JsonSerializable;
 
 class Kind implements JsonSerializable
 {
-    private static Kind $COOKIE;
-    private static Kind $LOCALSTORAGE;
-    private static Kind $SESSIONSTORAGE;
-    private static Kind $INDEXEDDB;
-    private static Kind $PIXEL;
+    private static Kind $ACTIVE;
+    private static Kind $STATIC;
 
     private string $value;
 
@@ -29,39 +26,18 @@ class Kind implements JsonSerializable
         return $this->value;
     }
 
-    public static function COOKIE(): Kind
+    public static function ACTIVE(): Kind
     {
-        if (!isset(self::$COOKIE)) {
-            self::$COOKIE = new Kind('cookie');
+        if (!isset(self::$ACTIVE)) {
+            self::$ACTIVE = new Kind('active');
         }
-        return self::$COOKIE;
+        return self::$ACTIVE;
     }
-    public static function LOCALSTORAGE(): Kind
+    public static function STATIC(): Kind
     {
-        if (!isset(self::$LOCALSTORAGE)) {
-            self::$LOCALSTORAGE = new Kind('local_storage');
+        if (!isset(self::$STATIC)) {
+            self::$STATIC = new Kind('static');
         }
-        return self::$LOCALSTORAGE;
-    }
-    public static function SESSIONSTORAGE(): Kind
-    {
-        if (!isset(self::$SESSIONSTORAGE)) {
-            self::$SESSIONSTORAGE = new Kind('session_storage');
-        }
-        return self::$SESSIONSTORAGE;
-    }
-    public static function INDEXEDDB(): Kind
-    {
-        if (!isset(self::$INDEXEDDB)) {
-            self::$INDEXEDDB = new Kind('indexeddb');
-        }
-        return self::$INDEXEDDB;
-    }
-    public static function PIXEL(): Kind
-    {
-        if (!isset(self::$PIXEL)) {
-            self::$PIXEL = new Kind('pixel');
-        }
-        return self::$PIXEL;
+        return self::$STATIC;
     }
 }

@@ -14,5 +14,6 @@ $carts = new Carts($client);
 
 $result = $carts->cartsMerge(
     sourceCartId: '',
-    targetCartId: ''
+    targetCartId: '',
+    sessionKey: 'a1b2c3d4e5f6' // optional
 );```

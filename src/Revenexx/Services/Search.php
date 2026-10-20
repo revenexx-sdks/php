@@ -7,6 +7,7 @@ use Revenexx\Client;
 use Revenexx\Service;
 use Revenexx\InputFile;
 use Revenexx\Enums\Collection as CollectionEnum;
+use Revenexx\Enums\SearchEventsType;
 
 class Search extends Service
 {
@@ -306,6 +307,74 @@ class Search extends Service
     }
 
     /**
+     * A click on a result, an add-to-cart or a purchase, tied to the search it
+     * came from by `query_id` (from `/api/v1/query` or `/api/v1/suggest`). The
+     * search analytics count it per language and search type; with an events key
+     * configured the proxy also writes it to the collection's Typesense event
+     * log.
+     * 
+     * `user_token` is a pseudonymous id the storefront chooses (a random value
+     * kept in a cookie, never an e-mail or a customer number); it is stored only
+     * salted and hashed. The locale comes from `X-Revenexx-Locale`.
+     * 
+     * Answers 202 at once: recording happens in the background, and an event is
+     * dropped rather than slowing the shop down. Requires the `documents:search`
+     * action; a `revx_` key may report events for its own collection only.
+     *
+     * @param string $collection
+     * @param SearchEventsType $type
+     * @param ?string $docId
+     * @param ?int $position
+     * @param ?string $q
+     * @param ?string $queryId
+     * @param ?string $userToken
+     * @throws RevenexxException
+     * @return array
+     */
+    public function searchEvents(string $collection, SearchEventsType $type, ?string $docId = null, ?int $position = null, ?string $q = null, ?string $queryId = null, ?string $userToken = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/search/events'
+        );
+
+        $apiParams = [];
+        $apiParams['collection'] = $collection;
+        $apiParams['type'] = $type;
+
+        if (!is_null($docId)) {
+            $apiParams['doc_id'] = $docId;
+        }
+
+        if (!is_null($position)) {
+            $apiParams['position'] = $position;
+        }
+
+        if (!is_null($q)) {
+            $apiParams['q'] = $q;
+        }
+
+        if (!is_null($queryId)) {
+            $apiParams['query_id'] = $queryId;
+        }
+
+        if (!is_null($userToken)) {
+            $apiParams['user_token'] = $userToken;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
      * Idempotent, and bounded by the tenant's own configuration: it can add
      * no field for an attribute the tenant has not marked `is_filterable`,
      * and drops only fields whose attribute it has itself un-marked. A run
@@ -365,9 +434,13 @@ class Search extends Service
     /**
      * Run several searches in one round trip — the endpoint the typesense-js
      * `multiSearch` helper and the InstantSearch adapter use for every query. On
-     * the gateway-trust path each entry must name a collection the tenant owns.
-     * With a `revx_` key `collection_name` is optional and is forced to the key's
+     * the gateway-trust path each entry must name a collection the tenant owns in
+     * `collection`. With a `revx_` key it is optional and is forced to the key's
      * own collection. Requires the `documents:search` action.
+     * 
+     * Use this instead of the single-collection search when the query outgrows a
+     * URL: Typesense caps a GET query string at 4000 characters, which a long
+     * `facet_by` reaches sooner than expected.
      *
      * @param array $searches
      * @throws RevenexxException
@@ -383,6 +456,140 @@ class Search extends Service
 
         $apiParams = [];
         $apiParams['searches'] = $searches;
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Search one collection by intent rather than by Typesense parameters. The
+     * caller says what to look for (`q`, `filters`, `sort`, paging) and which
+     * `view` it is rendering; how to search comes from the collection's preset
+     * for that view (`<typesense_collection>__<view>`, managed through the admin
+     * API) or, without one, from a built-in default per view.
+     * 
+     * Always applied and not overridable: the tenant scope, `enabled:=true` when
+     * the collection has a boolean `enabled` field, the channel from
+     * `X-Revenexx-Channel` when the collection has `channels`, and the locale
+     * from `X-Revenexx-Locale` when the collection has `locale` (both the full
+     * and the bare code, e.g. `de-DE` and `de`).
+     * 
+     * Relevance parameters in the body (`query_by`, `sort_by`, `preset`,
+     * `facet_by`, …) are ignored, as is any other unknown key. Filters on
+     * fields the schema does not have, or cannot filter on, are dropped and
+     * listed in `ignored_filters`; a sort on a field without `sort: true` is
+     * dropped and echoed in `ignored_sort`.
+     * 
+     * Answers 404 while the proxy runs without its metadata key, which callers
+     * should treat like a missing route and fall back to `multi_search`. Requires
+     * the `documents:search` action; a `revx_` key may query its own collection
+     * only.
+     *
+     * @param string $collection
+     * @param ?array $filters
+     * @param ?int $page
+     * @param ?int $perPage
+     * @param ?string $q
+     * @param ?string $sort
+     * @param ?string $view
+     * @throws RevenexxException
+     * @return array
+     */
+    public function searchQuery(string $collection, ?array $filters = null, ?int $page = null, ?int $perPage = null, ?string $q = null, ?string $sort = null, ?string $view = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/search/query'
+        );
+
+        $apiParams = [];
+        $apiParams['collection'] = $collection;
+
+        if (!is_null($filters)) {
+            $apiParams['filters'] = $filters;
+        }
+
+        if (!is_null($page)) {
+            $apiParams['page'] = $page;
+        }
+
+        if (!is_null($perPage)) {
+            $apiParams['per_page'] = $perPage;
+        }
+
+        if (!is_null($q)) {
+            $apiParams['q'] = $q;
+        }
+
+        if (!is_null($sort)) {
+            $apiParams['sort'] = $sort;
+        }
+
+        if (!is_null($view)) {
+            $apiParams['view'] = $view;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * One request for a quick search: products and the category, manufacturer and
+     * page tiles beside them. Every collection is searched with its `suggest`
+     * preset or, without one, the built-in suggest default (prefix matching, few
+     * hits), under the same mandatory filters as `/api/v1/query` (tenant, locale,
+     * channel, `enabled`).
+     * 
+     * Without `collections` the proxy asks `products`, `categories`,
+     * `manufacturers` and `pages`, and leaves out those the tenant does not have;
+     * groups come back in that order. A collection whose search fails is left out
+     * rather than failing the request. Storefront actions (a redirect for the
+     * query) come from the first group that has any.
+     * 
+     * Send the `query_id` back with the events the result leads to (`POST
+     * /api/v1/events`). Answers 404 while the proxy runs without its metadata
+     * key. Requires the `documents:search` action; a `revx_` key asks its own
+     * collection only.
+     *
+     * @param string $q
+     * @param ?array $collections
+     * @param ?int $perPage
+     * @throws RevenexxException
+     * @return array
+     */
+    public function searchSuggest(string $q, ?array $collections = null, ?int $perPage = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/search/suggest'
+        );
+
+        $apiParams = [];
+        $apiParams['q'] = $q;
+
+        if (!is_null($collections)) {
+            $apiParams['collections'] = $collections;
+        }
+
+        if (!is_null($perPage)) {
+            $apiParams['per_page'] = $perPage;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';

@@ -14,15 +14,18 @@ $quotesRanges = new QuotesRanges($client);
 
 $result = $quotesRanges->quotesRangesUpdate(
     id: '',
+    active: true, // optional
     code: '', // optional
     counter: 1, // optional
     createdAt: '2026-01-01T12:00:00Z', // optional
     idBody: '', // optional
+    labels: [], // optional
     padding: 1, // optional
     positionStep: 1, // optional
     prefix: '', // optional
     step: 1, // optional
     suffix: '', // optional
     tenantId: '', // optional
+    title: '', // optional
     updatedAt: '2026-01-01T12:00:00Z' // optional
 );```

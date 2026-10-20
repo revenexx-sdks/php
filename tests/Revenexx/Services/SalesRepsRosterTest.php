@@ -46,6 +46,20 @@ final class SalesRepsRosterTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodSalesRepsRepsRecount(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->salesRepsRoster->salesRepsRepsRecount(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodSalesRepsRepsDelete(): void {
 
         $data = array();

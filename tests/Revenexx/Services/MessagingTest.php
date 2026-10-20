@@ -8,7 +8,7 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\ResourceType;
 use Revenexx\Enums\Scope;
-use Revenexx\Enums\Reason;
+use Revenexx\Enums\SuppressionIndexReason;
 use Revenexx\Enums\MessageClass;
 use Revenexx\Enums\WhatsappCategory;
 
@@ -508,7 +508,7 @@ final class MessagingTest extends TestCase {
         $response = $this->messaging->suppressionStore(
             "",
             "",
-            Reason::HARDBOUNCE()
+            SuppressionIndexReason::HARDBOUNCE()
         );
 
         $this->assertSame($data, $response);

@@ -36,6 +36,9 @@ class SalesRepsRoster extends Service
      * @param ?string $territory
      * @param ?bool $active
      * @param ?string $platformUserId
+     * @param ?bool $hasLogin
+     * @param ?int $customerCount
+     * @param ?int $primaryCount
      * @param ?string $externalId
      * @param ?string $sourceSyncedAt
      * @param ?string $createdAt
@@ -46,7 +49,7 @@ class SalesRepsRoster extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function salesRepsRepsList(?string $id = null, ?string $code = null, ?string $name = null, ?string $email = null, ?string $phone = null, ?string $territory = null, ?bool $active = null, ?string $platformUserId = null, ?string $externalId = null, ?string $sourceSyncedAt = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function salesRepsRepsList(?string $id = null, ?string $code = null, ?string $name = null, ?string $email = null, ?string $phone = null, ?string $territory = null, ?bool $active = null, ?string $platformUserId = null, ?bool $hasLogin = null, ?int $customerCount = null, ?int $primaryCount = null, ?string $externalId = null, ?string $sourceSyncedAt = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             [],
@@ -86,6 +89,18 @@ class SalesRepsRoster extends Service
 
         if (!is_null($platformUserId)) {
             $apiParams['platform_user_id'] = $platformUserId;
+        }
+
+        if (!is_null($hasLogin)) {
+            $apiParams['has_login'] = $hasLogin;
+        }
+
+        if (!is_null($customerCount)) {
+            $apiParams['customer_count'] = $customerCount;
+        }
+
+        if (!is_null($primaryCount)) {
+            $apiParams['primary_count'] = $primaryCount;
         }
 
         if (!is_null($externalId)) {
@@ -184,6 +199,41 @@ class SalesRepsRoster extends Service
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * A rep is one field sales person, as a record this platform owns. They are
+     * identified by a `code` an ERP already holds — never by their email
+     * address, which is an ordinary nullable attribute here — and that code is
+     * fixed once created, because every assignment and every impersonation entry
+     * stores it. `customer_count` and `primary_count` on a rep follow every
+     * coverage write this app makes. Coverage that arrived another way — an
+     * import straight into the table — is not seen by those writes, so this
+     * call recounts every rep of the tenant from the coverage as it stands.
+     * Writing only the reps whose counts changed, it is free to repeat. It is
+     * also what fills the counts once after the columns arrive.
+     *
+     * @throws RevenexxException
+     * @return array
+     */
+    public function salesRepsRepsRecount(): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/sales-reps/reps/recount'
+        );
+
+        $apiParams = [];
+
+        $apiHeaders = [];
 
         return $this->client->call(
             Client::METHOD_POST,

@@ -16,6 +16,7 @@ $documentsKinds = new DocumentsKinds($client);
 $result = $documentsKinds->documentsKindsCreate(
     code: 'invoice',
     title: 'Invoice',
+    active: true, // optional
     description: 'What the buyer owes for an order.', // optional
     descriptions: [
         'de' => 'Was der Käufer für eine Bestellung schuldet.',

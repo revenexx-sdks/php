@@ -6,11 +6,13 @@ use Revenexx\Client;
 use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
+use Revenexx\Enums\CartExportFormat;
+use Revenexx\Enums\CartIoFieldEntity;
+use Revenexx\Enums\CartIoFieldRole;
 use Revenexx\Enums\CartIoDirection;
 use Revenexx\Enums\CartIoEntity;
 use Revenexx\Enums\CartIoFormat;
 use Revenexx\Enums\CartIoApplyMode;
-use Revenexx\Enums\CartExportFormat;
 
 final class CartsIoTest extends TestCase {
     private $client;
@@ -19,6 +21,20 @@ final class CartsIoTest extends TestCase {
     protected function setUp(): void {
         $this->client = Mockery::mock(Client::class);
         $this->cartsIo = new CartsIo($this->client);
+    }
+
+    public function testMethodCartsExportAll(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->cartsIo->cartsExportAll(
+        );
+
+        $this->assertSame($data, $response);
     }
 
     public function testMethodCartsImport(): void {
@@ -30,6 +46,20 @@ final class CartsIoTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->cartsIo->cartsImport(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCartsIoFields(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->cartsIo->cartsIoFields(
         );
 
         $this->assertSame($data, $response);
@@ -119,6 +149,22 @@ final class CartsIoTest extends TestCase {
 
         $response = $this->cartsIo->cartsIoProfilesUpdate(
             ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCartsIoProfilesCopy(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->cartsIo->cartsIoProfilesCopy(
+            "",
+            "my-cart-import"
         );
 
         $this->assertSame($data, $response);

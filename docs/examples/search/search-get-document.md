@@ -14,6 +14,6 @@ $client = (new Client())
 $search = new Search($client);
 
 $result = $search->searchGetDocument(
-    collection: CollectionEnum::PRODUCTS(),
+    collection: CollectionEnum::CATEGORIES(),
     documentId: ''
 );```

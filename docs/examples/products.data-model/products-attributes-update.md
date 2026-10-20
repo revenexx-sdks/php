@@ -14,6 +14,7 @@ $productsDataModel = new ProductsDataModel($client);
 
 $result = $productsDataModel->productsAttributesUpdate(
     id: '',
+    active: true, // optional
     code: 'net_weight', // optional
     config: [
         'reference_entity' => 'brand'

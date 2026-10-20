@@ -6,10 +6,17 @@ use Revenexx\Client;
 use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
+use Revenexx\Enums\Country;
+use Revenexx\Enums\DeliveryPointType;
+use Revenexx\Enums\ValidationStatus;
 use Revenexx\Enums\CustomersOrganizationsListStatus;
 use Revenexx\Enums\CreditLimitMode;
 use Revenexx\Enums\ShippingAdvice;
+use Revenexx\Enums\Trashed;
 use Revenexx\Enums\OrganizationStatus;
+use Revenexx\Enums\CustomersOrganizationsBlockReason;
+use Revenexx\Enums\CustomersOrganizationsBlockKind;
+use Revenexx\Enums\CustomersOrganizationsChangeCreditReason;
 
 final class CustomersOrganizationsTest extends TestCase {
     private $client;
@@ -18,6 +25,35 @@ final class CustomersOrganizationsTest extends TestCase {
     protected function setUp(): void {
         $this->client = Mockery::mock(Client::class);
         $this->customersOrganizations = new CustomersOrganizations($this->client);
+    }
+
+    public function testMethodCustomersAddressFormatList(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersOrganizations->customersAddressFormatList(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersAddressFormatGet(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersOrganizations->customersAddressFormatGet(
+            Country::AC()
+        );
+
+        $this->assertSame($data, $response);
     }
 
     public function testMethodCustomersAddressesList(): void {
@@ -43,9 +79,6 @@ final class CustomersOrganizationsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->customersOrganizations->customersAddressesCreate(
-            "Berlin",
-            "DE",
-            "10115"
         );
 
         $this->assertSame($data, $response);
@@ -171,6 +204,20 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodCustomersDerivedRefresh(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersOrganizations->customersDerivedRefresh(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodCustomersOrganizationMetricsList(): void {
 
         $data = array();
@@ -257,6 +304,35 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodCustomersOrganizationsOnboard(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersOrganizations->customersOrganizationsOnboard(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersOrganizationsTrashEmpty(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersOrganizations->customersOrganizationsTrashEmpty(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodCustomersOrganizationsDelete(): void {
 
         $data = array();
@@ -296,6 +372,132 @@ final class CustomersOrganizationsTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->customersOrganizations->customersOrganizationsUpdate(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersOrganizationsBlock(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersOrganizations->customersOrganizationsBlock(
+            "",
+            CustomersOrganizationsBlockReason::PAYMENTOVERDUE()
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersOrganizationsCare(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersOrganizations->customersOrganizationsCare(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersOrganizationsChangeCredit(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersOrganizations->customersOrganizationsChangeCredit(
+            "",
+            CustomersOrganizationsChangeCreditReason::RATINGCHANGED()
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersOrganizationsRestore(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersOrganizations->customersOrganizationsRestore(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersOrganizationsSetAccountManager(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersOrganizations->customersOrganizationsSetAccountManager(
+            "",
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersOrganizationsSetPrimaryContact(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersOrganizations->customersOrganizationsSetPrimaryContact(
+            "",
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersOrganizationsUnblockDelivery(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersOrganizations->customersOrganizationsUnblockDelivery(
+            "",
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCustomersOrganizationsUnblockOrder(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->customersOrganizations->customersOrganizationsUnblockOrder(
+            "",
             ""
         );
 

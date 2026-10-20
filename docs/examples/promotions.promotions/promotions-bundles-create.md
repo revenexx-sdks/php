@@ -18,6 +18,6 @@ $result = $promotionsPromotions->promotionsBundlesCreate(
     promotionId: '',
     allocation: Allocation::BESTFORBUYER(), // optional
     maxPerCart: 1, // optional
-    selectors: [], // optional
+    selectors: , // optional
     unitsRequired: 1 // optional
 );```

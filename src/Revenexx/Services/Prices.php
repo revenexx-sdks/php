@@ -6,8 +6,11 @@ use Revenexx\RevenexxException;
 use Revenexx\Client;
 use Revenexx\Service;
 use Revenexx\InputFile;
+use Revenexx\Enums\Lang;
 use Revenexx\Enums\PriceListStatus;
 use Revenexx\Enums\PriceListTaxBasis;
+use Revenexx\Enums\PriceListTrashed;
+use Revenexx\Enums\Parts;
 use Revenexx\Enums\PriceEntryType;
 use Revenexx\Enums\PriceEndingRule;
 use Revenexx\Enums\PriceEntriesBulkMode;
@@ -19,6 +22,102 @@ class Prices extends Service
      {
          parent::__construct($client);
      }
+
+    /**
+     * The answer to "what does this item cost this customer in this market, and
+     * why?" for one item: the price, the list that won, its tier, the reason it
+     * won, the line total, and every other list that would have priced the item
+     * with the reason it lost. The resolution is exactly the one `POST
+     * /prices/resolve` runs — same candidate lists, same groups, same tier
+     * rule, same tie-break — so the answer matches what the shop quotes.
+     * 
+     * Configuration, not a buyer route: it names lists a buyer must not learn
+     * about. The market is the one `market` names, else the active market of the
+     * request; a market other than the request's is read through its own
+     * market-scoped view. Texts (`winning_list`, `tier`, `reason`, `why`,
+     * `summary`) are German or English after `lang`, else the first
+     * Accept-Language tag, else German; the `*_code` fields beside them are
+     * stable. Segments are taken as stated in `segment_codes`, not looked up from
+     * the organization.
+     *
+     * @param ?string $at
+     * @param ?string $channelId
+     * @param ?string $contactId
+     * @param ?string $currency
+     * @param ?Lang $lang
+     * @param ?string $market
+     * @param ?string $organizationId
+     * @param ?string $productId
+     * @param ?float $quantity
+     * @param ?array $segmentCodes
+     * @param ?string $sku
+     * @throws RevenexxException
+     * @return array
+     */
+    public function pricesCheck(?string $at = null, ?string $channelId = null, ?string $contactId = null, ?string $currency = null, ?Lang $lang = null, ?string $market = null, ?string $organizationId = null, ?string $productId = null, ?float $quantity = null, ?array $segmentCodes = null, ?string $sku = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/prices/check'
+        );
+
+        $apiParams = [];
+
+        if (!is_null($at)) {
+            $apiParams['at'] = $at;
+        }
+
+        if (!is_null($channelId)) {
+            $apiParams['channel_id'] = $channelId;
+        }
+
+        if (!is_null($contactId)) {
+            $apiParams['contact_id'] = $contactId;
+        }
+
+        if (!is_null($currency)) {
+            $apiParams['currency'] = $currency;
+        }
+
+        if (!is_null($lang)) {
+            $apiParams['lang'] = $lang;
+        }
+
+        if (!is_null($market)) {
+            $apiParams['market'] = $market;
+        }
+
+        if (!is_null($organizationId)) {
+            $apiParams['organization_id'] = $organizationId;
+        }
+
+        if (!is_null($productId)) {
+            $apiParams['product_id'] = $productId;
+        }
+
+        if (!is_null($quantity)) {
+            $apiParams['quantity'] = $quantity;
+        }
+
+        if (!is_null($segmentCodes)) {
+            $apiParams['segment_codes'] = $segmentCodes;
+        }
+
+        if (!is_null($sku)) {
+            $apiParams['sku'] = $sku;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
 
     /**
      * One page of the tenant's price list HEADERS — code, currency, tax basis,
@@ -58,13 +157,14 @@ class Prices extends Service
      * @param ?string $updatedAt
      * @param ?string $externalId
      * @param ?string $sourceSyncedAt
+     * @param ?PriceListTrashed $trashed
      * @param ?int $limit
      * @param ?int $offset
      * @param ?string $order
      * @throws RevenexxException
      * @return array
      */
-    public function pricesListsList(?string $id = null, ?string $code = null, ?string $name = null, ?string $description = null, ?string $currency = null, ?PriceListStatus $status = null, ?int $priority = null, ?bool $isDefault = null, ?PriceListTaxBasis $taxBasis = null, ?bool $taxIncluded = null, ?bool $requiresAuth = null, ?string $contactId = null, ?string $organizationId = null, ?string $segmentCode = null, ?string $channelId = null, ?string $validFrom = null, ?string $validUntil = null, ?string $createdAt = null, ?string $updatedAt = null, ?string $externalId = null, ?string $sourceSyncedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function pricesListsList(?string $id = null, ?string $code = null, ?string $name = null, ?string $description = null, ?string $currency = null, ?PriceListStatus $status = null, ?int $priority = null, ?bool $isDefault = null, ?PriceListTaxBasis $taxBasis = null, ?bool $taxIncluded = null, ?bool $requiresAuth = null, ?string $contactId = null, ?string $organizationId = null, ?string $segmentCode = null, ?string $channelId = null, ?string $validFrom = null, ?string $validUntil = null, ?string $createdAt = null, ?string $updatedAt = null, ?string $externalId = null, ?string $sourceSyncedAt = null, ?PriceListTrashed $trashed = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             [],
@@ -156,6 +256,10 @@ class Prices extends Service
 
         if (!is_null($sourceSyncedAt)) {
             $apiParams['source_synced_at'] = $sourceSyncedAt;
+        }
+
+        if (!is_null($trashed)) {
+            $apiParams['trashed'] = $trashed;
         }
 
         if (!is_null($limit)) {
@@ -333,24 +437,56 @@ class Prices extends Service
     }
 
     /**
-     * Deletes the list AND every price in it. `price_entries.price_list_id`
-     * references this row ON DELETE CASCADE, so the entries go in the same
-     * statement: nothing asks, nothing blocks, a book of 40 000 prices deletes
-     * exactly as fast as an empty one, and the answer is a bare `{deleted, id}`
-     * that never says how many prices went with it.
+     * Empties the trash: each list in it is deleted for good on its own, exactly
+     * as a second delete would, and a list something still needs stays with its
+     * reason. The answer lists both halves, so a partial success is visible.
+     * Nothing is recoverable afterwards.
+     *
+     * @param array $data
+     * @throws RevenexxException
+     * @return array
+     */
+    public function pricesListsEmptyTrash(array $data): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/prices/lists/trash/empty'
+        );
+
+        $apiParams = [];
+        $apiParams = \array_merge($apiParams, $data);
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * The first delete moves the list to the TRASH: it keeps its entries, prices
+     * nothing from the next resolve call on, is left out of the list read,
+     * refuses every write, and keeps its code reserved. The answer counts the
+     * entries that stay with it under `warnings`. Only the default list is
+     * refused (409 `default_price_list`) — every fallback price comes from it,
+     * so make another list the default first.
      * 
-     * What that means while a storefront is quoting: from the next resolve call
-     * the items this list priced fall through to the next candidate list, and
-     * where there is none the answer is `on_request` — "price on request" for
-     * something that had a price a second ago, never €0. The default list
-     * itself is never deleted: move the flag with `POST
-     * /prices/lists/{list_id}/make-default` first, otherwise the delete answers
-     * 409 `default_price_list`.
+     * A delete of a list that is already in the trash deletes it for good. Only
+     * then do its entries go — `price_entries.price_list_id` cascades — and
+     * only then does `price_list.deleted` fire. Carts, quotes and orders carry
+     * the resolved price as a snapshot and no list id, so nothing elsewhere
+     * blocks it. The daily purge does the same after the tenant's trash
+     * retention.
      * 
-     * This is not the way to take a list out of circulation. `status: "inactive"`
-     * does that immediately and reversibly and keeps the prices; deleting is for
-     * a list whose contents you are prepared to import again, because nothing
-     * here is recoverable.
+     * This is still not the way to take a list out of circulation for a while:
+     * `status: "inactive"` does that and keeps the list editable. The trash is
+     * for a list that should go; `POST /prices/lists/{id}/restore` is the way
+     * back while it is there.
      *
      * @param string $id
      * @throws RevenexxException
@@ -513,6 +649,83 @@ class Prices extends Service
 
         return $this->client->call(
             Client::METHOD_PUT,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * A new price list from this one (PE-1053, „Kopie anlegen“). It keeps
+     * every setting of the source — name, labels, currency, tax basis, buyer
+     * scope, priority, validity — starts `inactive` and never as the default,
+     * and takes the source's entries when `parts` names `prices`. Sync columns
+     * (`external_id`, `external_refs`, `source_*`) stay behind: the copy is
+     * nobody's import. The market assignment lives in the platform's scope
+     * registry, not on the row, so the copy starts global. A failure after the
+     * new list was written deletes it again, entries included.
+     *
+     * @param string $id
+     * @param string $code
+     * @param ?array $parts
+     * @throws RevenexxException
+     * @return array
+     */
+    public function pricesListsCopy(string $id, string $code, ?array $parts = null): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/prices/lists/{id}/copy'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+        $apiParams['code'] = $code;
+
+        if (!is_null($parts)) {
+            $apiParams['parts'] = $parts;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Brings a list in the trash back as it was, entries included: from the next
+     * resolve call it prices again. Everything trashed in the same action comes
+     * back with it. Takes the same right as deleting. A list that is not in the
+     * trash answers 409 `not_in_trash`.
+     *
+     * @param string $id
+     * @param array $data
+     * @throws RevenexxException
+     * @return array
+     */
+    public function pricesListsRestore(string $id, array $data): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/prices/lists/{id}/restore'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+        $apiParams = \array_merge($apiParams, $data);
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
             $apiPath,
             $apiHeaders,
             $apiParams

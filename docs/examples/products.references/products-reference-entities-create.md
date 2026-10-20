@@ -14,6 +14,7 @@ $productsReferences = new ProductsReferences($client);
 
 $result = $productsReferences->productsReferenceEntitiesCreate(
     code: 'brand',
+    active: true, // optional
     externalId: 'REG-BRAND', // optional
     externalRefs: [
         'entitys' => '4711',

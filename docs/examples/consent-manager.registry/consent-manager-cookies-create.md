@@ -3,7 +3,7 @@
 
 use Revenexx\Client;
 use Revenexx\Services\ConsentManagerRegistry;
-use Revenexx\Enums\Kind;
+use Revenexx\Enums\ConsentManagerCookiesListKind;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -22,6 +22,6 @@ $result = $consentManagerRegistry->consentManagerCookiesCreate(
         'en' => '2 years'
     ], // optional
     host: 'first-party', // optional
-    kind: Kind::COOKIE(), // optional
+    kind: ConsentManagerCookiesListKind::COOKIE(), // optional
     position: 1 // optional
 );```

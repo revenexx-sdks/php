@@ -9,6 +9,7 @@ use Revenexx\InputFile;
 use Revenexx\Enums\MarketsListStatus;
 use Revenexx\Enums\MarketStatus;
 use Revenexx\Enums\MarketsVocabularyName;
+use Revenexx\Enums\MarketsLocalesCreateStatus;
 
 class Markets extends Service
 {
@@ -30,6 +31,8 @@ class Markets extends Service
      * @param ?string $name
      * @param ?string $labels
      * @param ?string $currency
+     * @param ?string $shipFromCountry
+     * @param ?bool $shipFromCountryReview
      * @param ?MarketsListStatus $status
      * @param ?bool $isDefault
      * @param ?int $position
@@ -41,7 +44,7 @@ class Markets extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function marketsList(?string $id = null, ?string $code = null, ?string $name = null, ?string $labels = null, ?string $currency = null, ?MarketsListStatus $status = null, ?bool $isDefault = null, ?int $position = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function marketsList(?string $id = null, ?string $code = null, ?string $name = null, ?string $labels = null, ?string $currency = null, ?string $shipFromCountry = null, ?bool $shipFromCountryReview = null, ?MarketsListStatus $status = null, ?bool $isDefault = null, ?int $position = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             [],
@@ -69,6 +72,14 @@ class Markets extends Service
 
         if (!is_null($currency)) {
             $apiParams['currency'] = $currency;
+        }
+
+        if (!is_null($shipFromCountry)) {
+            $apiParams['ship_from_country'] = $shipFromCountry;
+        }
+
+        if (!is_null($shipFromCountryReview)) {
+            $apiParams['ship_from_country_review'] = $shipFromCountryReview;
         }
 
         if (!is_null($status)) {
@@ -124,11 +135,13 @@ class Markets extends Service
      * @param ?bool $isDefault
      * @param ?array $labels
      * @param ?int $position
+     * @param ?string $shipFromCountry
+     * @param ?bool $shipFromCountryReview
      * @param ?MarketStatus $status
      * @throws RevenexxException
      * @return array
      */
-    public function marketsCreate(string $code, string $name, ?string $currency = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?MarketStatus $status = null): array
+    public function marketsCreate(string $code, string $name, ?string $currency = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?string $shipFromCountry = null, ?bool $shipFromCountryReview = null, ?MarketStatus $status = null): array
     {
         $apiPath = str_replace(
             [],
@@ -151,6 +164,11 @@ class Markets extends Service
 
         if (!is_null($position)) {
             $apiParams['position'] = $position;
+        }
+        $apiParams['ship_from_country'] = $shipFromCountry;
+
+        if (!is_null($shipFromCountryReview)) {
+            $apiParams['ship_from_country_review'] = $shipFromCountryReview;
         }
 
         if (!is_null($status)) {
@@ -339,11 +357,13 @@ class Markets extends Service
      * @param ?array $labels
      * @param ?string $name
      * @param ?int $position
+     * @param ?string $shipFromCountry
+     * @param ?bool $shipFromCountryReview
      * @param ?MarketStatus $status
      * @throws RevenexxException
      * @return array
      */
-    public function marketsUpdate(string $id, ?string $code = null, ?string $currency = null, ?bool $isDefault = null, ?array $labels = null, ?string $name = null, ?int $position = null, ?MarketStatus $status = null): array
+    public function marketsUpdate(string $id, ?string $code = null, ?string $currency = null, ?bool $isDefault = null, ?array $labels = null, ?string $name = null, ?int $position = null, ?string $shipFromCountry = null, ?bool $shipFromCountryReview = null, ?MarketStatus $status = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -373,6 +393,11 @@ class Markets extends Service
 
         if (!is_null($position)) {
             $apiParams['position'] = $position;
+        }
+        $apiParams['ship_from_country'] = $shipFromCountry;
+
+        if (!is_null($shipFromCountryReview)) {
+            $apiParams['ship_from_country_review'] = $shipFromCountryReview;
         }
 
         if (!is_null($status)) {
@@ -457,11 +482,12 @@ class Markets extends Service
      * @param ?bool $copyTaxClasses
      * @param ?string $currency
      * @param ?string $name
+     * @param ?string $shipFromCountry
      * @param ?MarketStatus $status
      * @throws RevenexxException
      * @return array
      */
-    public function marketsClone(string $id, string $code, ?bool $copyCurrencies = null, ?bool $copyLocales = null, ?bool $copyTaxClasses = null, ?string $currency = null, ?string $name = null, ?MarketStatus $status = null): array
+    public function marketsClone(string $id, string $code, ?bool $copyCurrencies = null, ?bool $copyLocales = null, ?bool $copyTaxClasses = null, ?string $currency = null, ?string $name = null, ?string $shipFromCountry = null, ?MarketStatus $status = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -492,10 +518,48 @@ class Markets extends Service
         if (!is_null($name)) {
             $apiParams['name'] = $name;
         }
+        $apiParams['ship_from_country'] = $shipFromCountry;
 
         if (!is_null($status)) {
             $apiParams['status'] = $status;
         }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Clears `ship_from_country_review`, the flag the RAD-246 backfill set on a
+     * market whose ship-from country it had to guess. Editing the market clears
+     * it only when the country actually changes, because an edit form posts the
+     * stored value back and that confirms nothing; this is the call for "the
+     * guessed country is right as it is". Accepts an id or a market CODE. Answers
+     * the market; a market that carries no flag is answered unchanged and nothing
+     * is written.
+     *
+     * @param string $id
+     * @param array $data
+     * @throws RevenexxException
+     * @return array
+     */
+    public function marketsConfirmShipFrom(string $id, array $data): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/markets/{id}/confirm-ship-from'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+        $apiParams = \array_merge($apiParams, $data);
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -634,6 +698,7 @@ class Markets extends Service
      * @param ?string $id
      * @param ?string $code
      * @param ?bool $isDefault
+     * @param ?bool $active
      * @param ?int $position
      * @param ?string $createdAt
      * @param ?string $updatedAt
@@ -643,7 +708,7 @@ class Markets extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function marketsCurrenciesList(string $marketId, ?string $id = null, ?string $code = null, ?bool $isDefault = null, ?int $position = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function marketsCurrenciesList(string $marketId, ?string $id = null, ?string $code = null, ?bool $isDefault = null, ?bool $active = null, ?int $position = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             ['{market_id}'],
@@ -664,6 +729,10 @@ class Markets extends Service
 
         if (!is_null($isDefault)) {
             $apiParams['is_default'] = $isDefault;
+        }
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
         }
 
         if (!is_null($position)) {
@@ -705,12 +774,13 @@ class Markets extends Service
      *
      * @param string $marketId
      * @param string $code
+     * @param ?bool $active
      * @param ?bool $isDefault
      * @param ?int $position
      * @throws RevenexxException
      * @return array
      */
-    public function marketsCurrenciesCreate(string $marketId, string $code, ?bool $isDefault = null, ?int $position = null): array
+    public function marketsCurrenciesCreate(string $marketId, string $code, ?bool $active = null, ?bool $isDefault = null, ?int $position = null): array
     {
         $apiPath = str_replace(
             ['{market_id}'],
@@ -721,6 +791,10 @@ class Markets extends Service
         $apiParams = [];
         $apiParams['market_id'] = $marketId;
         $apiParams['code'] = $code;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
 
         if (!is_null($isDefault)) {
             $apiParams['is_default'] = $isDefault;
@@ -808,13 +882,14 @@ class Markets extends Service
      *
      * @param string $marketId
      * @param string $id
+     * @param ?bool $active
      * @param ?string $code
      * @param ?bool $isDefault
      * @param ?int $position
      * @throws RevenexxException
      * @return array
      */
-    public function marketsCurrenciesUpdate(string $marketId, string $id, ?string $code = null, ?bool $isDefault = null, ?int $position = null): array
+    public function marketsCurrenciesUpdate(string $marketId, string $id, ?bool $active = null, ?string $code = null, ?bool $isDefault = null, ?int $position = null): array
     {
         $apiPath = str_replace(
             ['{market_id}', '{id}'],
@@ -825,6 +900,10 @@ class Markets extends Service
         $apiParams = [];
         $apiParams['market_id'] = $marketId;
         $apiParams['id'] = $id;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
 
         if (!is_null($code)) {
             $apiParams['code'] = $code;
@@ -867,6 +946,7 @@ class Markets extends Service
      * @param ?string $country
      * @param ?bool $isDefault
      * @param ?int $position
+     * @param ?string $status
      * @param ?string $createdAt
      * @param ?string $updatedAt
      * @param ?int $limit
@@ -875,7 +955,7 @@ class Markets extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function marketsLocalesList(string $marketId, ?string $id = null, ?string $code = null, ?string $language = null, ?string $country = null, ?bool $isDefault = null, ?int $position = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function marketsLocalesList(string $marketId, ?string $id = null, ?string $code = null, ?string $language = null, ?string $country = null, ?bool $isDefault = null, ?int $position = null, ?string $status = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             ['{market_id}'],
@@ -908,6 +988,10 @@ class Markets extends Service
 
         if (!is_null($position)) {
             $apiParams['position'] = $position;
+        }
+
+        if (!is_null($status)) {
+            $apiParams['status'] = $status;
         }
 
         if (!is_null($createdAt)) {
@@ -949,10 +1033,11 @@ class Markets extends Service
      * @param ?bool $isDefault
      * @param ?string $language
      * @param ?int $position
+     * @param ?MarketsLocalesCreateStatus $status
      * @throws RevenexxException
      * @return array
      */
-    public function marketsLocalesCreate(string $marketId, string $code, ?string $country = null, ?bool $isDefault = null, ?string $language = null, ?int $position = null): array
+    public function marketsLocalesCreate(string $marketId, string $code, ?string $country = null, ?bool $isDefault = null, ?string $language = null, ?int $position = null, ?MarketsLocalesCreateStatus $status = null): array
     {
         $apiPath = str_replace(
             ['{market_id}'],
@@ -978,6 +1063,10 @@ class Markets extends Service
 
         if (!is_null($position)) {
             $apiParams['position'] = $position;
+        }
+
+        if (!is_null($status)) {
+            $apiParams['status'] = $status;
         }
 
         $apiHeaders = [];
@@ -1063,10 +1152,11 @@ class Markets extends Service
      * @param ?bool $isDefault
      * @param ?string $language
      * @param ?int $position
+     * @param ?string $status
      * @throws RevenexxException
      * @return array
      */
-    public function marketsLocalesUpdate(string $marketId, string $id, ?string $code = null, ?string $country = null, ?bool $isDefault = null, ?string $language = null, ?int $position = null): array
+    public function marketsLocalesUpdate(string $marketId, string $id, ?string $code = null, ?string $country = null, ?bool $isDefault = null, ?string $language = null, ?int $position = null, ?string $status = null): array
     {
         $apiPath = str_replace(
             ['{market_id}', '{id}'],
@@ -1098,6 +1188,10 @@ class Markets extends Service
             $apiParams['position'] = $position;
         }
 
+        if (!is_null($status)) {
+            $apiParams['status'] = $status;
+        }
+
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
 
@@ -1127,6 +1221,7 @@ class Markets extends Service
      * @param ?string $labels
      * @param ?float $rate
      * @param ?bool $isDefault
+     * @param ?bool $active
      * @param ?int $position
      * @param ?string $createdAt
      * @param ?string $updatedAt
@@ -1136,7 +1231,7 @@ class Markets extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function marketsTaxClassesList(string $marketId, ?string $id = null, ?string $code = null, ?string $name = null, ?string $labels = null, ?float $rate = null, ?bool $isDefault = null, ?int $position = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function marketsTaxClassesList(string $marketId, ?string $id = null, ?string $code = null, ?string $name = null, ?string $labels = null, ?float $rate = null, ?bool $isDefault = null, ?bool $active = null, ?int $position = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             ['{market_id}'],
@@ -1169,6 +1264,10 @@ class Markets extends Service
 
         if (!is_null($isDefault)) {
             $apiParams['is_default'] = $isDefault;
+        }
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
         }
 
         if (!is_null($position)) {
@@ -1211,6 +1310,7 @@ class Markets extends Service
      * @param string $marketId
      * @param string $code
      * @param string $name
+     * @param ?bool $active
      * @param ?bool $isDefault
      * @param ?array $labels
      * @param ?int $position
@@ -1218,7 +1318,7 @@ class Markets extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function marketsTaxClassesCreate(string $marketId, string $code, string $name, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?float $rate = null): array
+    public function marketsTaxClassesCreate(string $marketId, string $code, string $name, ?bool $active = null, ?bool $isDefault = null, ?array $labels = null, ?int $position = null, ?float $rate = null): array
     {
         $apiPath = str_replace(
             ['{market_id}'],
@@ -1230,6 +1330,10 @@ class Markets extends Service
         $apiParams['market_id'] = $marketId;
         $apiParams['code'] = $code;
         $apiParams['name'] = $name;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
 
         if (!is_null($isDefault)) {
             $apiParams['is_default'] = $isDefault;
@@ -1330,6 +1434,7 @@ class Markets extends Service
      *
      * @param string $marketId
      * @param string $id
+     * @param ?bool $active
      * @param ?string $code
      * @param ?bool $isDefault
      * @param ?array $labels
@@ -1339,7 +1444,7 @@ class Markets extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function marketsTaxClassesUpdate(string $marketId, string $id, ?string $code = null, ?bool $isDefault = null, ?array $labels = null, ?string $name = null, ?int $position = null, ?float $rate = null): array
+    public function marketsTaxClassesUpdate(string $marketId, string $id, ?bool $active = null, ?string $code = null, ?bool $isDefault = null, ?array $labels = null, ?string $name = null, ?int $position = null, ?float $rate = null): array
     {
         $apiPath = str_replace(
             ['{market_id}', '{id}'],
@@ -1350,6 +1455,10 @@ class Markets extends Service
         $apiParams = [];
         $apiParams['market_id'] = $marketId;
         $apiParams['id'] = $id;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
 
         if (!is_null($code)) {
             $apiParams['code'] = $code;

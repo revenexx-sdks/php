@@ -14,7 +14,7 @@ $client = (new Client())
 $search = new Search($client);
 
 $result = $search->searchSearchDocuments(
-    collection: CollectionEnum::PRODUCTS(),
+    collection: CollectionEnum::CATEGORIES(),
     excludeFields: '', // optional
     facetBy: '', // optional
     filterBy: '', // optional

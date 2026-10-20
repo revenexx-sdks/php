@@ -6,6 +6,7 @@ use Revenexx\RevenexxException;
 use Revenexx\Client;
 use Revenexx\Service;
 use Revenexx\InputFile;
+use Revenexx\Enums\ProductsListTrashed;
 use Revenexx\Enums\RuleMatch;
 use Revenexx\Enums\CategoriesRuleMatch;
 use Revenexx\Enums\CategoryRuleMatch;
@@ -36,6 +37,9 @@ class ProductsCategories extends Service
      * exactly as they are stored: no join is resolved, no jsonb value is
      * unpacked.
      * 
+     * Records in the trash are left out: `trashed=only` reads the trash itself,
+     * `trashed=include` both. Any other value of `trashed` is refused with 400.
+     * 
      * Answered from the gateway's tenant cache for up to 30 minutes and dropped
      * the moment this entity is written, because the data model changes weekly at
      * most and every product page asks the same question.
@@ -43,6 +47,7 @@ class ProductsCategories extends Service
      * @param ?int $limit
      * @param ?int $offset
      * @param ?string $order
+     * @param ?ProductsListTrashed $trashed
      * @param ?string $id
      * @param ?string $code
      * @param ?string $parentId
@@ -53,6 +58,11 @@ class ProductsCategories extends Service
      * @param ?string $rules
      * @param ?RuleMatch $ruleMatch
      * @param ?string $rulesComputedAt
+     * @param ?string $pathLabel
+     * @param ?int $membersDirect
+     * @param ?int $membersTotal
+     * @param ?string $countsComputedAt
+     * @param ?bool $active
      * @param ?string $externalId
      * @param ?string $externalRefs
      * @param ?string $sourceSyncedAt
@@ -60,10 +70,16 @@ class ProductsCategories extends Service
      * @param ?string $metadata
      * @param ?string $createdAt
      * @param ?string $updatedAt
+     * @param ?string $deletedAt
+     * @param ?string $deletedBy
+     * @param ?string $deletedById
+     * @param ?string $trashBatch
+     * @param ?string $purgeAt
+     * @param ?string $purgeBlockedReason
      * @throws RevenexxException
      * @return array
      */
-    public function productsCategoriesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?string $parentId = null, ?string $xpath = null, ?int $position = null, ?string $labels = null, ?string $values = null, ?string $rules = null, ?RuleMatch $ruleMatch = null, ?string $rulesComputedAt = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $metadata = null, ?string $createdAt = null, ?string $updatedAt = null): array
+    public function productsCategoriesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?ProductsListTrashed $trashed = null, ?string $id = null, ?string $code = null, ?string $parentId = null, ?string $xpath = null, ?int $position = null, ?string $labels = null, ?string $values = null, ?string $rules = null, ?RuleMatch $ruleMatch = null, ?string $rulesComputedAt = null, ?string $pathLabel = null, ?int $membersDirect = null, ?int $membersTotal = null, ?string $countsComputedAt = null, ?bool $active = null, ?string $externalId = null, ?string $externalRefs = null, ?string $sourceSyncedAt = null, ?string $sourceData = null, ?string $metadata = null, ?string $createdAt = null, ?string $updatedAt = null, ?string $deletedAt = null, ?string $deletedBy = null, ?string $deletedById = null, ?string $trashBatch = null, ?string $purgeAt = null, ?string $purgeBlockedReason = null): array
     {
         $apiPath = str_replace(
             [],
@@ -83,6 +99,10 @@ class ProductsCategories extends Service
 
         if (!is_null($order)) {
             $apiParams['order'] = $order;
+        }
+
+        if (!is_null($trashed)) {
+            $apiParams['trashed'] = $trashed;
         }
 
         if (!is_null($id)) {
@@ -125,6 +145,26 @@ class ProductsCategories extends Service
             $apiParams['rules_computed_at'] = $rulesComputedAt;
         }
 
+        if (!is_null($pathLabel)) {
+            $apiParams['path_label'] = $pathLabel;
+        }
+
+        if (!is_null($membersDirect)) {
+            $apiParams['members_direct'] = $membersDirect;
+        }
+
+        if (!is_null($membersTotal)) {
+            $apiParams['members_total'] = $membersTotal;
+        }
+
+        if (!is_null($countsComputedAt)) {
+            $apiParams['counts_computed_at'] = $countsComputedAt;
+        }
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
+
         if (!is_null($externalId)) {
             $apiParams['external_id'] = $externalId;
         }
@@ -151,6 +191,30 @@ class ProductsCategories extends Service
 
         if (!is_null($updatedAt)) {
             $apiParams['updated_at'] = $updatedAt;
+        }
+
+        if (!is_null($deletedAt)) {
+            $apiParams['deleted_at'] = $deletedAt;
+        }
+
+        if (!is_null($deletedBy)) {
+            $apiParams['deleted_by'] = $deletedBy;
+        }
+
+        if (!is_null($deletedById)) {
+            $apiParams['deleted_by_id'] = $deletedById;
+        }
+
+        if (!is_null($trashBatch)) {
+            $apiParams['trash_batch'] = $trashBatch;
+        }
+
+        if (!is_null($purgeAt)) {
+            $apiParams['purge_at'] = $purgeAt;
+        }
+
+        if (!is_null($purgeBlockedReason)) {
+            $apiParams['purge_blocked_reason'] = $purgeBlockedReason;
         }
 
         $apiHeaders = [];
@@ -181,6 +245,10 @@ class ProductsCategories extends Service
      * answers 409.
      *
      * @param string $code
+     * @param ?bool $active
+     * @param ?string $deletedAt
+     * @param ?string $deletedBy
+     * @param ?string $deletedById
      * @param ?string $externalId
      * @param ?array $externalRefs
      * @param ?array $labels
@@ -188,16 +256,19 @@ class ProductsCategories extends Service
      * @param ?string $parentId
      * @param ?string $xpath
      * @param ?int $position
+     * @param ?string $purgeAt
+     * @param ?string $purgeBlockedReason
      * @param ?CategoriesRuleMatch $ruleMatch
      * @param ?array $rules
      * @param ?string $rulesComputedAt
      * @param ?array $sourceData
      * @param ?string $sourceSyncedAt
+     * @param ?string $trashBatch
      * @param ?array $values
      * @throws RevenexxException
      * @return array
      */
-    public function productsCategoriesCreate(string $code, ?string $externalId = null, ?array $externalRefs = null, ?array $labels = null, ?array $metadata = null, ?string $parentId = null, ?string $xpath = null, ?int $position = null, ?CategoriesRuleMatch $ruleMatch = null, ?array $rules = null, ?string $rulesComputedAt = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?array $values = null): array
+    public function productsCategoriesCreate(string $code, ?bool $active = null, ?string $deletedAt = null, ?string $deletedBy = null, ?string $deletedById = null, ?string $externalId = null, ?array $externalRefs = null, ?array $labels = null, ?array $metadata = null, ?string $parentId = null, ?string $xpath = null, ?int $position = null, ?string $purgeAt = null, ?string $purgeBlockedReason = null, ?CategoriesRuleMatch $ruleMatch = null, ?array $rules = null, ?string $rulesComputedAt = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $trashBatch = null, ?array $values = null): array
     {
         $apiPath = str_replace(
             [],
@@ -207,6 +278,13 @@ class ProductsCategories extends Service
 
         $apiParams = [];
         $apiParams['code'] = $code;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
+        $apiParams['deleted_at'] = $deletedAt;
+        $apiParams['deleted_by'] = $deletedBy;
+        $apiParams['deleted_by_id'] = $deletedById;
         $apiParams['external_id'] = $externalId;
         $apiParams['external_refs'] = $externalRefs;
         $apiParams['labels'] = $labels;
@@ -217,11 +295,14 @@ class ProductsCategories extends Service
         if (!is_null($position)) {
             $apiParams['position'] = $position;
         }
+        $apiParams['purge_at'] = $purgeAt;
+        $apiParams['purge_blocked_reason'] = $purgeBlockedReason;
         $apiParams['rule_match'] = $ruleMatch;
         $apiParams['rules'] = $rules;
         $apiParams['rules_computed_at'] = $rulesComputedAt;
         $apiParams['source_data'] = $sourceData;
         $apiParams['source_synced_at'] = $sourceSyncedAt;
+        $apiParams['trash_batch'] = $trashBatch;
         $apiParams['values'] = $values;
 
         $apiHeaders = [];
@@ -261,6 +342,35 @@ class ProductsCategories extends Service
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Deletes the categories in the trash for good, oldest first, up to 200 per
+     * call, each through the same checks as a second `DELETE`. One that is held
+     * is reported with its reason and the rest go on; `more` says another call
+     * has work left. Refused with 403 for a storefront contact.
+     *
+     * @throws RevenexxException
+     * @return array
+     */
+    public function productsCategoriesEmptyTrash(): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/products/categories/trash/empty'
+        );
+
+        $apiParams = [];
+
+        $apiHeaders = [];
 
         return $this->client->call(
             Client::METHOD_POST,
@@ -352,16 +462,22 @@ class ProductsCategories extends Service
     }
 
     /**
-     * Deletes one category by id. It is a hard delete — the row is gone, and
-     * the answer is a confirmation rather than a result to branch on.
+     * Moves one category to the trash — or, called on one that is already
+     * there, deletes it for good.
      * 
-     * It takes what hangs off it: product category memberships (`category_id`)
-     * are deleted with it. `categories.parent_id` is set to null instead, so the
-     * rows that pointed at it survive the delete rather than going with it.
+     * The first call stamps the category, and its whole subtree goes with it; all
+     * of them share one `trash_batch` and come back together on `POST
+     * …/{id}/restore`. Nothing that points at it changes: its assignments stay
+     * and stop acting, and the answer lists them as warnings with a count. Its
+     * code stays reserved while it is in the trash.
      * 
-     * An id no category of this tenant carries answers 404; there is no 409,
-     * because every foreign key pointing at this entity resolves itself on delete
-     * rather than blocking one.
+     * The second call deletes it for good, with the rows of its group, and only
+     * then do the cascades and `*.deleted` happen. It is refused with 409 while a
+     * blocker holds: an active promotion whose condition names the category holds
+     * it. A blocker that could not be checked counts as one. It is refused with
+     * 403 for a storefront contact — deleting for good is back-office work.
+     * 
+     * An id no category of this tenant carries answers 404.
      *
      * @param string $id
      * @throws RevenexxException
@@ -453,7 +569,11 @@ class ProductsCategories extends Service
      * `code` answers 409.
      *
      * @param string $id
+     * @param ?bool $active
      * @param ?string $code
+     * @param ?string $deletedAt
+     * @param ?string $deletedBy
+     * @param ?string $deletedById
      * @param ?string $externalId
      * @param ?array $externalRefs
      * @param ?array $labels
@@ -461,16 +581,19 @@ class ProductsCategories extends Service
      * @param ?string $parentId
      * @param ?string $xpath
      * @param ?int $position
+     * @param ?string $purgeAt
+     * @param ?string $purgeBlockedReason
      * @param ?CategoriesRuleMatch $ruleMatch
      * @param ?array $rules
      * @param ?string $rulesComputedAt
      * @param ?array $sourceData
      * @param ?string $sourceSyncedAt
+     * @param ?string $trashBatch
      * @param ?array $values
      * @throws RevenexxException
      * @return array
      */
-    public function productsCategoriesUpdate(string $id, ?string $code = null, ?string $externalId = null, ?array $externalRefs = null, ?array $labels = null, ?array $metadata = null, ?string $parentId = null, ?string $xpath = null, ?int $position = null, ?CategoriesRuleMatch $ruleMatch = null, ?array $rules = null, ?string $rulesComputedAt = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?array $values = null): array
+    public function productsCategoriesUpdate(string $id, ?bool $active = null, ?string $code = null, ?string $deletedAt = null, ?string $deletedBy = null, ?string $deletedById = null, ?string $externalId = null, ?array $externalRefs = null, ?array $labels = null, ?array $metadata = null, ?string $parentId = null, ?string $xpath = null, ?int $position = null, ?string $purgeAt = null, ?string $purgeBlockedReason = null, ?CategoriesRuleMatch $ruleMatch = null, ?array $rules = null, ?string $rulesComputedAt = null, ?array $sourceData = null, ?string $sourceSyncedAt = null, ?string $trashBatch = null, ?array $values = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -481,9 +604,16 @@ class ProductsCategories extends Service
         $apiParams = [];
         $apiParams['id'] = $id;
 
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
+
         if (!is_null($code)) {
             $apiParams['code'] = $code;
         }
+        $apiParams['deleted_at'] = $deletedAt;
+        $apiParams['deleted_by'] = $deletedBy;
+        $apiParams['deleted_by_id'] = $deletedById;
         $apiParams['external_id'] = $externalId;
         $apiParams['external_refs'] = $externalRefs;
         $apiParams['labels'] = $labels;
@@ -494,11 +624,14 @@ class ProductsCategories extends Service
         if (!is_null($position)) {
             $apiParams['position'] = $position;
         }
+        $apiParams['purge_at'] = $purgeAt;
+        $apiParams['purge_blocked_reason'] = $purgeBlockedReason;
         $apiParams['rule_match'] = $ruleMatch;
         $apiParams['rules'] = $rules;
         $apiParams['rules_computed_at'] = $rulesComputedAt;
         $apiParams['source_data'] = $sourceData;
         $apiParams['source_synced_at'] = $sourceSyncedAt;
+        $apiParams['trash_batch'] = $trashBatch;
         $apiParams['values'] = $values;
 
         $apiHeaders = [];
@@ -506,6 +639,39 @@ class ProductsCategories extends Service
 
         return $this->client->call(
             Client::METHOD_PUT,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Brings a category back from the trash, together with every record that went
+     * with it (its `trash_batch`). A record trashed on its own before stays in
+     * the trash. Everything that pointed at it acts again as it did, because
+     * nothing was changed when it went.
+     * 
+     * Restoring needs the same right as deleting.
+     *
+     * @param string $id
+     * @throws RevenexxException
+     * @return array
+     */
+    public function productsCategoriesRestore(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/products/categories/{id}/restore'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_POST,
             $apiPath,
             $apiHeaders,
             $apiParams

@@ -19,6 +19,8 @@ $result = $markets->marketsList(
     name: 'Northwind', // optional
     labels: '{"de-DE":"Nordwind","en-GB":"Northwind"}', // optional
     currency: 'EUR', // optional
+    shipFromCountry: 'DE', // optional
+    shipFromCountryReview: false, // optional
     status: MarketsListStatus::ACTIVE(), // optional
     isDefault: false, // optional
     position: 0, // optional

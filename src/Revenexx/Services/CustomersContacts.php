@@ -6,12 +6,16 @@ use Revenexx\RevenexxException;
 use Revenexx\Client;
 use Revenexx\Service;
 use Revenexx\InputFile;
-use Revenexx\Enums\Status;
+use Revenexx\Enums\CustomersContactsListStatus;
+use Revenexx\Enums\ShopAccess;
 use Revenexx\Enums\OrderApprovalMode;
 use Revenexx\Enums\RegistrationStatus;
+use Revenexx\Enums\LeadSource;
+use Revenexx\Enums\Trashed;
 use Revenexx\Enums\CustomersContactsCreateRegistrationStatus;
 use Revenexx\Enums\ContactStatus;
 use Revenexx\Enums\ContactActivityKind;
+use Revenexx\Enums\Reason;
 
 class CustomersContacts extends Service
 {
@@ -42,6 +46,9 @@ class CustomersContacts extends Service
      * @param ?string $subject
      * @param ?string $actor
      * @param ?string $occurredAt
+     * @param ?string $dueAt
+     * @param ?string $assignee
+     * @param ?string $doneAt
      * @param ?string $createdAt
      * @param ?int $limit
      * @param ?int $offset
@@ -49,7 +56,7 @@ class CustomersContacts extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function customersContactEventsList(?string $id = null, ?string $contactId = null, ?string $organizationId = null, ?string $kind = null, ?string $name = null, ?string $subject = null, ?string $actor = null, ?string $occurredAt = null, ?string $createdAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function customersContactEventsList(?string $id = null, ?string $contactId = null, ?string $organizationId = null, ?string $kind = null, ?string $name = null, ?string $subject = null, ?string $actor = null, ?string $occurredAt = null, ?string $dueAt = null, ?string $assignee = null, ?string $doneAt = null, ?string $createdAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             [],
@@ -89,6 +96,18 @@ class CustomersContacts extends Service
 
         if (!is_null($occurredAt)) {
             $apiParams['occurred_at'] = $occurredAt;
+        }
+
+        if (!is_null($dueAt)) {
+            $apiParams['due_at'] = $dueAt;
+        }
+
+        if (!is_null($assignee)) {
+            $apiParams['assignee'] = $assignee;
+        }
+
+        if (!is_null($doneAt)) {
+            $apiParams['done_at'] = $doneAt;
         }
 
         if (!is_null($createdAt)) {
@@ -171,7 +190,10 @@ class CustomersContacts extends Service
      * @param ?string $phone
      * @param ?string $jobTitle
      * @param ?string $role
-     * @param ?Status $status
+     * @param ?CustomersContactsListStatus $status
+     * @param ?ShopAccess $shopAccess
+     * @param ?string $invitedAt
+     * @param ?string $accessBlockedReason
      * @param ?OrderApprovalMode $orderApprovalMode
      * @param ?float $orderApprovalLimit
      * @param ?RegistrationStatus $registrationStatus
@@ -179,19 +201,34 @@ class CustomersContacts extends Service
      * @param ?string $registrationDecidedBy
      * @param ?string $registrationReason
      * @param ?string $locale
+     * @param ?bool $consentMarketing
+     * @param ?string $lifecycleStage
+     * @param ?string $lifecycleChangedAt
+     * @param ?LeadSource $leadSource
+     * @param ?string $leadSourceRef
+     * @param ?string $ownerId
+     * @param ?int $leadScore
+     * @param ?string $consentMarketingSyncedAt
      * @param ?bool $isPrimary
      * @param ?string $externalUserId
      * @param ?string $externalId
      * @param ?string $sourceSyncedAt
+     * @param ?string $deletedAt
+     * @param ?string $deletedBy
+     * @param ?string $deletedById
+     * @param ?string $trashBatch
+     * @param ?string $purgeAt
+     * @param ?string $purgeBlockedReason
      * @param ?string $createdAt
      * @param ?string $updatedAt
+     * @param ?Trashed $trashed
      * @param ?int $limit
      * @param ?int $offset
      * @param ?string $order
      * @throws RevenexxException
      * @return array
      */
-    public function customersContactsList(?string $id = null, ?string $organizationId = null, ?string $email = null, ?string $username = null, ?string $firstName = null, ?string $lastName = null, ?string $phone = null, ?string $jobTitle = null, ?string $role = null, ?Status $status = null, ?OrderApprovalMode $orderApprovalMode = null, ?float $orderApprovalLimit = null, ?RegistrationStatus $registrationStatus = null, ?string $registrationDecidedAt = null, ?string $registrationDecidedBy = null, ?string $registrationReason = null, ?string $locale = null, ?bool $isPrimary = null, ?string $externalUserId = null, ?string $externalId = null, ?string $sourceSyncedAt = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function customersContactsList(?string $id = null, ?string $organizationId = null, ?string $email = null, ?string $username = null, ?string $firstName = null, ?string $lastName = null, ?string $phone = null, ?string $jobTitle = null, ?string $role = null, ?CustomersContactsListStatus $status = null, ?ShopAccess $shopAccess = null, ?string $invitedAt = null, ?string $accessBlockedReason = null, ?OrderApprovalMode $orderApprovalMode = null, ?float $orderApprovalLimit = null, ?RegistrationStatus $registrationStatus = null, ?string $registrationDecidedAt = null, ?string $registrationDecidedBy = null, ?string $registrationReason = null, ?string $locale = null, ?bool $consentMarketing = null, ?string $lifecycleStage = null, ?string $lifecycleChangedAt = null, ?LeadSource $leadSource = null, ?string $leadSourceRef = null, ?string $ownerId = null, ?int $leadScore = null, ?string $consentMarketingSyncedAt = null, ?bool $isPrimary = null, ?string $externalUserId = null, ?string $externalId = null, ?string $sourceSyncedAt = null, ?string $deletedAt = null, ?string $deletedBy = null, ?string $deletedById = null, ?string $trashBatch = null, ?string $purgeAt = null, ?string $purgeBlockedReason = null, ?string $createdAt = null, ?string $updatedAt = null, ?Trashed $trashed = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             [],
@@ -241,6 +278,18 @@ class CustomersContacts extends Service
             $apiParams['status'] = $status;
         }
 
+        if (!is_null($shopAccess)) {
+            $apiParams['shop_access'] = $shopAccess;
+        }
+
+        if (!is_null($invitedAt)) {
+            $apiParams['invited_at'] = $invitedAt;
+        }
+
+        if (!is_null($accessBlockedReason)) {
+            $apiParams['access_blocked_reason'] = $accessBlockedReason;
+        }
+
         if (!is_null($orderApprovalMode)) {
             $apiParams['order_approval_mode'] = $orderApprovalMode;
         }
@@ -269,6 +318,38 @@ class CustomersContacts extends Service
             $apiParams['locale'] = $locale;
         }
 
+        if (!is_null($consentMarketing)) {
+            $apiParams['consent_marketing'] = $consentMarketing;
+        }
+
+        if (!is_null($lifecycleStage)) {
+            $apiParams['lifecycle_stage'] = $lifecycleStage;
+        }
+
+        if (!is_null($lifecycleChangedAt)) {
+            $apiParams['lifecycle_changed_at'] = $lifecycleChangedAt;
+        }
+
+        if (!is_null($leadSource)) {
+            $apiParams['lead_source'] = $leadSource;
+        }
+
+        if (!is_null($leadSourceRef)) {
+            $apiParams['lead_source_ref'] = $leadSourceRef;
+        }
+
+        if (!is_null($ownerId)) {
+            $apiParams['owner_id'] = $ownerId;
+        }
+
+        if (!is_null($leadScore)) {
+            $apiParams['lead_score'] = $leadScore;
+        }
+
+        if (!is_null($consentMarketingSyncedAt)) {
+            $apiParams['consent_marketing_synced_at'] = $consentMarketingSyncedAt;
+        }
+
         if (!is_null($isPrimary)) {
             $apiParams['is_primary'] = $isPrimary;
         }
@@ -285,12 +366,40 @@ class CustomersContacts extends Service
             $apiParams['source_synced_at'] = $sourceSyncedAt;
         }
 
+        if (!is_null($deletedAt)) {
+            $apiParams['deleted_at'] = $deletedAt;
+        }
+
+        if (!is_null($deletedBy)) {
+            $apiParams['deleted_by'] = $deletedBy;
+        }
+
+        if (!is_null($deletedById)) {
+            $apiParams['deleted_by_id'] = $deletedById;
+        }
+
+        if (!is_null($trashBatch)) {
+            $apiParams['trash_batch'] = $trashBatch;
+        }
+
+        if (!is_null($purgeAt)) {
+            $apiParams['purge_at'] = $purgeAt;
+        }
+
+        if (!is_null($purgeBlockedReason)) {
+            $apiParams['purge_blocked_reason'] = $purgeBlockedReason;
+        }
+
         if (!is_null($createdAt)) {
             $apiParams['created_at'] = $createdAt;
         }
 
         if (!is_null($updatedAt)) {
             $apiParams['updated_at'] = $updatedAt;
+        }
+
+        if (!is_null($trashed)) {
+            $apiParams['trashed'] = $trashed;
         }
 
         if (!is_null($limit)) {
@@ -391,6 +500,36 @@ class CustomersContacts extends Service
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Deletes every contact in the trash for good, oldest first and at most fifty
+     * per call, each checked on its own exactly like a second DELETE. A contact
+     * something still blocks stays in the trash and is listed with the reason;
+     * the rest go. POST again while `more` is true. An administrator's right,
+     * never a buyer's.
+     *
+     * @throws RevenexxException
+     * @return array
+     */
+    public function customersContactsTrashEmpty(): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/customers/contacts/trash/empty'
+        );
+
+        $apiParams = [];
+
+        $apiHeaders = [];
 
         return $this->client->call(
             Client::METHOD_POST,
@@ -502,12 +641,12 @@ class CustomersContacts extends Service
      * the only message the person gets.
      *
      * @param string $contactId
-     * @param string $url
      * @param ?string $invitedBy
+     * @param ?string $url
      * @throws RevenexxException
      * @return array
      */
-    public function customersContactsInvite(string $contactId, string $url, ?string $invitedBy = null): array
+    public function customersContactsInvite(string $contactId, ?string $invitedBy = null, ?string $url = null): array
     {
         $apiPath = str_replace(
             ['{contact_id}'],
@@ -517,8 +656,11 @@ class CustomersContacts extends Service
 
         $apiParams = [];
         $apiParams['contact_id'] = $contactId;
-        $apiParams['url'] = $url;
         $apiParams['invited_by'] = $invitedBy;
+
+        if (!is_null($url)) {
+            $apiParams['url'] = $url;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -638,15 +780,128 @@ class CustomersContacts extends Service
     }
 
     /**
+     * For somebody who has not taken the first invitation up: the same mail
+     * again, and `invited_at` moves. Only while the shop access says 'invited'.
+     * Without a `url` the shop's first link origin is where it points.
+     *
+     * @param string $contactId
+     * @param ?string $url
+     * @throws RevenexxException
+     * @return array
+     */
+    public function customersContactsReinvite(string $contactId, ?string $url = null): array
+    {
+        $apiPath = str_replace(
+            ['{contact_id}'],
+            [$contactId],
+            '/v1/customers/contacts/{contact_id}/reinvite'
+        );
+
+        $apiParams = [];
+        $apiParams['contact_id'] = $contactId;
+
+        if (!is_null($url)) {
+            $apiParams['url'] = $url;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * The status returns to 'active', the reason is cleared, and the login is
+     * switched on again — unless the person is an application nobody decided,
+     * whose login stays off until approval.
+     *
+     * @param string $contactId
+     * @param ?string $actor
+     * @throws RevenexxException
+     * @return array
+     */
+    public function customersContactsRestoreAccess(string $contactId, ?string $actor = null): array
+    {
+        $apiPath = str_replace(
+            ['{contact_id}'],
+            [$contactId],
+            '/v1/customers/contacts/{contact_id}/restore-access'
+        );
+
+        $apiParams = [];
+        $apiParams['contact_id'] = $contactId;
+        $apiParams['actor'] = $actor;
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * The login is switched off, the status becomes 'blocked' with the reason,
+     * and `contact.blocked` is published — the same as an edit to 'blocked',
+     * with the reason on the record and on the timeline. The record, the role and
+     * the history stay.
+     *
+     * @param string $contactId
+     * @param Reason $reason
+     * @param ?string $actor
+     * @param ?string $note
+     * @throws RevenexxException
+     * @return array
+     */
+    public function customersContactsRevokeAccess(string $contactId, Reason $reason, ?string $actor = null, ?string $note = null): array
+    {
+        $apiPath = str_replace(
+            ['{contact_id}'],
+            [$contactId],
+            '/v1/customers/contacts/{contact_id}/revoke-access'
+        );
+
+        $apiParams = [];
+        $apiParams['contact_id'] = $contactId;
+        $apiParams['reason'] = $reason;
+        $apiParams['actor'] = $actor;
+        $apiParams['note'] = $note;
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
      * A contact is a PERSON, and the unit that logs in: one platform user, one
      * email address, one role held inside its organization. A contact without an
      * organization is a standalone buyer rather than an error, and two people at
-     * the same company are two contacts sharing an `organization_id`. Removes the
-     * person and their platform login, so they can no longer sign in anywhere.
-     * Their company keeps trading; use `status: "blocked"` instead when the
-     * intent is to stop one person without erasing what they did. Deleting one
-     * takes every `contact_events` and `addresses` row that points at it with it
-     * — the foreign keys decide, not this route.
+     * the same company are two contacts sharing an `organization_id`. The first
+     * DELETE moves the contact to the trash: it keeps everything that points at
+     * it, leaves every list, and can no longer sign in or be signed in for. The
+     * person's platform login is switched off and every session ended, but kept
+     * — so a restore needs no new invitation. A second DELETE on a contact
+     * already in the trash deletes it for good, with its platform user —
+     * refused while another app still holds an open order, quote, purchase
+     * request or approval, an enabled punchout account, a punchout account naming
+     * the person as its fallback contact, a customer price list, an active cost
+     * centre or a personal voucher. An app that does not answer blocks too. The
+     * daily purge runs the same delete once the tenant's trash retention has run
+     * out.
      *
      * @param string $id
      * @throws RevenexxException
@@ -781,6 +1036,72 @@ class CustomersContacts extends Service
 
         return $this->client->call(
             Client::METHOD_PUT,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * „Personendaten löschen“ — a person's erasure request under Art. 17
+     * GDPR. It skips the trash: the contact is deleted for good right away, in
+     * the trash or not, with its platform user, its addresses and its timeline.
+     * The same checks as a final delete apply, because an open order keeps its
+     * buyer until it is closed (Art. 17(3)(b)); documents already issued keep
+     * their own snapshot in the apps that hold them. Pseudonymising the person in
+     * the record history is not done by this call yet — `history_pseudonymised`
+     * says so.
+     *
+     * @param string $id
+     * @throws RevenexxException
+     * @return array
+     */
+    public function customersContactsErase(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/customers/contacts/{id}/erase'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Brings a contact back from the trash and switches its login back on unless
+     * the record itself says no (blocked, or an undecided registration). Refused
+     * while its organization is in the trash: restoring the organization brings
+     * back the contacts that went with it. Needs the same right as the delete.
+     *
+     * @param string $id
+     * @throws RevenexxException
+     * @return array
+     */
+    public function customersContactsRestore(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/customers/contacts/{id}/restore'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_POST,
             $apiPath,
             $apiHeaders,
             $apiParams

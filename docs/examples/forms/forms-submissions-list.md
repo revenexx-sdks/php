@@ -19,6 +19,10 @@ $result = $forms->formsSubmissionsList(
     formSlug: 'contact', // optional
     source: '/contact', // optional
     status: FormSubmissionStatus::NEW(), // optional
+    contactId: '', // optional
+    pageUrl: 'https://example.com/kontakt', // optional
+    campaignRef: '', // optional
+    leadStage: 'lead', // optional
     createdAt: '2026-01-31T09:15:00Z', // optional
     updatedAt: '2026-01-31T09:15:00Z', // optional
     limit: 50, // optional

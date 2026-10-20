@@ -15,10 +15,10 @@ $promotionsPromotions = new PromotionsPromotions($client);
 
 $result = $promotionsPromotions->promotionsBundlesUpdate(
     id: '',
-    name: '',
-    promotionId: '',
     allocation: Allocation::BESTFORBUYER(), // optional
     maxPerCart: 1, // optional
-    selectors: [], // optional
+    name: '', // optional
+    promotionId: '', // optional
+    selectors: , // optional
     unitsRequired: 1 // optional
 );```

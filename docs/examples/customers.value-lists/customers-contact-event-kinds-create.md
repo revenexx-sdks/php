@@ -16,6 +16,7 @@ $customersValueLists = new CustomersValueLists($client);
 $result = $customersValueLists->customersContactEventKindsCreate(
     code: '',
     title: 'Phone call',
+    active: true, // optional
     description: 'Somebody spoke to this person on the phone.', // optional
     descriptions: [
         'de' => 'Es wurde mit dieser Person telefoniert.',

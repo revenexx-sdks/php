@@ -7,18 +7,21 @@ use Revenexx\Client;
 use Revenexx\Service;
 use Revenexx\InputFile;
 use Revenexx\Enums\Allocation;
-use Revenexx\Enums\PromotionsConditionsCreateKind;
+use Revenexx\Enums\AudiencesRulesCreateKind;
 use Revenexx\Enums\MatchMode;
 use Revenexx\Enums\PromotionsEffectsCreateKind;
 use Revenexx\Enums\TargetScope;
 use Revenexx\Enums\UnitChoice;
 use Revenexx\Enums\ValueType;
 use Revenexx\Enums\PromotionsGroupsCreateMode;
+use Revenexx\Enums\Trashed;
 use Revenexx\Enums\ConditionMatch;
 use Revenexx\Enums\Reach;
 use Revenexx\Enums\RecurrenceKind;
 use Revenexx\Enums\ReturnBehaviour;
 use Revenexx\Enums\PromotionsPromotionsCreateStatus;
+use Revenexx\Enums\PromotionsPromotionsCopyParts;
+use Revenexx\Enums\When;
 
 class PromotionsPromotions extends Service
 {
@@ -105,12 +108,12 @@ class PromotionsPromotions extends Service
      * @param string $promotionId
      * @param ?Allocation $allocation
      * @param ?int $maxPerCart
-     * @param ?array $selectors
+     * @param ?mixed $selectors
      * @param ?int $unitsRequired
      * @throws RevenexxException
      * @return array
      */
-    public function promotionsBundlesCreate(string $name, string $promotionId, ?Allocation $allocation = null, ?int $maxPerCart = null, ?array $selectors = null, ?int $unitsRequired = null): array
+    public function promotionsBundlesCreate(string $name, string $promotionId, ?Allocation $allocation = null, ?int $maxPerCart = null, mixed $selectors = null, ?int $unitsRequired = null): array
     {
         $apiPath = str_replace(
             [],
@@ -121,14 +124,8 @@ class PromotionsPromotions extends Service
         $apiParams = [];
         $apiParams['name'] = $name;
         $apiParams['promotion_id'] = $promotionId;
-
-        if (!is_null($allocation)) {
-            $apiParams['allocation'] = $allocation;
-        }
-
-        if (!is_null($maxPerCart)) {
-            $apiParams['max_per_cart'] = $maxPerCart;
-        }
+        $apiParams['allocation'] = $allocation;
+        $apiParams['max_per_cart'] = $maxPerCart;
 
         if (!is_null($selectors)) {
             $apiParams['selectors'] = $selectors;
@@ -203,16 +200,16 @@ class PromotionsPromotions extends Service
 
     /**
      * @param string $id
-     * @param string $name
-     * @param string $promotionId
      * @param ?Allocation $allocation
      * @param ?int $maxPerCart
-     * @param ?array $selectors
+     * @param ?string $name
+     * @param ?string $promotionId
+     * @param ?mixed $selectors
      * @param ?int $unitsRequired
      * @throws RevenexxException
      * @return array
      */
-    public function promotionsBundlesUpdate(string $id, string $name, string $promotionId, ?Allocation $allocation = null, ?int $maxPerCart = null, ?array $selectors = null, ?int $unitsRequired = null): array
+    public function promotionsBundlesUpdate(string $id, ?Allocation $allocation = null, ?int $maxPerCart = null, ?string $name = null, ?string $promotionId = null, mixed $selectors = null, ?int $unitsRequired = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -222,15 +219,15 @@ class PromotionsPromotions extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
-        $apiParams['name'] = $name;
-        $apiParams['promotion_id'] = $promotionId;
+        $apiParams['allocation'] = $allocation;
+        $apiParams['max_per_cart'] = $maxPerCart;
 
-        if (!is_null($allocation)) {
-            $apiParams['allocation'] = $allocation;
+        if (!is_null($name)) {
+            $apiParams['name'] = $name;
         }
 
-        if (!is_null($maxPerCart)) {
-            $apiParams['max_per_cart'] = $maxPerCart;
+        if (!is_null($promotionId)) {
+            $apiParams['promotion_id'] = $promotionId;
         }
 
         if (!is_null($selectors)) {
@@ -270,11 +267,12 @@ class PromotionsPromotions extends Service
      * @param ?string $subject
      * @param ?string $comparison
      * @param ?string $rightSubject
+     * @param ?string $summary
      * @param ?string $position
      * @throws RevenexxException
      * @return array
      */
-    public function promotionsConditionsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $promotionId = null, ?string $parentId = null, ?string $kind = null, ?string $matchMode = null, ?string $negate = null, ?string $subject = null, ?string $comparison = null, ?string $rightSubject = null, ?string $position = null): array
+    public function promotionsConditionsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $promotionId = null, ?string $parentId = null, ?string $kind = null, ?string $matchMode = null, ?string $negate = null, ?string $subject = null, ?string $comparison = null, ?string $rightSubject = null, ?string $summary = null, ?string $position = null): array
     {
         $apiPath = str_replace(
             [],
@@ -332,6 +330,10 @@ class PromotionsPromotions extends Service
             $apiParams['right_subject'] = $rightSubject;
         }
 
+        if (!is_null($summary)) {
+            $apiParams['summary'] = $summary;
+        }
+
         if (!is_null($position)) {
             $apiParams['position'] = $position;
         }
@@ -349,11 +351,11 @@ class PromotionsPromotions extends Service
     /**
      * @param string $promotionId
      * @param ?float $addend
-     * @param ?array $compareValue
-     * @param ?array $compareValueTo
+     * @param ?mixed $compareValue
+     * @param ?mixed $compareValueTo
      * @param ?string $comparison
      * @param ?float $factor
-     * @param ?PromotionsConditionsCreateKind $kind
+     * @param ?AudiencesRulesCreateKind $kind
      * @param ?MatchMode $matchMode
      * @param ?bool $negate
      * @param ?string $parentId
@@ -363,7 +365,7 @@ class PromotionsPromotions extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function promotionsConditionsCreate(string $promotionId, ?float $addend = null, ?array $compareValue = null, ?array $compareValueTo = null, ?string $comparison = null, ?float $factor = null, ?PromotionsConditionsCreateKind $kind = null, ?MatchMode $matchMode = null, ?bool $negate = null, ?string $parentId = null, ?int $position = null, ?string $rightSubject = null, ?string $subject = null): array
+    public function promotionsConditionsCreate(string $promotionId, ?float $addend = null, mixed $compareValue = null, mixed $compareValueTo = null, ?string $comparison = null, ?float $factor = null, ?AudiencesRulesCreateKind $kind = null, ?MatchMode $matchMode = null, ?bool $negate = null, ?string $parentId = null, ?int $position = null, ?string $rightSubject = null, ?string $subject = null): array
     {
         $apiPath = str_replace(
             [],
@@ -373,10 +375,7 @@ class PromotionsPromotions extends Service
 
         $apiParams = [];
         $apiParams['promotion_id'] = $promotionId;
-
-        if (!is_null($addend)) {
-            $apiParams['addend'] = $addend;
-        }
+        $apiParams['addend'] = $addend;
 
         if (!is_null($compareValue)) {
             $apiParams['compare_value'] = $compareValue;
@@ -385,42 +384,24 @@ class PromotionsPromotions extends Service
         if (!is_null($compareValueTo)) {
             $apiParams['compare_value_to'] = $compareValueTo;
         }
-
-        if (!is_null($comparison)) {
-            $apiParams['comparison'] = $comparison;
-        }
-
-        if (!is_null($factor)) {
-            $apiParams['factor'] = $factor;
-        }
+        $apiParams['comparison'] = $comparison;
+        $apiParams['factor'] = $factor;
 
         if (!is_null($kind)) {
             $apiParams['kind'] = $kind;
         }
-
-        if (!is_null($matchMode)) {
-            $apiParams['match_mode'] = $matchMode;
-        }
+        $apiParams['match_mode'] = $matchMode;
 
         if (!is_null($negate)) {
             $apiParams['negate'] = $negate;
         }
-
-        if (!is_null($parentId)) {
-            $apiParams['parent_id'] = $parentId;
-        }
+        $apiParams['parent_id'] = $parentId;
 
         if (!is_null($position)) {
             $apiParams['position'] = $position;
         }
-
-        if (!is_null($rightSubject)) {
-            $apiParams['right_subject'] = $rightSubject;
-        }
-
-        if (!is_null($subject)) {
-            $apiParams['subject'] = $subject;
-        }
+        $apiParams['right_subject'] = $rightSubject;
+        $apiParams['subject'] = $subject;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -515,23 +496,23 @@ class PromotionsPromotions extends Service
 
     /**
      * @param string $id
-     * @param string $promotionId
      * @param ?float $addend
-     * @param ?array $compareValue
-     * @param ?array $compareValueTo
+     * @param ?mixed $compareValue
+     * @param ?mixed $compareValueTo
      * @param ?string $comparison
      * @param ?float $factor
-     * @param ?PromotionsConditionsCreateKind $kind
+     * @param ?AudiencesRulesCreateKind $kind
      * @param ?MatchMode $matchMode
      * @param ?bool $negate
      * @param ?string $parentId
      * @param ?int $position
+     * @param ?string $promotionId
      * @param ?string $rightSubject
      * @param ?string $subject
      * @throws RevenexxException
      * @return array
      */
-    public function promotionsConditionsUpdate(string $id, string $promotionId, ?float $addend = null, ?array $compareValue = null, ?array $compareValueTo = null, ?string $comparison = null, ?float $factor = null, ?PromotionsConditionsCreateKind $kind = null, ?MatchMode $matchMode = null, ?bool $negate = null, ?string $parentId = null, ?int $position = null, ?string $rightSubject = null, ?string $subject = null): array
+    public function promotionsConditionsUpdate(string $id, ?float $addend = null, mixed $compareValue = null, mixed $compareValueTo = null, ?string $comparison = null, ?float $factor = null, ?AudiencesRulesCreateKind $kind = null, ?MatchMode $matchMode = null, ?bool $negate = null, ?string $parentId = null, ?int $position = null, ?string $promotionId = null, ?string $rightSubject = null, ?string $subject = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -541,11 +522,7 @@ class PromotionsPromotions extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
-        $apiParams['promotion_id'] = $promotionId;
-
-        if (!is_null($addend)) {
-            $apiParams['addend'] = $addend;
-        }
+        $apiParams['addend'] = $addend;
 
         if (!is_null($compareValue)) {
             $apiParams['compare_value'] = $compareValue;
@@ -554,42 +531,28 @@ class PromotionsPromotions extends Service
         if (!is_null($compareValueTo)) {
             $apiParams['compare_value_to'] = $compareValueTo;
         }
-
-        if (!is_null($comparison)) {
-            $apiParams['comparison'] = $comparison;
-        }
-
-        if (!is_null($factor)) {
-            $apiParams['factor'] = $factor;
-        }
+        $apiParams['comparison'] = $comparison;
+        $apiParams['factor'] = $factor;
 
         if (!is_null($kind)) {
             $apiParams['kind'] = $kind;
         }
-
-        if (!is_null($matchMode)) {
-            $apiParams['match_mode'] = $matchMode;
-        }
+        $apiParams['match_mode'] = $matchMode;
 
         if (!is_null($negate)) {
             $apiParams['negate'] = $negate;
         }
-
-        if (!is_null($parentId)) {
-            $apiParams['parent_id'] = $parentId;
-        }
+        $apiParams['parent_id'] = $parentId;
 
         if (!is_null($position)) {
             $apiParams['position'] = $position;
         }
 
-        if (!is_null($rightSubject)) {
-            $apiParams['right_subject'] = $rightSubject;
+        if (!is_null($promotionId)) {
+            $apiParams['promotion_id'] = $promotionId;
         }
-
-        if (!is_null($subject)) {
-            $apiParams['subject'] = $subject;
-        }
+        $apiParams['right_subject'] = $rightSubject;
+        $apiParams['subject'] = $subject;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -614,10 +577,11 @@ class PromotionsPromotions extends Service
      * @param ?string $name
      * @param ?string $shapeVersion
      * @param ?string $carriesAmount
+     * @param ?string $active
      * @throws RevenexxException
      * @return array
      */
-    public function promotionsCustomEffectTypesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $name = null, ?string $shapeVersion = null, ?string $carriesAmount = null): array
+    public function promotionsCustomEffectTypesList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $name = null, ?string $shapeVersion = null, ?string $carriesAmount = null, ?string $active = null): array
     {
         $apiPath = str_replace(
             [],
@@ -655,6 +619,10 @@ class PromotionsPromotions extends Service
             $apiParams['carries_amount'] = $carriesAmount;
         }
 
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
+
         $apiHeaders = [];
 
         return $this->client->call(
@@ -667,15 +635,16 @@ class PromotionsPromotions extends Service
 
     /**
      * @param string $name
+     * @param ?bool $active
      * @param ?bool $carriesAmount
-     * @param ?array $description
-     * @param ?array $metadata
-     * @param ?array $payloadShape
-     * @param ?array $title
+     * @param ?mixed $description
+     * @param ?mixed $metadata
+     * @param ?mixed $payloadShape
+     * @param ?mixed $title
      * @throws RevenexxException
      * @return array
      */
-    public function promotionsCustomEffectTypesCreate(string $name, ?bool $carriesAmount = null, ?array $description = null, ?array $metadata = null, ?array $payloadShape = null, ?array $title = null): array
+    public function promotionsCustomEffectTypesCreate(string $name, ?bool $active = null, ?bool $carriesAmount = null, mixed $description = null, mixed $metadata = null, mixed $payloadShape = null, mixed $title = null): array
     {
         $apiPath = str_replace(
             [],
@@ -685,6 +654,10 @@ class PromotionsPromotions extends Service
 
         $apiParams = [];
         $apiParams['name'] = $name;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
 
         if (!is_null($carriesAmount)) {
             $apiParams['carries_amount'] = $carriesAmount;
@@ -771,16 +744,17 @@ class PromotionsPromotions extends Service
 
     /**
      * @param string $id
-     * @param string $name
+     * @param ?bool $active
      * @param ?bool $carriesAmount
-     * @param ?array $description
-     * @param ?array $metadata
-     * @param ?array $payloadShape
-     * @param ?array $title
+     * @param ?mixed $description
+     * @param ?mixed $metadata
+     * @param ?string $name
+     * @param ?mixed $payloadShape
+     * @param ?mixed $title
      * @throws RevenexxException
      * @return array
      */
-    public function promotionsCustomEffectTypesUpdate(string $id, string $name, ?bool $carriesAmount = null, ?array $description = null, ?array $metadata = null, ?array $payloadShape = null, ?array $title = null): array
+    public function promotionsCustomEffectTypesUpdate(string $id, ?bool $active = null, ?bool $carriesAmount = null, mixed $description = null, mixed $metadata = null, ?string $name = null, mixed $payloadShape = null, mixed $title = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -790,7 +764,10 @@ class PromotionsPromotions extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
-        $apiParams['name'] = $name;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
 
         if (!is_null($carriesAmount)) {
             $apiParams['carries_amount'] = $carriesAmount;
@@ -802,6 +779,10 @@ class PromotionsPromotions extends Service
 
         if (!is_null($metadata)) {
             $apiParams['metadata'] = $metadata;
+        }
+
+        if (!is_null($name)) {
+            $apiParams['name'] = $name;
         }
 
         if (!is_null($payloadShape)) {
@@ -930,17 +911,17 @@ class PromotionsPromotions extends Service
     /**
      * @param string $promotionId
      * @param ?float $amount
-     * @param ?array $appliesTo
+     * @param ?mixed $appliesTo
      * @param ?string $bundleId
-     * @param ?array $customPayload
+     * @param ?mixed $customPayload
      * @param ?int $customShapeVersion
      * @param ?string $customTypeId
      * @param ?int $freeItemQuantity
-     * @param ?array $freeItems
+     * @param ?mixed $freeItems
      * @param ?PromotionsEffectsCreateKind $kind
      * @param ?float $maxDiscount
-     * @param ?array $message
-     * @param ?array $metadata
+     * @param ?mixed $message
+     * @param ?mixed $metadata
      * @param ?int $position
      * @param ?bool $requiresChoice
      * @param ?bool $spread
@@ -951,7 +932,7 @@ class PromotionsPromotions extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function promotionsEffectsCreate(string $promotionId, ?float $amount = null, ?array $appliesTo = null, ?string $bundleId = null, ?array $customPayload = null, ?int $customShapeVersion = null, ?string $customTypeId = null, ?int $freeItemQuantity = null, ?array $freeItems = null, ?PromotionsEffectsCreateKind $kind = null, ?float $maxDiscount = null, ?array $message = null, ?array $metadata = null, ?int $position = null, ?bool $requiresChoice = null, ?bool $spread = null, ?TargetScope $targetScope = null, ?UnitChoice $unitChoice = null, ?int $unitPosition = null, ?ValueType $valueType = null): array
+    public function promotionsEffectsCreate(string $promotionId, ?float $amount = null, mixed $appliesTo = null, ?string $bundleId = null, mixed $customPayload = null, ?int $customShapeVersion = null, ?string $customTypeId = null, ?int $freeItemQuantity = null, mixed $freeItems = null, ?PromotionsEffectsCreateKind $kind = null, ?float $maxDiscount = null, mixed $message = null, mixed $metadata = null, ?int $position = null, ?bool $requiresChoice = null, ?bool $spread = null, ?TargetScope $targetScope = null, ?UnitChoice $unitChoice = null, ?int $unitPosition = null, ?ValueType $valueType = null): array
     {
         $apiPath = str_replace(
             [],
@@ -961,34 +942,19 @@ class PromotionsPromotions extends Service
 
         $apiParams = [];
         $apiParams['promotion_id'] = $promotionId;
-
-        if (!is_null($amount)) {
-            $apiParams['amount'] = $amount;
-        }
+        $apiParams['amount'] = $amount;
 
         if (!is_null($appliesTo)) {
             $apiParams['applies_to'] = $appliesTo;
         }
-
-        if (!is_null($bundleId)) {
-            $apiParams['bundle_id'] = $bundleId;
-        }
+        $apiParams['bundle_id'] = $bundleId;
 
         if (!is_null($customPayload)) {
             $apiParams['custom_payload'] = $customPayload;
         }
-
-        if (!is_null($customShapeVersion)) {
-            $apiParams['custom_shape_version'] = $customShapeVersion;
-        }
-
-        if (!is_null($customTypeId)) {
-            $apiParams['custom_type_id'] = $customTypeId;
-        }
-
-        if (!is_null($freeItemQuantity)) {
-            $apiParams['free_item_quantity'] = $freeItemQuantity;
-        }
+        $apiParams['custom_shape_version'] = $customShapeVersion;
+        $apiParams['custom_type_id'] = $customTypeId;
+        $apiParams['free_item_quantity'] = $freeItemQuantity;
 
         if (!is_null($freeItems)) {
             $apiParams['free_items'] = $freeItems;
@@ -997,10 +963,7 @@ class PromotionsPromotions extends Service
         if (!is_null($kind)) {
             $apiParams['kind'] = $kind;
         }
-
-        if (!is_null($maxDiscount)) {
-            $apiParams['max_discount'] = $maxDiscount;
-        }
+        $apiParams['max_discount'] = $maxDiscount;
 
         if (!is_null($message)) {
             $apiParams['message'] = $message;
@@ -1021,22 +984,10 @@ class PromotionsPromotions extends Service
         if (!is_null($spread)) {
             $apiParams['spread'] = $spread;
         }
-
-        if (!is_null($targetScope)) {
-            $apiParams['target_scope'] = $targetScope;
-        }
-
-        if (!is_null($unitChoice)) {
-            $apiParams['unit_choice'] = $unitChoice;
-        }
-
-        if (!is_null($unitPosition)) {
-            $apiParams['unit_position'] = $unitPosition;
-        }
-
-        if (!is_null($valueType)) {
-            $apiParams['value_type'] = $valueType;
-        }
+        $apiParams['target_scope'] = $targetScope;
+        $apiParams['unit_choice'] = $unitChoice;
+        $apiParams['unit_position'] = $unitPosition;
+        $apiParams['value_type'] = $valueType;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -1103,20 +1054,20 @@ class PromotionsPromotions extends Service
 
     /**
      * @param string $id
-     * @param string $promotionId
      * @param ?float $amount
-     * @param ?array $appliesTo
+     * @param ?mixed $appliesTo
      * @param ?string $bundleId
-     * @param ?array $customPayload
+     * @param ?mixed $customPayload
      * @param ?int $customShapeVersion
      * @param ?string $customTypeId
      * @param ?int $freeItemQuantity
-     * @param ?array $freeItems
+     * @param ?mixed $freeItems
      * @param ?PromotionsEffectsCreateKind $kind
      * @param ?float $maxDiscount
-     * @param ?array $message
-     * @param ?array $metadata
+     * @param ?mixed $message
+     * @param ?mixed $metadata
      * @param ?int $position
+     * @param ?string $promotionId
      * @param ?bool $requiresChoice
      * @param ?bool $spread
      * @param ?TargetScope $targetScope
@@ -1126,7 +1077,7 @@ class PromotionsPromotions extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function promotionsEffectsUpdate(string $id, string $promotionId, ?float $amount = null, ?array $appliesTo = null, ?string $bundleId = null, ?array $customPayload = null, ?int $customShapeVersion = null, ?string $customTypeId = null, ?int $freeItemQuantity = null, ?array $freeItems = null, ?PromotionsEffectsCreateKind $kind = null, ?float $maxDiscount = null, ?array $message = null, ?array $metadata = null, ?int $position = null, ?bool $requiresChoice = null, ?bool $spread = null, ?TargetScope $targetScope = null, ?UnitChoice $unitChoice = null, ?int $unitPosition = null, ?ValueType $valueType = null): array
+    public function promotionsEffectsUpdate(string $id, ?float $amount = null, mixed $appliesTo = null, ?string $bundleId = null, mixed $customPayload = null, ?int $customShapeVersion = null, ?string $customTypeId = null, ?int $freeItemQuantity = null, mixed $freeItems = null, ?PromotionsEffectsCreateKind $kind = null, ?float $maxDiscount = null, mixed $message = null, mixed $metadata = null, ?int $position = null, ?string $promotionId = null, ?bool $requiresChoice = null, ?bool $spread = null, ?TargetScope $targetScope = null, ?UnitChoice $unitChoice = null, ?int $unitPosition = null, ?ValueType $valueType = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -1136,35 +1087,19 @@ class PromotionsPromotions extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
-        $apiParams['promotion_id'] = $promotionId;
-
-        if (!is_null($amount)) {
-            $apiParams['amount'] = $amount;
-        }
+        $apiParams['amount'] = $amount;
 
         if (!is_null($appliesTo)) {
             $apiParams['applies_to'] = $appliesTo;
         }
-
-        if (!is_null($bundleId)) {
-            $apiParams['bundle_id'] = $bundleId;
-        }
+        $apiParams['bundle_id'] = $bundleId;
 
         if (!is_null($customPayload)) {
             $apiParams['custom_payload'] = $customPayload;
         }
-
-        if (!is_null($customShapeVersion)) {
-            $apiParams['custom_shape_version'] = $customShapeVersion;
-        }
-
-        if (!is_null($customTypeId)) {
-            $apiParams['custom_type_id'] = $customTypeId;
-        }
-
-        if (!is_null($freeItemQuantity)) {
-            $apiParams['free_item_quantity'] = $freeItemQuantity;
-        }
+        $apiParams['custom_shape_version'] = $customShapeVersion;
+        $apiParams['custom_type_id'] = $customTypeId;
+        $apiParams['free_item_quantity'] = $freeItemQuantity;
 
         if (!is_null($freeItems)) {
             $apiParams['free_items'] = $freeItems;
@@ -1173,10 +1108,7 @@ class PromotionsPromotions extends Service
         if (!is_null($kind)) {
             $apiParams['kind'] = $kind;
         }
-
-        if (!is_null($maxDiscount)) {
-            $apiParams['max_discount'] = $maxDiscount;
-        }
+        $apiParams['max_discount'] = $maxDiscount;
 
         if (!is_null($message)) {
             $apiParams['message'] = $message;
@@ -1190,6 +1122,10 @@ class PromotionsPromotions extends Service
             $apiParams['position'] = $position;
         }
 
+        if (!is_null($promotionId)) {
+            $apiParams['promotion_id'] = $promotionId;
+        }
+
         if (!is_null($requiresChoice)) {
             $apiParams['requires_choice'] = $requiresChoice;
         }
@@ -1197,22 +1133,10 @@ class PromotionsPromotions extends Service
         if (!is_null($spread)) {
             $apiParams['spread'] = $spread;
         }
-
-        if (!is_null($targetScope)) {
-            $apiParams['target_scope'] = $targetScope;
-        }
-
-        if (!is_null($unitChoice)) {
-            $apiParams['unit_choice'] = $unitChoice;
-        }
-
-        if (!is_null($unitPosition)) {
-            $apiParams['unit_position'] = $unitPosition;
-        }
-
-        if (!is_null($valueType)) {
-            $apiParams['value_type'] = $valueType;
-        }
+        $apiParams['target_scope'] = $targetScope;
+        $apiParams['unit_choice'] = $unitChoice;
+        $apiParams['unit_position'] = $unitPosition;
+        $apiParams['value_type'] = $valueType;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -1240,10 +1164,11 @@ class PromotionsPromotions extends Service
      * @param ?string $mode
      * @param ?string $parentId
      * @param ?string $position
+     * @param ?string $active
      * @throws RevenexxException
      * @return array
      */
-    public function promotionsGroupsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?string $name = null, ?string $mode = null, ?string $parentId = null, ?string $position = null): array
+    public function promotionsGroupsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?string $name = null, ?string $mode = null, ?string $parentId = null, ?string $position = null, ?string $active = null): array
     {
         $apiPath = str_replace(
             [],
@@ -1289,6 +1214,10 @@ class PromotionsPromotions extends Service
             $apiParams['position'] = $position;
         }
 
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
+
         $apiHeaders = [];
 
         return $this->client->call(
@@ -1302,15 +1231,16 @@ class PromotionsPromotions extends Service
     /**
      * @param string $code
      * @param string $name
-     * @param ?array $labels
-     * @param ?array $metadata
+     * @param ?bool $active
+     * @param ?mixed $labels
+     * @param ?mixed $metadata
      * @param ?PromotionsGroupsCreateMode $mode
      * @param ?string $parentId
      * @param ?int $position
      * @throws RevenexxException
      * @return array
      */
-    public function promotionsGroupsCreate(string $code, string $name, ?array $labels = null, ?array $metadata = null, ?PromotionsGroupsCreateMode $mode = null, ?string $parentId = null, ?int $position = null): array
+    public function promotionsGroupsCreate(string $code, string $name, ?bool $active = null, mixed $labels = null, mixed $metadata = null, ?PromotionsGroupsCreateMode $mode = null, ?string $parentId = null, ?int $position = null): array
     {
         $apiPath = str_replace(
             [],
@@ -1321,6 +1251,10 @@ class PromotionsPromotions extends Service
         $apiParams = [];
         $apiParams['code'] = $code;
         $apiParams['name'] = $name;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
 
         if (!is_null($labels)) {
             $apiParams['labels'] = $labels;
@@ -1333,10 +1267,7 @@ class PromotionsPromotions extends Service
         if (!is_null($mode)) {
             $apiParams['mode'] = $mode;
         }
-
-        if (!is_null($parentId)) {
-            $apiParams['parent_id'] = $parentId;
-        }
+        $apiParams['parent_id'] = $parentId;
 
         if (!is_null($position)) {
             $apiParams['position'] = $position;
@@ -1407,17 +1338,18 @@ class PromotionsPromotions extends Service
 
     /**
      * @param string $id
-     * @param string $code
-     * @param string $name
-     * @param ?array $labels
-     * @param ?array $metadata
+     * @param ?bool $active
+     * @param ?string $code
+     * @param ?mixed $labels
+     * @param ?mixed $metadata
      * @param ?PromotionsGroupsCreateMode $mode
+     * @param ?string $name
      * @param ?string $parentId
      * @param ?int $position
      * @throws RevenexxException
      * @return array
      */
-    public function promotionsGroupsUpdate(string $id, string $code, string $name, ?array $labels = null, ?array $metadata = null, ?PromotionsGroupsCreateMode $mode = null, ?string $parentId = null, ?int $position = null): array
+    public function promotionsGroupsUpdate(string $id, ?bool $active = null, ?string $code = null, mixed $labels = null, mixed $metadata = null, ?PromotionsGroupsCreateMode $mode = null, ?string $name = null, ?string $parentId = null, ?int $position = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -1427,8 +1359,14 @@ class PromotionsPromotions extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
-        $apiParams['code'] = $code;
-        $apiParams['name'] = $name;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
+
+        if (!is_null($code)) {
+            $apiParams['code'] = $code;
+        }
 
         if (!is_null($labels)) {
             $apiParams['labels'] = $labels;
@@ -1442,9 +1380,10 @@ class PromotionsPromotions extends Service
             $apiParams['mode'] = $mode;
         }
 
-        if (!is_null($parentId)) {
-            $apiParams['parent_id'] = $parentId;
+        if (!is_null($name)) {
+            $apiParams['name'] = $name;
         }
+        $apiParams['parent_id'] = $parentId;
 
         if (!is_null($position)) {
             $apiParams['position'] = $position;
@@ -1470,22 +1409,24 @@ class PromotionsPromotions extends Service
      * @param ?int $limit
      * @param ?int $offset
      * @param ?string $order
+     * @param ?Trashed $trashed
      * @param ?string $id
      * @param ?string $code
      * @param ?string $name
      * @param ?string $description
      * @param ?string $reach
      * @param ?string $status
+     * @param ?string $effectiveState
      * @param ?string $priority
      * @param ?string $exclusive
      * @param ?string $groupId
      * @param ?string $searchBestCombination
      * @param ?string $conditionMatch
-     * @param ?string $recurrenceKind
+     * @param ?string $campaignRef
      * @throws RevenexxException
      * @return array
      */
-    public function promotionsPromotionsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $id = null, ?string $code = null, ?string $name = null, ?string $description = null, ?string $reach = null, ?string $status = null, ?string $priority = null, ?string $exclusive = null, ?string $groupId = null, ?string $searchBestCombination = null, ?string $conditionMatch = null, ?string $recurrenceKind = null): array
+    public function promotionsPromotionsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?Trashed $trashed = null, ?string $id = null, ?string $code = null, ?string $name = null, ?string $description = null, ?string $reach = null, ?string $status = null, ?string $effectiveState = null, ?string $priority = null, ?string $exclusive = null, ?string $groupId = null, ?string $searchBestCombination = null, ?string $conditionMatch = null, ?string $campaignRef = null): array
     {
         $apiPath = str_replace(
             [],
@@ -1505,6 +1446,10 @@ class PromotionsPromotions extends Service
 
         if (!is_null($order)) {
             $apiParams['order'] = $order;
+        }
+
+        if (!is_null($trashed)) {
+            $apiParams['trashed'] = $trashed;
         }
 
         if (!is_null($id)) {
@@ -1531,6 +1476,10 @@ class PromotionsPromotions extends Service
             $apiParams['status'] = $status;
         }
 
+        if (!is_null($effectiveState)) {
+            $apiParams['effective_state'] = $effectiveState;
+        }
+
         if (!is_null($priority)) {
             $apiParams['priority'] = $priority;
         }
@@ -1551,8 +1500,8 @@ class PromotionsPromotions extends Service
             $apiParams['condition_match'] = $conditionMatch;
         }
 
-        if (!is_null($recurrenceKind)) {
-            $apiParams['recurrence_kind'] = $recurrenceKind;
+        if (!is_null($campaignRef)) {
+            $apiParams['campaign_ref'] = $campaignRef;
         }
 
         $apiHeaders = [];
@@ -1568,37 +1517,47 @@ class PromotionsPromotions extends Service
     /**
      * @param string $code
      * @param string $name
+     * @param ?mixed $audienceChannels
+     * @param ?mixed $audienceRoles
+     * @param ?mixed $audienceSegments
      * @param ?float $budgetDiscount
      * @param ?int $budgetRedemptions
      * @param ?string $campaignRef
      * @param ?string $channelId
      * @param ?ConditionMatch $conditionMatch
      * @param ?string $currency
+     * @param ?string $deletedAt
+     * @param ?string $deletedBy
+     * @param ?string $deletedById
      * @param ?string $description
      * @param ?string $endsAt
      * @param ?bool $exclusive
      * @param ?string $groupId
-     * @param ?array $labels
+     * @param ?mixed $labels
      * @param ?int $limitPerContact
      * @param ?int $limitPerOrganization
-     * @param ?array $metadata
+     * @param ?mixed $metadata
      * @param ?int $priority
+     * @param ?string $purgeAt
+     * @param ?string $purgeBlockedReason
      * @param ?Reach $reach
-     * @param ?array $recurrenceDays
+     * @param ?mixed $recurrenceDays
      * @param ?string $recurrenceFrom
      * @param ?RecurrenceKind $recurrenceKind
      * @param ?string $recurrenceUntil
-     * @param ?array $recurrenceWeekdays
+     * @param ?mixed $recurrenceWeekdays
      * @param ?ReturnBehaviour $returnBehaviour
      * @param ?bool $searchBestCombination
      * @param ?string $startsAt
      * @param ?PromotionsPromotionsCreateStatus $status
-     * @param ?array $tags
+     * @param ?mixed $tags
+     * @param ?string $template
      * @param ?string $timezone
+     * @param ?string $trashBatch
      * @throws RevenexxException
      * @return array
      */
-    public function promotionsPromotionsCreate(string $code, string $name, ?float $budgetDiscount = null, ?int $budgetRedemptions = null, ?string $campaignRef = null, ?string $channelId = null, ?ConditionMatch $conditionMatch = null, ?string $currency = null, ?string $description = null, ?string $endsAt = null, ?bool $exclusive = null, ?string $groupId = null, ?array $labels = null, ?int $limitPerContact = null, ?int $limitPerOrganization = null, ?array $metadata = null, ?int $priority = null, ?Reach $reach = null, ?array $recurrenceDays = null, ?string $recurrenceFrom = null, ?RecurrenceKind $recurrenceKind = null, ?string $recurrenceUntil = null, ?array $recurrenceWeekdays = null, ?ReturnBehaviour $returnBehaviour = null, ?bool $searchBestCombination = null, ?string $startsAt = null, ?PromotionsPromotionsCreateStatus $status = null, ?array $tags = null, ?string $timezone = null): array
+    public function promotionsPromotionsCreate(string $code, string $name, mixed $audienceChannels = null, mixed $audienceRoles = null, mixed $audienceSegments = null, ?float $budgetDiscount = null, ?int $budgetRedemptions = null, ?string $campaignRef = null, ?string $channelId = null, ?ConditionMatch $conditionMatch = null, ?string $currency = null, ?string $deletedAt = null, ?string $deletedBy = null, ?string $deletedById = null, ?string $description = null, ?string $endsAt = null, ?bool $exclusive = null, ?string $groupId = null, mixed $labels = null, ?int $limitPerContact = null, ?int $limitPerOrganization = null, mixed $metadata = null, ?int $priority = null, ?string $purgeAt = null, ?string $purgeBlockedReason = null, ?Reach $reach = null, mixed $recurrenceDays = null, ?string $recurrenceFrom = null, ?RecurrenceKind $recurrenceKind = null, ?string $recurrenceUntil = null, mixed $recurrenceWeekdays = null, ?ReturnBehaviour $returnBehaviour = null, ?bool $searchBestCombination = null, ?string $startsAt = null, ?PromotionsPromotionsCreateStatus $status = null, mixed $tags = null, ?string $template = null, ?string $timezone = null, ?string $trashBatch = null): array
     {
         $apiPath = str_replace(
             [],
@@ -1610,57 +1569,42 @@ class PromotionsPromotions extends Service
         $apiParams['code'] = $code;
         $apiParams['name'] = $name;
 
-        if (!is_null($budgetDiscount)) {
-            $apiParams['budget_discount'] = $budgetDiscount;
+        if (!is_null($audienceChannels)) {
+            $apiParams['audience_channels'] = $audienceChannels;
         }
 
-        if (!is_null($budgetRedemptions)) {
-            $apiParams['budget_redemptions'] = $budgetRedemptions;
+        if (!is_null($audienceRoles)) {
+            $apiParams['audience_roles'] = $audienceRoles;
         }
 
-        if (!is_null($campaignRef)) {
-            $apiParams['campaign_ref'] = $campaignRef;
+        if (!is_null($audienceSegments)) {
+            $apiParams['audience_segments'] = $audienceSegments;
         }
-
-        if (!is_null($channelId)) {
-            $apiParams['channel_id'] = $channelId;
-        }
+        $apiParams['budget_discount'] = $budgetDiscount;
+        $apiParams['budget_redemptions'] = $budgetRedemptions;
+        $apiParams['campaign_ref'] = $campaignRef;
+        $apiParams['channel_id'] = $channelId;
 
         if (!is_null($conditionMatch)) {
             $apiParams['condition_match'] = $conditionMatch;
         }
-
-        if (!is_null($currency)) {
-            $apiParams['currency'] = $currency;
-        }
-
-        if (!is_null($description)) {
-            $apiParams['description'] = $description;
-        }
-
-        if (!is_null($endsAt)) {
-            $apiParams['ends_at'] = $endsAt;
-        }
+        $apiParams['currency'] = $currency;
+        $apiParams['deleted_at'] = $deletedAt;
+        $apiParams['deleted_by'] = $deletedBy;
+        $apiParams['deleted_by_id'] = $deletedById;
+        $apiParams['description'] = $description;
+        $apiParams['ends_at'] = $endsAt;
 
         if (!is_null($exclusive)) {
             $apiParams['exclusive'] = $exclusive;
         }
-
-        if (!is_null($groupId)) {
-            $apiParams['group_id'] = $groupId;
-        }
+        $apiParams['group_id'] = $groupId;
 
         if (!is_null($labels)) {
             $apiParams['labels'] = $labels;
         }
-
-        if (!is_null($limitPerContact)) {
-            $apiParams['limit_per_contact'] = $limitPerContact;
-        }
-
-        if (!is_null($limitPerOrganization)) {
-            $apiParams['limit_per_organization'] = $limitPerOrganization;
-        }
+        $apiParams['limit_per_contact'] = $limitPerContact;
+        $apiParams['limit_per_organization'] = $limitPerOrganization;
 
         if (!is_null($metadata)) {
             $apiParams['metadata'] = $metadata;
@@ -1669,6 +1613,8 @@ class PromotionsPromotions extends Service
         if (!is_null($priority)) {
             $apiParams['priority'] = $priority;
         }
+        $apiParams['purge_at'] = $purgeAt;
+        $apiParams['purge_blocked_reason'] = $purgeBlockedReason;
 
         if (!is_null($reach)) {
             $apiParams['reach'] = $reach;
@@ -1677,34 +1623,22 @@ class PromotionsPromotions extends Service
         if (!is_null($recurrenceDays)) {
             $apiParams['recurrence_days'] = $recurrenceDays;
         }
-
-        if (!is_null($recurrenceFrom)) {
-            $apiParams['recurrence_from'] = $recurrenceFrom;
-        }
+        $apiParams['recurrence_from'] = $recurrenceFrom;
 
         if (!is_null($recurrenceKind)) {
             $apiParams['recurrence_kind'] = $recurrenceKind;
         }
-
-        if (!is_null($recurrenceUntil)) {
-            $apiParams['recurrence_until'] = $recurrenceUntil;
-        }
+        $apiParams['recurrence_until'] = $recurrenceUntil;
 
         if (!is_null($recurrenceWeekdays)) {
             $apiParams['recurrence_weekdays'] = $recurrenceWeekdays;
         }
-
-        if (!is_null($returnBehaviour)) {
-            $apiParams['return_behaviour'] = $returnBehaviour;
-        }
+        $apiParams['return_behaviour'] = $returnBehaviour;
 
         if (!is_null($searchBestCombination)) {
             $apiParams['search_best_combination'] = $searchBestCombination;
         }
-
-        if (!is_null($startsAt)) {
-            $apiParams['starts_at'] = $startsAt;
-        }
+        $apiParams['starts_at'] = $startsAt;
 
         if (!is_null($status)) {
             $apiParams['status'] = $status;
@@ -1713,10 +1647,9 @@ class PromotionsPromotions extends Service
         if (!is_null($tags)) {
             $apiParams['tags'] = $tags;
         }
-
-        if (!is_null($timezone)) {
-            $apiParams['timezone'] = $timezone;
-        }
+        $apiParams['template'] = $template;
+        $apiParams['timezone'] = $timezone;
+        $apiParams['trash_batch'] = $trashBatch;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -1730,6 +1663,100 @@ class PromotionsPromotions extends Service
     }
 
     /**
+     * The question the Cockpit wizard asks before a promotion exists: `ok` is
+     * false while any promotion is running, and `overlaps` names them, so the
+     * merchant checks the priorities.
+     *
+     * @throws RevenexxException
+     * @return array
+     */
+    public function promotionsPromotionsOverlapCheck(): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/promotions/promotions/overlap-check'
+        );
+
+        $apiParams = [];
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Every promotion in the trash is deleted for good on its own terms. One that
+     * something still blocks stays in the trash and is named with its reason, so
+     * a partial success says exactly what remained. A right of its own, apart
+     * from deleting.
+     *
+     * @throws RevenexxException
+     * @return array
+     */
+    public function promotionsPromotionsEmptyTrash(): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/promotions/promotions/trash/empty'
+        );
+
+        $apiParams = [];
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * What the daily purge does, callable by hand: every promotion in the trash
+     * for longer than the tenant trash retention (90 days unless the tenant set
+     * another) is deleted for good through the same rules as a second delete. A
+     * blocked one stays and carries its reason. When the retention cannot be
+     * read, nothing is deleted. Also the cron schedule.
+     *
+     * @throws RevenexxException
+     * @return array
+     */
+    public function promotionsPromotionsPurge(): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/promotions/promotions/trash/purge'
+        );
+
+        $apiParams = [];
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * The first delete moves the promotion to the trash: it applies nowhere, its
+     * code stays reserved, and its conditions, effects, bundles, vouchers and
+     * batches stay with it untouched. Refused for a promotion that has been
+     * redeemed, which is archived instead. The second delete, on a promotion
+     * already in the trash, deletes it for good — only then do its parts go and
+     * `promotion.deleted` fire.
+     *
      * @param string $id
      * @throws RevenexxException
      * @return array
@@ -1783,39 +1810,49 @@ class PromotionsPromotions extends Service
 
     /**
      * @param string $id
-     * @param string $code
-     * @param string $name
+     * @param ?mixed $audienceChannels
+     * @param ?mixed $audienceRoles
+     * @param ?mixed $audienceSegments
      * @param ?float $budgetDiscount
      * @param ?int $budgetRedemptions
      * @param ?string $campaignRef
      * @param ?string $channelId
+     * @param ?string $code
      * @param ?ConditionMatch $conditionMatch
      * @param ?string $currency
+     * @param ?string $deletedAt
+     * @param ?string $deletedBy
+     * @param ?string $deletedById
      * @param ?string $description
      * @param ?string $endsAt
      * @param ?bool $exclusive
      * @param ?string $groupId
-     * @param ?array $labels
+     * @param ?mixed $labels
      * @param ?int $limitPerContact
      * @param ?int $limitPerOrganization
-     * @param ?array $metadata
+     * @param ?mixed $metadata
+     * @param ?string $name
      * @param ?int $priority
+     * @param ?string $purgeAt
+     * @param ?string $purgeBlockedReason
      * @param ?Reach $reach
-     * @param ?array $recurrenceDays
+     * @param ?mixed $recurrenceDays
      * @param ?string $recurrenceFrom
      * @param ?RecurrenceKind $recurrenceKind
      * @param ?string $recurrenceUntil
-     * @param ?array $recurrenceWeekdays
+     * @param ?mixed $recurrenceWeekdays
      * @param ?ReturnBehaviour $returnBehaviour
      * @param ?bool $searchBestCombination
      * @param ?string $startsAt
      * @param ?PromotionsPromotionsCreateStatus $status
-     * @param ?array $tags
+     * @param ?mixed $tags
+     * @param ?string $template
      * @param ?string $timezone
+     * @param ?string $trashBatch
      * @throws RevenexxException
      * @return array
      */
-    public function promotionsPromotionsUpdate(string $id, string $code, string $name, ?float $budgetDiscount = null, ?int $budgetRedemptions = null, ?string $campaignRef = null, ?string $channelId = null, ?ConditionMatch $conditionMatch = null, ?string $currency = null, ?string $description = null, ?string $endsAt = null, ?bool $exclusive = null, ?string $groupId = null, ?array $labels = null, ?int $limitPerContact = null, ?int $limitPerOrganization = null, ?array $metadata = null, ?int $priority = null, ?Reach $reach = null, ?array $recurrenceDays = null, ?string $recurrenceFrom = null, ?RecurrenceKind $recurrenceKind = null, ?string $recurrenceUntil = null, ?array $recurrenceWeekdays = null, ?ReturnBehaviour $returnBehaviour = null, ?bool $searchBestCombination = null, ?string $startsAt = null, ?PromotionsPromotionsCreateStatus $status = null, ?array $tags = null, ?string $timezone = null): array
+    public function promotionsPromotionsUpdate(string $id, mixed $audienceChannels = null, mixed $audienceRoles = null, mixed $audienceSegments = null, ?float $budgetDiscount = null, ?int $budgetRedemptions = null, ?string $campaignRef = null, ?string $channelId = null, ?string $code = null, ?ConditionMatch $conditionMatch = null, ?string $currency = null, ?string $deletedAt = null, ?string $deletedBy = null, ?string $deletedById = null, ?string $description = null, ?string $endsAt = null, ?bool $exclusive = null, ?string $groupId = null, mixed $labels = null, ?int $limitPerContact = null, ?int $limitPerOrganization = null, mixed $metadata = null, ?string $name = null, ?int $priority = null, ?string $purgeAt = null, ?string $purgeBlockedReason = null, ?Reach $reach = null, mixed $recurrenceDays = null, ?string $recurrenceFrom = null, ?RecurrenceKind $recurrenceKind = null, ?string $recurrenceUntil = null, mixed $recurrenceWeekdays = null, ?ReturnBehaviour $returnBehaviour = null, ?bool $searchBestCombination = null, ?string $startsAt = null, ?PromotionsPromotionsCreateStatus $status = null, mixed $tags = null, ?string $template = null, ?string $timezone = null, ?string $trashBatch = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -1825,68 +1862,61 @@ class PromotionsPromotions extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
-        $apiParams['code'] = $code;
-        $apiParams['name'] = $name;
 
-        if (!is_null($budgetDiscount)) {
-            $apiParams['budget_discount'] = $budgetDiscount;
+        if (!is_null($audienceChannels)) {
+            $apiParams['audience_channels'] = $audienceChannels;
         }
 
-        if (!is_null($budgetRedemptions)) {
-            $apiParams['budget_redemptions'] = $budgetRedemptions;
+        if (!is_null($audienceRoles)) {
+            $apiParams['audience_roles'] = $audienceRoles;
         }
 
-        if (!is_null($campaignRef)) {
-            $apiParams['campaign_ref'] = $campaignRef;
+        if (!is_null($audienceSegments)) {
+            $apiParams['audience_segments'] = $audienceSegments;
         }
+        $apiParams['budget_discount'] = $budgetDiscount;
+        $apiParams['budget_redemptions'] = $budgetRedemptions;
+        $apiParams['campaign_ref'] = $campaignRef;
+        $apiParams['channel_id'] = $channelId;
 
-        if (!is_null($channelId)) {
-            $apiParams['channel_id'] = $channelId;
+        if (!is_null($code)) {
+            $apiParams['code'] = $code;
         }
 
         if (!is_null($conditionMatch)) {
             $apiParams['condition_match'] = $conditionMatch;
         }
-
-        if (!is_null($currency)) {
-            $apiParams['currency'] = $currency;
-        }
-
-        if (!is_null($description)) {
-            $apiParams['description'] = $description;
-        }
-
-        if (!is_null($endsAt)) {
-            $apiParams['ends_at'] = $endsAt;
-        }
+        $apiParams['currency'] = $currency;
+        $apiParams['deleted_at'] = $deletedAt;
+        $apiParams['deleted_by'] = $deletedBy;
+        $apiParams['deleted_by_id'] = $deletedById;
+        $apiParams['description'] = $description;
+        $apiParams['ends_at'] = $endsAt;
 
         if (!is_null($exclusive)) {
             $apiParams['exclusive'] = $exclusive;
         }
-
-        if (!is_null($groupId)) {
-            $apiParams['group_id'] = $groupId;
-        }
+        $apiParams['group_id'] = $groupId;
 
         if (!is_null($labels)) {
             $apiParams['labels'] = $labels;
         }
-
-        if (!is_null($limitPerContact)) {
-            $apiParams['limit_per_contact'] = $limitPerContact;
-        }
-
-        if (!is_null($limitPerOrganization)) {
-            $apiParams['limit_per_organization'] = $limitPerOrganization;
-        }
+        $apiParams['limit_per_contact'] = $limitPerContact;
+        $apiParams['limit_per_organization'] = $limitPerOrganization;
 
         if (!is_null($metadata)) {
             $apiParams['metadata'] = $metadata;
         }
 
+        if (!is_null($name)) {
+            $apiParams['name'] = $name;
+        }
+
         if (!is_null($priority)) {
             $apiParams['priority'] = $priority;
         }
+        $apiParams['purge_at'] = $purgeAt;
+        $apiParams['purge_blocked_reason'] = $purgeBlockedReason;
 
         if (!is_null($reach)) {
             $apiParams['reach'] = $reach;
@@ -1895,34 +1925,22 @@ class PromotionsPromotions extends Service
         if (!is_null($recurrenceDays)) {
             $apiParams['recurrence_days'] = $recurrenceDays;
         }
-
-        if (!is_null($recurrenceFrom)) {
-            $apiParams['recurrence_from'] = $recurrenceFrom;
-        }
+        $apiParams['recurrence_from'] = $recurrenceFrom;
 
         if (!is_null($recurrenceKind)) {
             $apiParams['recurrence_kind'] = $recurrenceKind;
         }
-
-        if (!is_null($recurrenceUntil)) {
-            $apiParams['recurrence_until'] = $recurrenceUntil;
-        }
+        $apiParams['recurrence_until'] = $recurrenceUntil;
 
         if (!is_null($recurrenceWeekdays)) {
             $apiParams['recurrence_weekdays'] = $recurrenceWeekdays;
         }
-
-        if (!is_null($returnBehaviour)) {
-            $apiParams['return_behaviour'] = $returnBehaviour;
-        }
+        $apiParams['return_behaviour'] = $returnBehaviour;
 
         if (!is_null($searchBestCombination)) {
             $apiParams['search_best_combination'] = $searchBestCombination;
         }
-
-        if (!is_null($startsAt)) {
-            $apiParams['starts_at'] = $startsAt;
-        }
+        $apiParams['starts_at'] = $startsAt;
 
         if (!is_null($status)) {
             $apiParams['status'] = $status;
@@ -1931,10 +1949,9 @@ class PromotionsPromotions extends Service
         if (!is_null($tags)) {
             $apiParams['tags'] = $tags;
         }
-
-        if (!is_null($timezone)) {
-            $apiParams['timezone'] = $timezone;
-        }
+        $apiParams['template'] = $template;
+        $apiParams['timezone'] = $timezone;
+        $apiParams['trash_batch'] = $trashBatch;
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -2008,6 +2025,190 @@ class PromotionsPromotions extends Service
     }
 
     /**
+     * A draft with everything the promotion says about itself, under a new code,
+     * plus the parts asked for: `conditions` (the whole tree) and `effects`.
+     * Vouchers, redemptions and the budget used are never copied — they are
+     * what happened to the original. Answers the new promotion with `copied`
+     * counting what came along.
+     *
+     * @param string $id
+     * @param string $code
+     * @param ?array $parts
+     * @throws RevenexxException
+     * @return array
+     */
+    public function promotionsPromotionsCopy(string $id, string $code, ?array $parts = null): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/promotions/promotions/{id}/copy'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+        $apiParams['code'] = $code;
+
+        if (!is_null($parts)) {
+            $apiParams['parts'] = $parts;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Sets the end of a running, scheduled or paused promotion — now, or at a
+     * later date — and nothing else, so its redemptions stay as they are. Holds
+     * open carts carry keep counting, unless `honour_reservations` is false and
+     * it ends now: then they are given back as expired.
+     *
+     * @param string $id
+     * @param ?string $at
+     * @param ?bool $honourReservations
+     * @param ?When $when
+     * @throws RevenexxException
+     * @return array
+     */
+    public function promotionsPromotionsEnd(string $id, ?string $at = null, ?bool $honourReservations = null, ?When $when = null): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/promotions/promotions/{id}/end'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        if (!is_null($at)) {
+            $apiParams['at'] = $at;
+        }
+
+        if (!is_null($honourReservations)) {
+            $apiParams['honour_reservations'] = $honourReservations;
+        }
+
+        if (!is_null($when)) {
+            $apiParams['when'] = $when;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Running or scheduled promotions whose window overlaps this one, that act on
+     * the same kind of amount (goods or shipping) and share a market — a
+     * promotion in no market is in every one. Each says when and where they meet,
+     * and how they combine by exclusivity and priority.
+     *
+     * @param string $id
+     * @throws RevenexxException
+     * @return array
+     */
+    public function promotionsPromotionsOverlaps(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/promotions/promotions/{id}/overlaps'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Two panels of German sentences for the Cockpit record: `effect` (the
+     * sentence, every effect, the goods, whether it combines) and `runtime`
+     * (state against release, time left, budget used, a forecast of when the
+     * budget runs out at the current pace, and how many carts hold it now).
+     * `usage` carries the discount budget, the redemption ceiling and the runtime
+     * as rows of label and value with the share gone, worded in the caller
+     * language (Accept-Language; German unless English is asked for), the carts
+     * holding it as a `footer` row.
+     *
+     * @param string $id
+     * @throws RevenexxException
+     * @return array
+     */
+    public function promotionsPromotionsOverview(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/promotions/promotions/{id}/overview'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Clears the trash marks on the promotion. Its conditions, effects, bundles,
+     * vouchers and batches were never touched, so they come back with it, and it
+     * applies again exactly as it did before — in the state it was in. The same
+     * right as deleting.
+     *
+     * @param string $id
+     * @throws RevenexxException
+     * @return array
+     */
+    public function promotionsPromotionsRestore(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/promotions/promotions/{id}/restore'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
      * Two facts, never one: the state a merchant set, and what the clock has made
      * of it. A surface showing only the first tells a merchant their finished
      * campaign is still running. Also reports whether any buyer can reach it, and
@@ -2023,6 +2224,37 @@ class PromotionsPromotions extends Service
             ['{id}'],
             [$id],
             '/v1/promotions/promotions/{id}/state'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Redemptions committed per day, and of those the ones later taken back (a
+     * cancellation or a return) on the day they were taken back, in the promotion
+     * time zone (Europe/Berlin when it names none) — from the first such day to
+     * the last with every day between, at most the latest 60 days.
+     *
+     * @param string $id
+     * @throws RevenexxException
+     * @return array
+     */
+    public function promotionsPromotionsTimeline(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/promotions/promotions/{id}/timeline'
         );
 
         $apiParams = [];

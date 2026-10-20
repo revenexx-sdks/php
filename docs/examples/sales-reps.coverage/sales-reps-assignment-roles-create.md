@@ -16,6 +16,7 @@ $salesRepsCoverage = new SalesRepsCoverage($client);
 $result = $salesRepsCoverage->salesRepsAssignmentRolesCreate(
     code: 'field_sales',
     title: 'Field sales',
+    active: true, // optional
     description: 'Visits the customer. The rep who travels to the account.', // optional
     descriptions: [
         'de' => 'Besucht den Kunden.',

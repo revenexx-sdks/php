@@ -72,10 +72,12 @@ class PagesDelivery extends Service
      * @param ?string $slug
      * @param ?string $id
      * @param ?string $langcode
+     * @param ?string $audiences
+     * @param ?string $consents
      * @throws RevenexxException
      * @return array
      */
-    public function pagesDeliveryPage(?string $slug = null, ?string $id = null, ?string $langcode = null): array
+    public function pagesDeliveryPage(?string $slug = null, ?string $id = null, ?string $langcode = null, ?string $audiences = null, ?string $consents = null): array
     {
         $apiPath = str_replace(
             [],
@@ -95,6 +97,14 @@ class PagesDelivery extends Service
 
         if (!is_null($langcode)) {
             $apiParams['langcode'] = $langcode;
+        }
+
+        if (!is_null($audiences)) {
+            $apiParams['audiences'] = $audiences;
+        }
+
+        if (!is_null($consents)) {
+            $apiParams['consents'] = $consents;
         }
 
         $apiHeaders = [];
@@ -144,6 +154,52 @@ class PagesDelivery extends Service
 
         if (!is_null($bundle)) {
             $apiParams['bundle'] = $bundle;
+        }
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * What a storefront asks on every page: the pop-ups switched on, inside their
+     * window and visible to this visitor — `audiences` and `consents` as for a
+     * page; anonymous sees only those naming no audience — with their content
+     * resolved in `langcode`. The storefront applies the trigger and the
+     * frequency and posts impressions and clicks to the campaigns app (`POST
+     * /v1/campaigns/touches`).
+     *
+     * @param ?string $langcode
+     * @param ?string $audiences
+     * @param ?string $consents
+     * @throws RevenexxException
+     * @return array
+     */
+    public function pagesDeliveryPopups(?string $langcode = null, ?string $audiences = null, ?string $consents = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/pages/delivery/popups'
+        );
+
+        $apiParams = [];
+
+        if (!is_null($langcode)) {
+            $apiParams['langcode'] = $langcode;
+        }
+
+        if (!is_null($audiences)) {
+            $apiParams['audiences'] = $audiences;
+        }
+
+        if (!is_null($consents)) {
+            $apiParams['consents'] = $consents;
         }
 
         $apiHeaders = [];

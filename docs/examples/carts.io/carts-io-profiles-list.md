@@ -24,6 +24,7 @@ $result = $cartsIo->cartsIoProfilesList(
     format: CartIoFormat::JSON(), // optional
     applyMode: CartIoApplyMode::INSERT(), // optional
     isTemplate: true, // optional
+    active: true, // optional
     createdAt: '2026-01-01T12:00:00Z', // optional
     updatedAt: '2026-01-01T12:00:00Z', // optional
     limit: 1, // optional

@@ -8,6 +8,7 @@ class CartExportFormat implements JsonSerializable
 {
     private static CartExportFormat $JSON;
     private static CartExportFormat $CSV;
+    private static CartExportFormat $XLSX;
 
     private string $value;
 
@@ -39,5 +40,12 @@ class CartExportFormat implements JsonSerializable
             self::$CSV = new CartExportFormat('csv');
         }
         return self::$CSV;
+    }
+    public static function XLSX(): CartExportFormat
+    {
+        if (!isset(self::$XLSX)) {
+            self::$XLSX = new CartExportFormat('xlsx');
+        }
+        return self::$XLSX;
     }
 }

@@ -14,5 +14,6 @@ $channels = new Channels($client);
 
 $result = $channels->channelsTypesList(
     limit: 1, // optional
-    offset: 1 // optional
+    offset: 1, // optional
+    active: true // optional
 );```

@@ -8,7 +8,7 @@ use Revenexx\Service;
 use Revenexx\InputFile;
 use Revenexx\Enums\ResourceType;
 use Revenexx\Enums\Scope;
-use Revenexx\Enums\Reason;
+use Revenexx\Enums\SuppressionIndexReason;
 use Revenexx\Enums\MessageClass;
 use Revenexx\Enums\WhatsappCategory;
 
@@ -1387,13 +1387,13 @@ class Messaging extends Service
      *
      * @param ?string $channel
      * @param ?Scope $scope
-     * @param ?Reason $reason
+     * @param ?SuppressionIndexReason $reason
      * @param ?string $address
      * @param ?int $limit
      * @throws RevenexxException
      * @return array
      */
-    public function suppressionIndex(?string $channel = null, ?Scope $scope = null, ?Reason $reason = null, ?string $address = null, ?int $limit = null): array
+    public function suppressionIndex(?string $channel = null, ?Scope $scope = null, ?SuppressionIndexReason $reason = null, ?string $address = null, ?int $limit = null): array
     {
         $apiPath = str_replace(
             [],
@@ -1446,14 +1446,14 @@ class Messaging extends Service
      *
      * @param string $address
      * @param string $channel
-     * @param Reason $reason
+     * @param SuppressionIndexReason $reason
      * @param ?string $expiresAt
      * @param ?string $note
      * @param ?Scope $scope
      * @throws RevenexxException
      * @return array
      */
-    public function suppressionStore(string $address, string $channel, Reason $reason, ?string $expiresAt = null, ?string $note = null, ?Scope $scope = null): array
+    public function suppressionStore(string $address, string $channel, SuppressionIndexReason $reason, ?string $expiresAt = null, ?string $note = null, ?Scope $scope = null): array
     {
         $apiPath = str_replace(
             [],

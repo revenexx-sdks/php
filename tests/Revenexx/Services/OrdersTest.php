@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\OrderStatus;
 use Revenexx\Enums\OrderPaymentStatus;
 use Revenexx\Enums\OrderFulfillmentStatus;
+use Revenexx\Enums\OrderCancellationKind;
 use Revenexx\Enums\OrderVocabularyTone;
 use Revenexx\Enums\OrdersVocabulariesGetName;
 use Revenexx\Enums\OrderCommentVisibility;
@@ -198,6 +199,21 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodOrdersShipmentsMarkDelivered(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->orders->ordersShipmentsMarkDelivered(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodOrdersVocabulariesList(): void {
 
         $data = array();
@@ -221,7 +237,7 @@ final class OrdersTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->orders->ordersVocabulariesGet(
-            OrdersVocabulariesGetName::CANCELLATIONSCOPES()
+            OrdersVocabulariesGetName::CANCELLATIONKINDS()
         );
 
         $this->assertSame($data, $response);
@@ -266,6 +282,21 @@ final class OrdersTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->orders->ordersAcknowledge(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodOrdersApprove(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->orders->ordersApprove(
             ""
         );
 
@@ -395,6 +426,22 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodOrdersReject(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->orders->ordersReject(
+            "",
+            "Over the quarterly budget for this cost centre"
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodOrdersReturn(): void {
 
         $data = array();
@@ -404,6 +451,21 @@ final class OrdersTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->orders->ordersReturn(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodOrdersReturnable(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->orders->ordersReturnable(
             ""
         );
 

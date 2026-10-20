@@ -19,6 +19,7 @@ $cartsIo = new CartsIo($client);
 $result = $cartsIo->cartsIoProfilesCreate(
     direction: CartIoDirection::IMPORT(),
     name: 'cart-export-csv',
+    active: true, // optional
     applyMode: CartIoApplyMode::INSERT(), // optional
     entity: CartIoEntity::CARTS(), // optional
     format: CartIoFormat::JSON(), // optional

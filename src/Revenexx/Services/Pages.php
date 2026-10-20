@@ -796,6 +796,156 @@ class Pages extends Service
     }
 
     /**
+     * The library items of the bundle `popup` — the Cockpit list, and the read
+     * the campaigns calendar makes for one campaign (`?campaign_ref=`). Never a
+     * soft-deleted one.
+     *
+     * @param ?int $limit
+     * @param ?int $offset
+     * @param ?string $order
+     * @param ?string $campaignRef
+     * @throws RevenexxException
+     * @return array
+     */
+    public function pagesPopupsList(?int $limit = null, ?int $offset = null, ?string $order = null, ?string $campaignRef = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/pages/popups'
+        );
+
+        $apiParams = [];
+
+        if (!is_null($limit)) {
+            $apiParams['limit'] = $limit;
+        }
+
+        if (!is_null($offset)) {
+            $apiParams['offset'] = $offset;
+        }
+
+        if (!is_null($order)) {
+            $apiParams['order'] = $order;
+        }
+
+        if (!is_null($campaignRef)) {
+            $apiParams['campaign_ref'] = $campaignRef;
+        }
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * A pop-up is a library item of the bundle `popup`: `tree` is its content
+     * (edited like any library item), `popup` how it appears, `campaign_ref` the
+     * campaign it counts for. The settings are checked here; the storefront reads
+     * the live ones from `GET /pages/delivery/popups`.
+     *
+     * @param string $label
+     * @param ?string $campaignRef
+     * @param ?array $metadata
+     * @param ?array $popup
+     * @param ?array $tree
+     * @throws RevenexxException
+     * @return array
+     */
+    public function pagesPopupsCreate(string $label, ?string $campaignRef = null, ?array $metadata = null, ?array $popup = null, ?array $tree = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/pages/popups'
+        );
+
+        $apiParams = [];
+        $apiParams['label'] = $label;
+        $apiParams['campaign_ref'] = $campaignRef;
+
+        if (!is_null($metadata)) {
+            $apiParams['metadata'] = $metadata;
+        }
+
+        if (!is_null($popup)) {
+            $apiParams['popup'] = $popup;
+        }
+
+        if (!is_null($tree)) {
+            $apiParams['tree'] = $tree;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Partial update. `popup` is merged over what is stored and then checked
+     * whole, so a caller may send only what it changes; `campaign_ref: null`
+     * releases it from its campaign.
+     *
+     * @param string $id
+     * @param ?string $campaignRef
+     * @param ?string $label
+     * @param ?array $metadata
+     * @param ?array $popup
+     * @param ?array $tree
+     * @throws RevenexxException
+     * @return array
+     */
+    public function pagesPopupsUpdate(string $id, ?string $campaignRef = null, ?string $label = null, ?array $metadata = null, ?array $popup = null, ?array $tree = null): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/pages/popups/{id}'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+        $apiParams['campaign_ref'] = $campaignRef;
+
+        if (!is_null($label)) {
+            $apiParams['label'] = $label;
+        }
+
+        if (!is_null($metadata)) {
+            $apiParams['metadata'] = $metadata;
+        }
+
+        if (!is_null($popup)) {
+            $apiParams['popup'] = $popup;
+        }
+
+        if (!is_null($tree)) {
+            $apiParams['tree'] = $tree;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_PUT,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
      * The target of a theme install: hand it the theme's default pages, menus,
      * library items and site settings. In `fill` mode — the default — it
      * creates whatever is missing and leaves everything else alone: idempotent by

@@ -6,6 +6,7 @@ use Revenexx\Client;
 use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
+use Revenexx\Enums\Variant;
 
 final class PaymentsProvidersTest extends TestCase {
     private $client;
@@ -113,6 +114,21 @@ final class PaymentsProvidersTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->paymentsProviders->paymentsProvidersUpdate(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodPaymentsProvidersCheck(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->paymentsProviders->paymentsProvidersCheck(
             ""
         );
 

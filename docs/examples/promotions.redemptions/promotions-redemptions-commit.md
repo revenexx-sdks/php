@@ -18,7 +18,9 @@ $result = $promotionsRedemptions->promotionsRedemptionsCommit(
     contactId: '', // optional
     currency: '', // optional
     market: '', // optional
+    orderNumber: '', // optional
     organizationId: '', // optional
     promotions: [], // optional
+    redeemedBy: '', // optional
     terms: [] // optional
 );```

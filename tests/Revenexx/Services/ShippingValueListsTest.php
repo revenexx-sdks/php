@@ -214,6 +214,22 @@ final class ShippingValueListsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodShippingWeightUnitsMakeBase(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->shippingValueLists->shippingWeightUnitsMakeBase(
+            "",
+            array()
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodShippingWeightUnitsMakeDefault(): void {
 
         $data = array();

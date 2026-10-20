@@ -3,6 +3,7 @@
 
 use Revenexx\Client;
 use Revenexx\Services\PaymentsProviders;
+use Revenexx\Enums\Variant;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -13,5 +14,6 @@ $client = (new Client())
 $paymentsProviders = new PaymentsProviders($client);
 
 $result = $paymentsProviders->paymentsLogosGet(
-    slug: 'stripe'
+    slug: 'stripe',
+    variant: Variant::LOGO() // optional
 );```

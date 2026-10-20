@@ -3,7 +3,7 @@
 
 use Revenexx\Client;
 use Revenexx\Services\Messaging;
-use Revenexx\Enums\Reason;
+use Revenexx\Enums\SuppressionIndexReason;
 use Revenexx\Enums\Scope;
 
 $client = (new Client())
@@ -17,7 +17,7 @@ $messaging = new Messaging($client);
 $result = $messaging->suppressionStore(
     address: '',
     channel: '',
-    reason: Reason::HARDBOUNCE(),
+    reason: SuppressionIndexReason::HARDBOUNCE(),
     expiresAt: '2026-01-01T12:00:00Z', // optional
     note: '', // optional
     scope: Scope::ALL() // optional

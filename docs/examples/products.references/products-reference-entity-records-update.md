@@ -14,13 +14,14 @@ $productsReferences = new ProductsReferences($client);
 
 $result = $productsReferences->productsReferenceEntityRecordsUpdate(
     id: '',
+    active: true, // optional
     attributeValues: [
         'common' => [
             'country' => 'DE',
             'founded' => 1946
         ],
         'locale_specific' => [
-            'de_DE' => [
+            'de' => [
                 'description' => 'Werkzeughersteller aus Süddeutschland.'
             ]
         ]

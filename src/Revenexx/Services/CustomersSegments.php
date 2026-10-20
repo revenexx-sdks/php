@@ -9,6 +9,8 @@ use Revenexx\InputFile;
 use Revenexx\Enums\Source;
 use Revenexx\Enums\SegmentMemberSource;
 use Revenexx\Enums\RuleMatch;
+use Revenexx\Enums\MemberType;
+use Revenexx\Enums\Trashed;
 use Revenexx\Enums\SegmentRuleMatch;
 use Revenexx\Enums\Target;
 
@@ -31,6 +33,7 @@ class CustomersSegments extends Service
      * @param ?string $id
      * @param ?string $segmentId
      * @param ?string $organizationId
+     * @param ?string $contactId
      * @param ?Source $source
      * @param ?string $createdAt
      * @param ?int $limit
@@ -39,7 +42,7 @@ class CustomersSegments extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function customersSegmentMembersList(?string $id = null, ?string $segmentId = null, ?string $organizationId = null, ?Source $source = null, ?string $createdAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function customersSegmentMembersList(?string $id = null, ?string $segmentId = null, ?string $organizationId = null, ?string $contactId = null, ?Source $source = null, ?string $createdAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             [],
@@ -59,6 +62,10 @@ class CustomersSegments extends Service
 
         if (!is_null($organizationId)) {
             $apiParams['organization_id'] = $organizationId;
+        }
+
+        if (!is_null($contactId)) {
+            $apiParams['contact_id'] = $contactId;
         }
 
         if (!is_null($source)) {
@@ -100,7 +107,9 @@ class CustomersSegments extends Service
      * a rule recompute rewrites the rule-derived rows of that segment and never
      * touches this one. A create cannot omit `segment_id` and `organization_id`;
      * everything else is optional or defaulted by the database. Two rows of this
-     * tenant may not share the combination of `segment_id` + `organization_id`.
+     * tenant may not share the combination of `segment_id` + `organization_id`
+     * (while contact_id IS NULL) or the combination of `segment_id` +
+     * `contact_id` (while contact_id IS NOT NULL).
      *
      * @param string $organizationId
      * @param string $segmentId
@@ -215,7 +224,8 @@ class CustomersSegments extends Service
      * practice there is little to change — a membership is a pair of ids — so
      * this exists for the `source` correction rather than as the normal path. Two
      * rows of this tenant may not share the combination of `segment_id` +
-     * `organization_id`.
+     * `organization_id` (while contact_id IS NULL) or the combination of
+     * `segment_id` + `contact_id` (while contact_id IS NOT NULL).
      *
      * @param string $id
      * @param ?string $organizationId
@@ -270,19 +280,28 @@ class CustomersSegments extends Service
      * @param ?string $id
      * @param ?string $code
      * @param ?int $position
+     * @param ?bool $active
      * @param ?RuleMatch $ruleMatch
+     * @param ?MemberType $memberType
      * @param ?string $rulesComputedAt
      * @param ?string $externalId
      * @param ?string $sourceSyncedAt
+     * @param ?string $deletedAt
+     * @param ?string $deletedBy
+     * @param ?string $deletedById
+     * @param ?string $trashBatch
+     * @param ?string $purgeAt
+     * @param ?string $purgeBlockedReason
      * @param ?string $createdAt
      * @param ?string $updatedAt
+     * @param ?Trashed $trashed
      * @param ?int $limit
      * @param ?int $offset
      * @param ?string $order
      * @throws RevenexxException
      * @return array
      */
-    public function customersSegmentsList(?string $id = null, ?string $code = null, ?int $position = null, ?RuleMatch $ruleMatch = null, ?string $rulesComputedAt = null, ?string $externalId = null, ?string $sourceSyncedAt = null, ?string $createdAt = null, ?string $updatedAt = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    public function customersSegmentsList(?string $id = null, ?string $code = null, ?int $position = null, ?bool $active = null, ?RuleMatch $ruleMatch = null, ?MemberType $memberType = null, ?string $rulesComputedAt = null, ?string $externalId = null, ?string $sourceSyncedAt = null, ?string $deletedAt = null, ?string $deletedBy = null, ?string $deletedById = null, ?string $trashBatch = null, ?string $purgeAt = null, ?string $purgeBlockedReason = null, ?string $createdAt = null, ?string $updatedAt = null, ?Trashed $trashed = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
     {
         $apiPath = str_replace(
             [],
@@ -304,8 +323,16 @@ class CustomersSegments extends Service
             $apiParams['position'] = $position;
         }
 
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
+
         if (!is_null($ruleMatch)) {
             $apiParams['rule_match'] = $ruleMatch;
+        }
+
+        if (!is_null($memberType)) {
+            $apiParams['member_type'] = $memberType;
         }
 
         if (!is_null($rulesComputedAt)) {
@@ -320,12 +347,40 @@ class CustomersSegments extends Service
             $apiParams['source_synced_at'] = $sourceSyncedAt;
         }
 
+        if (!is_null($deletedAt)) {
+            $apiParams['deleted_at'] = $deletedAt;
+        }
+
+        if (!is_null($deletedBy)) {
+            $apiParams['deleted_by'] = $deletedBy;
+        }
+
+        if (!is_null($deletedById)) {
+            $apiParams['deleted_by_id'] = $deletedById;
+        }
+
+        if (!is_null($trashBatch)) {
+            $apiParams['trash_batch'] = $trashBatch;
+        }
+
+        if (!is_null($purgeAt)) {
+            $apiParams['purge_at'] = $purgeAt;
+        }
+
+        if (!is_null($purgeBlockedReason)) {
+            $apiParams['purge_blocked_reason'] = $purgeBlockedReason;
+        }
+
         if (!is_null($createdAt)) {
             $apiParams['created_at'] = $createdAt;
         }
 
         if (!is_null($updatedAt)) {
             $apiParams['updated_at'] = $updatedAt;
+        }
+
+        if (!is_null($trashed)) {
+            $apiParams['trashed'] = $trashed;
         }
 
         if (!is_null($limit)) {
@@ -361,7 +416,8 @@ class CustomersSegments extends Service
      * else is optional or defaulted by the database. Two rows of this tenant may
      * not share `code` or `external_id` (while external_id IS NOT NULL).
      *
-     * @param string $code
+     * @param ?bool $active
+     * @param ?string $code
      * @param ?string $createdAt
      * @param ?array $labels
      * @param ?int $position
@@ -370,7 +426,7 @@ class CustomersSegments extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function customersSegmentsCreate(string $code, ?string $createdAt = null, ?array $labels = null, ?int $position = null, ?SegmentRuleMatch $ruleMatch = null, ?array $rules = null): array
+    public function customersSegmentsCreate(?bool $active = null, ?string $code = null, ?string $createdAt = null, ?array $labels = null, ?int $position = null, ?SegmentRuleMatch $ruleMatch = null, ?array $rules = null): array
     {
         $apiPath = str_replace(
             [],
@@ -379,7 +435,14 @@ class CustomersSegments extends Service
         );
 
         $apiParams = [];
-        $apiParams['code'] = $code;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
+
+        if (!is_null($code)) {
+            $apiParams['code'] = $code;
+        }
 
         if (!is_null($createdAt)) {
             $apiParams['created_at'] = $createdAt;
@@ -441,14 +504,49 @@ class CustomersSegments extends Service
     }
 
     /**
+     * Deletes every segment in the trash for good, oldest first and at most fifty
+     * per call, each checked on its own exactly like a second DELETE. A segment
+     * an active price list or promotion still names stays in the trash and is
+     * listed with the reason; the rest go. POST again while `more` is true. An
+     * administrator's right, never a buyer's.
+     *
+     * @throws RevenexxException
+     * @return array
+     */
+    public function customersSegmentsTrashEmpty(): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/customers/segments/trash/empty'
+        );
+
+        $apiParams = [];
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
      * A segment is a named group of ORGANIZATIONS — never of people — built
      * by hand, by rule, or both at once. It is what a price list, a campaign or a
      * shipping option is pointed at when the answer is "these customers, not
-     * those". Removes the segment. Anything in another app that points at its
-     * `code` — a price list, a campaign — is left pointing at nothing,
-     * because no app may hold a foreign key into another (ADR-0055). Deleting one
-     * takes every `segment_members` row that points at it with it — the foreign
-     * keys decide, not this route.
+     * those". The first DELETE moves the segment to the trash. Nothing is refused
+     * there: its memberships stay but stop applying, its rules are no longer
+     * recomputed, its market assignment stays, and its `code` stays reserved, so
+     * a restore loses nothing. The answer warns, with counts, about the members,
+     * and about the price lists and promotions that name the code. A second
+     * DELETE on a segment already in the trash deletes it for good, with its
+     * memberships — refused while an ACTIVE price list or an ACTIVE promotion
+     * still names its code. An app that does not answer blocks too; an app the
+     * tenant has not installed blocks nothing. The daily purge runs the same
+     * delete once the tenant's trash retention has run out.
      *
      * @param string $id
      * @throws RevenexxException
@@ -518,6 +616,7 @@ class CustomersSegments extends Service
      * share `code` or `external_id` (while external_id IS NOT NULL).
      *
      * @param string $id
+     * @param ?bool $active
      * @param ?string $code
      * @param ?array $labels
      * @param ?int $position
@@ -526,7 +625,7 @@ class CustomersSegments extends Service
      * @throws RevenexxException
      * @return array
      */
-    public function customersSegmentsUpdate(string $id, ?string $code = null, ?array $labels = null, ?int $position = null, ?SegmentRuleMatch $ruleMatch = null, ?array $rules = null): array
+    public function customersSegmentsUpdate(string $id, ?bool $active = null, ?string $code = null, ?array $labels = null, ?int $position = null, ?SegmentRuleMatch $ruleMatch = null, ?array $rules = null): array
     {
         $apiPath = str_replace(
             ['{id}'],
@@ -536,6 +635,10 @@ class CustomersSegments extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        if (!is_null($active)) {
+            $apiParams['active'] = $active;
+        }
 
         if (!is_null($code)) {
             $apiParams['code'] = $code;
@@ -556,6 +659,37 @@ class CustomersSegments extends Service
 
         return $this->client->call(
             Client::METHOD_PUT,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Brings a segment back from the trash. Its memberships, its market
+     * assignment and every price list or promotion naming its code apply again as
+     * they did, because nothing was changed when it went. Needs the same right as
+     * the delete.
+     *
+     * @param string $id
+     * @throws RevenexxException
+     * @return array
+     */
+    public function customersSegmentsRestore(string $id): array
+    {
+        $apiPath = str_replace(
+            ['{id}'],
+            [$id],
+            '/v1/customers/segments/{id}/restore'
+        );
+
+        $apiParams = [];
+        $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_POST,
             $apiPath,
             $apiHeaders,
             $apiParams
