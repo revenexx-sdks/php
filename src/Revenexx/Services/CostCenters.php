@@ -675,6 +675,7 @@ class CostCenters extends Service
     /**
      * @param string $code
      * @param string $name
+     * @param string $organizationId
      * @param ?string $accountableContactId
      * @param ?bool $active
      * @param ?BudgetType $budgetType
@@ -682,13 +683,12 @@ class CostCenters extends Service
      * @param ?string $externalId
      * @param ?array $externalRefs
      * @param ?array $metadata
-     * @param ?string $organizationId
      * @param ?array $sourceData
      * @param ?string $sourceSyncedAt
      * @throws RevenexxException
      * @return array
      */
-    public function costCentersCostCentersCreate(string $code, string $name, ?string $accountableContactId = null, ?bool $active = null, ?BudgetType $budgetType = null, ?string $currency = null, ?string $externalId = null, ?array $externalRefs = null, ?array $metadata = null, ?string $organizationId = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
+    public function costCentersCostCentersCreate(string $code, string $name, string $organizationId, ?string $accountableContactId = null, ?bool $active = null, ?BudgetType $budgetType = null, ?string $currency = null, ?string $externalId = null, ?array $externalRefs = null, ?array $metadata = null, ?array $sourceData = null, ?string $sourceSyncedAt = null): array
     {
         $apiPath = str_replace(
             [],
@@ -699,6 +699,7 @@ class CostCenters extends Service
         $apiParams = [];
         $apiParams['code'] = $code;
         $apiParams['name'] = $name;
+        $apiParams['organization_id'] = $organizationId;
         $apiParams['accountable_contact_id'] = $accountableContactId;
 
         if (!is_null($active)) {
@@ -715,7 +716,6 @@ class CostCenters extends Service
         $apiParams['external_id'] = $externalId;
         $apiParams['external_refs'] = $externalRefs;
         $apiParams['metadata'] = $metadata;
-        $apiParams['organization_id'] = $organizationId;
         $apiParams['source_data'] = $sourceData;
         $apiParams['source_synced_at'] = $sourceSyncedAt;
 
@@ -833,7 +833,10 @@ class CostCenters extends Service
         if (!is_null($name)) {
             $apiParams['name'] = $name;
         }
-        $apiParams['organization_id'] = $organizationId;
+
+        if (!is_null($organizationId)) {
+            $apiParams['organization_id'] = $organizationId;
+        }
         $apiParams['source_data'] = $sourceData;
         $apiParams['source_synced_at'] = $sourceSyncedAt;
 
@@ -1247,14 +1250,14 @@ class CostCenters extends Service
 
     /**
      * @param array $lines
+     * @param string $organizationId
      * @param ?string $contactId
-     * @param ?string $organizationId
      * @param ?string $punchoutAccountCode
      * @param ?array $roles
      * @throws RevenexxException
      * @return array
      */
-    public function costCentersUsable(array $lines, ?string $contactId = null, ?string $organizationId = null, ?string $punchoutAccountCode = null, ?array $roles = null): array
+    public function costCentersUsable(array $lines, string $organizationId, ?string $contactId = null, ?string $punchoutAccountCode = null, ?array $roles = null): array
     {
         $apiPath = str_replace(
             [],
@@ -1264,8 +1267,8 @@ class CostCenters extends Service
 
         $apiParams = [];
         $apiParams['lines'] = $lines;
-        $apiParams['contact_id'] = $contactId;
         $apiParams['organization_id'] = $organizationId;
+        $apiParams['contact_id'] = $contactId;
         $apiParams['punchout_account_code'] = $punchoutAccountCode;
 
         if (!is_null($roles)) {

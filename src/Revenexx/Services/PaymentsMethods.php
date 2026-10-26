@@ -446,4 +446,45 @@ class PaymentsMethods extends Service
             $apiParams
         );
     }
+
+    /**
+     * markets.tax_classes is the source of record for the rate and this app
+     * points at it by CODE from two places: a method's own tax_class and the
+     * market's payment_fee_tax_class fallback. Neither is a foreign key and
+     * neither could be — a cross-app FK is what ADR-0055 forbids — so
+     * integrity is a question one app asks the other, and this is the answering
+     * half: markets calls it when an operator tries to delete a tax class, and a
+     * count above zero is what stops the delete. A tax class is unique per
+     * market, so 'reduced' may exist in several: the caller names the class's
+     * market in `x-revenexx-market`, and only the methods visible in that market
+     * count — the ones assigned to it plus the unassigned ones, which are
+     * offered in every market and so are taxed through its class too. Without the
+     * header every method of the tenant counts. Reports at most 500 methods and
+     * names the first 20. Every code answers, used or not — a code nobody
+     * points at is `in_use: false`, never a 404.
+     *
+     * @param string $code
+     * @throws RevenexxException
+     * @return array
+     */
+    public function paymentsTaxClassesUsage(string $code): array
+    {
+        $apiPath = str_replace(
+            ['{code}'],
+            [$code],
+            '/v1/payments/tax-classes/{code}/usage'
+        );
+
+        $apiParams = [];
+        $apiParams['code'] = $code;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
 }

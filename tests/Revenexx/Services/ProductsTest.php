@@ -184,6 +184,21 @@ final class ProductsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodProductsTaxClassesUsage(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->products->productsTaxClassesUsage(
+            "reduced"
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodProductsEmptyTrash(): void {
 
         $data = array();
@@ -283,7 +298,7 @@ final class ProductsTest extends TestCase {
         $response = $this->products->productsAttributeSet(
             "",
             "material",
-            Edelstahl
+            null
         );
 
         $this->assertSame($data, $response);

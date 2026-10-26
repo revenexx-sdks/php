@@ -42,7 +42,7 @@ final class LoyaltyTiersTest extends TestCase {
 
         $response = $this->loyaltyTiers->loyaltyTiersCreate(
             "",
-            ,
+            null,
             ""
         );
 

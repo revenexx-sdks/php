@@ -24,12 +24,11 @@ class PaymentsProviders extends Service
      * in this app that needs no tenant identity: the logos are bundled with the
      * app rather than owned by anyone, so nothing here is tenant data and no key
      * or tenant header is required to fetch one — which is what lets a
-     * storefront or a Cockpit screen point an <img> straight at it. Called
-     * directly on the app domain
-     * (https://revenexx-payments.apps.revenexx.io/payments/logos/stripe) the
-     * response carries its real content-type; through the gateway the body is
-     * passed through but labelled application/json, so use the app domain for
-     * <img> sources.
+     * storefront or a Cockpit screen point an <img> straight at it:
+     * https://api.revenexx.com/v1/payments/logos/stripe. Declared
+     * unauthenticated, so the gateway serves it with no header at all and passes
+     * the content-type, the cache headers and the redirect through. The app
+     * domain itself does not answer the internet.
      *
      * @param string $slug
      * @param ?Variant $variant

@@ -283,6 +283,7 @@ final class CostCentersTest extends TestCase {
 
         $response = $this->costCenters->costCentersCostCentersCreate(
             "",
+            "",
             ""
         );
 
@@ -512,7 +513,8 @@ final class CostCentersTest extends TestCase {
             ->andReturn($data);
 
         $response = $this->costCenters->costCentersUsable(
-            array()
+            array(),
+            ""
         );
 
         $this->assertSame($data, $response);

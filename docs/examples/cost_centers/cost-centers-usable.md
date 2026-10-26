@@ -14,8 +14,8 @@ $costCenters = new CostCenters($client);
 
 $result = $costCenters->costCentersUsable(
     lines: [],
+    organizationId: '',
     contactId: '', // optional
-    organizationId: '', // optional
     punchoutAccountCode: '', // optional
     roles: [] // optional
 );```

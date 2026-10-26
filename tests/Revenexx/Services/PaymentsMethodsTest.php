@@ -121,4 +121,19 @@ final class PaymentsMethodsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodPaymentsTaxClassesUsage(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->paymentsMethods->paymentsTaxClassesUsage(
+            "reduced"
+        );
+
+        $this->assertSame($data, $response);
+    }
+
 }

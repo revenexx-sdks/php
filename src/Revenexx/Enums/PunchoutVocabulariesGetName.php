@@ -19,6 +19,7 @@ class PunchoutVocabulariesGetName implements JsonSerializable
     private static PunchoutVocabulariesGetName $PROTOCOLVERSIONS;
     private static PunchoutVocabulariesGetName $PROTOCOLS;
     private static PunchoutVocabulariesGetName $PURCHASEMODES;
+    private static PunchoutVocabulariesGetName $REFUSALDETAILS;
     private static PunchoutVocabulariesGetName $REFUSALREASONS;
     private static PunchoutVocabulariesGetName $RETURNMETHODS;
     private static PunchoutVocabulariesGetName $SESSIONSTATUSES;
@@ -131,6 +132,13 @@ class PunchoutVocabulariesGetName implements JsonSerializable
             self::$PURCHASEMODES = new PunchoutVocabulariesGetName('purchase-modes');
         }
         return self::$PURCHASEMODES;
+    }
+    public static function REFUSALDETAILS(): PunchoutVocabulariesGetName
+    {
+        if (!isset(self::$REFUSALDETAILS)) {
+            self::$REFUSALDETAILS = new PunchoutVocabulariesGetName('refusal-details');
+        }
+        return self::$REFUSALDETAILS;
     }
     public static function REFUSALREASONS(): PunchoutVocabulariesGetName
     {

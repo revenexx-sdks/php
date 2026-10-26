@@ -532,20 +532,20 @@ class Punchout extends Service
     }
 
     /**
-     * IDS entry on one shared endpoint: the account is resolved from
-     * kndnr/name_kunde/pw_kunde in the body, because that is how IDS clients are
-     * configured. POST-only with multipart/form-data — the standard rules GET
-     * out because a cart does not fit in a query string (§5.1a) — and
-     * parameter names are lower-case single words. WKE (shop), ADL (one article),
-     * AS (a search) and WKS (a cart sent in, which always becomes a NEW cart)
-     * authenticate; LI and SV are answered BEFORE authentication, because the
-     * standard sends only the action code with them and they are what makes setup
-     * self-service. HLS, the heating-label list, is refused as not implemented
-     * rather than falling through to "come in and shop". Reached from the
-     * tenant's storefront host, never from this app's own URL and never as a
-     * public gateway route — see adr/ADR-0002. The storefront pass-through
-     * forwards the ERP's request as the envelope above and returns this answer
-     * unchanged.
+     * IDS entry on one shared endpoint: the account is resolved from name_kunde
+     * in the body and authenticated with pw_kunde, plus kndnr where the tenant
+     * requires it or the call sends it — what LI answers is what is enforced.
+     * POST-only with multipart/form-data — the standard rules GET out because a
+     * cart does not fit in a query string (§5.1a) — and parameter names are
+     * lower-case single words. WKE (shop), ADL (one article), AS (a search) and
+     * WKS (a cart sent in, which always becomes a NEW cart) authenticate; LI and
+     * SV are answered BEFORE authentication, because the standard sends only the
+     * action code with them and they are what makes setup self-service. HLS, the
+     * heating-label list, is refused as not implemented rather than falling
+     * through to "come in and shop". Reached from the tenant's storefront host,
+     * never from this app's own URL and never as a public gateway route — see
+     * adr/ADR-0002. The storefront pass-through forwards the ERP's request as the
+     * envelope above and returns this answer unchanged.
      *
      * @param string $method
      * @param ?string $bodyB64
@@ -2031,9 +2031,9 @@ class Punchout extends Service
      * sets it renders. Names: auth-strategies, entry-actions,
      * entry-probe-outcome, mapping-documents, mapping-emit, mapping-mutators,
      * mapping-scopes, mapping-sources, mapping-target-kinds, origins,
-     * protocol-versions, protocols, purchase-modes, refusal-reasons,
-     * return-methods, session-statuses, unknown-user-policies. Fetch one with GET
-     * /punchout/vocabularies/{name}.
+     * protocol-versions, protocols, purchase-modes, refusal-details,
+     * refusal-reasons, return-methods, session-statuses, unknown-user-policies.
+     * Fetch one with GET /punchout/vocabularies/{name}.
      *
      * @throws RevenexxException
      * @return array

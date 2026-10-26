@@ -819,11 +819,14 @@ class ShippingMethods extends Service
      * question one app asks the other, and this is the answering half. It is
      * asked before a destructive edit: markets calls it when an operator tries to
      * delete a tax class, and a count above zero is what stops the delete rather
-     * than leaving these methods pointing at a code nobody serves. Matched as a
-     * CODE, not a row: a tax class is unique per market, so 'reduced' may exist
-     * in several and a method naming it does not say which one it meant. Reports
-     * at most 500 methods and names the first 20. Every code answers, used or not
-     * — a code nobody points at is `in_use: false`, never a 404.
+     * than leaving these methods pointing at a code nobody serves. A tax class is
+     * unique per market, so 'reduced' may exist in several: the caller names the
+     * class's market in `x-revenexx-market`, and only the methods visible in that
+     * market count — the ones assigned to it plus the unassigned ones, which
+     * are offered in every market and so price through its class too. Without the
+     * header every method of the tenant counts. Reports at most 500 methods and
+     * names the first 20. Every code answers, used or not — a code nobody
+     * points at is `in_use: false`, never a 404.
      *
      * @param string $code
      * @throws RevenexxException

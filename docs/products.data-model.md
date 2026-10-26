@@ -623,6 +623,19 @@ A body that names nothing writable is refused with 400 rather than answered as a
 
 
 ```http request
+POST https://api.revenexx.com/v1/products/defaults
+```
+
+** Creates the smallest catalog model a tenant can work with, for a tenant that has none: the product attributes `name` (text, localizable), `description` (textarea, localizable) and `images` (asset_collection), and the family `standard` („Standard“) carrying the three, with `name` as its label attribute and required, and `images` as its image attribute. It writes only into a tenant without any attribute or family — the rows an earlier run of this call wrote excepted, so a run that stopped half-way is finished by the next. A tenant with one attribute or family of its own is answered `seeded: false` with `reason: not_empty` and nothing is written. Idempotent: a second run writes nothing. The model is founded without a market. The install announcement runs the same seeding, but it is not reliably delivered, so support can call this for an existing empty tenant. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| data | object | Request body |  |
+
+
+```http request
 GET https://api.revenexx.com/v1/products/families
 ```
 

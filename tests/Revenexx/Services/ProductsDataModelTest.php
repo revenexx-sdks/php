@@ -404,6 +404,21 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
+    public function testMethodProductsDefaultsRun(): void {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->productsDataModel->productsDefaultsRun(
+            array()
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodProductsFamiliesList(): void {
 
         $data = array();

@@ -45,7 +45,7 @@ final class LoyaltyProgramsTest extends TestCase {
         $response = $this->loyaltyPrograms->loyaltyProgramsCreate(
             "",
             LoyaltyProgramsCreateKind::POINTS(),
-            
+            null
         );
 
         $this->assertSame($data, $response);

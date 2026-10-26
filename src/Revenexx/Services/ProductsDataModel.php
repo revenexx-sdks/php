@@ -1835,6 +1835,46 @@ class ProductsDataModel extends Service
     }
 
     /**
+     * Creates the smallest catalog model a tenant can work with, for a tenant
+     * that has none: the product attributes `name` (text, localizable),
+     * `description` (textarea, localizable) and `images` (asset_collection), and
+     * the family `standard` („Standard“) carrying the three, with `name` as
+     * its label attribute and required, and `images` as its image attribute. It
+     * writes only into a tenant without any attribute or family — the rows an
+     * earlier run of this call wrote excepted, so a run that stopped half-way is
+     * finished by the next. A tenant with one attribute or family of its own is
+     * answered `seeded: false` with `reason: not_empty` and nothing is written.
+     * Idempotent: a second run writes nothing. The model is founded without a
+     * market. The install announcement runs the same seeding, but it is not
+     * reliably delivered, so support can call this for an existing empty tenant.
+     *
+     * @param array $data
+     * @throws RevenexxException
+     * @return array
+     */
+    public function productsDefaultsRun(array $data): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/products/defaults'
+        );
+
+        $apiParams = [];
+        $apiParams = \array_merge($apiParams, $data);
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
      * A family decides WHICH attributes a product has — the set is
      * `family_attributes`, and every family-driven surface follows from it. It
      * also names which attribute carries the display name (`label_attribute`) and

@@ -289,6 +289,19 @@ GET https://api.revenexx.com/v1/products/setup
 
 
 ```http request
+GET https://api.revenexx.com/v1/products/tax-classes/{code}/usage
+```
+
+** markets.tax_classes is the source of record for the rate and a product points at it by CODE in `tax_class` — a variant is a product row and carries its own. It is not a foreign key and could not be (ADR-0055), so integrity is a question one app asks the other, and this is the answering half: markets calls it when an operator tries to delete a tax class, and a count above zero is what stops the delete. A tax class is unique per market, so 'reduced' may exist in several: the caller names the class's market in `x-revenexx-market`, and only the products visible in that market count — the ones assigned to it plus the unassigned ones, which are sold in every market and so are taxed through its class too. Without the header every product of the tenant counts. Products in the trash count as well, because a restore brings them back naming the class; `trashed` says how many of them are. Reports at most 1000 products and names the first 20 by SKU. Every code answers, used or not — a code nobody points at is `in_use: false`, never a 404. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| code | string | **Required** The tax-class CODE, as markets spells it — not a row id. Matched against the `tax_class` of every product visible in the request's market (every product when it names none). |  |
+
+
+```http request
 POST https://api.revenexx.com/v1/products/trash/empty
 ```
 

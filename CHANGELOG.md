@@ -1,3 +1,6 @@
+## v0.4.0
+- Breaking: costCentersCostCentersCreate now requires organizationId and its optional parameters moved position (pass them by name); Search and model signatures changed; the Collection enum was removed. Regenerated from the latest API specification.
+
 ## v0.3.0
 - Regenerated from the latest API specification
 

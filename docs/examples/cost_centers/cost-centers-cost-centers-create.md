@@ -16,6 +16,7 @@ $costCenters = new CostCenters($client);
 $result = $costCenters->costCentersCostCentersCreate(
     code: '',
     name: '',
+    organizationId: '',
     accountableContactId: '', // optional
     active: true, // optional
     budgetType: BudgetType::MONETARY(), // optional
@@ -26,7 +27,6 @@ $result = $costCenters->costCentersCostCentersCreate(
         'legacy_shop' => 'kst-4711'
     ], // optional
     metadata: [], // optional
-    organizationId: '', // optional
     sourceData: [
         'etag' => 'W/"JzQ0O0c2"',
         'raw' => [

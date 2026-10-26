@@ -10,6 +10,7 @@ class PaymentFailureCode implements JsonSerializable
     private static PaymentFailureCode $PROVIDERUNREACHABLE;
     private static PaymentFailureCode $PROVIDERNOTCONFIGURED;
     private static PaymentFailureCode $PROVIDERDECLINED;
+    private static PaymentFailureCode $PAYMENTMETHODNOTSUPPORTED;
     private static PaymentFailureCode $PROVIDERERROR;
 
     private string $value;
@@ -56,6 +57,13 @@ class PaymentFailureCode implements JsonSerializable
             self::$PROVIDERDECLINED = new PaymentFailureCode('provider_declined');
         }
         return self::$PROVIDERDECLINED;
+    }
+    public static function PAYMENTMETHODNOTSUPPORTED(): PaymentFailureCode
+    {
+        if (!isset(self::$PAYMENTMETHODNOTSUPPORTED)) {
+            self::$PAYMENTMETHODNOTSUPPORTED = new PaymentFailureCode('payment_method_not_supported');
+        }
+        return self::$PAYMENTMETHODNOTSUPPORTED;
     }
     public static function PROVIDERERROR(): PaymentFailureCode
     {

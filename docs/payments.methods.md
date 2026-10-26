@@ -124,3 +124,16 @@ PUT https://api.revenexx.com/v1/payments/methods/{id}
 | provider | string | The PSP code this method transacts through, from GET /payments/providers/catalog. Only meaningful for kind 'psp'; a PSP method that names none falls back to the tenant's `default_provider` setting. Must be a code GET /payments/providers/catalog carries. |  |
 | provider_method | string | The provider's own payment-method id ('card', 'paypal', 'sepa_debit') — what the driver is told to charge. Copied onto every payment created with this method as `metadata.provider_method`. |  |
 
+
+```http request
+GET https://api.revenexx.com/v1/payments/tax-classes/{code}/usage
+```
+
+** markets.tax_classes is the source of record for the rate and this app points at it by CODE from two places: a method's own tax_class and the market's payment_fee_tax_class fallback. Neither is a foreign key and neither could be — a cross-app FK is what ADR-0055 forbids — so integrity is a question one app asks the other, and this is the answering half: markets calls it when an operator tries to delete a tax class, and a count above zero is what stops the delete. A tax class is unique per market, so 'reduced' may exist in several: the caller names the class's market in `x-revenexx-market`, and only the methods visible in that market count — the ones assigned to it plus the unassigned ones, which are offered in every market and so are taxed through its class too. Without the header every method of the tenant counts. Reports at most 500 methods and names the first 20. Every code answers, used or not — a code nobody points at is `in_use: false`, never a 404. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| code | string | **Required** The tax-class CODE, as markets spells it — not a row id. Matched against the `tax_class` of every payment method visible in the request's market (every method when it names none) and against that market's `payment_fee_tax_class` setting. |  |
+

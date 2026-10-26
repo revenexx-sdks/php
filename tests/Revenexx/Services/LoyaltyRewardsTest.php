@@ -70,7 +70,7 @@ final class LoyaltyRewardsTest extends TestCase {
 
         $response = $this->loyaltyRewards->loyaltyRewardsCreate(
             "",
-            ,
+            null,
             1,
             "",
             ""
