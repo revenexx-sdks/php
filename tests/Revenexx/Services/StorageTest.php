@@ -8,16 +8,19 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\AssetStoreVisibility;
 
-final class StorageTest extends TestCase {
+final class StorageTest extends TestCase
+{
     private $client;
     private $storage;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->storage = new Storage($this->client);
     }
 
-    public function testMethodAssetIndex(): void {
+    public function testMethodAssetIndex(): void
+    {
 
         $data = array();
 
@@ -31,7 +34,8 @@ final class StorageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAssetStore(): void {
+    public function testMethodAssetStore(): void
+    {
 
         $data = array();
 
@@ -46,7 +50,8 @@ final class StorageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAssetBulk(): void {
+    public function testMethodAssetBulk(): void
+    {
 
         $data = array();
 
@@ -60,7 +65,8 @@ final class StorageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAssetDestroy(): void {
+    public function testMethodAssetDestroy(): void
+    {
 
         $data = array();
 
@@ -75,7 +81,8 @@ final class StorageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAssetShow(): void {
+    public function testMethodAssetShow(): void
+    {
 
         $data = array();
 
@@ -90,7 +97,8 @@ final class StorageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAssetUpdate(): void {
+    public function testMethodAssetUpdate(): void
+    {
 
         $data = array();
 
@@ -105,7 +113,8 @@ final class StorageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAssetDownload(): void {
+    public function testMethodAssetDownload(): void
+    {
 
         $data = array();
 
@@ -120,7 +129,8 @@ final class StorageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAssetPermanent(): void {
+    public function testMethodAssetPermanent(): void
+    {
 
         $data = array();
 
@@ -135,7 +145,8 @@ final class StorageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAssetReprocess(): void {
+    public function testMethodAssetReprocess(): void
+    {
 
         $data = array();
 
@@ -150,7 +161,8 @@ final class StorageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAssetRestore(): void {
+    public function testMethodAssetRestore(): void
+    {
 
         $data = array();
 
@@ -165,7 +177,8 @@ final class StorageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAssetSign(): void {
+    public function testMethodAssetSign(): void
+    {
 
         $data = array();
 
@@ -180,7 +193,8 @@ final class StorageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAssetUnpack(): void {
+    public function testMethodAssetUnpack(): void
+    {
 
         $data = array();
 
@@ -195,7 +209,8 @@ final class StorageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodFolderIndex(): void {
+    public function testMethodFolderIndex(): void
+    {
 
         $data = array();
 
@@ -209,7 +224,8 @@ final class StorageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodFolderStore(): void {
+    public function testMethodFolderStore(): void
+    {
 
         $data = array();
 
@@ -224,7 +240,8 @@ final class StorageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodFolderDestroy(): void {
+    public function testMethodFolderDestroy(): void
+    {
 
         $data = array();
 
@@ -239,7 +256,8 @@ final class StorageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodFolderShow(): void {
+    public function testMethodFolderShow(): void
+    {
 
         $data = array();
 
@@ -254,7 +272,8 @@ final class StorageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodFolderUpdate(): void {
+    public function testMethodFolderUpdate(): void
+    {
 
         $data = array();
 
@@ -269,7 +288,8 @@ final class StorageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSyncRuleIndex(): void {
+    public function testMethodSyncRuleIndex(): void
+    {
 
         $data = array();
 
@@ -283,7 +303,8 @@ final class StorageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSyncRuleStore(): void {
+    public function testMethodSyncRuleStore(): void
+    {
 
         $data = array();
 
@@ -299,7 +320,8 @@ final class StorageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSyncRuleDestroy(): void {
+    public function testMethodSyncRuleDestroy(): void
+    {
 
         $data = array();
 
@@ -314,7 +336,8 @@ final class StorageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSyncRuleShow(): void {
+    public function testMethodSyncRuleShow(): void
+    {
 
         $data = array();
 
@@ -329,7 +352,8 @@ final class StorageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSyncRuleUpdate(): void {
+    public function testMethodSyncRuleUpdate(): void
+    {
 
         $data = array();
 
@@ -344,7 +368,8 @@ final class StorageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSyncRuleRun(): void {
+    public function testMethodSyncRuleRun(): void
+    {
 
         $data = array();
 
@@ -359,7 +384,8 @@ final class StorageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSyncRuleRunProtocol(): void {
+    public function testMethodSyncRuleRunProtocol(): void
+    {
 
         $data = array();
 
@@ -375,7 +401,8 @@ final class StorageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSyncRuleHistory(): void {
+    public function testMethodSyncRuleHistory(): void
+    {
 
         $data = array();
 
@@ -389,7 +416,8 @@ final class StorageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTenantStats(): void {
+    public function testMethodTenantStats(): void
+    {
 
         $data = array();
 
@@ -403,7 +431,8 @@ final class StorageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTenantUsage(): void {
+    public function testMethodTenantUsage(): void
+    {
 
         $data = array();
 

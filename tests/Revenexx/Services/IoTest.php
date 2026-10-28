@@ -12,16 +12,19 @@ use Revenexx\Enums\CreateImportTarget;
 use Revenexx\Enums\Direction;
 use Revenexx\Enums\ApplyMode;
 
-final class IoTest extends TestCase {
+final class IoTest extends TestCase
+{
     private $client;
     private $io;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->io = new Io($this->client);
     }
 
-    public function testMethodListBulkJobs(): void {
+    public function testMethodListBulkJobs(): void
+    {
 
         $data = array();
 
@@ -35,7 +38,8 @@ final class IoTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodGetBulkJob(): void {
+    public function testMethodGetBulkJob(): void
+    {
 
         $data = array();
 
@@ -50,7 +54,8 @@ final class IoTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodListIoEntities(): void {
+    public function testMethodListIoEntities(): void
+    {
 
         $data = array();
 
@@ -64,7 +69,8 @@ final class IoTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCreateExport(): void {
+    public function testMethodCreateExport(): void
+    {
 
         $data = array();
 
@@ -81,7 +87,8 @@ final class IoTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodGetExportUrl(): void {
+    public function testMethodGetExportUrl(): void
+    {
 
         $data = array();
 
@@ -96,7 +103,8 @@ final class IoTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCreateImport(): void {
+    public function testMethodCreateImport(): void
+    {
 
         $data = array();
 
@@ -114,7 +122,8 @@ final class IoTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodListProfiles(): void {
+    public function testMethodListProfiles(): void
+    {
 
         $data = array();
 
@@ -128,7 +137,8 @@ final class IoTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCreateProfile(): void {
+    public function testMethodCreateProfile(): void
+    {
 
         $data = array();
 
@@ -148,7 +158,8 @@ final class IoTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodDeleteProfile(): void {
+    public function testMethodDeleteProfile(): void
+    {
 
         $data = array();
 
@@ -163,7 +174,8 @@ final class IoTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodShowProfile(): void {
+    public function testMethodShowProfile(): void
+    {
 
         $data = array();
 
@@ -178,7 +190,8 @@ final class IoTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodUpdateProfile(): void {
+    public function testMethodUpdateProfile(): void
+    {
 
         $data = array();
 
@@ -199,7 +212,8 @@ final class IoTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodRunProfile(): void {
+    public function testMethodRunProfile(): void
+    {
 
         $data = array();
 
@@ -214,7 +228,8 @@ final class IoTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCreateUpload(): void {
+    public function testMethodCreateUpload(): void
+    {
 
         $data = array();
 

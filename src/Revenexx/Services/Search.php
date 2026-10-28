@@ -11,10 +11,10 @@ use Revenexx\Enums\SearchEventsType;
 
 class Search extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The collections the tenant's installed apps have provisioned. Available on
@@ -312,11 +312,11 @@ class Search extends Service
      * search analytics count it per language and search type; with an events key
      * configured the proxy also writes it to the collection's Typesense event
      * log.
-     * 
+     *
      * `user_token` is a pseudonymous id the storefront chooses (a random value
      * kept in a cookie, never an e-mail or a customer number); it is stored only
      * salted and hashed. The locale comes from `X-Revenexx-Locale`.
-     * 
+     *
      * Answers 202 at once: recording happens in the background, and an event is
      * dropped rather than slowing the shop down. Requires the `documents:search`
      * action; a `revx_` key may report events for its own collection only.
@@ -379,16 +379,16 @@ class Search extends Service
      * no field for an attribute the tenant has not marked `is_filterable`,
      * and drops only fields whose attribute it has itself un-marked. A run
      * that changes nothing makes zero calls to Typesense.
-     * 
+     *
      * Body (optional) narrows the sweep to one app:
-     * 
+     *
      *     {"vendor": "revenexx", "app": "products"}
-     * 
+     *
      * Omitted, every app the tenant has installed is swept. Apps outside the
      * facet-sync allowlist are included in the response with
      * `skipped: app_not_enabled` rather than silently dropped — a caller
      * asking for an app that cannot have facets deserves to be told so.
-     * 
+     *
      * The response shape below is DECLARED rather than inferred. Its entries
      * are built by spreading AttributeFacetSyncer::syncForCollection()'s
      * summary, and the generator cannot see through an array spread: left to
@@ -437,7 +437,7 @@ class Search extends Service
      * the gateway-trust path each entry must name a collection the tenant owns in
      * `collection`. With a `revx_` key it is optional and is forced to the key's
      * own collection. Requires the `documents:search` action.
-     * 
+     *
      * Use this instead of the single-collection search when the query outgrows a
      * URL: Typesense caps a GET query string at 4000 characters, which a long
      * `facet_by` reaches sooner than expected.
@@ -474,19 +474,19 @@ class Search extends Service
      * `view` it is rendering; how to search comes from the collection's preset
      * for that view (`<typesense_collection>__<view>`, managed through the admin
      * API) or, without one, from a built-in default per view.
-     * 
+     *
      * Always applied and not overridable: the tenant scope, `enabled:=true` when
      * the collection has a boolean `enabled` field, the channel from
      * `X-Revenexx-Channel` when the collection has `channels`, and the locale
      * from `X-Revenexx-Locale` when the collection has `locale` (both the full
      * and the bare code, e.g. `de-DE` and `de`).
-     * 
+     *
      * Relevance parameters in the body (`query_by`, `sort_by`, `preset`,
      * `facet_by`, …) are ignored, as is any other unknown key. Filters on
      * fields the schema does not have, or cannot filter on, are dropped and
      * listed in `ignored_filters`; a sort on a field without `sort: true` is
      * dropped and echoed in `ignored_sort`.
-     * 
+     *
      * Answers 404 while the proxy runs without its metadata key, which callers
      * should treat like a missing route and fall back to `multi_search`. Requires
      * the `documents:search` action; a `revx_` key may query its own collection
@@ -554,13 +554,13 @@ class Search extends Service
      * preset or, without one, the built-in suggest default (prefix matching, few
      * hits), under the same mandatory filters as `/api/v1/query` (tenant, locale,
      * channel, `enabled`).
-     * 
+     *
      * Without `collections` the proxy asks `products`, `categories`,
      * `manufacturers` and `pages`, and leaves out those the tenant does not have;
      * groups come back in that order. A collection whose search fails is left out
      * rather than failing the request. Storefront actions (a redirect for the
      * query) come from the first group that has any.
-     * 
+     *
      * Send the `query_id` back with the events the result leads to (`POST
      * /api/v1/events`). Answers 404 while the proxy runs without its metadata
      * key. Requires the `documents:search` action; a `revx_` key asks its own

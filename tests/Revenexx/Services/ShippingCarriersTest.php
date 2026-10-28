@@ -9,16 +9,19 @@ use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\ShippingCarriersListStatus;
 use Revenexx\Enums\ShippingCarrierStatus;
 
-final class ShippingCarriersTest extends TestCase {
+final class ShippingCarriersTest extends TestCase
+{
     private $client;
     private $shippingCarriers;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->shippingCarriers = new ShippingCarriers($this->client);
     }
 
-    public function testMethodShippingCarriersList(): void {
+    public function testMethodShippingCarriersList(): void
+    {
 
         $data = array();
 
@@ -32,7 +35,8 @@ final class ShippingCarriersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodShippingCarriersCreate(): void {
+    public function testMethodShippingCarriersCreate(): void
+    {
 
         $data = array();
 
@@ -48,7 +52,8 @@ final class ShippingCarriersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodShippingCarriersCatalog(): void {
+    public function testMethodShippingCarriersCatalog(): void
+    {
 
         $data = array();
 
@@ -62,7 +67,8 @@ final class ShippingCarriersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodShippingCarriersDefaults(): void {
+    public function testMethodShippingCarriersDefaults(): void
+    {
 
         $data = array();
 
@@ -76,7 +82,8 @@ final class ShippingCarriersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodShippingCarriersDelete(): void {
+    public function testMethodShippingCarriersDelete(): void
+    {
 
         $data = array();
 
@@ -91,7 +98,8 @@ final class ShippingCarriersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodShippingCarriersGet(): void {
+    public function testMethodShippingCarriersGet(): void
+    {
 
         $data = array();
 
@@ -106,7 +114,8 @@ final class ShippingCarriersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodShippingCarriersUpdate(): void {
+    public function testMethodShippingCarriersUpdate(): void
+    {
 
         $data = array();
 
@@ -121,7 +130,8 @@ final class ShippingCarriersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodShippingTracking(): void {
+    public function testMethodShippingTracking(): void
+    {
 
         $data = array();
 

@@ -16,10 +16,10 @@ use Revenexx\Enums\ProductsCopyParts;
 
 class Products extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The catalog itself. A product row carries only what every product has —
@@ -30,14 +30,14 @@ class Products extends Service
      * database so a grid of twenty thousand rows can sort and filter on a name
      * with no join. `kind` says where the row sits in the variant hierarchy: a
      * `model` carries what its variants share and is never sold itself.
-     * 
+     *
      * Every column of `products` is an exact-match query parameter, `order` sorts
      * by one column, and `limit`/`offset` page through `page.total`. A query key
      * that is NOT a column is dropped rather than refused, and the `filter`
      * object echoes the ones that were understood — that echo is the only way
      * to tell an unfiltered answer from an empty one. It reads rows exactly as
      * they are stored: no join is resolved, no jsonb value is unpacked.
-     * 
+     *
      * Records in the trash are left out: `trashed=only` reads the trash itself,
      * `trashed=include` both. Any other value of `trashed` is refused with 400.
      *
@@ -243,7 +243,7 @@ class Products extends Service
      * Creates one product and answers 201 with the stored row, including the id
      * and the timestamps the database filled in — a client never sends an id,
      * it reads one back and uses it in the path of every later call.
-     * 
+     *
      * The catalog itself. A product row carries only what every product has —
      * SKU, kind, family, enabled, tax class — and everything the tenant
      * modelled lives in the `attribute_values` jsonb document, keyed by attribute
@@ -252,7 +252,7 @@ class Products extends Service
      * database so a grid of twenty thousand rows can sort and filter on a name
      * with no join. `kind` says where the row sits in the variant hierarchy: a
      * `model` carries what its variants share and is never sold itself.
-     * 
+     *
      * `sku` is the only column the database refuses the row without; everything
      * else has a default or is nullable. A second row with the same `sku` answers
      * 409. This app owns the create: `enabled` defaults from the
@@ -380,7 +380,7 @@ class Products extends Service
      * identifier or both; the two are unioned and a product named twice comes
      * back once. At most 500 of each per call; more is refused with 400 rather
      * than cut short.
-     * 
+     *
      * With `full: true` each item is the whole row instead — what `GET
      * /products/{id}` answers, every column and the complete `attribute_values`
      * document, with `label` still the resolved name. That mode is for a caller
@@ -389,7 +389,7 @@ class Products extends Service
      * a merchant's field mappings name, for every line of a cart, and needs them
      * in one read. Leave it off when four fields will do; the short shape is
      * unchanged by it.
-     * 
+     *
      * Either way it answers what it FOUND: an id or SKU that names nothing is
      * simply absent from `items` rather than an error, so compare the length of
      * what you sent with what came back if a miss matters. For a scannable list
@@ -443,7 +443,7 @@ class Products extends Service
      * substring of the stored `label` column, which falls back to the SKU, so one
      * box finds a product by either. Soft-deleted products are excluded here,
      * unlike `GET /products`.
-     * 
+     *
      * It filters on `q`, `kind`, `enabled` and `family_id`, and on NOTHING ELSE
      * — a query parameter it does not accept is refused with 400 rather than
      * dropped. That matters because of `filters`: the array reports the
@@ -519,7 +519,7 @@ class Products extends Service
      * setting, then to the conventional `name`) and looks the value up through
      * the scoped attribute_values document — common, then locale_specific in
      * the label_locales order, then the channel buckets.
-     * 
+     *
      * It reports WHERE the name was found, which is the half that matters:
      * `source: "sku"` means the catalog holds no name for this product and the
      * SKU is standing in for one, so show it as a missing name rather than as a
@@ -566,7 +566,7 @@ class Products extends Service
      * the association type carries `is_quantified`. This relational surface is
      * the one this app serves; the `products.quantified_associations` column is
      * an importer's blob that no route here reads or writes.
-     * 
+     *
      * Every column of `product_associations` is an exact-match query parameter,
      * `order` sorts by one column, and `limit`/`offset` page through
      * `page.total`. A query key that is NOT a column is dropped rather than
@@ -574,7 +574,7 @@ class Products extends Service
      * that echo is the only way to tell an unfiltered answer from an empty one.
      * It reads rows exactly as they are stored: no join is resolved, no jsonb
      * value is unpacked.
-     * 
+     *
      * Answered from the gateway's tenant cache for up to 30 minutes and dropped
      * the moment this entity is written, because the data model changes weekly at
      * most and every product page asks the same question.
@@ -662,14 +662,14 @@ class Products extends Service
      * including the id and the timestamps the database filled in — a client
      * never sends an id, it reads one back and uses it in the path of every later
      * call.
-     * 
+     *
      * One relation from one product to another, of a declared type: this drill's
      * accessories, this bundle's parts, this article's cross-sells. `quantity` is
      * the number in "this bundle contains 4 casters" and is meaningful only when
      * the association type carries `is_quantified`. This relational surface is
      * the one this app serves; the `products.quantified_associations` column is
      * an importer's blob that no route here reads or writes.
-     * 
+     *
      * `product_id`, `association_type_id`, `target_product_id` are the only
      * columns the database refuses the row without; everything else has a default
      * or is nullable. A second row with the same `product_id`,
@@ -715,9 +715,9 @@ class Products extends Service
     /**
      * Deletes one product association by id. It is a hard delete — the row is
      * gone, and the answer is a confirmation rather than a result to branch on.
-     * 
+     *
      * Nothing in this schema references it, so nothing else changes.
-     * 
+     *
      * An id no product association of this tenant carries answers 404; there is
      * no 409, because every foreign key pointing at this entity resolves itself
      * on delete rather than blocking one.
@@ -750,19 +750,19 @@ class Products extends Service
     /**
      * Reads one product association by its id — the whole row, every column, as
      * it is stored.
-     * 
+     *
      * One relation from one product to another, of a declared type: this drill's
      * accessories, this bundle's parts, this article's cross-sells. `quantity` is
      * the number in "this bundle contains 4 casters" and is meaningful only when
      * the association type carries `is_quantified`. This relational surface is
      * the one this app serves; the `products.quantified_associations` column is
      * an importer's blob that no route here reads or writes.
-     * 
+     *
      * An id no product association of this tenant carries answers 404, and so
      * does one belonging to another tenant: row-level security makes that row
      * invisible rather than forbidden. A malformed id answers 400 before the
      * route is reached.
-     * 
+     *
      * Answered from the gateway's tenant cache for up to 30 minutes and dropped
      * the moment this entity is written, because the data model changes weekly at
      * most and every product page asks the same question.
@@ -797,14 +797,14 @@ class Products extends Service
      * the columns to change and every column it leaves out keeps its current
      * value, so there is no read-modify-write and no way to blank a field by
      * forgetting it.
-     * 
+     *
      * One relation from one product to another, of a declared type: this drill's
      * accessories, this bundle's parts, this article's cross-sells. `quantity` is
      * the number in "this bundle contains 4 casters" and is meaningful only when
      * the association type carries `is_quantified`. This relational surface is
      * the one this app serves; the `products.quantified_associations` column is
      * an importer's blob that no route here reads or writes.
-     * 
+     *
      * A body that names nothing writable is refused with 400 rather than answered
      * as a no-op, an id nobody carries answers 404, and a value that collides on
      * `product_id`, `association_type_id`, `target_product_id` answers 409.
@@ -964,7 +964,7 @@ class Products extends Service
      * one is parsed out of, so a UI never has to keep its own copy of a status
      * map and watch it drift. Names and titles only: fetch one by name for its
      * values, badge tones and descriptions.
-     * 
+     *
      * The set is a fixed property of this app rather than tenant data, so it is
      * the same list for every tenant. `attributes.type` is deliberately absent:
      * it carries no CHECK, because the whole point of an attribute-driven PIM is
@@ -1028,13 +1028,13 @@ class Products extends Service
     /**
      * Moves one product to the trash — or, called on one that is already there,
      * deletes it for good.
-     * 
+     *
      * The first call stamps the product, and the variants of a model go with it;
      * all of them share one `trash_batch` and come back together on `POST
      * …/{id}/restore`. Nothing that points at it changes: its assignments stay
      * and stop acting, and the answer lists them as warnings with a count. Its
      * sku stays reserved while it is in the trash.
-     * 
+     *
      * The second call deletes it for good, with the rows of its group, and only
      * then do the cascades and `*.deleted` happen. It is refused with 409 while a
      * blocker holds: stock on hand or an active reservation in inventories, a
@@ -1043,7 +1043,7 @@ class Products extends Service
      * removes them when the product is deleted. A blocker that could not be
      * checked counts as one. It is refused with 403 for a storefront contact —
      * deleting for good is back-office work.
-     * 
+     *
      * An id no product of this tenant carries answers 404.
      *
      * @param string $id
@@ -1074,7 +1074,7 @@ class Products extends Service
     /**
      * Reads one product by its id — the whole row, every column, as it is
      * stored.
-     * 
+     *
      * The catalog itself. A product row carries only what every product has —
      * SKU, kind, family, enabled, tax class — and everything the tenant
      * modelled lives in the `attribute_values` jsonb document, keyed by attribute
@@ -1083,7 +1083,7 @@ class Products extends Service
      * database so a grid of twenty thousand rows can sort and filter on a name
      * with no join. `kind` says where the row sits in the variant hierarchy: a
      * `model` carries what its variants share and is never sold itself.
-     * 
+     *
      * An id no product of this tenant carries answers 404, and so does one
      * belonging to another tenant: row-level security makes that row invisible
      * rather than forbidden. A malformed id answers 400 before the route is
@@ -1120,7 +1120,7 @@ class Products extends Service
      * Updates one product by id. A partial patch: the body names only the columns
      * to change and every column it leaves out keeps its current value, so there
      * is no read-modify-write and no way to blank a field by forgetting it.
-     * 
+     *
      * The catalog itself. A product row carries only what every product has —
      * SKU, kind, family, enabled, tax class — and everything the tenant
      * modelled lives in the `attribute_values` jsonb document, keyed by attribute
@@ -1129,7 +1129,7 @@ class Products extends Service
      * database so a grid of twenty thousand rows can sort and filter on a name
      * with no join. `kind` says where the row sits in the variant hierarchy: a
      * `model` carries what its variants share and is never sold itself.
-     * 
+     *
      * A body that names nothing writable is refused with 400 rather than answered
      * as a no-op, an id nobody carries answers 404, and a value that collides on
      * `sku` answers 409. `label` is a generated column: naming it is dropped
@@ -1480,7 +1480,7 @@ class Products extends Service
      * with it (its `trash_batch`). A record trashed on its own before stays in
      * the trash. Everything that pointed at it acts again as it did, because
      * nothing was changed when it went.
-     * 
+     *
      * Restoring needs the same right as deleting.
      *
      * @param string $id

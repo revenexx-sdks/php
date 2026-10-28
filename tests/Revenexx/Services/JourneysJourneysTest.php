@@ -9,16 +9,19 @@ use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\Trashed;
 use Revenexx\Enums\TriggerKind;
 
-final class JourneysJourneysTest extends TestCase {
+final class JourneysJourneysTest extends TestCase
+{
     private $client;
     private $journeysJourneys;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->journeysJourneys = new JourneysJourneys($this->client);
     }
 
-    public function testMethodJourneysJourneysList(): void {
+    public function testMethodJourneysJourneysList(): void
+    {
 
         $data = array();
 
@@ -32,7 +35,8 @@ final class JourneysJourneysTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodJourneysJourneysCreate(): void {
+    public function testMethodJourneysJourneysCreate(): void
+    {
 
         $data = array();
 
@@ -47,7 +51,8 @@ final class JourneysJourneysTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodJourneysJourneysEmptyTrash(): void {
+    public function testMethodJourneysJourneysEmptyTrash(): void
+    {
 
         $data = array();
 
@@ -61,7 +66,8 @@ final class JourneysJourneysTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodJourneysJourneysPurge(): void {
+    public function testMethodJourneysJourneysPurge(): void
+    {
 
         $data = array();
 
@@ -75,7 +81,8 @@ final class JourneysJourneysTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodJourneysJourneysDelete(): void {
+    public function testMethodJourneysJourneysDelete(): void
+    {
 
         $data = array();
 
@@ -90,7 +97,8 @@ final class JourneysJourneysTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodJourneysJourneysGet(): void {
+    public function testMethodJourneysJourneysGet(): void
+    {
 
         $data = array();
 
@@ -105,7 +113,8 @@ final class JourneysJourneysTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodJourneysJourneysUpdate(): void {
+    public function testMethodJourneysJourneysUpdate(): void
+    {
 
         $data = array();
 
@@ -120,7 +129,8 @@ final class JourneysJourneysTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodJourneysJourneysArchive(): void {
+    public function testMethodJourneysJourneysArchive(): void
+    {
 
         $data = array();
 
@@ -136,7 +146,8 @@ final class JourneysJourneysTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodJourneysJourneysEnrol(): void {
+    public function testMethodJourneysJourneysEnrol(): void
+    {
 
         $data = array();
 
@@ -151,7 +162,8 @@ final class JourneysJourneysTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodJourneysJourneysGraph(): void {
+    public function testMethodJourneysJourneysGraph(): void
+    {
 
         $data = array();
 
@@ -166,7 +178,8 @@ final class JourneysJourneysTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodJourneysJourneysSaveGraph(): void {
+    public function testMethodJourneysJourneysSaveGraph(): void
+    {
 
         $data = array();
 
@@ -182,7 +195,8 @@ final class JourneysJourneysTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodJourneysJourneysPause(): void {
+    public function testMethodJourneysJourneysPause(): void
+    {
 
         $data = array();
 
@@ -198,7 +212,8 @@ final class JourneysJourneysTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodJourneysJourneysPublish(): void {
+    public function testMethodJourneysJourneysPublish(): void
+    {
 
         $data = array();
 
@@ -214,7 +229,8 @@ final class JourneysJourneysTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodJourneysJourneysReport(): void {
+    public function testMethodJourneysJourneysReport(): void
+    {
 
         $data = array();
 
@@ -229,7 +245,8 @@ final class JourneysJourneysTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodJourneysJourneysRestore(): void {
+    public function testMethodJourneysJourneysRestore(): void
+    {
 
         $data = array();
 
@@ -244,7 +261,8 @@ final class JourneysJourneysTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodJourneysJourneysResume(): void {
+    public function testMethodJourneysJourneysResume(): void
+    {
 
         $data = array();
 
@@ -260,7 +278,8 @@ final class JourneysJourneysTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodJourneysJourneysRun(): void {
+    public function testMethodJourneysJourneysRun(): void
+    {
 
         $data = array();
 
@@ -276,7 +295,8 @@ final class JourneysJourneysTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodJourneysJourneysTimeline(): void {
+    public function testMethodJourneysJourneysTimeline(): void
+    {
 
         $data = array();
 

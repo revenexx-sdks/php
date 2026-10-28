@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class LoyaltyPointsTest extends TestCase {
+final class LoyaltyPointsTest extends TestCase
+{
     private $client;
     private $loyaltyPoints;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->loyaltyPoints = new LoyaltyPoints($this->client);
     }
 
-    public function testMethodLoyaltyPointsList(): void {
+    public function testMethodLoyaltyPointsList(): void
+    {
 
         $data = array();
 
@@ -30,7 +33,8 @@ final class LoyaltyPointsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyPointsGet(): void {
+    public function testMethodLoyaltyPointsGet(): void
+    {
 
         $data = array();
 
@@ -45,7 +49,8 @@ final class LoyaltyPointsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyPointsAward(): void {
+    public function testMethodLoyaltyPointsAward(): void
+    {
 
         $data = array();
 

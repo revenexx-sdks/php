@@ -11,16 +11,19 @@ use Revenexx\Enums\PaymentMethodKind;
 use Revenexx\Enums\PaymentDunningStage;
 use Revenexx\Enums\PaymentsVocabulariesGetName;
 
-final class PaymentsLedgerTest extends TestCase {
+final class PaymentsLedgerTest extends TestCase
+{
     private $client;
     private $paymentsLedger;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->paymentsLedger = new PaymentsLedger($this->client);
     }
 
-    public function testMethodPaymentsList(): void {
+    public function testMethodPaymentsList(): void
+    {
 
         $data = array();
 
@@ -34,7 +37,8 @@ final class PaymentsLedgerTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPaymentsCreate(): void {
+    public function testMethodPaymentsCreate(): void
+    {
 
         $data = array();
 
@@ -50,7 +54,8 @@ final class PaymentsLedgerTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPaymentsDunningScan(): void {
+    public function testMethodPaymentsDunningScan(): void
+    {
 
         $data = array();
 
@@ -64,7 +69,8 @@ final class PaymentsLedgerTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPaymentsErrorsRedact(): void {
+    public function testMethodPaymentsErrorsRedact(): void
+    {
 
         $data = array();
 
@@ -78,7 +84,8 @@ final class PaymentsLedgerTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPaymentsOrdersRelink(): void {
+    public function testMethodPaymentsOrdersRelink(): void
+    {
 
         $data = array();
 
@@ -92,7 +99,8 @@ final class PaymentsLedgerTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPaymentsOrdersCapture(): void {
+    public function testMethodPaymentsOrdersCapture(): void
+    {
 
         $data = array();
 
@@ -107,7 +115,8 @@ final class PaymentsLedgerTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPaymentsVocabulariesList(): void {
+    public function testMethodPaymentsVocabulariesList(): void
+    {
 
         $data = array();
 
@@ -121,7 +130,8 @@ final class PaymentsLedgerTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPaymentsVocabulariesGet(): void {
+    public function testMethodPaymentsVocabulariesGet(): void
+    {
 
         $data = array();
 
@@ -136,7 +146,8 @@ final class PaymentsLedgerTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPaymentsWebhooksIngest(): void {
+    public function testMethodPaymentsWebhooksIngest(): void
+    {
 
         $data = array();
 
@@ -151,7 +162,8 @@ final class PaymentsLedgerTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPaymentsGet(): void {
+    public function testMethodPaymentsGet(): void
+    {
 
         $data = array();
 
@@ -166,7 +178,8 @@ final class PaymentsLedgerTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPaymentsCancel(): void {
+    public function testMethodPaymentsCancel(): void
+    {
 
         $data = array();
 
@@ -181,7 +194,8 @@ final class PaymentsLedgerTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPaymentsCapture(): void {
+    public function testMethodPaymentsCapture(): void
+    {
 
         $data = array();
 
@@ -196,7 +210,8 @@ final class PaymentsLedgerTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPaymentsConfirm(): void {
+    public function testMethodPaymentsConfirm(): void
+    {
 
         $data = array();
 
@@ -211,7 +226,8 @@ final class PaymentsLedgerTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPaymentsRefund(): void {
+    public function testMethodPaymentsRefund(): void
+    {
 
         $data = array();
 

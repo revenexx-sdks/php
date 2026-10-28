@@ -8,16 +8,19 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\PageEditStateStatus;
 
-final class PagesEditorTest extends TestCase {
+final class PagesEditorTest extends TestCase
+{
     private $client;
     private $pagesEditor;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->pagesEditor = new PagesEditor($this->client);
     }
 
-    public function testMethodPagesEditorEditStates(): void {
+    public function testMethodPagesEditorEditStates(): void
+    {
 
         $data = array();
 
@@ -31,7 +34,8 @@ final class PagesEditorTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesEditorTranslate(): void {
+    public function testMethodPagesEditorTranslate(): void
+    {
 
         $data = array();
 
@@ -45,7 +49,8 @@ final class PagesEditorTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesEditorUserSettingsGet(): void {
+    public function testMethodPagesEditorUserSettingsGet(): void
+    {
 
         $data = array();
 
@@ -59,7 +64,8 @@ final class PagesEditorTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesEditorUserSettingsPut(): void {
+    public function testMethodPagesEditorUserSettingsPut(): void
+    {
 
         $data = array();
 
@@ -73,7 +79,8 @@ final class PagesEditorTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesEditorHistory(): void {
+    public function testMethodPagesEditorHistory(): void
+    {
 
         $data = array();
 
@@ -89,7 +96,8 @@ final class PagesEditorTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesEditorLastChanged(): void {
+    public function testMethodPagesEditorLastChanged(): void
+    {
 
         $data = array();
 
@@ -104,7 +112,8 @@ final class PagesEditorTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesEditorMutationStatus(): void {
+    public function testMethodPagesEditorMutationStatus(): void
+    {
 
         $data = array();
 
@@ -121,7 +130,8 @@ final class PagesEditorTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesEditorMutate(): void {
+    public function testMethodPagesEditorMutate(): void
+    {
 
         $data = array();
 
@@ -137,7 +147,8 @@ final class PagesEditorTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesEditorPreviewGrant(): void {
+    public function testMethodPagesEditorPreviewGrant(): void
+    {
 
         $data = array();
 
@@ -152,7 +163,8 @@ final class PagesEditorTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesEditorPublish(): void {
+    public function testMethodPagesEditorPublish(): void
+    {
 
         $data = array();
 
@@ -167,7 +179,8 @@ final class PagesEditorTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesEditorRevert(): void {
+    public function testMethodPagesEditorRevert(): void
+    {
 
         $data = array();
 
@@ -182,7 +195,8 @@ final class PagesEditorTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesEditorSchedule(): void {
+    public function testMethodPagesEditorSchedule(): void
+    {
 
         $data = array();
 
@@ -198,7 +212,8 @@ final class PagesEditorTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesEditorState(): void {
+    public function testMethodPagesEditorState(): void
+    {
 
         $data = array();
 
@@ -213,7 +228,8 @@ final class PagesEditorTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesEditorTakeOwnership(): void {
+    public function testMethodPagesEditorTakeOwnership(): void
+    {
 
         $data = array();
 
@@ -228,7 +244,8 @@ final class PagesEditorTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesEditorTemplatesCreate(): void {
+    public function testMethodPagesEditorTemplatesCreate(): void
+    {
 
         $data = array(
             "body_html" => "",
@@ -274,7 +291,8 @@ final class PagesEditorTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesEditorUnschedule(): void {
+    public function testMethodPagesEditorUnschedule(): void
+    {
 
         $data = array();
 

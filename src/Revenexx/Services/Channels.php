@@ -13,10 +13,10 @@ use Revenexx\Enums\ChannelsVocabulariesGetName;
 
 class Channels extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The filters are what make this list usable: `?code=` turns a scope slug

@@ -11,16 +11,19 @@ use Revenexx\Enums\FormSubmissionStatus;
 use Revenexx\Enums\FormsSubmissionsPruneStatus;
 use Revenexx\Enums\FormsVocabulariesGetName;
 
-final class FormsTest extends TestCase {
+final class FormsTest extends TestCase
+{
     private $client;
     private $forms;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->forms = new Forms($this->client);
     }
 
-    public function testMethodFormsList(): void {
+    public function testMethodFormsList(): void
+    {
 
         $data = array();
 
@@ -34,7 +37,8 @@ final class FormsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodFormsCreate(): void {
+    public function testMethodFormsCreate(): void
+    {
 
         $data = array();
 
@@ -50,7 +54,8 @@ final class FormsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodFormsDefaults(): void {
+    public function testMethodFormsDefaults(): void
+    {
 
         $data = array();
 
@@ -64,7 +69,8 @@ final class FormsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodFormsSubmissionsList(): void {
+    public function testMethodFormsSubmissionsList(): void
+    {
 
         $data = array();
 
@@ -78,7 +84,8 @@ final class FormsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodFormsSubmissionsCreate(): void {
+    public function testMethodFormsSubmissionsCreate(): void
+    {
 
         $data = array();
 
@@ -94,7 +101,8 @@ final class FormsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodFormsSubmissionsPrune(): void {
+    public function testMethodFormsSubmissionsPrune(): void
+    {
 
         $data = array();
 
@@ -108,7 +116,8 @@ final class FormsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodFormsSubmissionsDelete(): void {
+    public function testMethodFormsSubmissionsDelete(): void
+    {
 
         $data = array();
 
@@ -123,7 +132,8 @@ final class FormsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodFormsSubmissionsGet(): void {
+    public function testMethodFormsSubmissionsGet(): void
+    {
 
         $data = array();
 
@@ -138,7 +148,8 @@ final class FormsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodFormsSubmissionsUpdate(): void {
+    public function testMethodFormsSubmissionsUpdate(): void
+    {
 
         $data = array();
 
@@ -153,7 +164,8 @@ final class FormsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodFormsVocabulariesList(): void {
+    public function testMethodFormsVocabulariesList(): void
+    {
 
         $data = array();
 
@@ -167,7 +179,8 @@ final class FormsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodFormsVocabulariesGet(): void {
+    public function testMethodFormsVocabulariesGet(): void
+    {
 
         $data = array();
 
@@ -182,7 +195,8 @@ final class FormsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodFormsDelete(): void {
+    public function testMethodFormsDelete(): void
+    {
 
         $data = array();
 
@@ -197,7 +211,8 @@ final class FormsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodFormsGet(): void {
+    public function testMethodFormsGet(): void
+    {
 
         $data = array();
 
@@ -212,7 +227,8 @@ final class FormsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodFormsUpdate(): void {
+    public function testMethodFormsUpdate(): void
+    {
 
         $data = array();
 

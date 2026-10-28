@@ -8,16 +8,19 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\Tone;
 
-final class CustomersRolesTest extends TestCase {
+final class CustomersRolesTest extends TestCase
+{
     private $client;
     private $customersRoles;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->customersRoles = new CustomersRoles($this->client);
     }
 
-    public function testMethodCustomersPermissionsLedger(): void {
+    public function testMethodCustomersPermissionsLedger(): void
+    {
 
         $data = array();
 
@@ -31,7 +34,8 @@ final class CustomersRolesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersRolesList(): void {
+    public function testMethodCustomersRolesList(): void
+    {
 
         $data = array();
 
@@ -45,7 +49,8 @@ final class CustomersRolesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersRolesCreate(): void {
+    public function testMethodCustomersRolesCreate(): void
+    {
 
         $data = array();
 
@@ -60,7 +65,8 @@ final class CustomersRolesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersRolesDefaults(): void {
+    public function testMethodCustomersRolesDefaults(): void
+    {
 
         $data = array();
 
@@ -75,7 +81,8 @@ final class CustomersRolesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersRolesUpdate(): void {
+    public function testMethodCustomersRolesUpdate(): void
+    {
 
         $data = array();
 
@@ -90,7 +97,8 @@ final class CustomersRolesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersRolesCopy(): void {
+    public function testMethodCustomersRolesCopy(): void
+    {
 
         $data = array();
 
@@ -106,7 +114,8 @@ final class CustomersRolesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersRolesPermissionsReplace(): void {
+    public function testMethodCustomersRolesPermissionsReplace(): void
+    {
 
         $data = array();
 

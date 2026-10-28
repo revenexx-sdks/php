@@ -8,16 +8,19 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\PromotionsRedemptionsReleaseReason;
 
-final class PromotionsRedemptionsTest extends TestCase {
+final class PromotionsRedemptionsTest extends TestCase
+{
     private $client;
     private $promotionsRedemptions;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->promotionsRedemptions = new PromotionsRedemptions($this->client);
     }
 
-    public function testMethodPromotionsRedemptionsCommit(): void {
+    public function testMethodPromotionsRedemptionsCommit(): void
+    {
 
         $data = array();
 
@@ -32,7 +35,8 @@ final class PromotionsRedemptionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsRedemptionsSweep(): void {
+    public function testMethodPromotionsRedemptionsSweep(): void
+    {
 
         $data = array();
 
@@ -46,7 +50,8 @@ final class PromotionsRedemptionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsRedemptionsList(): void {
+    public function testMethodPromotionsRedemptionsList(): void
+    {
 
         $data = array();
 
@@ -60,7 +65,8 @@ final class PromotionsRedemptionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsRedemptionsGet(): void {
+    public function testMethodPromotionsRedemptionsGet(): void
+    {
 
         $data = array();
 
@@ -75,7 +81,8 @@ final class PromotionsRedemptionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsRedemptionsRelease(): void {
+    public function testMethodPromotionsRedemptionsRelease(): void
+    {
 
         $data = array();
 
@@ -89,7 +96,8 @@ final class PromotionsRedemptionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsRedemptionsReserve(): void {
+    public function testMethodPromotionsRedemptionsReserve(): void
+    {
 
         $data = array();
 
@@ -104,7 +112,8 @@ final class PromotionsRedemptionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsRedemptionsReturns(): void {
+    public function testMethodPromotionsRedemptionsReturns(): void
+    {
 
         $data = array();
 

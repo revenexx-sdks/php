@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class CampaignsCalendarTest extends TestCase {
+final class CampaignsCalendarTest extends TestCase
+{
     private $client;
     private $campaignsCalendar;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->campaignsCalendar = new CampaignsCalendar($this->client);
     }
 
-    public function testMethodCampaignsCalendarRead(): void {
+    public function testMethodCampaignsCalendarRead(): void
+    {
 
         $data = array();
 

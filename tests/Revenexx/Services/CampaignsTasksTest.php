@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class CampaignsTasksTest extends TestCase {
+final class CampaignsTasksTest extends TestCase
+{
     private $client;
     private $campaignsTasks;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->campaignsTasks = new CampaignsTasks($this->client);
     }
 
-    public function testMethodCampaignsTasksList(): void {
+    public function testMethodCampaignsTasksList(): void
+    {
 
         $data = array();
 
@@ -30,7 +33,8 @@ final class CampaignsTasksTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCampaignsTasksCreate(): void {
+    public function testMethodCampaignsTasksCreate(): void
+    {
 
         $data = array();
 
@@ -46,7 +50,8 @@ final class CampaignsTasksTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCampaignsTasksDelete(): void {
+    public function testMethodCampaignsTasksDelete(): void
+    {
 
         $data = array();
 
@@ -61,7 +66,8 @@ final class CampaignsTasksTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCampaignsTasksGet(): void {
+    public function testMethodCampaignsTasksGet(): void
+    {
 
         $data = array();
 
@@ -76,7 +82,8 @@ final class CampaignsTasksTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCampaignsTasksUpdate(): void {
+    public function testMethodCampaignsTasksUpdate(): void
+    {
 
         $data = array();
 
@@ -91,7 +98,8 @@ final class CampaignsTasksTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCampaignsTasksComplete(): void {
+    public function testMethodCampaignsTasksComplete(): void
+    {
 
         $data = array();
 
@@ -106,7 +114,8 @@ final class CampaignsTasksTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCampaignsTasksReopen(): void {
+    public function testMethodCampaignsTasksReopen(): void
+    {
 
         $data = array();
 

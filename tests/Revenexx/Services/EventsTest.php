@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class EventsTest extends TestCase {
+final class EventsTest extends TestCase
+{
     private $client;
     private $events;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->events = new Events($this->client);
     }
 
-    public function testMethodEventsGetCatalog(): void {
+    public function testMethodEventsGetCatalog(): void
+    {
 
         $data = array();
 

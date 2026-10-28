@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class CampaignsAssets extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Filter `?campaign_id=` for one campaign, `?asset_app=&asset_id=` for the

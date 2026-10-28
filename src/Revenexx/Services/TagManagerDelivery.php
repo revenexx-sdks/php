@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class TagManagerDelivery extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The latest published container for the requested market (its own, else the

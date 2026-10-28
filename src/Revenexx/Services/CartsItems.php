@@ -10,10 +10,10 @@ use Revenexx\Enums\CartItemType;
 
 class CartsItems extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The array is still called 'items'; the response also carries 'page' and

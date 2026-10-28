@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class LoyaltyPoints extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The ledger. Filter `?membership_id=`, `?kind=`, `?order_id=`. Read-only.

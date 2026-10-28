@@ -10,10 +10,10 @@ use Revenexx\Enums\Model;
 
 class AdsSpend extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Spend per day, clicks and consented conversions per day, from the first

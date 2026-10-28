@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class CampaignsAttributionTest extends TestCase {
+final class CampaignsAttributionTest extends TestCase
+{
     private $client;
     private $campaignsAttribution;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->campaignsAttribution = new CampaignsAttribution($this->client);
     }
 
-    public function testMethodCampaignsAttributionList(): void {
+    public function testMethodCampaignsAttributionList(): void
+    {
 
         $data = array();
 
@@ -30,7 +33,8 @@ final class CampaignsAttributionTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCampaignsAttributionGet(): void {
+    public function testMethodCampaignsAttributionGet(): void
+    {
 
         $data = array();
 
@@ -45,7 +49,8 @@ final class CampaignsAttributionTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCampaignsAttributionSweep(): void {
+    public function testMethodCampaignsAttributionSweep(): void
+    {
 
         $data = array();
 

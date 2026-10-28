@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class MailingsBlocksTest extends TestCase {
+final class MailingsBlocksTest extends TestCase
+{
     private $client;
     private $mailingsBlocks;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->mailingsBlocks = new MailingsBlocks($this->client);
     }
 
-    public function testMethodMailingsBlocksRead(): void {
+    public function testMethodMailingsBlocksRead(): void
+    {
 
         $data = array();
 

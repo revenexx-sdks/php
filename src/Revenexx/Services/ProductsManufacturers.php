@@ -10,10 +10,10 @@ use Revenexx\Enums\ProductsListTrashed;
 
 class ProductsManufacturers extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * A manufacturer is the company a product is made by, kept once and pointed
@@ -26,7 +26,7 @@ class ProductsManufacturers extends Service
      * whether those are all there. A manufacturer is maintained globally —
      * visible in every market — and can be restricted to markets like a
      * category.
-     * 
+     *
      * Every column of `manufacturers` is an exact-match query parameter, `order`
      * sorts by one column, and `limit`/`offset` page through `page.total`. A
      * query key that is NOT a column is dropped rather than refused, and the
@@ -34,10 +34,10 @@ class ProductsManufacturers extends Service
      * only way to tell an unfiltered answer from an empty one. It reads rows
      * exactly as they are stored: no join is resolved, no jsonb value is
      * unpacked.
-     * 
+     *
      * Records in the trash are left out: `trashed=only` reads the trash itself,
      * `trashed=include` both. Any other value of `trashed` is refused with 400.
-     * 
+     *
      * Answered from the gateway's tenant cache for up to 30 minutes and dropped
      * the moment this entity is written, because the data model changes weekly at
      * most and every product page asks the same question.
@@ -264,7 +264,7 @@ class ProductsManufacturers extends Service
      * Creates one manufacturer and answers 201 with the stored row, including the
      * id and the timestamps the database filled in — a client never sends an
      * id, it reads one back and uses it in the path of every later call.
-     * 
+     *
      * A manufacturer is the company a product is made by, kept once and pointed
      * at by every product it makes (`products.manufacturer_id`) instead of
      * repeated as free text on each. It carries what a brand page shows (name,
@@ -275,7 +275,7 @@ class ProductsManufacturers extends Service
      * whether those are all there. A manufacturer is maintained globally —
      * visible in every market — and can be restricted to markets like a
      * category.
-     * 
+     *
      * `code` and `name` are the only columns the database refuses the row
      * without; everything else has a default or is nullable. A second row with
      * the same `code` answers 409.
@@ -376,16 +376,16 @@ class ProductsManufacturers extends Service
      * product linked through `manufacturer_id`. A name an existing record already
      * carries — by name, or by the code it would get — is linked to that
      * record instead of founding a second one. The free text is left where it is.
-     * 
+     *
      * **Founded records are global and incomplete.** A record the migration
      * founds is assigned to no market — visible in every market, whichever
      * market the caller is working in — and carries only `code` and `name`: no
      * country, so `gpsr_complete` is false until somebody fills in the GPSR data.
-     * 
+     *
      * **Dry run by default.** Without `"dry_run": false` nothing is written and
      * the answer says what WOULD be created and linked for the products this call
      * walked.
-     * 
+     *
      * **Chunked and caller-driven**, like a category recompute: a call walks the
      * products that carry no `manufacturer_id` in id order for as long as the
      * gateway budget allows, and answers `done` and, while there is more, the
@@ -456,20 +456,20 @@ class ProductsManufacturers extends Service
     /**
      * Moves one manufacturer to the trash — or, called on one that is already
      * there, deletes it for good.
-     * 
+     *
      * The first call stamps the manufacturer, and nothing goes with it; all of
      * them share one `trash_batch` and come back together on `POST
      * …/{id}/restore`. Nothing that points at it changes: its assignments stay
      * and stop acting, and the answer lists them as warnings with a count. Its
      * code stays reserved while it is in the trash.
-     * 
+     *
      * The second call deletes it for good, with the rows of its group, and only
      * then do the cascades and `*.deleted` happen. It is refused with 409 while a
      * blocker holds: a switched-on product still made by the manufacturer holds
      * it; any other product is unlinked. A blocker that could not be checked
      * counts as one. It is refused with 403 for a storefront contact — deleting
      * for good is back-office work.
-     * 
+     *
      * An id no manufacturer of this tenant carries answers 404.
      *
      * @param string $id
@@ -500,7 +500,7 @@ class ProductsManufacturers extends Service
     /**
      * Reads one manufacturer by its id — the whole row, every column, as it is
      * stored.
-     * 
+     *
      * A manufacturer is the company a product is made by, kept once and pointed
      * at by every product it makes (`products.manufacturer_id`) instead of
      * repeated as free text on each. It carries what a brand page shows (name,
@@ -511,12 +511,12 @@ class ProductsManufacturers extends Service
      * whether those are all there. A manufacturer is maintained globally —
      * visible in every market — and can be restricted to markets like a
      * category.
-     * 
+     *
      * An id no manufacturer of this tenant carries answers 404, and so does one
      * belonging to another tenant: row-level security makes that row invisible
      * rather than forbidden. A malformed id answers 400 before the route is
      * reached.
-     * 
+     *
      * Answered from the gateway's tenant cache for up to 30 minutes and dropped
      * the moment this entity is written, because the data model changes weekly at
      * most and every product page asks the same question.
@@ -551,7 +551,7 @@ class ProductsManufacturers extends Service
      * columns to change and every column it leaves out keeps its current value,
      * so there is no read-modify-write and no way to blank a field by forgetting
      * it.
-     * 
+     *
      * A manufacturer is the company a product is made by, kept once and pointed
      * at by every product it makes (`products.manufacturer_id`) instead of
      * repeated as free text on each. It carries what a brand page shows (name,
@@ -562,7 +562,7 @@ class ProductsManufacturers extends Service
      * whether those are all there. A manufacturer is maintained globally —
      * visible in every market — and can be restricted to markets like a
      * category.
-     * 
+     *
      * A body that names nothing writable is refused with 400 rather than answered
      * as a no-op, an id nobody carries answers 404, and a value that collides on
      * `code` answers 409.
@@ -832,7 +832,7 @@ class ProductsManufacturers extends Service
      * went with it (its `trash_batch`). A record trashed on its own before stays
      * in the trash. Everything that pointed at it acts again as it did, because
      * nothing was changed when it went.
-     * 
+     *
      * Restoring needs the same right as deleting.
      *
      * @param string $id

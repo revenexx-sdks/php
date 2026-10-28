@@ -11,10 +11,10 @@ use Revenexx\Enums\PaymentFeeType;
 
 class PaymentsMethods extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Every method this tenant has configured, enabled or not — what the

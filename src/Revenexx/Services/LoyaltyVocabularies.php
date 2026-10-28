@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class LoyaltyVocabularies extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * @throws RevenexxException

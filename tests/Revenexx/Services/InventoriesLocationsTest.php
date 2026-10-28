@@ -9,16 +9,19 @@ use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\InventoriesLocationsListType;
 use Revenexx\Enums\LocationType;
 
-final class InventoriesLocationsTest extends TestCase {
+final class InventoriesLocationsTest extends TestCase
+{
     private $client;
     private $inventoriesLocations;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->inventoriesLocations = new InventoriesLocations($this->client);
     }
 
-    public function testMethodInventoriesLocationsList(): void {
+    public function testMethodInventoriesLocationsList(): void
+    {
 
         $data = array();
 
@@ -32,7 +35,8 @@ final class InventoriesLocationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodInventoriesLocationsCreate(): void {
+    public function testMethodInventoriesLocationsCreate(): void
+    {
 
         $data = array();
 
@@ -48,7 +52,8 @@ final class InventoriesLocationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodInventoriesLocationsDefaults(): void {
+    public function testMethodInventoriesLocationsDefaults(): void
+    {
 
         $data = array();
 
@@ -62,7 +67,8 @@ final class InventoriesLocationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodInventoriesLocationsDelete(): void {
+    public function testMethodInventoriesLocationsDelete(): void
+    {
 
         $data = array();
 
@@ -77,7 +83,8 @@ final class InventoriesLocationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodInventoriesLocationsGet(): void {
+    public function testMethodInventoriesLocationsGet(): void
+    {
 
         $data = array();
 
@@ -92,7 +99,8 @@ final class InventoriesLocationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodInventoriesLocationsUpdate(): void {
+    public function testMethodInventoriesLocationsUpdate(): void
+    {
 
         $data = array();
 

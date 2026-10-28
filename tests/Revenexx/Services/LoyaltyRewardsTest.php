@@ -8,16 +8,19 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\Trashed;
 
-final class LoyaltyRewardsTest extends TestCase {
+final class LoyaltyRewardsTest extends TestCase
+{
     private $client;
     private $loyaltyRewards;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->loyaltyRewards = new LoyaltyRewards($this->client);
     }
 
-    public function testMethodLoyaltyRewardsRedemptionsList(): void {
+    public function testMethodLoyaltyRewardsRedemptionsList(): void
+    {
 
         $data = array();
 
@@ -31,7 +34,8 @@ final class LoyaltyRewardsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyRewardsRedemptionsGet(): void {
+    public function testMethodLoyaltyRewardsRedemptionsGet(): void
+    {
 
         $data = array();
 
@@ -46,7 +50,8 @@ final class LoyaltyRewardsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyRewardsList(): void {
+    public function testMethodLoyaltyRewardsList(): void
+    {
 
         $data = array();
 
@@ -60,7 +65,8 @@ final class LoyaltyRewardsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyRewardsCreate(): void {
+    public function testMethodLoyaltyRewardsCreate(): void
+    {
 
         $data = array();
 
@@ -79,7 +85,8 @@ final class LoyaltyRewardsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyRewardsEmptyTrash(): void {
+    public function testMethodLoyaltyRewardsEmptyTrash(): void
+    {
 
         $data = array();
 
@@ -93,7 +100,8 @@ final class LoyaltyRewardsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyRewardsPurge(): void {
+    public function testMethodLoyaltyRewardsPurge(): void
+    {
 
         $data = array();
 
@@ -107,7 +115,8 @@ final class LoyaltyRewardsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyRewardsDelete(): void {
+    public function testMethodLoyaltyRewardsDelete(): void
+    {
 
         $data = array();
 
@@ -122,7 +131,8 @@ final class LoyaltyRewardsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyRewardsGet(): void {
+    public function testMethodLoyaltyRewardsGet(): void
+    {
 
         $data = array();
 
@@ -137,7 +147,8 @@ final class LoyaltyRewardsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyRewardsUpdate(): void {
+    public function testMethodLoyaltyRewardsUpdate(): void
+    {
 
         $data = array();
 
@@ -152,7 +163,8 @@ final class LoyaltyRewardsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyRewardsRedeem(): void {
+    public function testMethodLoyaltyRewardsRedeem(): void
+    {
 
         $data = array();
 
@@ -167,7 +179,8 @@ final class LoyaltyRewardsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyRewardsRestore(): void {
+    public function testMethodLoyaltyRewardsRestore(): void
+    {
 
         $data = array();
 

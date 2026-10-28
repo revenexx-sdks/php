@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class JourneysWatchesTest extends TestCase {
+final class JourneysWatchesTest extends TestCase
+{
     private $client;
     private $journeysWatches;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->journeysWatches = new JourneysWatches($this->client);
     }
 
-    public function testMethodJourneysWatchesList(): void {
+    public function testMethodJourneysWatchesList(): void
+    {
 
         $data = array();
 
@@ -30,7 +33,8 @@ final class JourneysWatchesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodJourneysWatchesCreate(): void {
+    public function testMethodJourneysWatchesCreate(): void
+    {
 
         $data = array();
 
@@ -44,7 +48,8 @@ final class JourneysWatchesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodJourneysWatchesDelete(): void {
+    public function testMethodJourneysWatchesDelete(): void
+    {
 
         $data = array();
 
@@ -59,7 +64,8 @@ final class JourneysWatchesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodJourneysWatchesGet(): void {
+    public function testMethodJourneysWatchesGet(): void
+    {
 
         $data = array();
 

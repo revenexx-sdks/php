@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class AdsConversions extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The workflow reads `?state=ready`; filter also `?order_id=`, `?rule_id=`,

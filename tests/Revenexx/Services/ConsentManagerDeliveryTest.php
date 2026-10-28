@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class ConsentManagerDeliveryTest extends TestCase {
+final class ConsentManagerDeliveryTest extends TestCase
+{
     private $client;
     private $consentManagerDelivery;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->consentManagerDelivery = new ConsentManagerDelivery($this->client);
     }
 
-    public function testMethodConsentManagerDeliveryPolicy(): void {
+    public function testMethodConsentManagerDeliveryPolicy(): void
+    {
 
         $data = array();
 
@@ -30,7 +33,8 @@ final class ConsentManagerDeliveryTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerDeliveryPreview(): void {
+    public function testMethodConsentManagerDeliveryPreview(): void
+    {
 
         $data = array();
 

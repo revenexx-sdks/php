@@ -10,16 +10,19 @@ use Revenexx\Enums\Tone;
 use Revenexx\Enums\DocumentKindTone;
 use Revenexx\Enums\DocumentVocabularyPathName;
 
-final class DocumentsKindsTest extends TestCase {
+final class DocumentsKindsTest extends TestCase
+{
     private $client;
     private $documentsKinds;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->documentsKinds = new DocumentsKinds($this->client);
     }
 
-    public function testMethodDocumentsKindsList(): void {
+    public function testMethodDocumentsKindsList(): void
+    {
 
         $data = array();
 
@@ -33,7 +36,8 @@ final class DocumentsKindsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodDocumentsKindsCreate(): void {
+    public function testMethodDocumentsKindsCreate(): void
+    {
 
         $data = array();
 
@@ -49,7 +53,8 @@ final class DocumentsKindsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodDocumentsKindsDefaults(): void {
+    public function testMethodDocumentsKindsDefaults(): void
+    {
 
         $data = array();
 
@@ -64,7 +69,8 @@ final class DocumentsKindsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodDocumentsKindsDelete(): void {
+    public function testMethodDocumentsKindsDelete(): void
+    {
 
         $data = array();
 
@@ -79,7 +85,8 @@ final class DocumentsKindsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodDocumentsKindsGet(): void {
+    public function testMethodDocumentsKindsGet(): void
+    {
 
         $data = array();
 
@@ -94,7 +101,8 @@ final class DocumentsKindsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodDocumentsKindsUpdate(): void {
+    public function testMethodDocumentsKindsUpdate(): void
+    {
 
         $data = array();
 
@@ -109,7 +117,8 @@ final class DocumentsKindsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodDocumentsKindsMakeDefault(): void {
+    public function testMethodDocumentsKindsMakeDefault(): void
+    {
 
         $data = array();
 
@@ -124,7 +133,8 @@ final class DocumentsKindsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodDocumentsVocabulariesList(): void {
+    public function testMethodDocumentsVocabulariesList(): void
+    {
 
         $data = array();
 
@@ -138,7 +148,8 @@ final class DocumentsKindsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodDocumentsVocabulariesGet(): void {
+    public function testMethodDocumentsVocabulariesGet(): void
+    {
 
         $data = array();
 

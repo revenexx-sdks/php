@@ -9,16 +9,19 @@ use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\EntityType;
 use Revenexx\Enums\ProductsListKind;
 
-final class ProductsDataModelTest extends TestCase {
+final class ProductsDataModelTest extends TestCase
+{
     private $client;
     private $productsDataModel;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->productsDataModel = new ProductsDataModel($this->client);
     }
 
-    public function testMethodProductsAssetFamiliesList(): void {
+    public function testMethodProductsAssetFamiliesList(): void
+    {
 
         $data = array();
 
@@ -32,7 +35,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAssetFamiliesCreate(): void {
+    public function testMethodProductsAssetFamiliesCreate(): void
+    {
 
         $data = array();
 
@@ -47,7 +51,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAssetFamiliesDelete(): void {
+    public function testMethodProductsAssetFamiliesDelete(): void
+    {
 
         $data = array();
 
@@ -62,7 +67,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAssetFamiliesGet(): void {
+    public function testMethodProductsAssetFamiliesGet(): void
+    {
 
         $data = array();
 
@@ -77,7 +83,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAssetFamiliesUpdate(): void {
+    public function testMethodProductsAssetFamiliesUpdate(): void
+    {
 
         $data = array();
 
@@ -92,7 +99,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAssociationTypesList(): void {
+    public function testMethodProductsAssociationTypesList(): void
+    {
 
         $data = array();
 
@@ -106,7 +114,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAssociationTypesCreate(): void {
+    public function testMethodProductsAssociationTypesCreate(): void
+    {
 
         $data = array();
 
@@ -121,7 +130,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAssociationTypesDelete(): void {
+    public function testMethodProductsAssociationTypesDelete(): void
+    {
 
         $data = array();
 
@@ -136,7 +146,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAssociationTypesGet(): void {
+    public function testMethodProductsAssociationTypesGet(): void
+    {
 
         $data = array();
 
@@ -151,7 +162,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAssociationTypesUpdate(): void {
+    public function testMethodProductsAssociationTypesUpdate(): void
+    {
 
         $data = array();
 
@@ -166,7 +178,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAttributeSchema(): void {
+    public function testMethodProductsAttributeSchema(): void
+    {
 
         $data = array();
 
@@ -180,7 +193,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAttributeGroupsList(): void {
+    public function testMethodProductsAttributeGroupsList(): void
+    {
 
         $data = array();
 
@@ -194,7 +208,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAttributeGroupsCreate(): void {
+    public function testMethodProductsAttributeGroupsCreate(): void
+    {
 
         $data = array();
 
@@ -209,7 +224,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAttributeGroupsDelete(): void {
+    public function testMethodProductsAttributeGroupsDelete(): void
+    {
 
         $data = array();
 
@@ -224,7 +240,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAttributeGroupsGet(): void {
+    public function testMethodProductsAttributeGroupsGet(): void
+    {
 
         $data = array();
 
@@ -239,7 +256,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAttributeGroupsUpdate(): void {
+    public function testMethodProductsAttributeGroupsUpdate(): void
+    {
 
         $data = array();
 
@@ -254,7 +272,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAttributeOptionsList(): void {
+    public function testMethodProductsAttributeOptionsList(): void
+    {
 
         $data = array();
 
@@ -268,7 +287,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAttributeOptionsCreate(): void {
+    public function testMethodProductsAttributeOptionsCreate(): void
+    {
 
         $data = array();
 
@@ -284,7 +304,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAttributeOptionsDelete(): void {
+    public function testMethodProductsAttributeOptionsDelete(): void
+    {
 
         $data = array();
 
@@ -299,7 +320,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAttributeOptionsGet(): void {
+    public function testMethodProductsAttributeOptionsGet(): void
+    {
 
         $data = array();
 
@@ -314,7 +336,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAttributeOptionsUpdate(): void {
+    public function testMethodProductsAttributeOptionsUpdate(): void
+    {
 
         $data = array();
 
@@ -329,7 +352,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAttributesList(): void {
+    public function testMethodProductsAttributesList(): void
+    {
 
         $data = array();
 
@@ -343,7 +367,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAttributesCreate(): void {
+    public function testMethodProductsAttributesCreate(): void
+    {
 
         $data = array();
 
@@ -359,7 +384,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAttributesDelete(): void {
+    public function testMethodProductsAttributesDelete(): void
+    {
 
         $data = array();
 
@@ -374,7 +400,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAttributesGet(): void {
+    public function testMethodProductsAttributesGet(): void
+    {
 
         $data = array();
 
@@ -389,7 +416,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAttributesUpdate(): void {
+    public function testMethodProductsAttributesUpdate(): void
+    {
 
         $data = array();
 
@@ -404,7 +432,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsDefaultsRun(): void {
+    public function testMethodProductsDefaultsRun(): void
+    {
 
         $data = array();
 
@@ -419,7 +448,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsFamiliesList(): void {
+    public function testMethodProductsFamiliesList(): void
+    {
 
         $data = array();
 
@@ -433,7 +463,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsFamiliesCreate(): void {
+    public function testMethodProductsFamiliesCreate(): void
+    {
 
         $data = array();
 
@@ -448,7 +479,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsFamiliesDelete(): void {
+    public function testMethodProductsFamiliesDelete(): void
+    {
 
         $data = array();
 
@@ -463,7 +495,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsFamiliesGet(): void {
+    public function testMethodProductsFamiliesGet(): void
+    {
 
         $data = array();
 
@@ -478,7 +511,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsFamiliesUpdate(): void {
+    public function testMethodProductsFamiliesUpdate(): void
+    {
 
         $data = array();
 
@@ -493,7 +527,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsFamilyAttributesList(): void {
+    public function testMethodProductsFamilyAttributesList(): void
+    {
 
         $data = array();
 
@@ -507,7 +542,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsFamilyAttributesCreate(): void {
+    public function testMethodProductsFamilyAttributesCreate(): void
+    {
 
         $data = array();
 
@@ -523,7 +559,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsFamilyAttributesDelete(): void {
+    public function testMethodProductsFamilyAttributesDelete(): void
+    {
 
         $data = array();
 
@@ -538,7 +575,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsFamilyAttributesGet(): void {
+    public function testMethodProductsFamilyAttributesGet(): void
+    {
 
         $data = array();
 
@@ -553,7 +591,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsFamilyAttributesUpdate(): void {
+    public function testMethodProductsFamilyAttributesUpdate(): void
+    {
 
         $data = array();
 
@@ -568,7 +607,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsFamilyVariantsList(): void {
+    public function testMethodProductsFamilyVariantsList(): void
+    {
 
         $data = array();
 
@@ -582,7 +622,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsFamilyVariantsCreate(): void {
+    public function testMethodProductsFamilyVariantsCreate(): void
+    {
 
         $data = array();
 
@@ -598,7 +639,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsFamilyVariantsDelete(): void {
+    public function testMethodProductsFamilyVariantsDelete(): void
+    {
 
         $data = array();
 
@@ -613,7 +655,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsFamilyVariantsGet(): void {
+    public function testMethodProductsFamilyVariantsGet(): void
+    {
 
         $data = array();
 
@@ -628,7 +671,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsFamilyVariantsUpdate(): void {
+    public function testMethodProductsFamilyVariantsUpdate(): void
+    {
 
         $data = array();
 
@@ -643,7 +687,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsMeasurementFamiliesList(): void {
+    public function testMethodProductsMeasurementFamiliesList(): void
+    {
 
         $data = array();
 
@@ -657,7 +702,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsMeasurementFamiliesCreate(): void {
+    public function testMethodProductsMeasurementFamiliesCreate(): void
+    {
 
         $data = array();
 
@@ -673,7 +719,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsMeasurementFamiliesDelete(): void {
+    public function testMethodProductsMeasurementFamiliesDelete(): void
+    {
 
         $data = array();
 
@@ -688,7 +735,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsMeasurementFamiliesGet(): void {
+    public function testMethodProductsMeasurementFamiliesGet(): void
+    {
 
         $data = array();
 
@@ -703,7 +751,8 @@ final class ProductsDataModelTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsMeasurementFamiliesUpdate(): void {
+    public function testMethodProductsMeasurementFamiliesUpdate(): void
+    {
 
         $data = array();
 

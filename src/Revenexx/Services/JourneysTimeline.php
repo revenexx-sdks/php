@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class JourneysTimeline extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Filter `?enrollment_id=` for one person's timeline.

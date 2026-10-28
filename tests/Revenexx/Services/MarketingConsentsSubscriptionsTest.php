@@ -12,16 +12,19 @@ use Revenexx\Enums\MarketingConsentsConsentEventsListLegalBasis;
 use Revenexx\Enums\MarketingConsentsSubscriptionsListSource;
 use Revenexx\Enums\MarketingConsentsSubscriptionsRequestSource;
 
-final class MarketingConsentsSubscriptionsTest extends TestCase {
+final class MarketingConsentsSubscriptionsTest extends TestCase
+{
     private $client;
     private $marketingConsentsSubscriptions;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->marketingConsentsSubscriptions = new MarketingConsentsSubscriptions($this->client);
     }
 
-    public function testMethodMarketingConsentsSubscriptionsConfirm(): void {
+    public function testMethodMarketingConsentsSubscriptionsConfirm(): void
+    {
 
         $data = array();
 
@@ -37,7 +40,8 @@ final class MarketingConsentsSubscriptionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketingConsentsEligibilityCheck(): void {
+    public function testMethodMarketingConsentsEligibilityCheck(): void
+    {
 
         $data = array();
 
@@ -53,7 +57,8 @@ final class MarketingConsentsSubscriptionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketingConsentsPreferencesLinks(): void {
+    public function testMethodMarketingConsentsPreferencesLinks(): void
+    {
 
         $data = array();
 
@@ -68,7 +73,8 @@ final class MarketingConsentsSubscriptionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketingConsentsPreferencesGet(): void {
+    public function testMethodMarketingConsentsPreferencesGet(): void
+    {
 
         $data = array();
 
@@ -83,7 +89,8 @@ final class MarketingConsentsSubscriptionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketingConsentsPreferencesUpdate(): void {
+    public function testMethodMarketingConsentsPreferencesUpdate(): void
+    {
 
         $data = array();
 
@@ -98,7 +105,8 @@ final class MarketingConsentsSubscriptionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketingConsentsSubscriptionsList(): void {
+    public function testMethodMarketingConsentsSubscriptionsList(): void
+    {
 
         $data = array();
 
@@ -112,7 +120,8 @@ final class MarketingConsentsSubscriptionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketingConsentsSubscriptionsRequest(): void {
+    public function testMethodMarketingConsentsSubscriptionsRequest(): void
+    {
 
         $data = array();
 
@@ -127,7 +136,8 @@ final class MarketingConsentsSubscriptionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketingConsentsSubscriptionsGet(): void {
+    public function testMethodMarketingConsentsSubscriptionsGet(): void
+    {
 
         $data = array();
 
@@ -142,7 +152,8 @@ final class MarketingConsentsSubscriptionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketingConsentsSubscriptionsWithdraw(): void {
+    public function testMethodMarketingConsentsSubscriptionsWithdraw(): void
+    {
 
         $data = array();
 

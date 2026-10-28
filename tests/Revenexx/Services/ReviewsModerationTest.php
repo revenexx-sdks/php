@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class ReviewsModerationTest extends TestCase {
+final class ReviewsModerationTest extends TestCase
+{
     private $client;
     private $reviewsModeration;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->reviewsModeration = new ReviewsModeration($this->client);
     }
 
-    public function testMethodReviewsModerationPublish(): void {
+    public function testMethodReviewsModerationPublish(): void
+    {
 
         $data = array();
 
@@ -32,7 +35,8 @@ final class ReviewsModerationTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodReviewsModerationReject(): void {
+    public function testMethodReviewsModerationReject(): void
+    {
 
         $data = array();
 
@@ -48,7 +52,8 @@ final class ReviewsModerationTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodReviewsModerationReply(): void {
+    public function testMethodReviewsModerationReply(): void
+    {
 
         $data = array();
 

@@ -12,10 +12,10 @@ use Revenexx\Enums\ShippingMethodPricingType;
 
 class ShippingMethods extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Filterable by exact column value — `?code=`, `?enabled=`,

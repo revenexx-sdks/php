@@ -13,16 +13,19 @@ use Revenexx\Enums\CategoryRuleMatch;
 use Revenexx\Enums\ProductsProductCategoriesListSource;
 use Revenexx\Enums\ProductCategoriesSource;
 
-final class ProductsCategoriesTest extends TestCase {
+final class ProductsCategoriesTest extends TestCase
+{
     private $client;
     private $productsCategories;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->productsCategories = new ProductsCategories($this->client);
     }
 
-    public function testMethodProductsCategoriesList(): void {
+    public function testMethodProductsCategoriesList(): void
+    {
 
         $data = array();
 
@@ -36,7 +39,8 @@ final class ProductsCategoriesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsCategoriesCreate(): void {
+    public function testMethodProductsCategoriesCreate(): void
+    {
 
         $data = array();
 
@@ -51,7 +55,8 @@ final class ProductsCategoriesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsCategoriesRulesRecomputeAll(): void {
+    public function testMethodProductsCategoriesRulesRecomputeAll(): void
+    {
 
         $data = array();
 
@@ -66,7 +71,8 @@ final class ProductsCategoriesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsCategoriesEmptyTrash(): void {
+    public function testMethodProductsCategoriesEmptyTrash(): void
+    {
 
         $data = array();
 
@@ -80,7 +86,8 @@ final class ProductsCategoriesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsCategoriesRulesPreview(): void {
+    public function testMethodProductsCategoriesRulesPreview(): void
+    {
 
         $data = array();
 
@@ -96,7 +103,8 @@ final class ProductsCategoriesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsCategoriesRulesRecompute(): void {
+    public function testMethodProductsCategoriesRulesRecompute(): void
+    {
 
         $data = array();
 
@@ -111,7 +119,8 @@ final class ProductsCategoriesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsCategoriesDelete(): void {
+    public function testMethodProductsCategoriesDelete(): void
+    {
 
         $data = array();
 
@@ -126,7 +135,8 @@ final class ProductsCategoriesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsCategoriesGet(): void {
+    public function testMethodProductsCategoriesGet(): void
+    {
 
         $data = array();
 
@@ -141,7 +151,8 @@ final class ProductsCategoriesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsCategoriesUpdate(): void {
+    public function testMethodProductsCategoriesUpdate(): void
+    {
 
         $data = array();
 
@@ -156,7 +167,8 @@ final class ProductsCategoriesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsCategoriesRestore(): void {
+    public function testMethodProductsCategoriesRestore(): void
+    {
 
         $data = array();
 
@@ -171,7 +183,8 @@ final class ProductsCategoriesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsProductCategoriesList(): void {
+    public function testMethodProductsProductCategoriesList(): void
+    {
 
         $data = array();
 
@@ -185,7 +198,8 @@ final class ProductsCategoriesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsProductCategoriesCreate(): void {
+    public function testMethodProductsProductCategoriesCreate(): void
+    {
 
         $data = array();
 
@@ -201,7 +215,8 @@ final class ProductsCategoriesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsProductCategoriesDelete(): void {
+    public function testMethodProductsProductCategoriesDelete(): void
+    {
 
         $data = array();
 
@@ -216,7 +231,8 @@ final class ProductsCategoriesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsProductCategoriesGet(): void {
+    public function testMethodProductsProductCategoriesGet(): void
+    {
 
         $data = array();
 
@@ -231,7 +247,8 @@ final class ProductsCategoriesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsProductCategoriesUpdate(): void {
+    public function testMethodProductsProductCategoriesUpdate(): void
+    {
 
         $data = array();
 
@@ -246,7 +263,8 @@ final class ProductsCategoriesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsCategoriesAssign(): void {
+    public function testMethodProductsCategoriesAssign(): void
+    {
 
         $data = array();
 

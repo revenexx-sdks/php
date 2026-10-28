@@ -8,16 +8,19 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\PromotionsBatchesCreateStatus;
 
-final class PromotionsVouchersTest extends TestCase {
+final class PromotionsVouchersTest extends TestCase
+{
     private $client;
     private $promotionsVouchers;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->promotionsVouchers = new PromotionsVouchers($this->client);
     }
 
-    public function testMethodPromotionsBatchesList(): void {
+    public function testMethodPromotionsBatchesList(): void
+    {
 
         $data = array();
 
@@ -31,7 +34,8 @@ final class PromotionsVouchersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsBatchesCreate(): void {
+    public function testMethodPromotionsBatchesCreate(): void
+    {
 
         $data = array();
 
@@ -47,7 +51,8 @@ final class PromotionsVouchersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsBatchesDelete(): void {
+    public function testMethodPromotionsBatchesDelete(): void
+    {
 
         $data = array();
 
@@ -62,7 +67,8 @@ final class PromotionsVouchersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsBatchesGet(): void {
+    public function testMethodPromotionsBatchesGet(): void
+    {
 
         $data = array();
 
@@ -77,7 +83,8 @@ final class PromotionsVouchersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsBatchesUpdate(): void {
+    public function testMethodPromotionsBatchesUpdate(): void
+    {
 
         $data = array();
 
@@ -92,7 +99,8 @@ final class PromotionsVouchersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsBatchesDisable(): void {
+    public function testMethodPromotionsBatchesDisable(): void
+    {
 
         $data = array();
 
@@ -107,7 +115,8 @@ final class PromotionsVouchersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsBatchesExport(): void {
+    public function testMethodPromotionsBatchesExport(): void
+    {
 
         $data = array();
 
@@ -122,7 +131,8 @@ final class PromotionsVouchersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsBatchesExportFile(): void {
+    public function testMethodPromotionsBatchesExportFile(): void
+    {
 
         $data = array();
 
@@ -137,7 +147,8 @@ final class PromotionsVouchersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsBatchesGenerate(): void {
+    public function testMethodPromotionsBatchesGenerate(): void
+    {
 
         $data = array();
 
@@ -153,7 +164,8 @@ final class PromotionsVouchersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsBatchesGenerateFor(): void {
+    public function testMethodPromotionsBatchesGenerateFor(): void
+    {
 
         $data = array();
 
@@ -169,7 +181,8 @@ final class PromotionsVouchersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsBatchesImport(): void {
+    public function testMethodPromotionsBatchesImport(): void
+    {
 
         $data = array();
 
@@ -185,7 +198,8 @@ final class PromotionsVouchersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsVoucherReservationsList(): void {
+    public function testMethodPromotionsVoucherReservationsList(): void
+    {
 
         $data = array();
 
@@ -199,7 +213,8 @@ final class PromotionsVouchersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsVoucherReservationsCreate(): void {
+    public function testMethodPromotionsVoucherReservationsCreate(): void
+    {
 
         $data = array();
 
@@ -214,7 +229,8 @@ final class PromotionsVouchersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsVoucherReservationsDelete(): void {
+    public function testMethodPromotionsVoucherReservationsDelete(): void
+    {
 
         $data = array();
 
@@ -229,7 +245,8 @@ final class PromotionsVouchersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsVoucherReservationsGet(): void {
+    public function testMethodPromotionsVoucherReservationsGet(): void
+    {
 
         $data = array();
 
@@ -244,7 +261,8 @@ final class PromotionsVouchersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsVoucherReservationsUpdate(): void {
+    public function testMethodPromotionsVoucherReservationsUpdate(): void
+    {
 
         $data = array();
 
@@ -259,7 +277,8 @@ final class PromotionsVouchersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsVouchersList(): void {
+    public function testMethodPromotionsVouchersList(): void
+    {
 
         $data = array();
 
@@ -273,7 +292,8 @@ final class PromotionsVouchersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsVouchersCreate(): void {
+    public function testMethodPromotionsVouchersCreate(): void
+    {
 
         $data = array();
 
@@ -289,7 +309,8 @@ final class PromotionsVouchersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsVouchersDelete(): void {
+    public function testMethodPromotionsVouchersDelete(): void
+    {
 
         $data = array();
 
@@ -304,7 +325,8 @@ final class PromotionsVouchersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsVouchersGet(): void {
+    public function testMethodPromotionsVouchersGet(): void
+    {
 
         $data = array();
 
@@ -319,7 +341,8 @@ final class PromotionsVouchersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsVouchersUpdate(): void {
+    public function testMethodPromotionsVouchersUpdate(): void
+    {
 
         $data = array();
 

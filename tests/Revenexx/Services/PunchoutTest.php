@@ -9,16 +9,19 @@ use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\Protocol;
 use Revenexx\Enums\PunchoutVocabulariesGetName;
 
-final class PunchoutTest extends TestCase {
+final class PunchoutTest extends TestCase
+{
     private $client;
     private $punchout;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->punchout = new Punchout($this->client);
     }
 
-    public function testMethodPunchoutAccountsList(): void {
+    public function testMethodPunchoutAccountsList(): void
+    {
 
         $data = array();
 
@@ -32,7 +35,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutAccountsCreate(): void {
+    public function testMethodPunchoutAccountsCreate(): void
+    {
 
         $data = array();
 
@@ -50,7 +54,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutAccountsDelete(): void {
+    public function testMethodPunchoutAccountsDelete(): void
+    {
 
         $data = array();
 
@@ -65,7 +70,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutAccountsGet(): void {
+    public function testMethodPunchoutAccountsGet(): void
+    {
 
         $data = array();
 
@@ -80,7 +86,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutAccountsUpdate(): void {
+    public function testMethodPunchoutAccountsUpdate(): void
+    {
 
         $data = array();
 
@@ -95,7 +102,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutAccountsPreview(): void {
+    public function testMethodPunchoutAccountsPreview(): void
+    {
 
         $data = array();
 
@@ -111,7 +119,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutAccountsProbe(): void {
+    public function testMethodPunchoutAccountsProbe(): void
+    {
 
         $data = array();
 
@@ -127,7 +136,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutAccountsTest(): void {
+    public function testMethodPunchoutAccountsTest(): void
+    {
 
         $data = array();
 
@@ -143,7 +153,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutDefaults(): void {
+    public function testMethodPunchoutDefaults(): void
+    {
 
         $data = array();
 
@@ -158,7 +169,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutEntryRefusalsList(): void {
+    public function testMethodPunchoutEntryRefusalsList(): void
+    {
 
         $data = array();
 
@@ -172,7 +184,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutEntryCxml(): void {
+    public function testMethodPunchoutEntryCxml(): void
+    {
 
         $data = array();
 
@@ -188,7 +201,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutEntryIds(): void {
+    public function testMethodPunchoutEntryIds(): void
+    {
 
         $data = array();
 
@@ -203,7 +217,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutEntryOci(): void {
+    public function testMethodPunchoutEntryOci(): void
+    {
 
         $data = array();
 
@@ -219,7 +234,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutFieldMappingsList(): void {
+    public function testMethodPunchoutFieldMappingsList(): void
+    {
 
         $data = array();
 
@@ -233,7 +249,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutFieldMappingsCreate(): void {
+    public function testMethodPunchoutFieldMappingsCreate(): void
+    {
 
         $data = array();
 
@@ -251,7 +268,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutFieldMappingsExport(): void {
+    public function testMethodPunchoutFieldMappingsExport(): void
+    {
 
         $data = array();
 
@@ -266,7 +284,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutFieldMappingsImport(): void {
+    public function testMethodPunchoutFieldMappingsImport(): void
+    {
 
         $data = array();
 
@@ -282,7 +301,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutFieldMappingsDelete(): void {
+    public function testMethodPunchoutFieldMappingsDelete(): void
+    {
 
         $data = array();
 
@@ -297,7 +317,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutFieldMappingsGet(): void {
+    public function testMethodPunchoutFieldMappingsGet(): void
+    {
 
         $data = array();
 
@@ -312,7 +333,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutFieldMappingsUpdate(): void {
+    public function testMethodPunchoutFieldMappingsUpdate(): void
+    {
 
         $data = array();
 
@@ -327,7 +349,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutSessionsList(): void {
+    public function testMethodPunchoutSessionsList(): void
+    {
 
         $data = array();
 
@@ -341,7 +364,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutSessionsCreate(): void {
+    public function testMethodPunchoutSessionsCreate(): void
+    {
 
         $data = array();
 
@@ -360,7 +384,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutSessionsDelete(): void {
+    public function testMethodPunchoutSessionsDelete(): void
+    {
 
         $data = array();
 
@@ -375,7 +400,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutSessionsGet(): void {
+    public function testMethodPunchoutSessionsGet(): void
+    {
 
         $data = array();
 
@@ -390,7 +416,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutSessionsUpdate(): void {
+    public function testMethodPunchoutSessionsUpdate(): void
+    {
 
         $data = array();
 
@@ -405,7 +432,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutSessionsClaim(): void {
+    public function testMethodPunchoutSessionsClaim(): void
+    {
 
         $data = array();
 
@@ -421,7 +449,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutSessionsOrdered(): void {
+    public function testMethodPunchoutSessionsOrdered(): void
+    {
 
         $data = array();
 
@@ -437,7 +466,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutSessionsReturn(): void {
+    public function testMethodPunchoutSessionsReturn(): void
+    {
 
         $data = array();
 
@@ -453,7 +483,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutSetupGet(): void {
+    public function testMethodPunchoutSetupGet(): void
+    {
 
         $data = array();
 
@@ -467,7 +498,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutTransferItemsList(): void {
+    public function testMethodPunchoutTransferItemsList(): void
+    {
 
         $data = array();
 
@@ -481,7 +513,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutTransferItemsCreate(): void {
+    public function testMethodPunchoutTransferItemsCreate(): void
+    {
 
         $data = array();
 
@@ -498,7 +531,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutTransferItemsGet(): void {
+    public function testMethodPunchoutTransferItemsGet(): void
+    {
 
         $data = array();
 
@@ -513,7 +547,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutTransfersList(): void {
+    public function testMethodPunchoutTransfersList(): void
+    {
 
         $data = array();
 
@@ -527,7 +562,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutTransfersCreate(): void {
+    public function testMethodPunchoutTransfersCreate(): void
+    {
 
         $data = array();
 
@@ -545,7 +581,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutTransfersGet(): void {
+    public function testMethodPunchoutTransfersGet(): void
+    {
 
         $data = array();
 
@@ -560,7 +597,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutTransfersUpdate(): void {
+    public function testMethodPunchoutTransfersUpdate(): void
+    {
 
         $data = array();
 
@@ -575,7 +613,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutVocabulariesList(): void {
+    public function testMethodPunchoutVocabulariesList(): void
+    {
 
         $data = array();
 
@@ -589,7 +628,8 @@ final class PunchoutTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPunchoutVocabulariesGet(): void {
+    public function testMethodPunchoutVocabulariesGet(): void
+    {
 
         $data = array();
 

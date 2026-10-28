@@ -14,16 +14,19 @@ use Revenexx\Enums\CartIoEntity;
 use Revenexx\Enums\CartIoFormat;
 use Revenexx\Enums\CartIoApplyMode;
 
-final class CartsIoTest extends TestCase {
+final class CartsIoTest extends TestCase
+{
     private $client;
     private $cartsIo;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->cartsIo = new CartsIo($this->client);
     }
 
-    public function testMethodCartsExportAll(): void {
+    public function testMethodCartsExportAll(): void
+    {
 
         $data = array();
 
@@ -37,7 +40,8 @@ final class CartsIoTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsImport(): void {
+    public function testMethodCartsImport(): void
+    {
 
         $data = array();
 
@@ -51,7 +55,8 @@ final class CartsIoTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsIoFields(): void {
+    public function testMethodCartsIoFields(): void
+    {
 
         $data = array();
 
@@ -65,7 +70,8 @@ final class CartsIoTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsIoProfilesList(): void {
+    public function testMethodCartsIoProfilesList(): void
+    {
 
         $data = array();
 
@@ -79,7 +85,8 @@ final class CartsIoTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsIoProfilesCreate(): void {
+    public function testMethodCartsIoProfilesCreate(): void
+    {
 
         $data = array();
 
@@ -95,7 +102,8 @@ final class CartsIoTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsIoProfilesDefaults(): void {
+    public function testMethodCartsIoProfilesDefaults(): void
+    {
 
         $data = array();
 
@@ -109,7 +117,8 @@ final class CartsIoTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsIoProfilesDelete(): void {
+    public function testMethodCartsIoProfilesDelete(): void
+    {
 
         $data = array();
 
@@ -124,7 +133,8 @@ final class CartsIoTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsIoProfilesGet(): void {
+    public function testMethodCartsIoProfilesGet(): void
+    {
 
         $data = array();
 
@@ -139,7 +149,8 @@ final class CartsIoTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsIoProfilesUpdate(): void {
+    public function testMethodCartsIoProfilesUpdate(): void
+    {
 
         $data = array();
 
@@ -154,7 +165,8 @@ final class CartsIoTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsIoProfilesCopy(): void {
+    public function testMethodCartsIoProfilesCopy(): void
+    {
 
         $data = array();
 
@@ -170,7 +182,8 @@ final class CartsIoTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsExport(): void {
+    public function testMethodCartsExport(): void
+    {
 
         $data = array();
 

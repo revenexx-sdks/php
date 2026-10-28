@@ -10,10 +10,10 @@ use Revenexx\Enums\Tone;
 
 class CustomersRoles extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * What the role editor offers: every permission with its words per language,

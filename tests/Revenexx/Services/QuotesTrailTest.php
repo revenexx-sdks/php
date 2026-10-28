@@ -9,16 +9,19 @@ use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\QuotesTrailAttachDirection;
 use Revenexx\Enums\Visibility;
 
-final class QuotesTrailTest extends TestCase {
+final class QuotesTrailTest extends TestCase
+{
     private $client;
     private $quotesTrail;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->quotesTrail = new QuotesTrail($this->client);
     }
 
-    public function testMethodQuotesTrailAttach(): void {
+    public function testMethodQuotesTrailAttach(): void
+    {
 
         $data = array();
 
@@ -35,7 +38,8 @@ final class QuotesTrailTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodQuotesTrailNote(): void {
+    public function testMethodQuotesTrailNote(): void
+    {
 
         $data = array();
 

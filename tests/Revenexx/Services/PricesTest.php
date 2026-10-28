@@ -16,16 +16,19 @@ use Revenexx\Enums\PriceEndingRule;
 use Revenexx\Enums\PriceEntriesBulkMode;
 use Revenexx\Enums\PricesVocabulariesGetName;
 
-final class PricesTest extends TestCase {
+final class PricesTest extends TestCase
+{
     private $client;
     private $prices;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->prices = new Prices($this->client);
     }
 
-    public function testMethodPricesCheck(): void {
+    public function testMethodPricesCheck(): void
+    {
 
         $data = array();
 
@@ -39,7 +42,8 @@ final class PricesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPricesListsList(): void {
+    public function testMethodPricesListsList(): void
+    {
 
         $data = array();
 
@@ -53,7 +57,8 @@ final class PricesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPricesListsCreate(): void {
+    public function testMethodPricesListsCreate(): void
+    {
 
         $data = array();
 
@@ -69,7 +74,8 @@ final class PricesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPricesListsDefaults(): void {
+    public function testMethodPricesListsDefaults(): void
+    {
 
         $data = array();
 
@@ -83,7 +89,8 @@ final class PricesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPricesListsEmptyTrash(): void {
+    public function testMethodPricesListsEmptyTrash(): void
+    {
 
         $data = array();
 
@@ -98,7 +105,8 @@ final class PricesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPricesListsDelete(): void {
+    public function testMethodPricesListsDelete(): void
+    {
 
         $data = array();
 
@@ -113,7 +121,8 @@ final class PricesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPricesListsGet(): void {
+    public function testMethodPricesListsGet(): void
+    {
 
         $data = array();
 
@@ -128,7 +137,8 @@ final class PricesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPricesListsUpdate(): void {
+    public function testMethodPricesListsUpdate(): void
+    {
 
         $data = array();
 
@@ -143,7 +153,8 @@ final class PricesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPricesListsCopy(): void {
+    public function testMethodPricesListsCopy(): void
+    {
 
         $data = array();
 
@@ -159,7 +170,8 @@ final class PricesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPricesListsRestore(): void {
+    public function testMethodPricesListsRestore(): void
+    {
 
         $data = array();
 
@@ -175,7 +187,8 @@ final class PricesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPricesEntriesList(): void {
+    public function testMethodPricesEntriesList(): void
+    {
 
         $data = array();
 
@@ -190,7 +203,8 @@ final class PricesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPricesEntriesCreate(): void {
+    public function testMethodPricesEntriesCreate(): void
+    {
 
         $data = array();
 
@@ -205,7 +219,8 @@ final class PricesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPricesEntriesReplace(): void {
+    public function testMethodPricesEntriesReplace(): void
+    {
 
         $data = array();
 
@@ -221,7 +236,8 @@ final class PricesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPricesEntriesAdjust(): void {
+    public function testMethodPricesEntriesAdjust(): void
+    {
 
         $data = array();
 
@@ -236,7 +252,8 @@ final class PricesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPricesEntriesBulk(): void {
+    public function testMethodPricesEntriesBulk(): void
+    {
 
         $data = array();
 
@@ -252,7 +269,8 @@ final class PricesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPricesEntriesLadder(): void {
+    public function testMethodPricesEntriesLadder(): void
+    {
 
         $data = array();
 
@@ -268,7 +286,8 @@ final class PricesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPricesEntriesDelete(): void {
+    public function testMethodPricesEntriesDelete(): void
+    {
 
         $data = array();
 
@@ -284,7 +303,8 @@ final class PricesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPricesEntriesGet(): void {
+    public function testMethodPricesEntriesGet(): void
+    {
 
         $data = array();
 
@@ -300,7 +320,8 @@ final class PricesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPricesEntriesUpdate(): void {
+    public function testMethodPricesEntriesUpdate(): void
+    {
 
         $data = array();
 
@@ -316,7 +337,8 @@ final class PricesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPricesListsMakeDefault(): void {
+    public function testMethodPricesListsMakeDefault(): void
+    {
 
         $data = array();
 
@@ -332,7 +354,8 @@ final class PricesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPricesResolve(): void {
+    public function testMethodPricesResolve(): void
+    {
 
         $data = array();
 
@@ -347,7 +370,8 @@ final class PricesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPricesVocabulariesList(): void {
+    public function testMethodPricesVocabulariesList(): void
+    {
 
         $data = array();
 
@@ -361,7 +385,8 @@ final class PricesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPricesVocabulariesGet(): void {
+    public function testMethodPricesVocabulariesGet(): void
+    {
 
         $data = array();
 

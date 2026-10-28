@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class JourneysWatches extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Filter `?product_id=&state=waiting`.

@@ -15,10 +15,10 @@ use Revenexx\Enums\State;
 
 class MarketingConsentsEvidence extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The proof, newest last when ordered by `at`. Filter by `subscription_id`,

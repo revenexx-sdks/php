@@ -1,13 +1,17 @@
 <?php
+
 namespace Revenexx;
 
-class InputFile {
+class InputFile
+{
     private ?string $data;
     private ?string $mimeType;
     private ?string $filename;
     private ?string $path;
 
-    public function __construct(){}
+    public function __construct()
+    {
+    }
 
     public function getData(): ?string
     {
@@ -37,7 +41,7 @@ class InputFile {
         $instance->mimeType = $mimeType;
         $instance->filename = $filename;
         return $instance;
-    } 
+    }
 
     public static function withData(string $data, ?string $mimeType = null, ?string $filename = null): InputFile
     {

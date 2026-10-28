@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class MailingsAnalysisTest extends TestCase {
+final class MailingsAnalysisTest extends TestCase
+{
     private $client;
     private $mailingsAnalysis;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->mailingsAnalysis = new MailingsAnalysis($this->client);
     }
 
-    public function testMethodMailingsAnalysisListClicks(): void {
+    public function testMethodMailingsAnalysisListClicks(): void
+    {
 
         $data = array();
 
@@ -30,7 +33,8 @@ final class MailingsAnalysisTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMailingsAnalysisGetClick(): void {
+    public function testMethodMailingsAnalysisGetClick(): void
+    {
 
         $data = array();
 
@@ -45,7 +49,8 @@ final class MailingsAnalysisTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMailingsAnalysisListEngagements(): void {
+    public function testMethodMailingsAnalysisListEngagements(): void
+    {
 
         $data = array();
 
@@ -59,7 +64,8 @@ final class MailingsAnalysisTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMailingsAnalysisGetEngagement(): void {
+    public function testMethodMailingsAnalysisGetEngagement(): void
+    {
 
         $data = array();
 
@@ -74,7 +80,8 @@ final class MailingsAnalysisTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMailingsAnalysisClicks(): void {
+    public function testMethodMailingsAnalysisClicks(): void
+    {
 
         $data = array();
 
@@ -89,7 +96,8 @@ final class MailingsAnalysisTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMailingsAnalysisStats(): void {
+    public function testMethodMailingsAnalysisStats(): void
+    {
 
         $data = array();
 
@@ -104,7 +112,8 @@ final class MailingsAnalysisTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMailingsAnalysisTimeline(): void {
+    public function testMethodMailingsAnalysisTimeline(): void
+    {
 
         $data = array();
 
@@ -119,7 +128,8 @@ final class MailingsAnalysisTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMailingsAnalysisListStats(): void {
+    public function testMethodMailingsAnalysisListStats(): void
+    {
 
         $data = array();
 
@@ -133,7 +143,8 @@ final class MailingsAnalysisTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMailingsAnalysisSweep(): void {
+    public function testMethodMailingsAnalysisSweep(): void
+    {
 
         $data = array();
 
@@ -148,7 +159,8 @@ final class MailingsAnalysisTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMailingsAnalysisGetStats(): void {
+    public function testMethodMailingsAnalysisGetStats(): void
+    {
 
         $data = array();
 

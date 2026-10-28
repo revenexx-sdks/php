@@ -11,16 +11,19 @@ use Revenexx\Enums\Deleted;
 use Revenexx\Enums\PagesSeedMode;
 use Revenexx\Enums\PagesVocabulariesGetName;
 
-final class PagesTest extends TestCase {
+final class PagesTest extends TestCase
+{
     private $client;
     private $pages;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->pages = new Pages($this->client);
     }
 
-    public function testMethodPagesLibraryList(): void {
+    public function testMethodPagesLibraryList(): void
+    {
 
         $data = array();
 
@@ -34,7 +37,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesLibraryDelete(): void {
+    public function testMethodPagesLibraryDelete(): void
+    {
 
         $data = array();
 
@@ -49,7 +53,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesLibraryGet(): void {
+    public function testMethodPagesLibraryGet(): void
+    {
 
         $data = array();
 
@@ -64,7 +69,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesLibraryUpdate(): void {
+    public function testMethodPagesLibraryUpdate(): void
+    {
 
         $data = array();
 
@@ -79,7 +85,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesMenusList(): void {
+    public function testMethodPagesMenusList(): void
+    {
 
         $data = array();
 
@@ -93,7 +100,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesMenusUpsert(): void {
+    public function testMethodPagesMenusUpsert(): void
+    {
 
         $data = array();
 
@@ -109,7 +117,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesMenusDelete(): void {
+    public function testMethodPagesMenusDelete(): void
+    {
 
         $data = array();
 
@@ -124,7 +133,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesMenusGet(): void {
+    public function testMethodPagesMenusGet(): void
+    {
 
         $data = array();
 
@@ -139,7 +149,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesMenusUpdate(): void {
+    public function testMethodPagesMenusUpdate(): void
+    {
 
         $data = array();
 
@@ -154,7 +165,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesPagesList(): void {
+    public function testMethodPagesPagesList(): void
+    {
 
         $data = array();
 
@@ -168,7 +180,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesPagesCreate(): void {
+    public function testMethodPagesPagesCreate(): void
+    {
 
         $data = array();
 
@@ -183,7 +196,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesPagesDelete(): void {
+    public function testMethodPagesPagesDelete(): void
+    {
 
         $data = array();
 
@@ -198,7 +212,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesPagesGet(): void {
+    public function testMethodPagesPagesGet(): void
+    {
 
         $data = array();
 
@@ -213,7 +228,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesPagesUpdate(): void {
+    public function testMethodPagesPagesUpdate(): void
+    {
 
         $data = array();
 
@@ -228,7 +244,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesPagesDuplicate(): void {
+    public function testMethodPagesPagesDuplicate(): void
+    {
 
         $data = array();
 
@@ -243,7 +260,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesPagesRestore(): void {
+    public function testMethodPagesPagesRestore(): void
+    {
 
         $data = array();
 
@@ -258,7 +276,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesPagesRevisions(): void {
+    public function testMethodPagesPagesRevisions(): void
+    {
 
         $data = array();
 
@@ -273,7 +292,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesPopupsList(): void {
+    public function testMethodPagesPopupsList(): void
+    {
 
         $data = array();
 
@@ -287,7 +307,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesPopupsCreate(): void {
+    public function testMethodPagesPopupsCreate(): void
+    {
 
         $data = array();
 
@@ -302,7 +323,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesPopupsUpdate(): void {
+    public function testMethodPagesPopupsUpdate(): void
+    {
 
         $data = array();
 
@@ -317,7 +339,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesSeed(): void {
+    public function testMethodPagesSeed(): void
+    {
 
         $data = array();
 
@@ -331,7 +354,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesSettingsSiteList(): void {
+    public function testMethodPagesSettingsSiteList(): void
+    {
 
         $data = array();
 
@@ -345,7 +369,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesSettingsSiteDelete(): void {
+    public function testMethodPagesSettingsSiteDelete(): void
+    {
 
         $data = array();
 
@@ -360,7 +385,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesSettingsSiteGet(): void {
+    public function testMethodPagesSettingsSiteGet(): void
+    {
 
         $data = array();
 
@@ -375,7 +401,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesSettingsSitePut(): void {
+    public function testMethodPagesSettingsSitePut(): void
+    {
 
         $data = array();
 
@@ -391,7 +418,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesTemplateAssignmentsList(): void {
+    public function testMethodPagesTemplateAssignmentsList(): void
+    {
 
         $data = array();
 
@@ -405,7 +433,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesTemplateAssignmentsDelete(): void {
+    public function testMethodPagesTemplateAssignmentsDelete(): void
+    {
 
         $data = array();
 
@@ -421,7 +450,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesTemplateAssignmentsPut(): void {
+    public function testMethodPagesTemplateAssignmentsPut(): void
+    {
 
         $data = array();
 
@@ -438,7 +468,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesTemplatesList(): void {
+    public function testMethodPagesTemplatesList(): void
+    {
 
         $data = array();
 
@@ -452,7 +483,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesTemplatesDelete(): void {
+    public function testMethodPagesTemplatesDelete(): void
+    {
 
         $data = array();
 
@@ -467,7 +499,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesTemplatesGet(): void {
+    public function testMethodPagesTemplatesGet(): void
+    {
 
         $data = array(
             "body_html" => "",
@@ -511,7 +544,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesTemplatesUpdate(): void {
+    public function testMethodPagesTemplatesUpdate(): void
+    {
 
         $data = array(
             "body_html" => "",
@@ -555,7 +589,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesVocabulariesList(): void {
+    public function testMethodPagesVocabulariesList(): void
+    {
 
         $data = array();
 
@@ -569,7 +604,8 @@ final class PagesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesVocabulariesGet(): void {
+    public function testMethodPagesVocabulariesGet(): void
+    {
 
         $data = array();
 

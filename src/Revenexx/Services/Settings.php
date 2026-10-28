@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class Settings extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The tenant's effective settings for the app — the declared schema's

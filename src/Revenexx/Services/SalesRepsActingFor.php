@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class SalesRepsActingFor extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * An impersonation entry records that a rep acted for a buyer — which rep,

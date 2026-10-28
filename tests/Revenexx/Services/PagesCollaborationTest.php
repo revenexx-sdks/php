@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class PagesCollaborationTest extends TestCase {
+final class PagesCollaborationTest extends TestCase
+{
     private $client;
     private $pagesCollaboration;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->pagesCollaboration = new PagesCollaboration($this->client);
     }
 
-    public function testMethodPagesEditorNotificationsList(): void {
+    public function testMethodPagesEditorNotificationsList(): void
+    {
 
         $data = array();
 
@@ -30,7 +33,8 @@ final class PagesCollaborationTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesEditorNotificationsMarkAllRead(): void {
+    public function testMethodPagesEditorNotificationsMarkAllRead(): void
+    {
 
         $data = array();
 
@@ -44,7 +48,8 @@ final class PagesCollaborationTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesEditorNotificationsUnreadCount(): void {
+    public function testMethodPagesEditorNotificationsUnreadCount(): void
+    {
 
         $data = array();
 
@@ -58,7 +63,8 @@ final class PagesCollaborationTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesEditorUsers(): void {
+    public function testMethodPagesEditorUsers(): void
+    {
 
         $data = array();
 
@@ -72,7 +78,8 @@ final class PagesCollaborationTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesEditorCommentsList(): void {
+    public function testMethodPagesEditorCommentsList(): void
+    {
 
         $data = array();
 
@@ -87,7 +94,8 @@ final class PagesCollaborationTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesEditorCommentsCreate(): void {
+    public function testMethodPagesEditorCommentsCreate(): void
+    {
 
         $data = array();
 
@@ -103,7 +111,8 @@ final class PagesCollaborationTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesEditorCommentsDelete(): void {
+    public function testMethodPagesEditorCommentsDelete(): void
+    {
 
         $data = array();
 
@@ -119,7 +128,8 @@ final class PagesCollaborationTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesEditorCommentsUpdate(): void {
+    public function testMethodPagesEditorCommentsUpdate(): void
+    {
 
         $data = array();
 
@@ -136,7 +146,8 @@ final class PagesCollaborationTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesEditorCommentsResolve(): void {
+    public function testMethodPagesEditorCommentsResolve(): void
+    {
 
         $data = array();
 
@@ -152,7 +163,8 @@ final class PagesCollaborationTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesEditorCommentsToggleTask(): void {
+    public function testMethodPagesEditorCommentsToggleTask(): void
+    {
 
         $data = array();
 
@@ -169,7 +181,8 @@ final class PagesCollaborationTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesEditorCommentsUnresolve(): void {
+    public function testMethodPagesEditorCommentsUnresolve(): void
+    {
 
         $data = array();
 

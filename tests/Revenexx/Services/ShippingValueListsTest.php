@@ -9,16 +9,19 @@ use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\Tone;
 use Revenexx\Enums\ShippingVocabulariesGetName;
 
-final class ShippingValueListsTest extends TestCase {
+final class ShippingValueListsTest extends TestCase
+{
     private $client;
     private $shippingValueLists;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->shippingValueLists = new ShippingValueLists($this->client);
     }
 
-    public function testMethodShippingServiceLevelsList(): void {
+    public function testMethodShippingServiceLevelsList(): void
+    {
 
         $data = array();
 
@@ -32,7 +35,8 @@ final class ShippingValueListsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodShippingServiceLevelsCreate(): void {
+    public function testMethodShippingServiceLevelsCreate(): void
+    {
 
         $data = array();
 
@@ -48,7 +52,8 @@ final class ShippingValueListsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodShippingServiceLevelsDelete(): void {
+    public function testMethodShippingServiceLevelsDelete(): void
+    {
 
         $data = array();
 
@@ -63,7 +68,8 @@ final class ShippingValueListsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodShippingServiceLevelsGet(): void {
+    public function testMethodShippingServiceLevelsGet(): void
+    {
 
         $data = array();
 
@@ -78,7 +84,8 @@ final class ShippingValueListsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodShippingServiceLevelsUpdate(): void {
+    public function testMethodShippingServiceLevelsUpdate(): void
+    {
 
         $data = array();
 
@@ -93,7 +100,8 @@ final class ShippingValueListsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodShippingServiceLevelsMakeDefault(): void {
+    public function testMethodShippingServiceLevelsMakeDefault(): void
+    {
 
         $data = array();
 
@@ -109,7 +117,8 @@ final class ShippingValueListsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodShippingVocabulariesList(): void {
+    public function testMethodShippingVocabulariesList(): void
+    {
 
         $data = array();
 
@@ -123,7 +132,8 @@ final class ShippingValueListsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodShippingVocabulariesGet(): void {
+    public function testMethodShippingVocabulariesGet(): void
+    {
 
         $data = array();
 
@@ -138,7 +148,8 @@ final class ShippingValueListsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodShippingWeightUnitsList(): void {
+    public function testMethodShippingWeightUnitsList(): void
+    {
 
         $data = array();
 
@@ -152,7 +163,8 @@ final class ShippingValueListsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodShippingWeightUnitsCreate(): void {
+    public function testMethodShippingWeightUnitsCreate(): void
+    {
 
         $data = array();
 
@@ -169,7 +181,8 @@ final class ShippingValueListsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodShippingWeightUnitsDelete(): void {
+    public function testMethodShippingWeightUnitsDelete(): void
+    {
 
         $data = array();
 
@@ -184,7 +197,8 @@ final class ShippingValueListsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodShippingWeightUnitsGet(): void {
+    public function testMethodShippingWeightUnitsGet(): void
+    {
 
         $data = array();
 
@@ -199,7 +213,8 @@ final class ShippingValueListsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodShippingWeightUnitsUpdate(): void {
+    public function testMethodShippingWeightUnitsUpdate(): void
+    {
 
         $data = array();
 
@@ -214,7 +229,8 @@ final class ShippingValueListsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodShippingWeightUnitsMakeBase(): void {
+    public function testMethodShippingWeightUnitsMakeBase(): void
+    {
 
         $data = array();
 
@@ -230,7 +246,8 @@ final class ShippingValueListsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodShippingWeightUnitsMakeDefault(): void {
+    public function testMethodShippingWeightUnitsMakeDefault(): void
+    {
 
         $data = array();
 

@@ -14,17 +14,17 @@ use Revenexx\Enums\WhatsappCategory;
 
 class Messaging extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Filterable by `resource_type`, `resource_id` and `subject` — the last one
      * being the human-readable name a row was recorded under (a template's key,
      * a layout's name), which is what an operator has to hand six weeks later
      * when the id means nothing to them.
-     * 
+     *
      * There is no write route and no delete route: an append-only log with an
      * editor is a log that says whatever the last editor wanted.
      *
@@ -108,7 +108,7 @@ class Messaging extends Service
      * rendered against the event payload when the event arrives, which is the
      * only way one binding can serve every customer. An event that renders it
      * empty is skipped and logged rather than sent to nobody.
-     * 
+     *
      * `locale` is what the OPERATOR said this route speaks, and it outranks the
      * tenant's default. Leave it null when nobody has made that decision, so
      * that the recipient's own language is still allowed to decide.
@@ -220,7 +220,7 @@ class Messaging extends Service
      * is how a binding is taken out of service without losing what it said —
      * the alternative is deleting it and typing the payload path back in
      * correctly from memory later.
-     * 
+     *
      * This path answers on `PUT` and `PATCH`, both routed to the same action.
      *
      * @param string $id
@@ -286,7 +286,7 @@ class Messaging extends Service
      * is how a binding is taken out of service without losing what it said —
      * the alternative is deleting it and typing the payload path back in
      * correctly from memory later.
-     * 
+     *
      * This path answers on `PUT` and `PATCH`, both routed to the same action.
      *
      * @param string $id
@@ -354,7 +354,7 @@ class Messaging extends Service
      * whether the deployment has the channel switched on at all, the URL to
      * paste into the provider's own console so bounces and opens come back, and
      * whether callbacks are actually arriving.
-     * 
+     *
      * Admin tier on the read as well as the write: the identifiers alone —
      * which Twilio account, which sender number — are more than a read-only
      * operator has reason to see, and the webhook URL served here contains the
@@ -399,7 +399,7 @@ class Messaging extends Service
      * which is what it did before anybody configured it. Without a market the
      * channel goes entirely, overrides and all: a caller asking for a channel
      * to hold no credentials means all of them.
-     * 
+     *
      * 204 whether or not anything was there. The caller wants this channel to
      * hold no credentials, and it does.
      *
@@ -438,7 +438,7 @@ class Messaging extends Service
      * body are written, and the answer says which of them actually CHANGED, so
      * a form that resent everything it had on screen does not report a change
      * that did not happen.
-     * 
+     *
      * Three refusals, all 422 and all deliberate rather than ignored. A field
      * the channel's provider does not have (`unknown_credential_field`) — a
      * typo sitting in the bag looking like configuration fails later with a
@@ -448,12 +448,12 @@ class Messaging extends Service
      * configure (`channel_not_configurable`), which is push: its VAPID keypair
      * is generated at provisioning, and pasting a new one would orphan every
      * browser registration the tenant has collected.
-     * 
+     *
      * Switching provider is `driver`, and the fields in the same request are
      * validated against the provider being switched TO — validating Postmark's
      * key against Mailgun's field list is how a switch loses everything the
      * operator just typed.
-     * 
+     *
      * This path answers on `PUT` and `PATCH`, both routed to the same action.
      *
      * @param string $channel
@@ -494,7 +494,7 @@ class Messaging extends Service
      * body are written, and the answer says which of them actually CHANGED, so
      * a form that resent everything it had on screen does not report a change
      * that did not happen.
-     * 
+     *
      * Three refusals, all 422 and all deliberate rather than ignored. A field
      * the channel's provider does not have (`unknown_credential_field`) — a
      * typo sitting in the bag looking like configuration fails later with a
@@ -504,12 +504,12 @@ class Messaging extends Service
      * configure (`channel_not_configurable`), which is push: its VAPID keypair
      * is generated at provisioning, and pasting a new one would orphan every
      * browser registration the tenant has collected.
-     * 
+     *
      * Switching provider is `driver`, and the fields in the same request are
      * validated against the provider being switched TO — validating Postmark's
      * key against Mailgun's field list is how a switch loses everything the
      * operator just typed.
-     * 
+     *
      * This path answers on `PUT` and `PATCH`, both routed to the same action.
      *
      * @param string $channel
@@ -550,7 +550,7 @@ class Messaging extends Service
      * that only fail at send time cost a customer their first order
      * confirmation, and by then nobody connects the failure to the afternoon
      * somebody pasted a key with a trailing space.
-     * 
+     *
      * **Always 200.** The answer is `{ok, message}` in the body, including when
      * the credentials are wrong: the REQUEST was fine, the credentials are not,
      * and a 4xx here would have the cockpit's own error handling swallow the
@@ -623,7 +623,7 @@ class Messaging extends Service
      * A tenant that was never provisioned has no row and still gets an answer:
      * an empty shape rather than a 404, so the Cockpit's panels open on
      * editable blanks instead of an error.
-     * 
+     *
      * `meta.push_public_key` is the VAPID public key, and only the public one.
      * A storefront cannot call `PushManager.subscribe()` without it, so it has
      * to leave the service; the private half and every provider secret stay
@@ -658,7 +658,7 @@ class Messaging extends Service
      * ago — content placeholders resolve at send time, not at save time —
      * which
      * is why writing is admin tier while reading is not.
-     * 
+     *
      * Two refusals worth knowing about. `defaults.brand` is 422, not ignored:
      * the letterhead moved to /v1/layouts when a tenant gained more than one of
      * them, and a letterhead edit that appears to save and changes nothing is
@@ -666,11 +666,11 @@ class Messaging extends Service
      * is 422 as well — a tenant that typed a start and forgot the end has an
      * opinion about when not to message people, and silently sending through
      * the night is the one answer that is definitely wrong.
-     * 
+     *
      * Provider credentials cannot be written here. That path is
      * /v1/channel-credentials, so the one route that handles secrets stays the
      * one that was built for it.
-     * 
+     *
      * This path answers on `PUT` and `PATCH`, both routed to the same action.
      *
      * @param ?string $defaultLocale
@@ -712,7 +712,7 @@ class Messaging extends Service
      * ago — content placeholders resolve at send time, not at save time —
      * which
      * is why writing is admin tier while reading is not.
-     * 
+     *
      * Two refusals worth knowing about. `defaults.brand` is 422, not ignored:
      * the letterhead moved to /v1/layouts when a tenant gained more than one of
      * them, and a letterhead edit that appears to save and changes nothing is
@@ -720,11 +720,11 @@ class Messaging extends Service
      * is 422 as well — a tenant that typed a start and forgot the end has an
      * opinion about when not to message people, and silently sending through
      * the night is the one answer that is definitely wrong.
-     * 
+     *
      * Provider credentials cannot be written here. That path is
      * /v1/channel-credentials, so the one route that handles secrets stays the
      * one that was built for it.
-     * 
+     *
      * This path answers on `PUT` and `PATCH`, both routed to the same action.
      *
      * @param ?string $defaultLocale
@@ -764,7 +764,7 @@ class Messaging extends Service
     /**
      * The order is the list's purpose: it is a picker, and the entry most
      * templates are actually on belongs at the top of it.
-     * 
+     *
      * Market-scoped as a browsing filter — see the parameters. `GET
      * /layouts/{id}`
      * deliberately is not: somebody holding an id may read it.
@@ -800,7 +800,7 @@ class Messaging extends Service
     /**
      * A tenant's FIRST layout becomes the default whatever the request says: a
      * tenant with no default cannot compile a template that does not name one.
-     * 
+     *
      * The default may hold neither a validity window nor `enabled: false`, and
      * asking for both in one request is refused with 422
      * `layout_default_always_in_force`. There is no fallback behind the default
@@ -898,7 +898,7 @@ class Messaging extends Service
      * remembers making when the mails start looking wrong. It is audited for
      * that reason, and only when something actually changed: an audit line on
      * every save teaches its readers to ignore the log.
-     * 
+     *
      * Two 422s. Clearing `is_default` on the current default is
      * `layout_default_required` — promoting another layout is the operation
      * that exists for this, and it clears this one as a side effect, which is
@@ -906,7 +906,7 @@ class Messaging extends Service
      * validity window or switching it off is `layout_default_always_in_force`,
      * and the check is made of the OUTCOME, so promoting a layout and dating it
      * in the same request is caught.
-     * 
+     *
      * The structural half of a layout — colours, width, font — is baked into
      * each template's compiled body, so templates already on it keep the old
      * one until they are recompiled.
@@ -978,7 +978,7 @@ class Messaging extends Service
      * `?channel=` and `?status=` narrow it; `?limit=` is clamped to 200 and
      * defaults to 50. `?channel=inapp` is the tenant's in-app inbox — the
      * Message row IS the inbox item, so there is no second store for it.
-     * 
+     *
      * Rows are subject to the deployment's retention window and to erasure
      * requests, so this is not an archive.
      *
@@ -1050,7 +1050,7 @@ class Messaging extends Service
      * Answers with the resolved subject, HTML and text exactly as a real send
      * would produce them, so an editor can show a faithful preview without a
      * message row, a provider call or a suppression check.
-     * 
+     *
      * Takes no `market`, deliberately: rendering picks no provider, so there is
      * nothing here for a market to change. Nor `send_at`, `draft` or
      * `attachments` — all of them are properties of a dispatch, not of a
@@ -1097,14 +1097,14 @@ class Messaging extends Service
      * normalised form on both sides, so a request for `ada@acme.test` finds a
      * log written for `Ada@Acme.test` — an erasure that misses on
      * capitalisation is an erasure that did not happen and reports success.
-     * 
+     *
      * Message rows and unsubscribe tokens are DELETED. Suppressions are KEPT
      * with the clear-text address nulled: matching runs on a keyed hash, so the
      * row can still block and can no longer identify. Deleting it instead is
      * the obvious reading of "erase everything about them", and it is the
      * reading that mails a dead address again next week — or mails somebody who
      * complained, which is how a sending domain gets blocked.
-     * 
+     *
      * Answers with the counts, `suppressions_kept` among them, so the design is
      * stated in the response rather than only in this paragraph.
      *
@@ -1170,7 +1170,7 @@ class Messaging extends Service
      * `subscriber_id` is required: this is not a list of everybody, and there
      * is no route that is. The caller is a storefront acting for one visitor
      * and has no business enumerating the rest.
-     * 
+     *
      * The client key material is never returned — see the `$hidden` list on the
      * model. A registration that can be read back is a registration somebody
      * else can push with.
@@ -1205,7 +1205,7 @@ class Messaging extends Service
      * two keys — plus the id you know that person by. The VAPID public key the
      * browser needs to produce it comes from `GET /v1/config`
      * (`meta.push_public_key`).
-     * 
+     *
      * **Idempotent by endpoint**, and the two statuses say which happened: 201
      * for a browser seen for the first time, 200 for one already registered. A
      * browser calls `subscribe()` on every page load and hands back the same
@@ -1247,24 +1247,24 @@ class Messaging extends Service
     /**
      * Renders a tenant template and dispatches it — now, at `send_at`, or at
      * the end of the tenant's quiet hours.
-     * 
+     *
      * The first line is deliberately a title, not a sentence about the
      * mechanism: Scramble takes it as the operation's `summary`, and a summary
      * is what an API explorer prints in its route list. The paragraph that used
      * to be here ran to 119 characters across two lines, which the gateway's
      * fragment tests reject for exactly that reason.
-     * 
+     *
      * Retry-safe when the caller sends an `Idempotency-Key` header. The two
      * answers are deliberately different:
-     * 
+     *
      *   201 — a message was created by THIS call
      *   200 — this key was already used; here is the message it produced
-     * 
+     *
      * A caller has to be able to tell those apart. "Your mail went out" and
      * "your mail had already gone out" are the same outcome and different
      * facts, and a client reconciling its own records needs the second one.
      * Same key with a different body is a 422 — see IdempotencyConflict.
-     * 
+     *
      * A recipient on the tenant's suppression list is not sent to, and that is
      * reported as a refusal rather than as a silent success.
      *
@@ -1323,7 +1323,7 @@ class Messaging extends Service
      * Either `days` (a window ending now, default 30) or an explicit `from`/`to`
      * span. Both ends of the span or neither: `from` alone would be an open
      * range and the service would have to guess which end was meant.
-     * 
+     *
      * Three numbers are deliberately not the naive ones, and the `window` block
      * says so rather than leaving a chart to imply otherwise. The window is
      * CLAMPED to the tenant's retention, and `clamped_by_retention` says when
@@ -1335,14 +1335,14 @@ class Messaging extends Service
      * The delivery rate is sent ÷ (sent + failed): suppressed is the service
      * doing what it was told, and counting it as a failure would punish a
      * tenant for having a working unsubscribe list.
-     * 
+     *
      * `previous` is the same window again immediately before this one, which is
      * what turns a figure into a direction. **It is null** whenever the
      * preceding window is not entirely inside retention: the query would answer
      * zero rather than fail, and zero against 1,337 renders as a triumphant
      * +100 % beside every tile on the screen. Show no trend rather than a
      * flattering one.
-     * 
+     *
      * Nothing here names a recipient. That is the delivery log, which is a
      * different endpoint with a different question.
      *
@@ -1436,7 +1436,7 @@ class Messaging extends Service
     /**
      * 201 for a row this call created, 200 for an address that was already on
      * the list — so a client can tell whether it changed anything.
-     * 
+     *
      * The `scope` follows from the `reason` for every reason but `manual`, and
      * asking for a different one is 422 `suppression_scope_fixed` rather than
      * being quietly corrected: a caller who asked for `marketing` on a hard
@@ -1588,7 +1588,7 @@ class Messaging extends Service
      * Send a `design` document and the service compiles it against the
      * template's layout — or send `body_html` and `body_text` yourself and skip
      * compilation entirely.
-     * 
+     *
      * A design that the compiler refuses is 422 and NOTHING is written, with
      * `error.details` naming the offending block. That order is deliberate: a
      * save whose compile failed must leave the row alone, because storing the
@@ -1596,7 +1596,7 @@ class Messaging extends Service
      * longer matches the document it claims to be built from, and nothing would
      * ever surface it. A sidecar that is down is 503 `mjml_unavailable`, which
      * is worth retrying; a rejected design is not.
-     * 
+     *
      * The row this creates is a DRAFT and sends nothing until it is published.
      *
      * @param string $channel
@@ -1711,7 +1711,7 @@ class Messaging extends Service
      * What customers are receiving is the published snapshot; see
      * `GET /v1/templates/{id}/versions`, whose `meta.has_unpublished_changes`
      * says whether the two differ.
-     * 
+     *
      * Not market-filtered, deliberately: market scoping is a browsing concern
      * and somebody holding an id may read the row.
      *
@@ -1745,15 +1745,15 @@ class Messaging extends Service
      * something actually changed — a PATCH that resent the same values records
      * nothing, because an audit line on every save teaches its readers to
      * ignore the log.
-     * 
+     *
      * Moving a template to another layout recompiles it against the NEW one,
      * even when nothing else changed: colours, width and font come from the
      * layout and are already inlined, so a template that merely changed hands
      * would otherwise keep showing the old letterhead until somebody happened
      * to press save on it again.
-     * 
+     *
      * Changes nothing customers receive until the template is published.
-     * 
+     *
      * This path answers on `PUT` and `PATCH`, both routed to the same action.
      *
      * @param string $id
@@ -1831,15 +1831,15 @@ class Messaging extends Service
      * something actually changed — a PATCH that resent the same values records
      * nothing, because an audit line on every save teaches its readers to
      * ignore the log.
-     * 
+     *
      * Moving a template to another layout recompiles it against the NEW one,
      * even when nothing else changed: colours, width and font come from the
      * layout and are already inlined, so a template that merely changed hands
      * would otherwise keep showing the old letterhead until somebody happened
      * to press save on it again.
-     * 
+     *
      * Changes nothing customers receive until the template is published.
-     * 
+     *
      * This path answers on `PUT` and `PATCH`, both routed to the same action.
      *
      * @param string $id
@@ -1952,7 +1952,7 @@ class Messaging extends Service
      * would make this a several-megabyte download that nobody scrolls to the
      * end of. `GET /v1/templates/{id}/versions/{version}` serves the full
      * snapshot for the one somebody actually opened.
-     * 
+     *
      * `meta.published_version_id` says which of them is live — a property of
      * the template, said once, rather than a flag repeated on every row that
      * two rows could then claim. `meta.has_unpublished_changes` says whether
@@ -1987,7 +1987,7 @@ class Messaging extends Service
      * Addressed by its VERSION NUMBER — the small integer on the history row,
      * not the snapshot's id — because that is the number an author has in front
      * of them.
-     * 
+     *
      * This is what sends actually rendered while that version was live, so it
      * is the thing to read when the question is "what did the mail we sent in
      *      * March say".

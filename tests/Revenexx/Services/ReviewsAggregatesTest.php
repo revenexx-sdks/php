@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class ReviewsAggregatesTest extends TestCase {
+final class ReviewsAggregatesTest extends TestCase
+{
     private $client;
     private $reviewsAggregates;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->reviewsAggregates = new ReviewsAggregates($this->client);
     }
 
-    public function testMethodReviewsAggregatesList(): void {
+    public function testMethodReviewsAggregatesList(): void
+    {
 
         $data = array();
 
@@ -30,7 +33,8 @@ final class ReviewsAggregatesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodReviewsAggregatesRebuild(): void {
+    public function testMethodReviewsAggregatesRebuild(): void
+    {
 
         $data = array();
 
@@ -44,7 +48,8 @@ final class ReviewsAggregatesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodReviewsAggregatesReviewStars(): void {
+    public function testMethodReviewsAggregatesReviewStars(): void
+    {
 
         $data = array();
 

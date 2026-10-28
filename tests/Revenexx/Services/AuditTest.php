@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class AuditTest extends TestCase {
+final class AuditTest extends TestCase
+{
     private $client;
     private $audit;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->audit = new Audit($this->client);
     }
 
-    public function testMethodAuditGetSettings(): void {
+    public function testMethodAuditGetSettings(): void
+    {
 
         $data = array();
 

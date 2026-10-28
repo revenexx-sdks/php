@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class ReviewsModeration extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Shows it in the shop and recomputes the product figures. Publishing a

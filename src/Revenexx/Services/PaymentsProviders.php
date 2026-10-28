@@ -10,10 +10,10 @@ use Revenexx\Enums\Variant;
 
 class PaymentsProviders extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Answers the SVG document for a catalog provider code (a shipped

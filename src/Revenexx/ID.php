@@ -2,7 +2,8 @@
 
 namespace Revenexx;
 
-class ID {
+class ID
+{
     public static function unique(int $padding = 7): string
     {
         $uniqid = \uniqid();

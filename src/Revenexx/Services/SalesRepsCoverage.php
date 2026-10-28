@@ -11,10 +11,10 @@ use Revenexx\Enums\SalesRepsVocabulariesGetName;
 
 class SalesRepsCoverage extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * An assignment role is one of the roles THIS TENANT keeps for what a rep
@@ -687,7 +687,7 @@ class SalesRepsCoverage extends Service
      * salesperson per debtor while this table is many-to-many, so without it "the
      * responsible one" cannot be told apart from "also covers them", and with two
      * of them it cannot either.
-     * 
+     *
      * It is a route and not a field for a reason worth knowing before reaching
      * for the write instead. A plain `is_primary: true` runs into the partial
      * unique index `(tenant_id, organization_id) WHERE is_primary` and answers
@@ -695,7 +695,7 @@ class SalesRepsCoverage extends Service
      * an order that matters, with a window in between where the customer has
      * either no responsible rep or — if the second call never lands — still
      * the old one, and no way to tell which happened.
-     * 
+     *
      * The write is as small as the change: one write per row whose flag was
      * wrong, and none at all for the rows that were already right. So an
      * assignment that already holds the flag is answered 200 with nothing written

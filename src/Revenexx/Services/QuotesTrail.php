@@ -11,10 +11,10 @@ use Revenexx\Enums\Visibility;
 
 class QuotesTrail extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Records a drawing, a datasheet or a signed document against the quote. This

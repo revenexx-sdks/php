@@ -14,16 +14,19 @@ use Revenexx\Enums\Timezone;
 use Revenexx\Enums\Permissions;
 use Revenexx\Enums\Output;
 
-final class AvatarsTest extends TestCase {
+final class AvatarsTest extends TestCase
+{
     private $client;
     private $avatars;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->avatars = new Avatars($this->client);
     }
 
-    public function testMethodAvatarsGetBrowser(): void {
+    public function testMethodAvatarsGetBrowser(): void
+    {
 
         $data = array();
 
@@ -38,7 +41,8 @@ final class AvatarsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAvatarsGetCreditCard(): void {
+    public function testMethodAvatarsGetCreditCard(): void
+    {
 
         $data = array();
 
@@ -53,7 +57,8 @@ final class AvatarsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAvatarsGetFlag(): void {
+    public function testMethodAvatarsGetFlag(): void
+    {
 
         $data = array();
 
@@ -68,7 +73,8 @@ final class AvatarsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAvatarsGetImage(): void {
+    public function testMethodAvatarsGetImage(): void
+    {
 
         $data = array();
 
@@ -83,7 +89,8 @@ final class AvatarsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAvatarsGetInitials(): void {
+    public function testMethodAvatarsGetInitials(): void
+    {
 
         $data = array();
 
@@ -97,7 +104,8 @@ final class AvatarsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAvatarsGetQR(): void {
+    public function testMethodAvatarsGetQR(): void
+    {
 
         $data = array();
 
@@ -112,7 +120,8 @@ final class AvatarsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAvatarsGetScreenshot(): void {
+    public function testMethodAvatarsGetScreenshot(): void
+    {
 
         $data = array();
 

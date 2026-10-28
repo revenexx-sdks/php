@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class CustomersFollowUps extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * A follow-up — a task, or any entry with a due date — is done: `done_at`

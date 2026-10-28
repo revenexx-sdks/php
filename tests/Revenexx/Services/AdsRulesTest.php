@@ -9,16 +9,19 @@ use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\Event;
 use Revenexx\Enums\ValueSource;
 
-final class AdsRulesTest extends TestCase {
+final class AdsRulesTest extends TestCase
+{
     private $client;
     private $adsRules;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->adsRules = new AdsRules($this->client);
     }
 
-    public function testMethodAdsRulesList(): void {
+    public function testMethodAdsRulesList(): void
+    {
 
         $data = array();
 
@@ -32,7 +35,8 @@ final class AdsRulesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsRulesCreate(): void {
+    public function testMethodAdsRulesCreate(): void
+    {
 
         $data = array();
 
@@ -49,7 +53,8 @@ final class AdsRulesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsRulesDelete(): void {
+    public function testMethodAdsRulesDelete(): void
+    {
 
         $data = array();
 
@@ -64,7 +69,8 @@ final class AdsRulesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsRulesGet(): void {
+    public function testMethodAdsRulesGet(): void
+    {
 
         $data = array();
 
@@ -79,7 +85,8 @@ final class AdsRulesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsRulesUpdate(): void {
+    public function testMethodAdsRulesUpdate(): void
+    {
 
         $data = array();
 

@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class HealthTest extends TestCase {
+final class HealthTest extends TestCase
+{
     private $client;
     private $health;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->health = new Health($this->client);
     }
 
-    public function testMethodHealthLive(): void {
+    public function testMethodHealthLive(): void
+    {
 
         $data = array();
 
@@ -30,7 +33,8 @@ final class HealthTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodHealthReady(): void {
+    public function testMethodHealthReady(): void
+    {
 
         $data = array();
 

@@ -12,10 +12,10 @@ use Revenexx\Enums\MarketingConsentsVocabulariesGetName;
 
 class MarketingConsentsTypes extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Every version of every wording, drafts included. Filter by

@@ -11,10 +11,10 @@ use Revenexx\Enums\QuotesPricingReviewState;
 
 class QuotesPricing extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Moves every quote past its validity to expired. Runs on a schedule and on

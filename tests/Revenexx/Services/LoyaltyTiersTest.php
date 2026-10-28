@@ -9,16 +9,19 @@ use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\Trashed;
 use Revenexx\Enums\ThresholdKind;
 
-final class LoyaltyTiersTest extends TestCase {
+final class LoyaltyTiersTest extends TestCase
+{
     private $client;
     private $loyaltyTiers;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->loyaltyTiers = new LoyaltyTiers($this->client);
     }
 
-    public function testMethodLoyaltyTiersList(): void {
+    public function testMethodLoyaltyTiersList(): void
+    {
 
         $data = array();
 
@@ -32,7 +35,8 @@ final class LoyaltyTiersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyTiersCreate(): void {
+    public function testMethodLoyaltyTiersCreate(): void
+    {
 
         $data = array();
 
@@ -49,7 +53,8 @@ final class LoyaltyTiersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyTiersEmptyTrash(): void {
+    public function testMethodLoyaltyTiersEmptyTrash(): void
+    {
 
         $data = array();
 
@@ -63,7 +68,8 @@ final class LoyaltyTiersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyTiersPurge(): void {
+    public function testMethodLoyaltyTiersPurge(): void
+    {
 
         $data = array();
 
@@ -77,7 +83,8 @@ final class LoyaltyTiersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyTiersDelete(): void {
+    public function testMethodLoyaltyTiersDelete(): void
+    {
 
         $data = array();
 
@@ -92,7 +99,8 @@ final class LoyaltyTiersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyTiersGet(): void {
+    public function testMethodLoyaltyTiersGet(): void
+    {
 
         $data = array();
 
@@ -107,7 +115,8 @@ final class LoyaltyTiersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyTiersUpdate(): void {
+    public function testMethodLoyaltyTiersUpdate(): void
+    {
 
         $data = array();
 
@@ -122,7 +131,8 @@ final class LoyaltyTiersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyTiersRestore(): void {
+    public function testMethodLoyaltyTiersRestore(): void
+    {
 
         $data = array();
 

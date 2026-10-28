@@ -10,10 +10,10 @@ use Revenexx\Enums\PagesSeedMode;
 
 class QuotesRanges extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The counters quote numbers are drawn from. A market points at one by its

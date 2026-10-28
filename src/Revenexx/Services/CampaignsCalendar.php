@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class CampaignsCalendar extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Campaign windows and due tasks from this app; mail send times, promotion

@@ -11,10 +11,10 @@ use Revenexx\Enums\ValueSource;
 
 class AdsRules extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Filter `?ad_account_id=`, `?event=`, `?active=true`.

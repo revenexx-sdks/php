@@ -11,10 +11,10 @@ use Revenexx\Enums\CustomersVocabulariesGetName;
 
 class CustomersValueLists extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * What an address is used for. Billing and shipping are what a checkout

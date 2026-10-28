@@ -12,16 +12,19 @@ use Revenexx\Enums\SuppressionIndexReason;
 use Revenexx\Enums\MessageClass;
 use Revenexx\Enums\WhatsappCategory;
 
-final class MessagingTest extends TestCase {
+final class MessagingTest extends TestCase
+{
     private $client;
     private $messaging;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->messaging = new Messaging($this->client);
     }
 
-    public function testMethodAuditIndex(): void {
+    public function testMethodAuditIndex(): void
+    {
 
         $data = array();
 
@@ -35,7 +38,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodBindingIndex(): void {
+    public function testMethodBindingIndex(): void
+    {
 
         $data = array();
 
@@ -49,7 +53,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodBindingStore(): void {
+    public function testMethodBindingStore(): void
+    {
 
         $data = array();
 
@@ -67,7 +72,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodBindingDestroy(): void {
+    public function testMethodBindingDestroy(): void
+    {
 
         $data = array();
 
@@ -82,7 +88,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodBindingShow(): void {
+    public function testMethodBindingShow(): void
+    {
 
         $data = array();
 
@@ -97,7 +104,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodBindingUpdatePatch(): void {
+    public function testMethodBindingUpdatePatch(): void
+    {
 
         $data = array();
 
@@ -112,7 +120,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodBindingUpdate(): void {
+    public function testMethodBindingUpdate(): void
+    {
 
         $data = array();
 
@@ -127,7 +136,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodChannelCredentialIndex(): void {
+    public function testMethodChannelCredentialIndex(): void
+    {
 
         $data = array();
 
@@ -141,7 +151,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodChannelCredentialDestroy(): void {
+    public function testMethodChannelCredentialDestroy(): void
+    {
 
         $data = array();
 
@@ -156,7 +167,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodChannelCredentialUpdatePatch(): void {
+    public function testMethodChannelCredentialUpdatePatch(): void
+    {
 
         $data = array();
 
@@ -171,7 +183,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodChannelCredentialUpdate(): void {
+    public function testMethodChannelCredentialUpdate(): void
+    {
 
         $data = array();
 
@@ -186,7 +199,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodChannelCredentialVerify(): void {
+    public function testMethodChannelCredentialVerify(): void
+    {
 
         $data = array();
 
@@ -201,7 +215,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodChannelIndex(): void {
+    public function testMethodChannelIndex(): void
+    {
 
         $data = array();
 
@@ -215,7 +230,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConfigShow(): void {
+    public function testMethodConfigShow(): void
+    {
 
         $data = array();
 
@@ -229,7 +245,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConfigUpdatePatch(): void {
+    public function testMethodConfigUpdatePatch(): void
+    {
 
         $data = array();
 
@@ -243,7 +260,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConfigUpdate(): void {
+    public function testMethodConfigUpdate(): void
+    {
 
         $data = array();
 
@@ -257,7 +275,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLayoutIndex(): void {
+    public function testMethodLayoutIndex(): void
+    {
 
         $data = array();
 
@@ -271,7 +290,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLayoutStore(): void {
+    public function testMethodLayoutStore(): void
+    {
 
         $data = array();
 
@@ -285,7 +305,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLayoutDestroy(): void {
+    public function testMethodLayoutDestroy(): void
+    {
 
         $data = array();
 
@@ -300,7 +321,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLayoutShow(): void {
+    public function testMethodLayoutShow(): void
+    {
 
         $data = array();
 
@@ -315,7 +337,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLayoutUpdate(): void {
+    public function testMethodLayoutUpdate(): void
+    {
 
         $data = array();
 
@@ -330,7 +353,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLibraryIndex(): void {
+    public function testMethodLibraryIndex(): void
+    {
 
         $data = array();
 
@@ -344,7 +368,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMessageIndex(): void {
+    public function testMethodMessageIndex(): void
+    {
 
         $data = array();
 
@@ -358,7 +383,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMessageShow(): void {
+    public function testMethodMessageShow(): void
+    {
 
         $data = array();
 
@@ -373,7 +399,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSendPreview(): void {
+    public function testMethodSendPreview(): void
+    {
 
         $data = array();
 
@@ -389,7 +416,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodErasureStore(): void {
+    public function testMethodErasureStore(): void
+    {
 
         $data = array();
 
@@ -405,7 +433,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPushSubscriptionDestroy(): void {
+    public function testMethodPushSubscriptionDestroy(): void
+    {
 
         $data = array();
 
@@ -420,7 +449,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPushSubscriptionIndex(): void {
+    public function testMethodPushSubscriptionIndex(): void
+    {
 
         $data = array();
 
@@ -435,7 +465,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPushSubscriptionStore(): void {
+    public function testMethodPushSubscriptionStore(): void
+    {
 
         $data = array();
 
@@ -452,7 +483,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSendSend(): void {
+    public function testMethodSendSend(): void
+    {
 
         $data = array();
 
@@ -469,7 +501,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodStatsIndex(): void {
+    public function testMethodStatsIndex(): void
+    {
 
         $data = array();
 
@@ -483,7 +516,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSuppressionIndex(): void {
+    public function testMethodSuppressionIndex(): void
+    {
 
         $data = array();
 
@@ -497,7 +531,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSuppressionStore(): void {
+    public function testMethodSuppressionStore(): void
+    {
 
         $data = array();
 
@@ -514,7 +549,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSuppressionDestroy(): void {
+    public function testMethodSuppressionDestroy(): void
+    {
 
         $data = array();
 
@@ -529,7 +565,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSuppressionShow(): void {
+    public function testMethodSuppressionShow(): void
+    {
 
         $data = array();
 
@@ -544,7 +581,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTemplateIndex(): void {
+    public function testMethodTemplateIndex(): void
+    {
 
         $data = array();
 
@@ -558,7 +596,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTemplateStore(): void {
+    public function testMethodTemplateStore(): void
+    {
 
         $data = array();
 
@@ -574,7 +613,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTemplateDestroy(): void {
+    public function testMethodTemplateDestroy(): void
+    {
 
         $data = array();
 
@@ -589,7 +629,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTemplateShow(): void {
+    public function testMethodTemplateShow(): void
+    {
 
         $data = array();
 
@@ -604,7 +645,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTemplateUpdatePatch(): void {
+    public function testMethodTemplateUpdatePatch(): void
+    {
 
         $data = array();
 
@@ -619,7 +661,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTemplateUpdate(): void {
+    public function testMethodTemplateUpdate(): void
+    {
 
         $data = array();
 
@@ -634,7 +677,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTemplateVersionStore(): void {
+    public function testMethodTemplateVersionStore(): void
+    {
 
         $data = array();
 
@@ -649,7 +693,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTemplateVersionIndex(): void {
+    public function testMethodTemplateVersionIndex(): void
+    {
 
         $data = array();
 
@@ -664,7 +709,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTemplateVersionShow(): void {
+    public function testMethodTemplateVersionShow(): void
+    {
 
         $data = array();
 
@@ -680,7 +726,8 @@ final class MessagingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTemplateVersionRestore(): void {
+    public function testMethodTemplateVersionRestore(): void
+    {
 
         $data = array();
 

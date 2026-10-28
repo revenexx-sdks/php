@@ -20,10 +20,10 @@ use Revenexx\Enums\CustomersOrganizationsChangeCreditReason;
 
 class CustomersOrganizations extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The address type every revenexx app stores a postal address as, and the

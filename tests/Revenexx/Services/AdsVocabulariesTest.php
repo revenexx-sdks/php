@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class AdsVocabulariesTest extends TestCase {
+final class AdsVocabulariesTest extends TestCase
+{
     private $client;
     private $adsVocabularies;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->adsVocabularies = new AdsVocabularies($this->client);
     }
 
-    public function testMethodAdsVocabulariesList(): void {
+    public function testMethodAdsVocabulariesList(): void
+    {
 
         $data = array();
 
@@ -30,7 +33,8 @@ final class AdsVocabulariesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsVocabulariesGet(): void {
+    public function testMethodAdsVocabulariesGet(): void
+    {
 
         $data = array();
 

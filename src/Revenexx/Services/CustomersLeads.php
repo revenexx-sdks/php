@@ -10,10 +10,10 @@ use Revenexx\Enums\LeadSource;
 
 class CustomersLeads extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * `consent_marketing` on a contact is a mirror of the consent app

@@ -11,16 +11,19 @@ use Revenexx\Enums\Load;
 use Revenexx\Enums\TagManagerTriggersCreateKind;
 use Revenexx\Enums\TagManagerVariablesCreateKind;
 
-final class TagManagerTagsTest extends TestCase {
+final class TagManagerTagsTest extends TestCase
+{
     private $client;
     private $tagManagerTags;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->tagManagerTags = new TagManagerTags($this->client);
     }
 
-    public function testMethodTagManagerRegistryList(): void {
+    public function testMethodTagManagerRegistryList(): void
+    {
 
         $data = array();
 
@@ -34,7 +37,8 @@ final class TagManagerTagsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTagManagerTagsList(): void {
+    public function testMethodTagManagerTagsList(): void
+    {
 
         $data = array();
 
@@ -48,7 +52,8 @@ final class TagManagerTagsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTagManagerTagsCreate(): void {
+    public function testMethodTagManagerTagsCreate(): void
+    {
 
         $data = array();
 
@@ -62,7 +67,8 @@ final class TagManagerTagsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTagManagerTagsDelete(): void {
+    public function testMethodTagManagerTagsDelete(): void
+    {
 
         $data = array();
 
@@ -77,7 +83,8 @@ final class TagManagerTagsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTagManagerTagsGet(): void {
+    public function testMethodTagManagerTagsGet(): void
+    {
 
         $data = array();
 
@@ -92,7 +99,8 @@ final class TagManagerTagsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTagManagerTagsUpdate(): void {
+    public function testMethodTagManagerTagsUpdate(): void
+    {
 
         $data = array();
 
@@ -107,7 +115,8 @@ final class TagManagerTagsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTagManagerTagsTriggersList(): void {
+    public function testMethodTagManagerTagsTriggersList(): void
+    {
 
         $data = array();
 
@@ -122,7 +131,8 @@ final class TagManagerTagsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTagManagerTagsTriggersAttach(): void {
+    public function testMethodTagManagerTagsTriggersAttach(): void
+    {
 
         $data = array();
 
@@ -138,7 +148,8 @@ final class TagManagerTagsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTagManagerTagsTriggersDetach(): void {
+    public function testMethodTagManagerTagsTriggersDetach(): void
+    {
 
         $data = array();
 
@@ -154,7 +165,8 @@ final class TagManagerTagsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTagManagerTriggersList(): void {
+    public function testMethodTagManagerTriggersList(): void
+    {
 
         $data = array();
 
@@ -168,7 +180,8 @@ final class TagManagerTagsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTagManagerTriggersCreate(): void {
+    public function testMethodTagManagerTriggersCreate(): void
+    {
 
         $data = array();
 
@@ -182,7 +195,8 @@ final class TagManagerTagsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTagManagerTriggersDelete(): void {
+    public function testMethodTagManagerTriggersDelete(): void
+    {
 
         $data = array();
 
@@ -197,7 +211,8 @@ final class TagManagerTagsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTagManagerTriggersGet(): void {
+    public function testMethodTagManagerTriggersGet(): void
+    {
 
         $data = array();
 
@@ -212,7 +227,8 @@ final class TagManagerTagsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTagManagerTriggersUpdate(): void {
+    public function testMethodTagManagerTriggersUpdate(): void
+    {
 
         $data = array();
 
@@ -227,7 +243,8 @@ final class TagManagerTagsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTagManagerVariablesList(): void {
+    public function testMethodTagManagerVariablesList(): void
+    {
 
         $data = array();
 
@@ -241,7 +258,8 @@ final class TagManagerTagsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTagManagerVariablesCreate(): void {
+    public function testMethodTagManagerVariablesCreate(): void
+    {
 
         $data = array();
 
@@ -255,7 +273,8 @@ final class TagManagerTagsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTagManagerVariablesDelete(): void {
+    public function testMethodTagManagerVariablesDelete(): void
+    {
 
         $data = array();
 
@@ -270,7 +289,8 @@ final class TagManagerTagsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTagManagerVariablesGet(): void {
+    public function testMethodTagManagerVariablesGet(): void
+    {
 
         $data = array();
 
@@ -285,7 +305,8 @@ final class TagManagerTagsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTagManagerVariablesUpdate(): void {
+    public function testMethodTagManagerVariablesUpdate(): void
+    {
 
         $data = array();
 
@@ -300,7 +321,8 @@ final class TagManagerTagsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTagManagerVocabulariesList(): void {
+    public function testMethodTagManagerVocabulariesList(): void
+    {
 
         $data = array();
 

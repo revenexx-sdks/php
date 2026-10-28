@@ -14,10 +14,10 @@ use Revenexx\Enums\AppsGetDeploymentDownloadType;
 
 class Sites extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Get a list of all the project's sites. You can use the query params to
@@ -506,7 +506,7 @@ class Sites extends Service
         $size = 0;
         $mimeType = null;
         $postedName = null;
-        if(empty($code->getPath() ?? null)) {
+        if (empty($code->getPath() ?? null)) {
             $size = strlen($code->getData());
             $mimeType = $code->getMimeType();
             $postedName = $code->getFilename();
@@ -522,7 +522,7 @@ class Sites extends Service
             'content-type' => 'multipart/form-data',
             ], $apiParams);
 
-        if($onProgress !== null) {
+        if ($onProgress !== null) {
             $onProgress([
                 '$id' => $response['$id'] ?? null,
                 'progress' => 100,
@@ -573,7 +573,7 @@ class Sites extends Service
 
     /**
      * Create a deployment based on a template.
-     * 
+     *
      * Unlike app templates, site templates have no listing on this API — that
      * catalogue is the vendor's and is not reproduced here. Take `repository`,
      * `owner`, `rootDirectory` and `reference` from wherever the template is
@@ -622,7 +622,7 @@ class Sites extends Service
 
     /**
      * Create a deployment when a site is connected to VCS.
-     * 
+     *
      * This endpoint lets you create deployment from a branch, commit, or a tag.
      *
      * @param string $siteId

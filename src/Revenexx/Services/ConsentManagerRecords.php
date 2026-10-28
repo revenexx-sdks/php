@@ -11,10 +11,10 @@ use Revenexx\Enums\Surface;
 
 class ConsentManagerRecords extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Every record, filterable by column. There is no route that edits one — an

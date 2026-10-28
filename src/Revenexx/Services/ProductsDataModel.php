@@ -11,10 +11,10 @@ use Revenexx\Enums\ProductsListKind;
 
 class ProductsDataModel extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * A class of media with one shared shape — packshots, datasheets, line
@@ -22,7 +22,7 @@ class ProductsDataModel extends Service
      * text, copyright, an expiry date) and, through `naming_convention`, how a
      * file of it is named — which is what lets an import bind a file to a
      * product with no mapping table.
-     * 
+     *
      * Every column of `asset_families` is an exact-match query parameter, `order`
      * sorts by one column, and `limit`/`offset` page through `page.total`. A
      * query key that is NOT a column is dropped rather than refused, and the
@@ -30,7 +30,7 @@ class ProductsDataModel extends Service
      * only way to tell an unfiltered answer from an empty one. It reads rows
      * exactly as they are stored: no join is resolved, no jsonb value is
      * unpacked.
-     * 
+     *
      * Answered from the gateway's tenant cache for up to 30 minutes and dropped
      * the moment this entity is written, because the data model changes weekly at
      * most and every product page asks the same question.
@@ -112,13 +112,13 @@ class ProductsDataModel extends Service
      * Creates one asset family and answers 201 with the stored row, including the
      * id and the timestamps the database filled in — a client never sends an
      * id, it reads one back and uses it in the path of every later call.
-     * 
+     *
      * A class of media with one shared shape — packshots, datasheets, line
      * drawings. The family decides which attributes an asset of it carries (alt
      * text, copyright, an expiry date) and, through `naming_convention`, how a
      * file of it is named — which is what lets an import bind a file to a
      * product with no mapping table.
-     * 
+     *
      * `code` is the only column the database refuses the row without; everything
      * else has a default or is nullable. A second row with the same `code`
      * answers 409.
@@ -161,9 +161,9 @@ class ProductsDataModel extends Service
     /**
      * Deletes one asset family by id. It is a hard delete — the row is gone,
      * and the answer is a confirmation rather than a result to branch on.
-     * 
+     *
      * It takes what hangs off it: assets (`asset_family_id`) are deleted with it.
-     * 
+     *
      * An id no asset family of this tenant carries answers 404; there is no 409,
      * because every foreign key pointing at this entity resolves itself on delete
      * rather than blocking one.
@@ -196,18 +196,18 @@ class ProductsDataModel extends Service
     /**
      * Reads one asset family by its id — the whole row, every column, as it is
      * stored.
-     * 
+     *
      * A class of media with one shared shape — packshots, datasheets, line
      * drawings. The family decides which attributes an asset of it carries (alt
      * text, copyright, an expiry date) and, through `naming_convention`, how a
      * file of it is named — which is what lets an import bind a file to a
      * product with no mapping table.
-     * 
+     *
      * An id no asset family of this tenant carries answers 404, and so does one
      * belonging to another tenant: row-level security makes that row invisible
      * rather than forbidden. A malformed id answers 400 before the route is
      * reached.
-     * 
+     *
      * Answered from the gateway's tenant cache for up to 30 minutes and dropped
      * the moment this entity is written, because the data model changes weekly at
      * most and every product page asks the same question.
@@ -242,13 +242,13 @@ class ProductsDataModel extends Service
      * columns to change and every column it leaves out keeps its current value,
      * so there is no read-modify-write and no way to blank a field by forgetting
      * it.
-     * 
+     *
      * A class of media with one shared shape — packshots, datasheets, line
      * drawings. The family decides which attributes an asset of it carries (alt
      * text, copyright, an expiry date) and, through `naming_convention`, how a
      * file of it is named — which is what lets an import bind a file to a
      * product with no mapping table.
-     * 
+     *
      * A body that names nothing writable is refused with 400 rather than answered
      * as a no-op, an id nobody carries answers 404, and a value that collides on
      * `code` answers 409.
@@ -299,7 +299,7 @@ class ProductsDataModel extends Service
      * `is_quantified` declares that it carries a quantity; both are declarations
      * a client READS rather than behaviour this app performs — it stores one
      * row per direction and never creates the mirror for you.
-     * 
+     *
      * Every column of `association_types` is an exact-match query parameter,
      * `order` sorts by one column, and `limit`/`offset` page through
      * `page.total`. A query key that is NOT a column is dropped rather than
@@ -307,7 +307,7 @@ class ProductsDataModel extends Service
      * that echo is the only way to tell an unfiltered answer from an empty one.
      * It reads rows exactly as they are stored: no join is resolved, no jsonb
      * value is unpacked.
-     * 
+     *
      * Answered from the gateway's tenant cache for up to 30 minutes and dropped
      * the moment this entity is written, because the data model changes weekly at
      * most and every product page asks the same question.
@@ -394,13 +394,13 @@ class ProductsDataModel extends Service
      * Creates one association type and answers 201 with the stored row, including
      * the id and the timestamps the database filled in — a client never sends
      * an id, it reads one back and uses it in the path of every later call.
-     * 
+     *
      * The KIND of relation two products can have — cross-sell, accessory, spare
      * part, bill of materials. `is_two_way` declares the relation symmetric and
      * `is_quantified` declares that it carries a quantity; both are declarations
      * a client READS rather than behaviour this app performs — it stores one
      * row per direction and never creates the mirror for you.
-     * 
+     *
      * `code` is the only column the database refuses the row without; everything
      * else has a default or is nullable. A second row with the same `code`
      * answers 409.
@@ -451,10 +451,10 @@ class ProductsDataModel extends Service
     /**
      * Deletes one association type by id. It is a hard delete — the row is
      * gone, and the answer is a confirmation rather than a result to branch on.
-     * 
+     *
      * It takes what hangs off it: product associations (`association_type_id`)
      * are deleted with it.
-     * 
+     *
      * An id no association type of this tenant carries answers 404; there is no
      * 409, because every foreign key pointing at this entity resolves itself on
      * delete rather than blocking one.
@@ -487,18 +487,18 @@ class ProductsDataModel extends Service
     /**
      * Reads one association type by its id — the whole row, every column, as it
      * is stored.
-     * 
+     *
      * The KIND of relation two products can have — cross-sell, accessory, spare
      * part, bill of materials. `is_two_way` declares the relation symmetric and
      * `is_quantified` declares that it carries a quantity; both are declarations
      * a client READS rather than behaviour this app performs — it stores one
      * row per direction and never creates the mirror for you.
-     * 
+     *
      * An id no association type of this tenant carries answers 404, and so does
      * one belonging to another tenant: row-level security makes that row
      * invisible rather than forbidden. A malformed id answers 400 before the
      * route is reached.
-     * 
+     *
      * Answered from the gateway's tenant cache for up to 30 minutes and dropped
      * the moment this entity is written, because the data model changes weekly at
      * most and every product page asks the same question.
@@ -533,13 +533,13 @@ class ProductsDataModel extends Service
      * the columns to change and every column it leaves out keeps its current
      * value, so there is no read-modify-write and no way to blank a field by
      * forgetting it.
-     * 
+     *
      * The KIND of relation two products can have — cross-sell, accessory, spare
      * part, bill of materials. `is_two_way` declares the relation symmetric and
      * `is_quantified` declares that it carries a quantity; both are declarations
      * a client READS rather than behaviour this app performs — it stores one
      * row per direction and never creates the mirror for you.
-     * 
+     *
      * A body that names nothing writable is refused with 400 rather than answered
      * as a no-op, an id nobody carries answers 404, and a value that collides on
      * `code` answers 409.
@@ -673,7 +673,7 @@ class ProductsDataModel extends Service
      * an attribute joins on and is never shown. `GET /products/attribute-schema`
      * already resolves a group's heading onto every field it returns, so these
      * routes are for MANAGING the sections, not for rendering a form.
-     * 
+     *
      * Every column of `attribute_groups` is an exact-match query parameter,
      * `order` sorts by one column, and `limit`/`offset` page through
      * `page.total`. A query key that is NOT a column is dropped rather than
@@ -681,7 +681,7 @@ class ProductsDataModel extends Service
      * that echo is the only way to tell an unfiltered answer from an empty one.
      * It reads rows exactly as they are stored: no join is resolved, no jsonb
      * value is unpacked.
-     * 
+     *
      * Answered from the gateway's tenant cache for up to 30 minutes and dropped
      * the moment this entity is written, because the data model changes weekly at
      * most and every product page asks the same question.
@@ -788,7 +788,7 @@ class ProductsDataModel extends Service
      * Creates one attribute group and answers 201 with the stored row, including
      * the id and the timestamps the database filled in — a client never sends
      * an id, it reads one back and uses it in the path of every later call.
-     * 
+     *
      * An attribute group is a SECTION of a product form — "Technical
      * attributes", "Logistics" — and the thing every attribute is filed under.
      * It carries a `position`, which is the order the sections appear in, and
@@ -796,7 +796,7 @@ class ProductsDataModel extends Service
      * an attribute joins on and is never shown. `GET /products/attribute-schema`
      * already resolves a group's heading onto every field it returns, so these
      * routes are for MANAGING the sections, not for rendering a form.
-     * 
+     *
      * `code` is the only column the database refuses the row without; everything
      * else has a default or is nullable. A second row with the same `code`
      * answers 409.
@@ -852,10 +852,10 @@ class ProductsDataModel extends Service
     /**
      * Deletes one attribute group by id. It is a hard delete — the row is gone,
      * and the answer is a confirmation rather than a result to branch on.
-     * 
+     *
      * `attributes.group_id` is set to null instead, so the rows that pointed at
      * it survive the delete rather than going with it.
-     * 
+     *
      * An id no attribute group of this tenant carries answers 404; there is no
      * 409, because every foreign key pointing at this entity resolves itself on
      * delete rather than blocking one.
@@ -888,7 +888,7 @@ class ProductsDataModel extends Service
     /**
      * Reads one attribute group by its id — the whole row, every column, as it
      * is stored.
-     * 
+     *
      * An attribute group is a SECTION of a product form — "Technical
      * attributes", "Logistics" — and the thing every attribute is filed under.
      * It carries a `position`, which is the order the sections appear in, and
@@ -896,12 +896,12 @@ class ProductsDataModel extends Service
      * an attribute joins on and is never shown. `GET /products/attribute-schema`
      * already resolves a group's heading onto every field it returns, so these
      * routes are for MANAGING the sections, not for rendering a form.
-     * 
+     *
      * An id no attribute group of this tenant carries answers 404, and so does
      * one belonging to another tenant: row-level security makes that row
      * invisible rather than forbidden. A malformed id answers 400 before the
      * route is reached.
-     * 
+     *
      * Answered from the gateway's tenant cache for up to 30 minutes and dropped
      * the moment this entity is written, because the data model changes weekly at
      * most and every product page asks the same question.
@@ -936,7 +936,7 @@ class ProductsDataModel extends Service
      * columns to change and every column it leaves out keeps its current value,
      * so there is no read-modify-write and no way to blank a field by forgetting
      * it.
-     * 
+     *
      * An attribute group is a SECTION of a product form — "Technical
      * attributes", "Logistics" — and the thing every attribute is filed under.
      * It carries a `position`, which is the order the sections appear in, and
@@ -944,7 +944,7 @@ class ProductsDataModel extends Service
      * an attribute joins on and is never shown. `GET /products/attribute-schema`
      * already resolves a group's heading onto every field it returns, so these
      * routes are for MANAGING the sections, not for rendering a form.
-     * 
+     *
      * A body that names nothing writable is refused with 400 rather than answered
      * as a no-op, an id nobody carries answers 404, and a value that collides on
      * `code` answers 409.
@@ -1009,7 +1009,7 @@ class ProductsDataModel extends Service
      * `position` is the order it appears in the dropdown. `GET
      * /products/attribute-schema` republishes these as a field's `options`,
      * already resolved for a locale.
-     * 
+     *
      * Every column of `attribute_options` is an exact-match query parameter,
      * `order` sorts by one column, and `limit`/`offset` page through
      * `page.total`. A query key that is NOT a column is dropped rather than
@@ -1017,7 +1017,7 @@ class ProductsDataModel extends Service
      * that echo is the only way to tell an unfiltered answer from an empty one.
      * It reads rows exactly as they are stored: no join is resolved, no jsonb
      * value is unpacked.
-     * 
+     *
      * Answered from the gateway's tenant cache for up to 30 minutes and dropped
      * the moment this entity is written, because the data model changes weekly at
      * most and every product page asks the same question.
@@ -1134,14 +1134,14 @@ class ProductsDataModel extends Service
      * Creates one attribute option and answers 201 with the stored row, including
      * the id and the timestamps the database filled in — a client never sends
      * an id, it reads one back and uses it in the path of every later call.
-     * 
+     *
      * The permitted values of one select or multi-select attribute. A record
      * stores the option's CODE and never its label, so renaming an option in
      * every language leaves every product that picked it untouched, and
      * `position` is the order it appears in the dropdown. `GET
      * /products/attribute-schema` republishes these as a field's `options`,
      * already resolved for a locale.
-     * 
+     *
      * `attribute_id` and `code` are the only columns the database refuses the row
      * without; everything else has a default or is nullable. A second row with
      * the same `attribute_id` and `code` answers 409.
@@ -1201,9 +1201,9 @@ class ProductsDataModel extends Service
     /**
      * Deletes one attribute option by id. It is a hard delete — the row is
      * gone, and the answer is a confirmation rather than a result to branch on.
-     * 
+     *
      * Nothing in this schema references it, so nothing else changes.
-     * 
+     *
      * An id no attribute option of this tenant carries answers 404; there is no
      * 409, because every foreign key pointing at this entity resolves itself on
      * delete rather than blocking one.
@@ -1236,19 +1236,19 @@ class ProductsDataModel extends Service
     /**
      * Reads one attribute option by its id — the whole row, every column, as it
      * is stored.
-     * 
+     *
      * The permitted values of one select or multi-select attribute. A record
      * stores the option's CODE and never its label, so renaming an option in
      * every language leaves every product that picked it untouched, and
      * `position` is the order it appears in the dropdown. `GET
      * /products/attribute-schema` republishes these as a field's `options`,
      * already resolved for a locale.
-     * 
+     *
      * An id no attribute option of this tenant carries answers 404, and so does
      * one belonging to another tenant: row-level security makes that row
      * invisible rather than forbidden. A malformed id answers 400 before the
      * route is reached.
-     * 
+     *
      * Answered from the gateway's tenant cache for up to 30 minutes and dropped
      * the moment this entity is written, because the data model changes weekly at
      * most and every product page asks the same question.
@@ -1283,14 +1283,14 @@ class ProductsDataModel extends Service
      * the columns to change and every column it leaves out keeps its current
      * value, so there is no read-modify-write and no way to blank a field by
      * forgetting it.
-     * 
+     *
      * The permitted values of one select or multi-select attribute. A record
      * stores the option's CODE and never its label, so renaming an option in
      * every language leaves every product that picked it untouched, and
      * `position` is the order it appears in the dropdown. `GET
      * /products/attribute-schema` republishes these as a field's `options`,
      * already resolved for a locale.
-     * 
+     *
      * A body that names nothing writable is refused with 400 rather than answered
      * as a no-op, an id nobody carries answers 404, and a value that collides on
      * `attribute_id` and `code` answers 409.
@@ -1364,7 +1364,7 @@ class ProductsDataModel extends Service
      * `usable_in_grid` and `is_filterable` are what the product grid reads.
      * `entity_type`/`entity_ref` say which kind of record carries it: a product,
      * one reference entity's records, one asset family, or a category.
-     * 
+     *
      * Every column of `attributes` is an exact-match query parameter, `order`
      * sorts by one column, and `limit`/`offset` page through `page.total`. A
      * query key that is NOT a column is dropped rather than refused, and the
@@ -1372,7 +1372,7 @@ class ProductsDataModel extends Service
      * only way to tell an unfiltered answer from an empty one. It reads rows
      * exactly as they are stored: no join is resolved, no jsonb value is
      * unpacked.
-     * 
+     *
      * Answered from the gateway's tenant cache for up to 30 minutes and dropped
      * the moment this entity is written, because the data model changes weekly at
      * most and every product page asks the same question.
@@ -1534,7 +1534,7 @@ class ProductsDataModel extends Service
      * Creates one attribute and answers 201 with the stored row, including the id
      * and the timestamps the database filled in — a client never sends an id,
      * it reads one back and uses it in the path of every later call.
-     * 
+     *
      * An attribute is one property a record can carry, and in an attribute-driven
      * PIM it is a ROW rather than a column: giving the catalog a "net weight" is
      * a create here, not a migration. Its own flags decide everything downstream
@@ -1543,7 +1543,7 @@ class ProductsDataModel extends Service
      * `usable_in_grid` and `is_filterable` are what the product grid reads.
      * `entity_type`/`entity_ref` say which kind of record carries it: a product,
      * one reference entity's records, one asset family, or a category.
-     * 
+     *
      * `code` and `type` are the only columns the database refuses the row
      * without; everything else has a default or is nullable. A second row with
      * the same `entity_type`, `entity_ref`, `code` answers 409.
@@ -1639,10 +1639,10 @@ class ProductsDataModel extends Service
     /**
      * Deletes one attribute by id. It is a hard delete — the row is gone, and
      * the answer is a confirmation rather than a result to branch on.
-     * 
+     *
      * It takes what hangs off it: attribute options (`attribute_id`), family
      * attributes (`attribute_id`) are deleted with it.
-     * 
+     *
      * An id no attribute of this tenant carries answers 404; there is no 409,
      * because every foreign key pointing at this entity resolves itself on delete
      * rather than blocking one.
@@ -1675,7 +1675,7 @@ class ProductsDataModel extends Service
     /**
      * Reads one attribute by its id — the whole row, every column, as it is
      * stored.
-     * 
+     *
      * An attribute is one property a record can carry, and in an attribute-driven
      * PIM it is a ROW rather than a column: giving the catalog a "net weight" is
      * a create here, not a migration. Its own flags decide everything downstream
@@ -1684,12 +1684,12 @@ class ProductsDataModel extends Service
      * `usable_in_grid` and `is_filterable` are what the product grid reads.
      * `entity_type`/`entity_ref` say which kind of record carries it: a product,
      * one reference entity's records, one asset family, or a category.
-     * 
+     *
      * An id no attribute of this tenant carries answers 404, and so does one
      * belonging to another tenant: row-level security makes that row invisible
      * rather than forbidden. A malformed id answers 400 before the route is
      * reached.
-     * 
+     *
      * Answered from the gateway's tenant cache for up to 30 minutes and dropped
      * the moment this entity is written, because the data model changes weekly at
      * most and every product page asks the same question.
@@ -1724,7 +1724,7 @@ class ProductsDataModel extends Service
      * columns to change and every column it leaves out keeps its current value,
      * so there is no read-modify-write and no way to blank a field by forgetting
      * it.
-     * 
+     *
      * An attribute is one property a record can carry, and in an attribute-driven
      * PIM it is a ROW rather than a column: giving the catalog a "net weight" is
      * a create here, not a migration. Its own flags decide everything downstream
@@ -1733,7 +1733,7 @@ class ProductsDataModel extends Service
      * `usable_in_grid` and `is_filterable` are what the product grid reads.
      * `entity_type`/`entity_ref` say which kind of record carries it: a product,
      * one reference entity's records, one asset family, or a category.
-     * 
+     *
      * A body that names nothing writable is refused with 400 rather than answered
      * as a no-op, an id nobody carries answers 404, and a value that collides on
      * `entity_type`, `entity_ref`, `code` answers 409.
@@ -1882,14 +1882,14 @@ class ProductsDataModel extends Service
      * attributes at all, so its completeness cannot be measured and its name
      * never resolves past the SKU; `POST /products/{id}/family` is the call that
      * ends that state.
-     * 
+     *
      * Every column of `families` is an exact-match query parameter, `order` sorts
      * by one column, and `limit`/`offset` page through `page.total`. A query key
      * that is NOT a column is dropped rather than refused, and the `filter`
      * object echoes the ones that were understood — that echo is the only way
      * to tell an unfiltered answer from an empty one. It reads rows exactly as
      * they are stored: no join is resolved, no jsonb value is unpacked.
-     * 
+     *
      * Answered from the gateway's tenant cache for up to 30 minutes and dropped
      * the moment this entity is written, because the data model changes weekly at
      * most and every product page asks the same question.
@@ -2001,7 +2001,7 @@ class ProductsDataModel extends Service
      * Creates one family and answers 201 with the stored row, including the id
      * and the timestamps the database filled in — a client never sends an id,
      * it reads one back and uses it in the path of every later call.
-     * 
+     *
      * A family decides WHICH attributes a product has — the set is
      * `family_attributes`, and every family-driven surface follows from it. It
      * also names which attribute carries the display name (`label_attribute`) and
@@ -2009,7 +2009,7 @@ class ProductsDataModel extends Service
      * attributes at all, so its completeness cannot be measured and its name
      * never resolves past the SKU; `POST /products/{id}/family` is the call that
      * ends that state.
-     * 
+     *
      * `code` is the only column the database refuses the row without; everything
      * else has a default or is nullable. A second row with the same `code`
      * answers 409.
@@ -2064,12 +2064,12 @@ class ProductsDataModel extends Service
     /**
      * Deletes one family by id. It is a hard delete — the row is gone, and the
      * answer is a confirmation rather than a result to branch on.
-     * 
+     *
      * It takes what hangs off it: family attributes (`family_id`), family
      * variants (`family_id`) are deleted with it. `products.family_id` is set to
      * null instead, so the rows that pointed at it survive the delete rather than
      * going with it.
-     * 
+     *
      * An id no family of this tenant carries answers 404; there is no 409,
      * because every foreign key pointing at this entity resolves itself on delete
      * rather than blocking one.
@@ -2102,7 +2102,7 @@ class ProductsDataModel extends Service
     /**
      * Reads one family by its id — the whole row, every column, as it is
      * stored.
-     * 
+     *
      * A family decides WHICH attributes a product has — the set is
      * `family_attributes`, and every family-driven surface follows from it. It
      * also names which attribute carries the display name (`label_attribute`) and
@@ -2110,12 +2110,12 @@ class ProductsDataModel extends Service
      * attributes at all, so its completeness cannot be measured and its name
      * never resolves past the SKU; `POST /products/{id}/family` is the call that
      * ends that state.
-     * 
+     *
      * An id no family of this tenant carries answers 404, and so does one
      * belonging to another tenant: row-level security makes that row invisible
      * rather than forbidden. A malformed id answers 400 before the route is
      * reached.
-     * 
+     *
      * Answered from the gateway's tenant cache for up to 30 minutes and dropped
      * the moment this entity is written, because the data model changes weekly at
      * most and every product page asks the same question.
@@ -2149,7 +2149,7 @@ class ProductsDataModel extends Service
      * Updates one family by id. A partial patch: the body names only the columns
      * to change and every column it leaves out keeps its current value, so there
      * is no read-modify-write and no way to blank a field by forgetting it.
-     * 
+     *
      * A family decides WHICH attributes a product has — the set is
      * `family_attributes`, and every family-driven surface follows from it. It
      * also names which attribute carries the display name (`label_attribute`) and
@@ -2157,7 +2157,7 @@ class ProductsDataModel extends Service
      * attributes at all, so its completeness cannot be measured and its name
      * never resolves past the SKU; `POST /products/{id}/family` is the call that
      * ends that state.
-     * 
+     *
      * A body that names nothing writable is refused with 400 rather than answered
      * as a no-op, an id nobody carries answers 404, and a value that collides on
      * `code` answers 409.
@@ -2221,7 +2221,7 @@ class ProductsDataModel extends Service
      * `is_required`, which is the flag `POST /products/{id}/completeness`
      * measures and nothing else reads. `required_channels` narrows "required" to
      * named channels; null or empty means required EVERYWHERE, not nowhere.
-     * 
+     *
      * Every column of `family_attributes` is an exact-match query parameter,
      * `order` sorts by one column, and `limit`/`offset` page through
      * `page.total`. A query key that is NOT a column is dropped rather than
@@ -2229,7 +2229,7 @@ class ProductsDataModel extends Service
      * that echo is the only way to tell an unfiltered answer from an empty one.
      * It reads rows exactly as they are stored: no join is resolved, no jsonb
      * value is unpacked.
-     * 
+     *
      * Answered from the gateway's tenant cache for up to 30 minutes and dropped
      * the moment this entity is written, because the data model changes weekly at
      * most and every product page asks the same question.
@@ -2316,14 +2316,14 @@ class ProductsDataModel extends Service
      * Creates one family attribute and answers 201 with the stored row, including
      * the id and the timestamps the database filled in — a client never sends
      * an id, it reads one back and uses it in the path of every later call.
-     * 
+     *
      * One link between a family and an attribute — the row that puts an
      * attribute INTO a family's form. It carries the family's own ordering of
      * that attribute, which overrides the attribute's default position, and
      * `is_required`, which is the flag `POST /products/{id}/completeness`
      * measures and nothing else reads. `required_channels` narrows "required" to
      * named channels; null or empty means required EVERYWHERE, not nowhere.
-     * 
+     *
      * `family_id` and `attribute_id` are the only columns the database refuses
      * the row without; everything else has a default or is nullable. A second row
      * with the same `family_id` and `attribute_id` answers 409.
@@ -2371,9 +2371,9 @@ class ProductsDataModel extends Service
     /**
      * Deletes one family attribute by id. It is a hard delete — the row is
      * gone, and the answer is a confirmation rather than a result to branch on.
-     * 
+     *
      * Nothing in this schema references it, so nothing else changes.
-     * 
+     *
      * An id no family attribute of this tenant carries answers 404; there is no
      * 409, because every foreign key pointing at this entity resolves itself on
      * delete rather than blocking one.
@@ -2406,19 +2406,19 @@ class ProductsDataModel extends Service
     /**
      * Reads one family attribute by its id — the whole row, every column, as it
      * is stored.
-     * 
+     *
      * One link between a family and an attribute — the row that puts an
      * attribute INTO a family's form. It carries the family's own ordering of
      * that attribute, which overrides the attribute's default position, and
      * `is_required`, which is the flag `POST /products/{id}/completeness`
      * measures and nothing else reads. `required_channels` narrows "required" to
      * named channels; null or empty means required EVERYWHERE, not nowhere.
-     * 
+     *
      * An id no family attribute of this tenant carries answers 404, and so does
      * one belonging to another tenant: row-level security makes that row
      * invisible rather than forbidden. A malformed id answers 400 before the
      * route is reached.
-     * 
+     *
      * Answered from the gateway's tenant cache for up to 30 minutes and dropped
      * the moment this entity is written, because the data model changes weekly at
      * most and every product page asks the same question.
@@ -2453,14 +2453,14 @@ class ProductsDataModel extends Service
      * the columns to change and every column it leaves out keeps its current
      * value, so there is no read-modify-write and no way to blank a field by
      * forgetting it.
-     * 
+     *
      * One link between a family and an attribute — the row that puts an
      * attribute INTO a family's form. It carries the family's own ordering of
      * that attribute, which overrides the attribute's default position, and
      * `is_required`, which is the flag `POST /products/{id}/completeness`
      * measures and nothing else reads. `required_channels` narrows "required" to
      * named channels; null or empty means required EVERYWHERE, not nowhere.
-     * 
+     *
      * A body that names nothing writable is refused with 400 rather than answered
      * as a no-op, an id nobody carries answers 404, and a value that collides on
      * `family_id` and `attribute_id` answers 409.
@@ -2521,7 +2521,7 @@ class ProductsDataModel extends Service
      * /products/attribute-schema` reports as `readonly_reason`. Two axis shapes
      * are in the wild and both are read: a bare list of codes, or one entry per
      * level.
-     * 
+     *
      * Every column of `family_variants` is an exact-match query parameter,
      * `order` sorts by one column, and `limit`/`offset` page through
      * `page.total`. A query key that is NOT a column is dropped rather than
@@ -2529,7 +2529,7 @@ class ProductsDataModel extends Service
      * that echo is the only way to tell an unfiltered answer from an empty one.
      * It reads rows exactly as they are stored: no join is resolved, no jsonb
      * value is unpacked.
-     * 
+     *
      * Answered from the gateway's tenant cache for up to 30 minutes and dropped
      * the moment this entity is written, because the data model changes weekly at
      * most and every product page asks the same question.
@@ -2641,7 +2641,7 @@ class ProductsDataModel extends Service
      * Creates one family variant and answers 201 with the stored row, including
      * the id and the timestamps the database filled in — a client never sends
      * an id, it reads one back and uses it in the path of every later call.
-     * 
+     *
      * A variant structure of a family: the attribute axes a product model splits
      * its variants on — colour, then size. A product follows one through
      * `family_variant_id`, and an attribute named as an axis becomes read-only on
@@ -2649,7 +2649,7 @@ class ProductsDataModel extends Service
      * /products/attribute-schema` reports as `readonly_reason`. Two axis shapes
      * are in the wild and both are read: a bare list of codes, or one entry per
      * level.
-     * 
+     *
      * `family_id` and `code` are the only columns the database refuses the row
      * without; everything else has a default or is nullable. A second row with
      * the same `code` answers 409.
@@ -2704,10 +2704,10 @@ class ProductsDataModel extends Service
     /**
      * Deletes one family variant by id. It is a hard delete — the row is gone,
      * and the answer is a confirmation rather than a result to branch on.
-     * 
+     *
      * `products.family_variant_id` is set to null instead, so the rows that
      * pointed at it survive the delete rather than going with it.
-     * 
+     *
      * An id no family variant of this tenant carries answers 404; there is no
      * 409, because every foreign key pointing at this entity resolves itself on
      * delete rather than blocking one.
@@ -2740,7 +2740,7 @@ class ProductsDataModel extends Service
     /**
      * Reads one family variant by its id — the whole row, every column, as it
      * is stored.
-     * 
+     *
      * A variant structure of a family: the attribute axes a product model splits
      * its variants on — colour, then size. A product follows one through
      * `family_variant_id`, and an attribute named as an axis becomes read-only on
@@ -2748,12 +2748,12 @@ class ProductsDataModel extends Service
      * /products/attribute-schema` reports as `readonly_reason`. Two axis shapes
      * are in the wild and both are read: a bare list of codes, or one entry per
      * level.
-     * 
+     *
      * An id no family variant of this tenant carries answers 404, and so does one
      * belonging to another tenant: row-level security makes that row invisible
      * rather than forbidden. A malformed id answers 400 before the route is
      * reached.
-     * 
+     *
      * Answered from the gateway's tenant cache for up to 30 minutes and dropped
      * the moment this entity is written, because the data model changes weekly at
      * most and every product page asks the same question.
@@ -2788,7 +2788,7 @@ class ProductsDataModel extends Service
      * columns to change and every column it leaves out keeps its current value,
      * so there is no read-modify-write and no way to blank a field by forgetting
      * it.
-     * 
+     *
      * A variant structure of a family: the attribute axes a product model splits
      * its variants on — colour, then size. A product follows one through
      * `family_variant_id`, and an attribute named as an axis becomes read-only on
@@ -2796,7 +2796,7 @@ class ProductsDataModel extends Service
      * /products/attribute-schema` reports as `readonly_reason`. Two axis shapes
      * are in the wild and both are read: a bare list of codes, or one entry per
      * level.
-     * 
+     *
      * A body that names nothing writable is refused with 400 rather than answered
      * as a no-op, an id nobody carries answers 404, and a value that collides on
      * `code` answers 409.
@@ -2861,7 +2861,7 @@ class ProductsDataModel extends Service
      * kilograms, length in metres. A `measure` attribute names one and then
      * offers exactly that family's units, and each unit's `convert_factor` is
      * what makes two values recorded in different units comparable at all.
-     * 
+     *
      * Every column of `measurement_families` is an exact-match query parameter,
      * `order` sorts by one column, and `limit`/`offset` page through
      * `page.total`. A query key that is NOT a column is dropped rather than
@@ -2869,7 +2869,7 @@ class ProductsDataModel extends Service
      * that echo is the only way to tell an unfiltered answer from an empty one.
      * It reads rows exactly as they are stored: no join is resolved, no jsonb
      * value is unpacked.
-     * 
+     *
      * Answered from the gateway's tenant cache for up to 30 minutes and dropped
      * the moment this entity is written, because the data model changes weekly at
      * most and every product page asks the same question.
@@ -2957,12 +2957,12 @@ class ProductsDataModel extends Service
      * including the id and the timestamps the database filled in — a client
      * never sends an id, it reads one back and uses it in the path of every later
      * call.
-     * 
+     *
      * A family of units and the standard one they all convert to — weight in
      * kilograms, length in metres. A `measure` attribute names one and then
      * offers exactly that family's units, and each unit's `convert_factor` is
      * what makes two values recorded in different units comparable at all.
-     * 
+     *
      * `code` and `standard_unit` are the only columns the database refuses the
      * row without; everything else has a default or is nullable. A second row
      * with the same `code` answers 409.
@@ -3007,9 +3007,9 @@ class ProductsDataModel extends Service
     /**
      * Deletes one measurement family by id. It is a hard delete — the row is
      * gone, and the answer is a confirmation rather than a result to branch on.
-     * 
+     *
      * Nothing in this schema references it, so nothing else changes.
-     * 
+     *
      * An id no measurement family of this tenant carries answers 404; there is no
      * 409, because every foreign key pointing at this entity resolves itself on
      * delete rather than blocking one.
@@ -3042,17 +3042,17 @@ class ProductsDataModel extends Service
     /**
      * Reads one measurement family by its id — the whole row, every column, as
      * it is stored.
-     * 
+     *
      * A family of units and the standard one they all convert to — weight in
      * kilograms, length in metres. A `measure` attribute names one and then
      * offers exactly that family's units, and each unit's `convert_factor` is
      * what makes two values recorded in different units comparable at all.
-     * 
+     *
      * An id no measurement family of this tenant carries answers 404, and so does
      * one belonging to another tenant: row-level security makes that row
      * invisible rather than forbidden. A malformed id answers 400 before the
      * route is reached.
-     * 
+     *
      * Answered from the gateway's tenant cache for up to 30 minutes and dropped
      * the moment this entity is written, because the data model changes weekly at
      * most and every product page asks the same question.
@@ -3087,12 +3087,12 @@ class ProductsDataModel extends Service
      * the columns to change and every column it leaves out keeps its current
      * value, so there is no read-modify-write and no way to blank a field by
      * forgetting it.
-     * 
+     *
      * A family of units and the standard one they all convert to — weight in
      * kilograms, length in metres. A `measure` attribute names one and then
      * offers exactly that family's units, and each unit's `convert_factor` is
      * what makes two values recorded in different units comparable at all.
-     * 
+     *
      * A body that names nothing writable is refused with 400 rather than answered
      * as a no-op, an id nobody carries answers 404, and a value that collides on
      * `code` answers 409.

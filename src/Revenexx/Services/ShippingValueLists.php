@@ -11,10 +11,10 @@ use Revenexx\Enums\ShippingVocabulariesGetName;
 
 class ShippingValueLists extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * What class of service a carrier row represents. This used to be a CHECK

@@ -12,16 +12,19 @@ use Revenexx\Enums\Conditions;
 use Revenexx\Enums\CostCentersRestrictionsCreateType;
 use Revenexx\Enums\CostCentersVocabularyName;
 
-final class CostCentersTest extends TestCase {
+final class CostCentersTest extends TestCase
+{
     private $client;
     private $costCenters;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->costCenters = new CostCenters($this->client);
     }
 
-    public function testMethodCostCentersBudgetChangesList(): void {
+    public function testMethodCostCentersBudgetChangesList(): void
+    {
 
         $data = array();
 
@@ -35,7 +38,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersBudgetChangesGet(): void {
+    public function testMethodCostCentersBudgetChangesGet(): void
+    {
 
         $data = array();
 
@@ -50,7 +54,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersBudgetsList(): void {
+    public function testMethodCostCentersBudgetsList(): void
+    {
 
         $data = array();
 
@@ -64,7 +69,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersBudgetsCreate(): void {
+    public function testMethodCostCentersBudgetsCreate(): void
+    {
 
         $data = array();
 
@@ -80,7 +86,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersBudgetsRollover(): void {
+    public function testMethodCostCentersBudgetsRollover(): void
+    {
 
         $data = array();
 
@@ -94,7 +101,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersBudgetsGet(): void {
+    public function testMethodCostCentersBudgetsGet(): void
+    {
 
         $data = array();
 
@@ -109,7 +117,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersBudgetsUpdate(): void {
+    public function testMethodCostCentersBudgetsUpdate(): void
+    {
 
         $data = array();
 
@@ -124,7 +133,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersBudgetsAdjust(): void {
+    public function testMethodCostCentersBudgetsAdjust(): void
+    {
 
         $data = array();
 
@@ -140,7 +150,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersBudgetsDiscard(): void {
+    public function testMethodCostCentersBudgetsDiscard(): void
+    {
 
         $data = array();
 
@@ -155,7 +166,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersCommit(): void {
+    public function testMethodCostCentersCommit(): void
+    {
 
         $data = array();
 
@@ -170,7 +182,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersConfirm(): void {
+    public function testMethodCostCentersConfirm(): void
+    {
 
         $data = array();
 
@@ -185,7 +198,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersContactLimitsList(): void {
+    public function testMethodCostCentersContactLimitsList(): void
+    {
 
         $data = array();
 
@@ -199,7 +213,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersContactLimitsCreate(): void {
+    public function testMethodCostCentersContactLimitsCreate(): void
+    {
 
         $data = array();
 
@@ -214,7 +229,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersContactLimitsDelete(): void {
+    public function testMethodCostCentersContactLimitsDelete(): void
+    {
 
         $data = array();
 
@@ -229,7 +245,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersContactLimitsGet(): void {
+    public function testMethodCostCentersContactLimitsGet(): void
+    {
 
         $data = array();
 
@@ -244,7 +261,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersContactLimitsUpdate(): void {
+    public function testMethodCostCentersContactLimitsUpdate(): void
+    {
 
         $data = array();
 
@@ -259,7 +277,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersCostCentersList(): void {
+    public function testMethodCostCentersCostCentersList(): void
+    {
 
         $data = array();
 
@@ -273,7 +292,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersCostCentersCreate(): void {
+    public function testMethodCostCentersCostCentersCreate(): void
+    {
 
         $data = array();
 
@@ -290,7 +310,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersCostCentersDelete(): void {
+    public function testMethodCostCentersCostCentersDelete(): void
+    {
 
         $data = array();
 
@@ -305,7 +326,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersCostCentersGet(): void {
+    public function testMethodCostCentersCostCentersGet(): void
+    {
 
         $data = array();
 
@@ -320,7 +342,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersCostCentersUpdate(): void {
+    public function testMethodCostCentersCostCentersUpdate(): void
+    {
 
         $data = array();
 
@@ -335,7 +358,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersCostCentersArchive(): void {
+    public function testMethodCostCentersCostCentersArchive(): void
+    {
 
         $data = array();
 
@@ -350,7 +374,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersCostCentersConsume(): void {
+    public function testMethodCostCentersCostCentersConsume(): void
+    {
 
         $data = array();
 
@@ -366,7 +391,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersEvaluate(): void {
+    public function testMethodCostCentersEvaluate(): void
+    {
 
         $data = array();
 
@@ -381,7 +407,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersRelease(): void {
+    public function testMethodCostCentersRelease(): void
+    {
 
         $data = array();
 
@@ -397,7 +424,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersReserve(): void {
+    public function testMethodCostCentersReserve(): void
+    {
 
         $data = array();
 
@@ -412,7 +440,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersReserveAdjust(): void {
+    public function testMethodCostCentersReserveAdjust(): void
+    {
 
         $data = array();
 
@@ -428,7 +457,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersRestrictionsList(): void {
+    public function testMethodCostCentersRestrictionsList(): void
+    {
 
         $data = array();
 
@@ -442,7 +472,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersRestrictionsCreate(): void {
+    public function testMethodCostCentersRestrictionsCreate(): void
+    {
 
         $data = array();
 
@@ -459,7 +490,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersRestrictionsDelete(): void {
+    public function testMethodCostCentersRestrictionsDelete(): void
+    {
 
         $data = array();
 
@@ -474,7 +506,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersRestrictionsGet(): void {
+    public function testMethodCostCentersRestrictionsGet(): void
+    {
 
         $data = array();
 
@@ -489,7 +522,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersRestrictionsUpdate(): void {
+    public function testMethodCostCentersRestrictionsUpdate(): void
+    {
 
         $data = array();
 
@@ -504,7 +538,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersUsable(): void {
+    public function testMethodCostCentersUsable(): void
+    {
 
         $data = array();
 
@@ -520,7 +555,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersVocabularies(): void {
+    public function testMethodCostCentersVocabularies(): void
+    {
 
         $data = array();
 
@@ -534,7 +570,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersVocabulary(): void {
+    public function testMethodCostCentersVocabulary(): void
+    {
 
         $data = array();
 
@@ -549,7 +586,8 @@ final class CostCentersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCostCentersWithdraw(): void {
+    public function testMethodCostCentersWithdraw(): void
+    {
 
         $data = array();
 

@@ -8,16 +8,19 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\Model;
 
-final class AdsSpendTest extends TestCase {
+final class AdsSpendTest extends TestCase
+{
     private $client;
     private $adsSpend;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->adsSpend = new AdsSpend($this->client);
     }
 
-    public function testMethodAdsSpendFigures(): void {
+    public function testMethodAdsSpendFigures(): void
+    {
 
         $data = array();
 
@@ -32,7 +35,8 @@ final class AdsSpendTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsSpendRoas(): void {
+    public function testMethodAdsSpendRoas(): void
+    {
 
         $data = array();
 
@@ -47,7 +51,8 @@ final class AdsSpendTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsSpendList(): void {
+    public function testMethodAdsSpendList(): void
+    {
 
         $data = array();
 
@@ -61,7 +66,8 @@ final class AdsSpendTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsSpendImport(): void {
+    public function testMethodAdsSpendImport(): void
+    {
 
         $data = array();
 
@@ -76,7 +82,8 @@ final class AdsSpendTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsSpendGet(): void {
+    public function testMethodAdsSpendGet(): void
+    {
 
         $data = array();
 

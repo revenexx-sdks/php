@@ -10,10 +10,10 @@ use Revenexx\Enums\Sort;
 
 class ReviewsProducts extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * @param string $productId

@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class SalesRepsRosterTest extends TestCase {
+final class SalesRepsRosterTest extends TestCase
+{
     private $client;
     private $salesRepsRoster;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->salesRepsRoster = new SalesRepsRoster($this->client);
     }
 
-    public function testMethodSalesRepsRepsList(): void {
+    public function testMethodSalesRepsRepsList(): void
+    {
 
         $data = array();
 
@@ -30,7 +33,8 @@ final class SalesRepsRosterTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSalesRepsRepsCreate(): void {
+    public function testMethodSalesRepsRepsCreate(): void
+    {
 
         $data = array();
 
@@ -46,7 +50,8 @@ final class SalesRepsRosterTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSalesRepsRepsRecount(): void {
+    public function testMethodSalesRepsRepsRecount(): void
+    {
 
         $data = array();
 
@@ -60,7 +65,8 @@ final class SalesRepsRosterTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSalesRepsRepsDelete(): void {
+    public function testMethodSalesRepsRepsDelete(): void
+    {
 
         $data = array();
 
@@ -75,7 +81,8 @@ final class SalesRepsRosterTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSalesRepsRepsGet(): void {
+    public function testMethodSalesRepsRepsGet(): void
+    {
 
         $data = array();
 
@@ -90,7 +97,8 @@ final class SalesRepsRosterTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSalesRepsRepsUpdate(): void {
+    public function testMethodSalesRepsRepsUpdate(): void
+    {
 
         $data = array();
 

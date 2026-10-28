@@ -9,16 +9,19 @@ use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\PriceReason;
 use Revenexx\Enums\QuotesPricingReviewState;
 
-final class QuotesPricingTest extends TestCase {
+final class QuotesPricingTest extends TestCase
+{
     private $client;
     private $quotesPricing;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->quotesPricing = new QuotesPricing($this->client);
     }
 
-    public function testMethodQuotesPricingExpire(): void {
+    public function testMethodQuotesPricingExpire(): void
+    {
 
         $data = array();
 
@@ -33,7 +36,8 @@ final class QuotesPricingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodQuotesPricingRemoveItem(): void {
+    public function testMethodQuotesPricingRemoveItem(): void
+    {
 
         $data = array();
 
@@ -49,7 +53,8 @@ final class QuotesPricingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodQuotesPricingFollowUp(): void {
+    public function testMethodQuotesPricingFollowUp(): void
+    {
 
         $data = array();
 
@@ -64,7 +69,8 @@ final class QuotesPricingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodQuotesPricingAddItem(): void {
+    public function testMethodQuotesPricingAddItem(): void
+    {
 
         $data = array();
 
@@ -79,7 +85,8 @@ final class QuotesPricingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodQuotesPricingItem(): void {
+    public function testMethodQuotesPricingItem(): void
+    {
 
         $data = array();
 
@@ -95,7 +102,8 @@ final class QuotesPricingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodQuotesPricingPrice(): void {
+    public function testMethodQuotesPricingPrice(): void
+    {
 
         $data = array();
 
@@ -110,7 +118,8 @@ final class QuotesPricingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodQuotesPricingReview(): void {
+    public function testMethodQuotesPricingReview(): void
+    {
 
         $data = array();
 
@@ -125,7 +134,8 @@ final class QuotesPricingTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodQuotesPricingRemind(): void {
+    public function testMethodQuotesPricingRemind(): void
+    {
 
         $data = array();
 

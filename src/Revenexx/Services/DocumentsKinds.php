@@ -12,10 +12,10 @@ use Revenexx\Enums\DocumentVocabularyPathName;
 
 class DocumentsKinds extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * A document kind is a value the MERCHANT keeps: a code every document

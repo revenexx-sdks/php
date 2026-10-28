@@ -10,16 +10,19 @@ use Revenexx\Enums\OrderListKindTone;
 use Revenexx\Enums\OrderlistsVocabulariesGetName;
 use Revenexx\Enums\OrderListCartMode;
 
-final class OrderlistsTest extends TestCase {
+final class OrderlistsTest extends TestCase
+{
     private $client;
     private $orderlists;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->orderlists = new Orderlists($this->client);
     }
 
-    public function testMethodOrderlistsList(): void {
+    public function testMethodOrderlistsList(): void
+    {
 
         $data = array();
 
@@ -33,7 +36,8 @@ final class OrderlistsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrderlistsCreate(): void {
+    public function testMethodOrderlistsCreate(): void
+    {
 
         $data = array();
 
@@ -50,7 +54,8 @@ final class OrderlistsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrderlistsDefaults(): void {
+    public function testMethodOrderlistsDefaults(): void
+    {
 
         $data = array();
 
@@ -64,7 +69,8 @@ final class OrderlistsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrderlistsKindsList(): void {
+    public function testMethodOrderlistsKindsList(): void
+    {
 
         $data = array();
 
@@ -78,7 +84,8 @@ final class OrderlistsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrderlistsKindsCreate(): void {
+    public function testMethodOrderlistsKindsCreate(): void
+    {
 
         $data = array();
 
@@ -94,7 +101,8 @@ final class OrderlistsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrderlistsKindsDelete(): void {
+    public function testMethodOrderlistsKindsDelete(): void
+    {
 
         $data = array();
 
@@ -109,7 +117,8 @@ final class OrderlistsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrderlistsKindsGet(): void {
+    public function testMethodOrderlistsKindsGet(): void
+    {
 
         $data = array();
 
@@ -124,7 +133,8 @@ final class OrderlistsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrderlistsKindsUpdate(): void {
+    public function testMethodOrderlistsKindsUpdate(): void
+    {
 
         $data = array();
 
@@ -139,7 +149,8 @@ final class OrderlistsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrderlistsKindsMakeDefault(): void {
+    public function testMethodOrderlistsKindsMakeDefault(): void
+    {
 
         $data = array();
 
@@ -155,7 +166,8 @@ final class OrderlistsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrderlistsVocabulariesList(): void {
+    public function testMethodOrderlistsVocabulariesList(): void
+    {
 
         $data = array();
 
@@ -169,7 +181,8 @@ final class OrderlistsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrderlistsVocabulariesGet(): void {
+    public function testMethodOrderlistsVocabulariesGet(): void
+    {
 
         $data = array();
 
@@ -184,7 +197,8 @@ final class OrderlistsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrderlistsDelete(): void {
+    public function testMethodOrderlistsDelete(): void
+    {
 
         $data = array();
 
@@ -199,7 +213,8 @@ final class OrderlistsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrderlistsGet(): void {
+    public function testMethodOrderlistsGet(): void
+    {
 
         $data = array();
 
@@ -214,7 +229,8 @@ final class OrderlistsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrderlistsUpdate(): void {
+    public function testMethodOrderlistsUpdate(): void
+    {
 
         $data = array();
 
@@ -229,7 +245,8 @@ final class OrderlistsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrderlistsToCart(): void {
+    public function testMethodOrderlistsToCart(): void
+    {
 
         $data = array();
 
@@ -244,7 +261,8 @@ final class OrderlistsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrderlistsTransferOwner(): void {
+    public function testMethodOrderlistsTransferOwner(): void
+    {
 
         $data = array();
 
@@ -260,7 +278,8 @@ final class OrderlistsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrderlistsItemsList(): void {
+    public function testMethodOrderlistsItemsList(): void
+    {
 
         $data = array();
 
@@ -275,7 +294,8 @@ final class OrderlistsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrderlistsItemsCreate(): void {
+    public function testMethodOrderlistsItemsCreate(): void
+    {
 
         $data = array();
 
@@ -291,7 +311,8 @@ final class OrderlistsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrderlistsItemsReplace(): void {
+    public function testMethodOrderlistsItemsReplace(): void
+    {
 
         $data = array();
 
@@ -307,7 +328,8 @@ final class OrderlistsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrderlistsItemsDelete(): void {
+    public function testMethodOrderlistsItemsDelete(): void
+    {
 
         $data = array();
 
@@ -323,7 +345,8 @@ final class OrderlistsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrderlistsItemsGet(): void {
+    public function testMethodOrderlistsItemsGet(): void
+    {
 
         $data = array();
 
@@ -339,7 +362,8 @@ final class OrderlistsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrderlistsItemsUpdate(): void {
+    public function testMethodOrderlistsItemsUpdate(): void
+    {
 
         $data = array();
 

@@ -14,10 +14,10 @@ use Revenexx\Enums\AssetsSource;
 
 class ProductsAssets extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * One piece of media in the decoupled asset domain. The bytes live either in
@@ -26,17 +26,17 @@ class ProductsAssets extends Service
      * with an `external_url`), and the database enforces the pair so neither half
      * can be stored alone. A product points at an asset by its code through a
      * media attribute; there is no product-to-asset link table in this app.
-     * 
+     *
      * Every column of `assets` is an exact-match query parameter, `order` sorts
      * by one column, and `limit`/`offset` page through `page.total`. A query key
      * that is NOT a column is dropped rather than refused, and the `filter`
      * object echoes the ones that were understood — that echo is the only way
      * to tell an unfiltered answer from an empty one. It reads rows exactly as
      * they are stored: no join is resolved, no jsonb value is unpacked.
-     * 
+     *
      * Records in the trash are left out: `trashed=only` reads the trash itself,
      * `trashed=include` both. Any other value of `trashed` is refused with 400.
-     * 
+     *
      * Answered from the gateway's tenant cache for up to 30 minutes and dropped
      * the moment this entity is written, because the data model changes weekly at
      * most and every product page asks the same question.
@@ -243,14 +243,14 @@ class ProductsAssets extends Service
      * Creates one asset and answers 201 with the stored row, including the id and
      * the timestamps the database filled in — a client never sends an id, it
      * reads one back and uses it in the path of every later call.
-     * 
+     *
      * One piece of media in the decoupled asset domain. The bytes live either in
      * this platform's object store (`source: "storage"` with a `storage_asset_id`
      * that survives a rename) or on somebody else's host (`source: "external"`
      * with an `external_url`), and the database enforces the pair so neither half
      * can be stored alone. A product points at an asset by its code through a
      * media attribute; there is no product-to-asset link table in this app.
-     * 
+     *
      * `asset_family_id` and `code` are the only columns the database refuses the
      * row without; everything else has a default or is nullable. A second row
      * with the same `asset_family_id` and `code` answers 409. This app owns the
@@ -375,13 +375,13 @@ class ProductsAssets extends Service
     /**
      * Moves one asset to the trash — or, called on one that is already there,
      * deletes it for good.
-     * 
+     *
      * The first call stamps the asset, and nothing goes with it; all of them
      * share one `trash_batch` and come back together on `POST …/{id}/restore`.
      * Nothing that points at it changes: its assignments stay and stop acting,
      * and the answer lists them as warnings with a count. Its code (within its
      * asset family) stays reserved while it is in the trash.
-     * 
+     *
      * The second call deletes it for good, with the rows of its group, and only
      * then do the cascades and `*.deleted` happen. It is refused with 409 while a
      * blocker holds: nothing in the catalog holds an asset — products,
@@ -392,7 +392,7 @@ class ProductsAssets extends Service
      * (`storage_unreachable`). A blocker that could not be checked counts as one.
      * It is refused with 403 for a storefront contact — deleting for good is
      * back-office work.
-     * 
+     *
      * An id no asset of this tenant carries answers 404.
      *
      * @param string $id
@@ -422,19 +422,19 @@ class ProductsAssets extends Service
 
     /**
      * Reads one asset by its id — the whole row, every column, as it is stored.
-     * 
+     *
      * One piece of media in the decoupled asset domain. The bytes live either in
      * this platform's object store (`source: "storage"` with a `storage_asset_id`
      * that survives a rename) or on somebody else's host (`source: "external"`
      * with an `external_url`), and the database enforces the pair so neither half
      * can be stored alone. A product points at an asset by its code through a
      * media attribute; there is no product-to-asset link table in this app.
-     * 
+     *
      * An id no asset of this tenant carries answers 404, and so does one
      * belonging to another tenant: row-level security makes that row invisible
      * rather than forbidden. A malformed id answers 400 before the route is
      * reached.
-     * 
+     *
      * Answered from the gateway's tenant cache for up to 30 minutes and dropped
      * the moment this entity is written, because the data model changes weekly at
      * most and every product page asks the same question.
@@ -468,14 +468,14 @@ class ProductsAssets extends Service
      * Updates one asset by id. A partial patch: the body names only the columns
      * to change and every column it leaves out keeps its current value, so there
      * is no read-modify-write and no way to blank a field by forgetting it.
-     * 
+     *
      * One piece of media in the decoupled asset domain. The bytes live either in
      * this platform's object store (`source: "storage"` with a `storage_asset_id`
      * that survives a rename) or on somebody else's host (`source: "external"`
      * with an `external_url`), and the database enforces the pair so neither half
      * can be stored alone. A product points at an asset by its code through a
      * media attribute; there is no product-to-asset link table in this app.
-     * 
+     *
      * A body that names nothing writable is refused with 400 rather than answered
      * as a no-op, an id nobody carries answers 404, and a value that collides on
      * `asset_family_id` and `code` answers 409.
@@ -577,7 +577,7 @@ class ProductsAssets extends Service
      * with it (its `trash_batch`). A record trashed on its own before stays in
      * the trash. Everything that pointed at it acts again as it did, because
      * nothing was changed when it went.
-     * 
+     *
      * Restoring needs the same right as deleting.
      *
      * @param string $id

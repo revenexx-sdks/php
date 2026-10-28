@@ -18,10 +18,10 @@ use Revenexx\Enums\OrderReturnRefusal;
 
 class Orders extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The route behind every order overview: the open orders of one customer,

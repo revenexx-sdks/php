@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class MailingsSend extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The five-minute schedule, callable by hand: prepares due and unfinished

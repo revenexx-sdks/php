@@ -14,16 +14,19 @@ use Revenexx\Enums\Trashed;
 use Revenexx\Enums\SegmentRuleMatch;
 use Revenexx\Enums\Target;
 
-final class CustomersSegmentsTest extends TestCase {
+final class CustomersSegmentsTest extends TestCase
+{
     private $client;
     private $customersSegments;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->customersSegments = new CustomersSegments($this->client);
     }
 
-    public function testMethodCustomersSegmentMembersList(): void {
+    public function testMethodCustomersSegmentMembersList(): void
+    {
 
         $data = array();
 
@@ -37,7 +40,8 @@ final class CustomersSegmentsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersSegmentMembersCreate(): void {
+    public function testMethodCustomersSegmentMembersCreate(): void
+    {
 
         $data = array();
 
@@ -53,7 +57,8 @@ final class CustomersSegmentsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersSegmentMembersDelete(): void {
+    public function testMethodCustomersSegmentMembersDelete(): void
+    {
 
         $data = array();
 
@@ -68,7 +73,8 @@ final class CustomersSegmentsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersSegmentMembersGet(): void {
+    public function testMethodCustomersSegmentMembersGet(): void
+    {
 
         $data = array();
 
@@ -83,7 +89,8 @@ final class CustomersSegmentsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersSegmentMembersUpdate(): void {
+    public function testMethodCustomersSegmentMembersUpdate(): void
+    {
 
         $data = array();
 
@@ -98,7 +105,8 @@ final class CustomersSegmentsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersSegmentsList(): void {
+    public function testMethodCustomersSegmentsList(): void
+    {
 
         $data = array();
 
@@ -112,7 +120,8 @@ final class CustomersSegmentsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersSegmentsCreate(): void {
+    public function testMethodCustomersSegmentsCreate(): void
+    {
 
         $data = array();
 
@@ -126,7 +135,8 @@ final class CustomersSegmentsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersSegmentsRulesRecomputeAll(): void {
+    public function testMethodCustomersSegmentsRulesRecomputeAll(): void
+    {
 
         $data = array();
 
@@ -141,7 +151,8 @@ final class CustomersSegmentsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersSegmentsTrashEmpty(): void {
+    public function testMethodCustomersSegmentsTrashEmpty(): void
+    {
 
         $data = array();
 
@@ -155,7 +166,8 @@ final class CustomersSegmentsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersSegmentsDelete(): void {
+    public function testMethodCustomersSegmentsDelete(): void
+    {
 
         $data = array();
 
@@ -170,7 +182,8 @@ final class CustomersSegmentsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersSegmentsGet(): void {
+    public function testMethodCustomersSegmentsGet(): void
+    {
 
         $data = array();
 
@@ -185,7 +198,8 @@ final class CustomersSegmentsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersSegmentsUpdate(): void {
+    public function testMethodCustomersSegmentsUpdate(): void
+    {
 
         $data = array();
 
@@ -200,7 +214,8 @@ final class CustomersSegmentsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersSegmentsRestore(): void {
+    public function testMethodCustomersSegmentsRestore(): void
+    {
 
         $data = array();
 
@@ -215,7 +230,8 @@ final class CustomersSegmentsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersSegmentsRulesPreview(): void {
+    public function testMethodCustomersSegmentsRulesPreview(): void
+    {
 
         $data = array();
 
@@ -231,7 +247,8 @@ final class CustomersSegmentsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersSegmentsRulesRecompute(): void {
+    public function testMethodCustomersSegmentsRulesRecompute(): void
+    {
 
         $data = array();
 

@@ -12,10 +12,10 @@ use Revenexx\Enums\MatchMode;
 
 class AudiencesRules extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The rule rows of every active audience; filter `?audience_id=` for one

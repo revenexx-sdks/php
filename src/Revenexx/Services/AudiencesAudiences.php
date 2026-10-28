@@ -12,10 +12,10 @@ use Revenexx\Enums\RuleMatch;
 
 class AudiencesAudiences extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Every audience of this tenant, active and static, with its member count and

@@ -13,10 +13,10 @@ use Revenexx\Enums\InventoriesVocabulariesGetName;
 
 class InventoriesStock extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The batch correction route — a stocktake, breakage, shrinkage — and the

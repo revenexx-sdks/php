@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class QuotesAcceptanceTest extends TestCase {
+final class QuotesAcceptanceTest extends TestCase
+{
     private $client;
     private $quotesAcceptance;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->quotesAcceptance = new QuotesAcceptance($this->client);
     }
 
-    public function testMethodQuotesAcceptanceAccept(): void {
+    public function testMethodQuotesAcceptanceAccept(): void
+    {
 
         $data = array();
 
@@ -31,7 +34,8 @@ final class QuotesAcceptanceTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodQuotesAcceptanceDecline(): void {
+    public function testMethodQuotesAcceptanceDecline(): void
+    {
 
         $data = array();
 
@@ -46,7 +50,8 @@ final class QuotesAcceptanceTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodQuotesAcceptanceOrdered(): void {
+    public function testMethodQuotesAcceptanceOrdered(): void
+    {
 
         $data = array();
 
@@ -62,7 +67,8 @@ final class QuotesAcceptanceTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodQuotesAcceptanceReject(): void {
+    public function testMethodQuotesAcceptanceReject(): void
+    {
 
         $data = array();
 

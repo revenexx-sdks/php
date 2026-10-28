@@ -16,16 +16,19 @@ use Revenexx\Enums\OrderCommentVisibility;
 use Revenexx\Enums\OrderReturnSettlement;
 use Revenexx\Enums\OrderReturnRefusal;
 
-final class OrdersTest extends TestCase {
+final class OrdersTest extends TestCase
+{
     private $client;
     private $orders;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->orders = new Orders($this->client);
     }
 
-    public function testMethodOrdersList(): void {
+    public function testMethodOrdersList(): void
+    {
 
         $data = array();
 
@@ -39,7 +42,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersMigrationsRequestedDeliveryDate(): void {
+    public function testMethodOrdersMigrationsRequestedDeliveryDate(): void
+    {
 
         $data = array();
 
@@ -53,7 +57,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersNumberRangesList(): void {
+    public function testMethodOrdersNumberRangesList(): void
+    {
 
         $data = array();
 
@@ -67,7 +72,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersNumberRangesCreate(): void {
+    public function testMethodOrdersNumberRangesCreate(): void
+    {
 
         $data = array();
 
@@ -82,7 +88,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersNumberRangesDefaults(): void {
+    public function testMethodOrdersNumberRangesDefaults(): void
+    {
 
         $data = array();
 
@@ -96,7 +103,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersNumberRangesDelete(): void {
+    public function testMethodOrdersNumberRangesDelete(): void
+    {
 
         $data = array();
 
@@ -111,7 +119,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersNumberRangesGet(): void {
+    public function testMethodOrdersNumberRangesGet(): void
+    {
 
         $data = array();
 
@@ -126,7 +135,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersNumberRangesUpdate(): void {
+    public function testMethodOrdersNumberRangesUpdate(): void
+    {
 
         $data = array();
 
@@ -141,7 +151,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersPlace(): void {
+    public function testMethodOrdersPlace(): void
+    {
 
         $data = array();
 
@@ -156,7 +167,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersReportsCustomerRollup(): void {
+    public function testMethodOrdersReportsCustomerRollup(): void
+    {
 
         $data = array();
 
@@ -170,7 +182,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersReturnReasonsList(): void {
+    public function testMethodOrdersReturnReasonsList(): void
+    {
 
         $data = array();
 
@@ -184,7 +197,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersReturnReasonsGet(): void {
+    public function testMethodOrdersReturnReasonsGet(): void
+    {
 
         $data = array();
 
@@ -199,7 +213,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersShipmentsMarkDelivered(): void {
+    public function testMethodOrdersShipmentsMarkDelivered(): void
+    {
 
         $data = array();
 
@@ -214,7 +229,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersVocabulariesList(): void {
+    public function testMethodOrdersVocabulariesList(): void
+    {
 
         $data = array();
 
@@ -228,7 +244,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersVocabulariesGet(): void {
+    public function testMethodOrdersVocabulariesGet(): void
+    {
 
         $data = array();
 
@@ -243,7 +260,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersGet(): void {
+    public function testMethodOrdersGet(): void
+    {
 
         $data = array();
 
@@ -258,7 +276,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersUpdate(): void {
+    public function testMethodOrdersUpdate(): void
+    {
 
         $data = array();
 
@@ -273,7 +292,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersAcknowledge(): void {
+    public function testMethodOrdersAcknowledge(): void
+    {
 
         $data = array();
 
@@ -288,7 +308,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersApprove(): void {
+    public function testMethodOrdersApprove(): void
+    {
 
         $data = array();
 
@@ -303,7 +324,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersCancel(): void {
+    public function testMethodOrdersCancel(): void
+    {
 
         $data = array();
 
@@ -318,7 +340,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersCommentsList(): void {
+    public function testMethodOrdersCommentsList(): void
+    {
 
         $data = array();
 
@@ -333,7 +356,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersCommentsCreate(): void {
+    public function testMethodOrdersCommentsCreate(): void
+    {
 
         $data = array();
 
@@ -349,7 +373,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersComplete(): void {
+    public function testMethodOrdersComplete(): void
+    {
 
         $data = array();
 
@@ -364,7 +389,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersEventsList(): void {
+    public function testMethodOrdersEventsList(): void
+    {
 
         $data = array();
 
@@ -379,7 +405,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersHold(): void {
+    public function testMethodOrdersHold(): void
+    {
 
         $data = array();
 
@@ -394,7 +421,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersItemsCancel(): void {
+    public function testMethodOrdersItemsCancel(): void
+    {
 
         $data = array();
 
@@ -410,7 +438,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersPaymentStatusUpdate(): void {
+    public function testMethodOrdersPaymentStatusUpdate(): void
+    {
 
         $data = array();
 
@@ -426,7 +455,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersReject(): void {
+    public function testMethodOrdersReject(): void
+    {
 
         $data = array();
 
@@ -442,7 +472,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersReturn(): void {
+    public function testMethodOrdersReturn(): void
+    {
 
         $data = array();
 
@@ -457,7 +488,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersReturnable(): void {
+    public function testMethodOrdersReturnable(): void
+    {
 
         $data = array();
 
@@ -472,7 +504,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersReturnsComplete(): void {
+    public function testMethodOrdersReturnsComplete(): void
+    {
 
         $data = array();
 
@@ -488,7 +521,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersReturnsReceive(): void {
+    public function testMethodOrdersReturnsReceive(): void
+    {
 
         $data = array();
 
@@ -505,7 +539,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersReturnsReject(): void {
+    public function testMethodOrdersReturnsReject(): void
+    {
 
         $data = array();
 
@@ -521,7 +556,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersShip(): void {
+    public function testMethodOrdersShip(): void
+    {
 
         $data = array();
 
@@ -536,7 +572,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersShippable(): void {
+    public function testMethodOrdersShippable(): void
+    {
 
         $data = array();
 
@@ -551,7 +588,8 @@ final class OrdersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodOrdersUnhold(): void {
+    public function testMethodOrdersUnhold(): void
+    {
 
         $data = array();
 

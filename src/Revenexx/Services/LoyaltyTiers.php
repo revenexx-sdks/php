@@ -11,10 +11,10 @@ use Revenexx\Enums\ThresholdKind;
 
 class LoyaltyTiers extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Filter `?program_id=` for one programme, `?code=` to find a tier by the

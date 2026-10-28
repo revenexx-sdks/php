@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class AdsLinks extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Filter `?campaign_id=` for one campaign, `?campaign_id=` empty via the

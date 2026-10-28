@@ -8,16 +8,19 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\Layout;
 
-final class ConsentManagerPolicyTest extends TestCase {
+final class ConsentManagerPolicyTest extends TestCase
+{
     private $client;
     private $consentManagerPolicy;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->consentManagerPolicy = new ConsentManagerPolicy($this->client);
     }
 
-    public function testMethodConsentManagerBannerGet(): void {
+    public function testMethodConsentManagerBannerGet(): void
+    {
 
         $data = array();
 
@@ -31,7 +34,8 @@ final class ConsentManagerPolicyTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerBannerUpdate(): void {
+    public function testMethodConsentManagerBannerUpdate(): void
+    {
 
         $data = array();
 
@@ -45,7 +49,8 @@ final class ConsentManagerPolicyTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerPolicyVersionsList(): void {
+    public function testMethodConsentManagerPolicyVersionsList(): void
+    {
 
         $data = array();
 
@@ -59,7 +64,8 @@ final class ConsentManagerPolicyTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerPolicyVersionsGet(): void {
+    public function testMethodConsentManagerPolicyVersionsGet(): void
+    {
 
         $data = array();
 
@@ -74,7 +80,8 @@ final class ConsentManagerPolicyTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerPolicyPreview(): void {
+    public function testMethodConsentManagerPolicyPreview(): void
+    {
 
         $data = array();
 
@@ -88,7 +95,8 @@ final class ConsentManagerPolicyTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerPolicyPublish(): void {
+    public function testMethodConsentManagerPolicyPublish(): void
+    {
 
         $data = array();
 

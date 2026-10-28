@@ -14,10 +14,10 @@ use Revenexx\Enums\ConsentManagerVocabulariesGetName;
 
 class ConsentManagerRegistry extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The vendor catalogue this version of the app ships — the vendors met in

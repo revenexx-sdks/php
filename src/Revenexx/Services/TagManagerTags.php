@@ -13,10 +13,10 @@ use Revenexx\Enums\TagManagerVariablesCreateKind;
 
 class TagManagerTags extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Every registry key a marketing tag may name, with its label, category, the

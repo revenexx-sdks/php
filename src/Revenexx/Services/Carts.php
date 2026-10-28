@@ -13,10 +13,10 @@ use Revenexx\Enums\Name;
 
 class Carts extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The cart index, and the route a storefront resumes a session with:

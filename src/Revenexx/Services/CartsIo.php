@@ -16,10 +16,10 @@ use Revenexx\Enums\CartIoApplyMode;
 
 class CartsIo extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Renders every cart a filter selects, through one export profile, a page at

@@ -12,16 +12,19 @@ use Revenexx\Enums\GoogleSignals;
 use Revenexx\Enums\LegalBasisOverride;
 use Revenexx\Enums\ConsentManagerVocabulariesGetName;
 
-final class ConsentManagerRegistryTest extends TestCase {
+final class ConsentManagerRegistryTest extends TestCase
+{
     private $client;
     private $consentManagerRegistry;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->consentManagerRegistry = new ConsentManagerRegistry($this->client);
     }
 
-    public function testMethodConsentManagerCatalogList(): void {
+    public function testMethodConsentManagerCatalogList(): void
+    {
 
         $data = array();
 
@@ -35,7 +38,8 @@ final class ConsentManagerRegistryTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerCatalogAdopt(): void {
+    public function testMethodConsentManagerCatalogAdopt(): void
+    {
 
         $data = array();
 
@@ -50,7 +54,8 @@ final class ConsentManagerRegistryTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerCookiesList(): void {
+    public function testMethodConsentManagerCookiesList(): void
+    {
 
         $data = array();
 
@@ -64,7 +69,8 @@ final class ConsentManagerRegistryTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerCookiesCreate(): void {
+    public function testMethodConsentManagerCookiesCreate(): void
+    {
 
         $data = array();
 
@@ -80,7 +86,8 @@ final class ConsentManagerRegistryTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerCookiesDelete(): void {
+    public function testMethodConsentManagerCookiesDelete(): void
+    {
 
         $data = array();
 
@@ -95,7 +102,8 @@ final class ConsentManagerRegistryTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerCookiesGet(): void {
+    public function testMethodConsentManagerCookiesGet(): void
+    {
 
         $data = array();
 
@@ -110,7 +118,8 @@ final class ConsentManagerRegistryTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerCookiesUpdate(): void {
+    public function testMethodConsentManagerCookiesUpdate(): void
+    {
 
         $data = array();
 
@@ -125,7 +134,8 @@ final class ConsentManagerRegistryTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerDefaultsRun(): void {
+    public function testMethodConsentManagerDefaultsRun(): void
+    {
 
         $data = array();
 
@@ -140,7 +150,8 @@ final class ConsentManagerRegistryTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerPurposesList(): void {
+    public function testMethodConsentManagerPurposesList(): void
+    {
 
         $data = array();
 
@@ -154,7 +165,8 @@ final class ConsentManagerRegistryTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerPurposesCreate(): void {
+    public function testMethodConsentManagerPurposesCreate(): void
+    {
 
         $data = array();
 
@@ -171,7 +183,8 @@ final class ConsentManagerRegistryTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerPurposesDelete(): void {
+    public function testMethodConsentManagerPurposesDelete(): void
+    {
 
         $data = array();
 
@@ -186,7 +199,8 @@ final class ConsentManagerRegistryTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerPurposesGet(): void {
+    public function testMethodConsentManagerPurposesGet(): void
+    {
 
         $data = array();
 
@@ -201,7 +215,8 @@ final class ConsentManagerRegistryTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerPurposesUpdate(): void {
+    public function testMethodConsentManagerPurposesUpdate(): void
+    {
 
         $data = array();
 
@@ -216,7 +231,8 @@ final class ConsentManagerRegistryTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerVendorsList(): void {
+    public function testMethodConsentManagerVendorsList(): void
+    {
 
         $data = array();
 
@@ -230,7 +246,8 @@ final class ConsentManagerRegistryTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerVendorsCreate(): void {
+    public function testMethodConsentManagerVendorsCreate(): void
+    {
 
         $data = array();
 
@@ -246,7 +263,8 @@ final class ConsentManagerRegistryTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerVendorsDelete(): void {
+    public function testMethodConsentManagerVendorsDelete(): void
+    {
 
         $data = array();
 
@@ -261,7 +279,8 @@ final class ConsentManagerRegistryTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerVendorsGet(): void {
+    public function testMethodConsentManagerVendorsGet(): void
+    {
 
         $data = array();
 
@@ -276,7 +295,8 @@ final class ConsentManagerRegistryTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerVendorsUpdate(): void {
+    public function testMethodConsentManagerVendorsUpdate(): void
+    {
 
         $data = array();
 
@@ -291,7 +311,8 @@ final class ConsentManagerRegistryTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerVocabulariesList(): void {
+    public function testMethodConsentManagerVocabulariesList(): void
+    {
 
         $data = array();
 
@@ -305,7 +326,8 @@ final class ConsentManagerRegistryTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerVocabulariesGet(): void {
+    public function testMethodConsentManagerVocabulariesGet(): void
+    {
 
         $data = array();
 

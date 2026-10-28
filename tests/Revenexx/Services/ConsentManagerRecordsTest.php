@@ -9,16 +9,19 @@ use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\Action;
 use Revenexx\Enums\Surface;
 
-final class ConsentManagerRecordsTest extends TestCase {
+final class ConsentManagerRecordsTest extends TestCase
+{
     private $client;
     private $consentManagerRecords;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->consentManagerRecords = new ConsentManagerRecords($this->client);
     }
 
-    public function testMethodConsentManagerRecordsList(): void {
+    public function testMethodConsentManagerRecordsList(): void
+    {
 
         $data = array();
 
@@ -32,7 +35,8 @@ final class ConsentManagerRecordsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerRecordsCreate(): void {
+    public function testMethodConsentManagerRecordsCreate(): void
+    {
 
         $data = array();
 
@@ -51,7 +55,8 @@ final class ConsentManagerRecordsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerRecordsHistory(): void {
+    public function testMethodConsentManagerRecordsHistory(): void
+    {
 
         $data = array();
 
@@ -66,7 +71,8 @@ final class ConsentManagerRecordsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerRecordsExport(): void {
+    public function testMethodConsentManagerRecordsExport(): void
+    {
 
         $data = array();
 
@@ -80,7 +86,8 @@ final class ConsentManagerRecordsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerRecordsPrune(): void {
+    public function testMethodConsentManagerRecordsPrune(): void
+    {
 
         $data = array();
 
@@ -94,7 +101,8 @@ final class ConsentManagerRecordsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerRecordsSummary(): void {
+    public function testMethodConsentManagerRecordsSummary(): void
+    {
 
         $data = array();
 
@@ -108,7 +116,8 @@ final class ConsentManagerRecordsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerRecordsUnlinkContact(): void {
+    public function testMethodConsentManagerRecordsUnlinkContact(): void
+    {
 
         $data = array();
 
@@ -123,7 +132,8 @@ final class ConsentManagerRecordsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodConsentManagerRecordsGet(): void {
+    public function testMethodConsentManagerRecordsGet(): void
+    {
 
         $data = array();
 

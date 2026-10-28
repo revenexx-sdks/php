@@ -8,16 +8,19 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\Factor;
 
-final class CustomersTest extends TestCase {
+final class CustomersTest extends TestCase
+{
     private $client;
     private $customers;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->customers = new Customers($this->client);
     }
 
-    public function testMethodCustomersAuthHandoff(): void {
+    public function testMethodCustomersAuthHandoff(): void
+    {
 
         $data = array();
 
@@ -32,7 +35,8 @@ final class CustomersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersAuthLogin(): void {
+    public function testMethodCustomersAuthLogin(): void
+    {
 
         $data = array();
 
@@ -47,7 +51,8 @@ final class CustomersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersAuthLogout(): void {
+    public function testMethodCustomersAuthLogout(): void
+    {
 
         $data = array();
 
@@ -63,7 +68,8 @@ final class CustomersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersAuthMagicLink(): void {
+    public function testMethodCustomersAuthMagicLink(): void
+    {
 
         $data = array();
 
@@ -79,7 +85,8 @@ final class CustomersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersAuthMagicLinkConfirm(): void {
+    public function testMethodCustomersAuthMagicLinkConfirm(): void
+    {
 
         $data = array();
 
@@ -95,7 +102,8 @@ final class CustomersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersAuthMe(): void {
+    public function testMethodCustomersAuthMe(): void
+    {
 
         $data = array();
 
@@ -111,7 +119,8 @@ final class CustomersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersAuthMfaChallenge(): void {
+    public function testMethodCustomersAuthMfaChallenge(): void
+    {
 
         $data = array();
 
@@ -126,7 +135,8 @@ final class CustomersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersAuthMfaChallengeConfirm(): void {
+    public function testMethodCustomersAuthMfaChallengeConfirm(): void
+    {
 
         $data = array();
 
@@ -143,7 +153,8 @@ final class CustomersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersAuthOtp(): void {
+    public function testMethodCustomersAuthOtp(): void
+    {
 
         $data = array();
 
@@ -158,7 +169,8 @@ final class CustomersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersAuthOtpConfirm(): void {
+    public function testMethodCustomersAuthOtpConfirm(): void
+    {
 
         $data = array();
 
@@ -174,7 +186,8 @@ final class CustomersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersAuthRecovery(): void {
+    public function testMethodCustomersAuthRecovery(): void
+    {
 
         $data = array();
 
@@ -190,7 +203,8 @@ final class CustomersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersAuthRecoveryConfirm(): void {
+    public function testMethodCustomersAuthRecoveryConfirm(): void
+    {
 
         $data = array();
 
@@ -207,7 +221,8 @@ final class CustomersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersAuthRegister(): void {
+    public function testMethodCustomersAuthRegister(): void
+    {
 
         $data = array();
 
@@ -223,7 +238,8 @@ final class CustomersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersAuthVerification(): void {
+    public function testMethodCustomersAuthVerification(): void
+    {
 
         $data = array();
 
@@ -239,7 +255,8 @@ final class CustomersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersAuthVerificationConfirm(): void {
+    public function testMethodCustomersAuthVerificationConfirm(): void
+    {
 
         $data = array();
 
@@ -255,7 +272,8 @@ final class CustomersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersPrincipalResolve(): void {
+    public function testMethodCustomersPrincipalResolve(): void
+    {
 
         $data = array();
 

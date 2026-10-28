@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class ProductsReferencesTest extends TestCase {
+final class ProductsReferencesTest extends TestCase
+{
     private $client;
     private $productsReferences;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->productsReferences = new ProductsReferences($this->client);
     }
 
-    public function testMethodProductsReferenceEntitiesList(): void {
+    public function testMethodProductsReferenceEntitiesList(): void
+    {
 
         $data = array();
 
@@ -30,7 +33,8 @@ final class ProductsReferencesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsReferenceEntitiesCreate(): void {
+    public function testMethodProductsReferenceEntitiesCreate(): void
+    {
 
         $data = array();
 
@@ -45,7 +49,8 @@ final class ProductsReferencesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsReferenceEntitiesDelete(): void {
+    public function testMethodProductsReferenceEntitiesDelete(): void
+    {
 
         $data = array();
 
@@ -60,7 +65,8 @@ final class ProductsReferencesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsReferenceEntitiesGet(): void {
+    public function testMethodProductsReferenceEntitiesGet(): void
+    {
 
         $data = array();
 
@@ -75,7 +81,8 @@ final class ProductsReferencesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsReferenceEntitiesUpdate(): void {
+    public function testMethodProductsReferenceEntitiesUpdate(): void
+    {
 
         $data = array();
 
@@ -90,7 +97,8 @@ final class ProductsReferencesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsReferenceEntityRecordsList(): void {
+    public function testMethodProductsReferenceEntityRecordsList(): void
+    {
 
         $data = array();
 
@@ -104,7 +112,8 @@ final class ProductsReferencesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsReferenceEntityRecordsCreate(): void {
+    public function testMethodProductsReferenceEntityRecordsCreate(): void
+    {
 
         $data = array();
 
@@ -120,7 +129,8 @@ final class ProductsReferencesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsReferenceEntityRecordsDelete(): void {
+    public function testMethodProductsReferenceEntityRecordsDelete(): void
+    {
 
         $data = array();
 
@@ -135,7 +145,8 @@ final class ProductsReferencesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsReferenceEntityRecordsGet(): void {
+    public function testMethodProductsReferenceEntityRecordsGet(): void
+    {
 
         $data = array();
 
@@ -150,7 +161,8 @@ final class ProductsReferencesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsReferenceEntityRecordsUpdate(): void {
+    public function testMethodProductsReferenceEntityRecordsUpdate(): void
+    {
 
         $data = array();
 

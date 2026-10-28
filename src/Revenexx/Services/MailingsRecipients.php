@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class MailingsRecipients extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Filter `?mailing_id=` for one mailing, `?outcome=` for one outcome. Written

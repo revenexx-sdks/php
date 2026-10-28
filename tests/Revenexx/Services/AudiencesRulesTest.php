@@ -10,16 +10,19 @@ use Revenexx\Enums\Channel;
 use Revenexx\Enums\AudiencesRulesCreateKind;
 use Revenexx\Enums\MatchMode;
 
-final class AudiencesRulesTest extends TestCase {
+final class AudiencesRulesTest extends TestCase
+{
     private $client;
     private $audiencesRules;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->audiencesRules = new AudiencesRules($this->client);
     }
 
-    public function testMethodAudiencesRulesList(): void {
+    public function testMethodAudiencesRulesList(): void
+    {
 
         $data = array();
 
@@ -33,7 +36,8 @@ final class AudiencesRulesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAudiencesRulesCreate(): void {
+    public function testMethodAudiencesRulesCreate(): void
+    {
 
         $data = array();
 
@@ -48,7 +52,8 @@ final class AudiencesRulesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAudiencesRulesDelete(): void {
+    public function testMethodAudiencesRulesDelete(): void
+    {
 
         $data = array();
 
@@ -63,7 +68,8 @@ final class AudiencesRulesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAudiencesRulesGet(): void {
+    public function testMethodAudiencesRulesGet(): void
+    {
 
         $data = array();
 
@@ -78,7 +84,8 @@ final class AudiencesRulesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAudiencesRulesUpdate(): void {
+    public function testMethodAudiencesRulesUpdate(): void
+    {
 
         $data = array();
 

@@ -11,10 +11,10 @@ use Revenexx\Enums\TriggerKind;
 
 class JourneysJourneys extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Every journey of this tenant, without the trash unless `trashed` asks for

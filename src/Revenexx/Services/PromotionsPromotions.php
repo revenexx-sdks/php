@@ -25,10 +25,10 @@ use Revenexx\Enums\When;
 
 class PromotionsPromotions extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The offers that count items rather than money: buy three pay two, the

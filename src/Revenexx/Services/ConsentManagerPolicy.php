@@ -10,10 +10,10 @@ use Revenexx\Enums\Layout;
 
 class ConsentManagerPolicy extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The draft for the market in `x-revenexx-market`. A market without its own

@@ -13,10 +13,10 @@ use Revenexx\Enums\PagesVocabulariesGetName;
 
 class Pages extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The pool an editor picks a reusable block from. A library item is ONE block

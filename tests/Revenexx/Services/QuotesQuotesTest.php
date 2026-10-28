@@ -11,16 +11,19 @@ use Revenexx\Enums\QuotesQuotesCopyParts;
 use Revenexx\Enums\Audience;
 use Revenexx\Enums\QuotesQuotesVocabularyName;
 
-final class QuotesQuotesTest extends TestCase {
+final class QuotesQuotesTest extends TestCase
+{
     private $client;
     private $quotesQuotes;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->quotesQuotes = new QuotesQuotes($this->client);
     }
 
-    public function testMethodQuotesQuotesOpenItems(): void {
+    public function testMethodQuotesQuotesOpenItems(): void
+    {
 
         $data = array();
 
@@ -35,7 +38,8 @@ final class QuotesQuotesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodQuotesQuotesList(): void {
+    public function testMethodQuotesQuotesList(): void
+    {
 
         $data = array();
 
@@ -49,7 +53,8 @@ final class QuotesQuotesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodQuotesQuotesCreate(): void {
+    public function testMethodQuotesQuotesCreate(): void
+    {
 
         $data = array();
 
@@ -65,7 +70,8 @@ final class QuotesQuotesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodQuotesQuotesGet(): void {
+    public function testMethodQuotesQuotesGet(): void
+    {
 
         $data = array();
 
@@ -80,7 +86,8 @@ final class QuotesQuotesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodQuotesQuotesCopy(): void {
+    public function testMethodQuotesQuotesCopy(): void
+    {
 
         $data = array();
 
@@ -95,7 +102,8 @@ final class QuotesQuotesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodQuotesQuotesDetail(): void {
+    public function testMethodQuotesQuotesDetail(): void
+    {
 
         $data = array();
 
@@ -110,7 +118,8 @@ final class QuotesQuotesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodQuotesQuotesItems(): void {
+    public function testMethodQuotesQuotesItems(): void
+    {
 
         $data = array();
 
@@ -125,7 +134,8 @@ final class QuotesQuotesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodQuotesQuotesRequest(): void {
+    public function testMethodQuotesQuotesRequest(): void
+    {
 
         $data = array();
 
@@ -141,7 +151,8 @@ final class QuotesQuotesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodQuotesQuotesVocabularies(): void {
+    public function testMethodQuotesQuotesVocabularies(): void
+    {
 
         $data = array();
 
@@ -155,7 +166,8 @@ final class QuotesQuotesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodQuotesQuotesVocabulary(): void {
+    public function testMethodQuotesQuotesVocabulary(): void
+    {
 
         $data = array();
 

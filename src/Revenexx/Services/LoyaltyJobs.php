@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class LoyaltyJobs extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Credits orders of the last 48 hours, books their completed returns and

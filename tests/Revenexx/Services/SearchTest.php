@@ -9,16 +9,19 @@ use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\Collection as CollectionEnum;
 use Revenexx\Enums\SearchEventsType;
 
-final class SearchTest extends TestCase {
+final class SearchTest extends TestCase
+{
     private $client;
     private $search;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->search = new Search($this->client);
     }
 
-    public function testMethodSearchListCollections(): void {
+    public function testMethodSearchListCollections(): void
+    {
 
         $data = array(
             "collections" => array());
@@ -33,7 +36,8 @@ final class SearchTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSearchGetCollection(): void {
+    public function testMethodSearchGetCollection(): void
+    {
 
         $data = array();
 
@@ -48,7 +52,8 @@ final class SearchTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSearchSearchDocumentsGet(): void {
+    public function testMethodSearchSearchDocumentsGet(): void
+    {
 
         $data = array();
 
@@ -63,7 +68,8 @@ final class SearchTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSearchSearchDocuments(): void {
+    public function testMethodSearchSearchDocuments(): void
+    {
 
         $data = array();
 
@@ -78,7 +84,8 @@ final class SearchTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSearchGetDocument(): void {
+    public function testMethodSearchGetDocument(): void
+    {
 
         $data = array();
 
@@ -94,7 +101,8 @@ final class SearchTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSearchEvents(): void {
+    public function testMethodSearchEvents(): void
+    {
 
         $data = array();
 
@@ -110,7 +118,8 @@ final class SearchTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodGatewayFacetResync(): void {
+    public function testMethodGatewayFacetResync(): void
+    {
 
         $data = array();
 
@@ -124,7 +133,8 @@ final class SearchTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSearchMultiSearch(): void {
+    public function testMethodSearchMultiSearch(): void
+    {
 
         $data = array(
             "results" => array());
@@ -140,7 +150,8 @@ final class SearchTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSearchQuery(): void {
+    public function testMethodSearchQuery(): void
+    {
 
         $data = array(
             "actions" => array(),
@@ -166,7 +177,8 @@ final class SearchTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSearchSuggest(): void {
+    public function testMethodSearchSuggest(): void
+    {
 
         $data = array(
             "actions" => array(),

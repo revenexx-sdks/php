@@ -1,5 +1,9 @@
 [
+    ".github/dependabot.yml",
+    ".github/rulesets/main.json",
+    ".github/workflows/ci.yml",
     ".gitignore",
+    ".php-cs-fixer.dist.php",
     "ABOUT.md",
     "CHANGELOG.md",
     "LICENSE",
@@ -1544,6 +1548,7 @@
     "docs/tag-manager.delivery.md",
     "docs/tag-manager.tags.md",
     "mkdocs.yml",
+    "phpstan.neon",
     "phpunit.xml",
     "src/Revenexx/Client.php",
     "src/Revenexx/Condition.php",

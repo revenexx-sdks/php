@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class AdsConversionsTest extends TestCase {
+final class AdsConversionsTest extends TestCase
+{
     private $client;
     private $adsConversions;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->adsConversions = new AdsConversions($this->client);
     }
 
-    public function testMethodAdsConversionsList(): void {
+    public function testMethodAdsConversionsList(): void
+    {
 
         $data = array();
 
@@ -30,7 +33,8 @@ final class AdsConversionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsConversionsGet(): void {
+    public function testMethodAdsConversionsGet(): void
+    {
 
         $data = array();
 
@@ -45,7 +49,8 @@ final class AdsConversionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsConversionsResult(): void {
+    public function testMethodAdsConversionsResult(): void
+    {
 
         $data = array();
 
@@ -60,7 +65,8 @@ final class AdsConversionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsConversionsRetry(): void {
+    public function testMethodAdsConversionsRetry(): void
+    {
 
         $data = array();
 

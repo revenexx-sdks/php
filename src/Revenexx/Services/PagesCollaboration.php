@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class PagesCollaboration extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The caller's own notifications, newest first, 20 at a time. Paged by an

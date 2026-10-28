@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class AdsLinksTest extends TestCase {
+final class AdsLinksTest extends TestCase
+{
     private $client;
     private $adsLinks;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->adsLinks = new AdsLinks($this->client);
     }
 
-    public function testMethodAdsLinksList(): void {
+    public function testMethodAdsLinksList(): void
+    {
 
         $data = array();
 
@@ -30,7 +33,8 @@ final class AdsLinksTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsLinksCreate(): void {
+    public function testMethodAdsLinksCreate(): void
+    {
 
         $data = array();
 
@@ -46,7 +50,8 @@ final class AdsLinksTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsLinksDelete(): void {
+    public function testMethodAdsLinksDelete(): void
+    {
 
         $data = array();
 
@@ -61,7 +66,8 @@ final class AdsLinksTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsLinksGet(): void {
+    public function testMethodAdsLinksGet(): void
+    {
 
         $data = array();
 
@@ -76,7 +82,8 @@ final class AdsLinksTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsLinksUpdate(): void {
+    public function testMethodAdsLinksUpdate(): void
+    {
 
         $data = array();
 

@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class MailingsHealth extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Sent, delivered, bounced, complained and unsubscribed over the mailings of

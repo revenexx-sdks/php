@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class JourneysSteps extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Filter `?journey_version_id=` or `?journey_id=&version=`.

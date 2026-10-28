@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class LoyaltyReferrals extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Filter `?membership_id=`, `?contact_id=`, `?code=`.

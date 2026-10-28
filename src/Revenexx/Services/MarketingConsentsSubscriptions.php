@@ -14,10 +14,10 @@ use Revenexx\Enums\MarketingConsentsSubscriptionsRequestSource;
 
 class MarketingConsentsSubscriptions extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The double opt-in click, called by the storefront's confirmation page.

@@ -11,16 +11,19 @@ use Revenexx\Enums\Starter;
 use Revenexx\Enums\TimezoneMode;
 use Revenexx\Enums\Device;
 
-final class MailingsMailingsTest extends TestCase {
+final class MailingsMailingsTest extends TestCase
+{
     private $client;
     private $mailingsMailings;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->mailingsMailings = new MailingsMailings($this->client);
     }
 
-    public function testMethodMailingsMailingsList(): void {
+    public function testMethodMailingsMailingsList(): void
+    {
 
         $data = array();
 
@@ -34,7 +37,8 @@ final class MailingsMailingsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMailingsMailingsCreate(): void {
+    public function testMethodMailingsMailingsCreate(): void
+    {
 
         $data = array();
 
@@ -49,7 +53,8 @@ final class MailingsMailingsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMailingsMailingsEmptyTrash(): void {
+    public function testMethodMailingsMailingsEmptyTrash(): void
+    {
 
         $data = array();
 
@@ -63,7 +68,8 @@ final class MailingsMailingsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMailingsMailingsPurge(): void {
+    public function testMethodMailingsMailingsPurge(): void
+    {
 
         $data = array();
 
@@ -77,7 +83,8 @@ final class MailingsMailingsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMailingsMailingsDelete(): void {
+    public function testMethodMailingsMailingsDelete(): void
+    {
 
         $data = array();
 
@@ -92,7 +99,8 @@ final class MailingsMailingsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMailingsMailingsGet(): void {
+    public function testMethodMailingsMailingsGet(): void
+    {
 
         $data = array();
 
@@ -107,7 +115,8 @@ final class MailingsMailingsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMailingsMailingsUpdate(): void {
+    public function testMethodMailingsMailingsUpdate(): void
+    {
 
         $data = array();
 
@@ -122,7 +131,8 @@ final class MailingsMailingsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMailingsMailingsArchive(): void {
+    public function testMethodMailingsMailingsArchive(): void
+    {
 
         $data = array();
 
@@ -138,7 +148,8 @@ final class MailingsMailingsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMailingsMailingsCancel(): void {
+    public function testMethodMailingsMailingsCancel(): void
+    {
 
         $data = array();
 
@@ -154,7 +165,8 @@ final class MailingsMailingsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMailingsMailingsChecklist(): void {
+    public function testMethodMailingsMailingsChecklist(): void
+    {
 
         $data = array();
 
@@ -169,7 +181,8 @@ final class MailingsMailingsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMailingsMailingsDuplicate(): void {
+    public function testMethodMailingsMailingsDuplicate(): void
+    {
 
         $data = array();
 
@@ -185,7 +198,8 @@ final class MailingsMailingsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMailingsMailingsPreview(): void {
+    public function testMethodMailingsMailingsPreview(): void
+    {
 
         $data = array();
 
@@ -200,7 +214,8 @@ final class MailingsMailingsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMailingsMailingsReach(): void {
+    public function testMethodMailingsMailingsReach(): void
+    {
 
         $data = array();
 
@@ -215,7 +230,8 @@ final class MailingsMailingsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMailingsMailingsRestore(): void {
+    public function testMethodMailingsMailingsRestore(): void
+    {
 
         $data = array();
 
@@ -230,7 +246,8 @@ final class MailingsMailingsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMailingsMailingsSchedule(): void {
+    public function testMethodMailingsMailingsSchedule(): void
+    {
 
         $data = array();
 
@@ -245,7 +262,8 @@ final class MailingsMailingsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMailingsMailingsTest(): void {
+    public function testMethodMailingsMailingsTest(): void
+    {
 
         $data = array();
 
@@ -260,7 +278,8 @@ final class MailingsMailingsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMailingsMailingsUnarchive(): void {
+    public function testMethodMailingsMailingsUnarchive(): void
+    {
 
         $data = array();
 

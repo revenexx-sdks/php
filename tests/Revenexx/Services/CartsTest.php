@@ -11,16 +11,19 @@ use Revenexx\Enums\CartMergeStrategy;
 use Revenexx\Enums\CartOrderingChannel;
 use Revenexx\Enums\Name;
 
-final class CartsTest extends TestCase {
+final class CartsTest extends TestCase
+{
     private $client;
     private $carts;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->carts = new Carts($this->client);
     }
 
-    public function testMethodCartsList(): void {
+    public function testMethodCartsList(): void
+    {
 
         $data = array();
 
@@ -34,7 +37,8 @@ final class CartsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsCreate(): void {
+    public function testMethodCartsCreate(): void
+    {
 
         $data = array();
 
@@ -48,7 +52,8 @@ final class CartsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsClaim(): void {
+    public function testMethodCartsClaim(): void
+    {
 
         $data = array();
 
@@ -64,7 +69,8 @@ final class CartsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsHeldCodes(): void {
+    public function testMethodCartsHeldCodes(): void
+    {
 
         $data = array();
 
@@ -78,7 +84,8 @@ final class CartsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsMaintenanceRun(): void {
+    public function testMethodCartsMaintenanceRun(): void
+    {
 
         $data = array();
 
@@ -92,7 +99,8 @@ final class CartsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsMerge(): void {
+    public function testMethodCartsMerge(): void
+    {
 
         $data = array();
 
@@ -108,7 +116,8 @@ final class CartsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsOnBehalf(): void {
+    public function testMethodCartsOnBehalf(): void
+    {
 
         $data = array();
 
@@ -123,7 +132,8 @@ final class CartsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsVocabulariesList(): void {
+    public function testMethodCartsVocabulariesList(): void
+    {
 
         $data = array();
 
@@ -137,7 +147,8 @@ final class CartsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsVocabulariesGet(): void {
+    public function testMethodCartsVocabulariesGet(): void
+    {
 
         $data = array();
 
@@ -152,7 +163,8 @@ final class CartsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsDelete(): void {
+    public function testMethodCartsDelete(): void
+    {
 
         $data = array();
 
@@ -167,7 +179,8 @@ final class CartsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsGet(): void {
+    public function testMethodCartsGet(): void
+    {
 
         $data = array();
 
@@ -182,7 +195,8 @@ final class CartsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsUpdate(): void {
+    public function testMethodCartsUpdate(): void
+    {
 
         $data = array();
 
@@ -197,7 +211,8 @@ final class CartsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsAbandon(): void {
+    public function testMethodCartsAbandon(): void
+    {
 
         $data = array();
 
@@ -212,7 +227,8 @@ final class CartsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsActivate(): void {
+    public function testMethodCartsActivate(): void
+    {
 
         $data = array();
 
@@ -227,7 +243,8 @@ final class CartsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsMergeInto(): void {
+    public function testMethodCartsMergeInto(): void
+    {
 
         $data = array();
 
@@ -243,7 +260,8 @@ final class CartsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsOrder(): void {
+    public function testMethodCartsOrder(): void
+    {
 
         $data = array();
 
@@ -258,7 +276,8 @@ final class CartsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsReopen(): void {
+    public function testMethodCartsReopen(): void
+    {
 
         $data = array();
 

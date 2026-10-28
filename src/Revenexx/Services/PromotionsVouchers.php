@@ -10,10 +10,10 @@ use Revenexx\Enums\PromotionsBatchesCreateStatus;
 
 class PromotionsVouchers extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The unit a mailing is accounted for by. "How many of the spring codes have

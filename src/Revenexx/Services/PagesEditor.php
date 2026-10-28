@@ -10,10 +10,10 @@ use Revenexx\Enums\PageEditStateStatus;
 
 class PagesEditor extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The drafts overview — the "what is unpublished right now" list, across

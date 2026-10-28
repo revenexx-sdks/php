@@ -15,10 +15,10 @@ use Revenexx\Enums\ProductCategoriesSource;
 
 class ProductsCategories extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * One node of the category tree. `parent_id` is the structure this app
@@ -28,7 +28,7 @@ class ProductsCategories extends Service
      * matching product a `product_categories` row with source `rule`, alongside
      * the hand-picked ones, and `rules_computed_at` says when that last
      * completed.
-     * 
+     *
      * Every column of `categories` is an exact-match query parameter, `order`
      * sorts by one column, and `limit`/`offset` page through `page.total`. A
      * query key that is NOT a column is dropped rather than refused, and the
@@ -36,10 +36,10 @@ class ProductsCategories extends Service
      * only way to tell an unfiltered answer from an empty one. It reads rows
      * exactly as they are stored: no join is resolved, no jsonb value is
      * unpacked.
-     * 
+     *
      * Records in the trash are left out: `trashed=only` reads the trash itself,
      * `trashed=include` both. Any other value of `trashed` is refused with 400.
-     * 
+     *
      * Answered from the gateway's tenant cache for up to 30 minutes and dropped
      * the moment this entity is written, because the data model changes weekly at
      * most and every product page asks the same question.
@@ -231,7 +231,7 @@ class ProductsCategories extends Service
      * Creates one category and answers 201 with the stored row, including the id
      * and the timestamps the database filled in — a client never sends an id,
      * it reads one back and uses it in the path of every later call.
-     * 
+     *
      * One node of the category tree. `parent_id` is the structure this app
      * navigates — null is a root — while `path` is kept only for importers
      * that carry one and nothing here reads or writes it. A category is
@@ -239,7 +239,7 @@ class ProductsCategories extends Service
      * matching product a `product_categories` row with source `rule`, alongside
      * the hand-picked ones, and `rules_computed_at` says when that last
      * completed.
-     * 
+     *
      * `code` is the only column the database refuses the row without; everything
      * else has a default or is nullable. A second row with the same `code`
      * answers 409.
@@ -428,7 +428,7 @@ class ProductsCategories extends Service
      * inserts the newly matching products as source='rule' rows and deletes the
      * rule rows that no longer match. Manual (source='manual') memberships are
      * never inserted, deleted or shadowed. Stamps categories.rules_computed_at.
-     * 
+     *
      * A large category does NOT finish in one call: the run stops when its
      * wall-clock budget is spent and answers `done: false` with the `cursor` to
      * send back, so drive it in a loop until `done` is true.
@@ -464,19 +464,19 @@ class ProductsCategories extends Service
     /**
      * Moves one category to the trash — or, called on one that is already
      * there, deletes it for good.
-     * 
+     *
      * The first call stamps the category, and its whole subtree goes with it; all
      * of them share one `trash_batch` and come back together on `POST
      * …/{id}/restore`. Nothing that points at it changes: its assignments stay
      * and stop acting, and the answer lists them as warnings with a count. Its
      * code stays reserved while it is in the trash.
-     * 
+     *
      * The second call deletes it for good, with the rows of its group, and only
      * then do the cascades and `*.deleted` happen. It is refused with 409 while a
      * blocker holds: an active promotion whose condition names the category holds
      * it. A blocker that could not be checked counts as one. It is refused with
      * 403 for a storefront contact — deleting for good is back-office work.
-     * 
+     *
      * An id no category of this tenant carries answers 404.
      *
      * @param string $id
@@ -507,7 +507,7 @@ class ProductsCategories extends Service
     /**
      * Reads one category by its id — the whole row, every column, as it is
      * stored.
-     * 
+     *
      * One node of the category tree. `parent_id` is the structure this app
      * navigates — null is a root — while `path` is kept only for importers
      * that carry one and nothing here reads or writes it. A category is
@@ -515,12 +515,12 @@ class ProductsCategories extends Service
      * matching product a `product_categories` row with source `rule`, alongside
      * the hand-picked ones, and `rules_computed_at` says when that last
      * completed.
-     * 
+     *
      * An id no category of this tenant carries answers 404, and so does one
      * belonging to another tenant: row-level security makes that row invisible
      * rather than forbidden. A malformed id answers 400 before the route is
      * reached.
-     * 
+     *
      * Answered from the gateway's tenant cache for up to 30 minutes and dropped
      * the moment this entity is written, because the data model changes weekly at
      * most and every product page asks the same question.
@@ -555,7 +555,7 @@ class ProductsCategories extends Service
      * columns to change and every column it leaves out keeps its current value,
      * so there is no read-modify-write and no way to blank a field by forgetting
      * it.
-     * 
+     *
      * One node of the category tree. `parent_id` is the structure this app
      * navigates — null is a root — while `path` is kept only for importers
      * that carry one and nothing here reads or writes it. A category is
@@ -563,7 +563,7 @@ class ProductsCategories extends Service
      * matching product a `product_categories` row with source `rule`, alongside
      * the hand-picked ones, and `rules_computed_at` says when that last
      * completed.
-     * 
+     *
      * A body that names nothing writable is refused with 400 rather than answered
      * as a no-op, an id nobody carries answers 404, and a value that collides on
      * `code` answers 409.
@@ -650,7 +650,7 @@ class ProductsCategories extends Service
      * with it (its `trash_batch`). A record trashed on its own before stays in
      * the trash. Everything that pointed at it acts again as it did, because
      * nothing was changed when it went.
-     * 
+     *
      * Restoring needs the same right as deleting.
      *
      * @param string $id
@@ -686,7 +686,7 @@ class ProductsCategories extends Service
      * pass. `POST /products/{id}/categories` is the friendlier way to create one,
      * because it takes the product from the path and answers with the category
      * code and the SKU.
-     * 
+     *
      * Every column of `product_categories` is an exact-match query parameter,
      * `order` sorts by one column, and `limit`/`offset` page through
      * `page.total`. A query key that is NOT a column is dropped rather than
@@ -694,7 +694,7 @@ class ProductsCategories extends Service
      * that echo is the only way to tell an unfiltered answer from an empty one.
      * It reads rows exactly as they are stored: no join is resolved, no jsonb
      * value is unpacked.
-     * 
+     *
      * Answered from the gateway's tenant cache for up to 30 minutes and dropped
      * the moment this entity is written, because the data model changes weekly at
      * most and every product page asks the same question.
@@ -777,7 +777,7 @@ class ProductsCategories extends Service
      * row, including the id and the timestamps the database filled in — a
      * client never sends an id, it reads one back and uses it in the path of
      * every later call.
-     * 
+     *
      * One membership: this product is filed in this category. `source` says how
      * it got there — `manual` is hand-picked, `rule` was materialized by a
      * category rule — and the two never touch each other: a recompute only ever
@@ -785,7 +785,7 @@ class ProductsCategories extends Service
      * pass. `POST /products/{id}/categories` is the friendlier way to create one,
      * because it takes the product from the path and answers with the category
      * code and the SKU.
-     * 
+     *
      * `product_id` and `category_id` are the only columns the database refuses
      * the row without; everything else has a default or is nullable. A second row
      * with the same `product_id` and `category_id` answers 409.
@@ -832,9 +832,9 @@ class ProductsCategories extends Service
      * Deletes one product category membership by id. It is a hard delete — the
      * row is gone, and the answer is a confirmation rather than a result to
      * branch on.
-     * 
+     *
      * Nothing in this schema references it, so nothing else changes.
-     * 
+     *
      * An id no product category membership of this tenant carries answers 404;
      * there is no 409, because every foreign key pointing at this entity resolves
      * itself on delete rather than blocking one.
@@ -867,7 +867,7 @@ class ProductsCategories extends Service
     /**
      * Reads one product category membership by its id — the whole row, every
      * column, as it is stored.
-     * 
+     *
      * One membership: this product is filed in this category. `source` says how
      * it got there — `manual` is hand-picked, `rule` was materialized by a
      * category rule — and the two never touch each other: a recompute only ever
@@ -875,12 +875,12 @@ class ProductsCategories extends Service
      * pass. `POST /products/{id}/categories` is the friendlier way to create one,
      * because it takes the product from the path and answers with the category
      * code and the SKU.
-     * 
+     *
      * An id no product category membership of this tenant carries answers 404,
      * and so does one belonging to another tenant: row-level security makes that
      * row invisible rather than forbidden. A malformed id answers 400 before the
      * route is reached.
-     * 
+     *
      * Answered from the gateway's tenant cache for up to 30 minutes and dropped
      * the moment this entity is written, because the data model changes weekly at
      * most and every product page asks the same question.
@@ -915,7 +915,7 @@ class ProductsCategories extends Service
      * names only the columns to change and every column it leaves out keeps its
      * current value, so there is no read-modify-write and no way to blank a field
      * by forgetting it.
-     * 
+     *
      * One membership: this product is filed in this category. `source` says how
      * it got there — `manual` is hand-picked, `rule` was materialized by a
      * category rule — and the two never touch each other: a recompute only ever
@@ -923,7 +923,7 @@ class ProductsCategories extends Service
      * pass. `POST /products/{id}/categories` is the friendlier way to create one,
      * because it takes the product from the path and answers with the category
      * code and the SKU.
-     * 
+     *
      * A body that names nothing writable is refused with 400 rather than answered
      * as a no-op, an id nobody carries answers 404, and a value that collides on
      * `product_id` and `category_id` answers 409.

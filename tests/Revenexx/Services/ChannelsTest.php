@@ -11,16 +11,19 @@ use Revenexx\Enums\ChannelUnassignedVisibility;
 use Revenexx\Enums\ChannelTypeTone;
 use Revenexx\Enums\ChannelsVocabulariesGetName;
 
-final class ChannelsTest extends TestCase {
+final class ChannelsTest extends TestCase
+{
     private $client;
     private $channels;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->channels = new Channels($this->client);
     }
 
-    public function testMethodChannelsList(): void {
+    public function testMethodChannelsList(): void
+    {
 
         $data = array();
 
@@ -34,7 +37,8 @@ final class ChannelsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodChannelsCreate(): void {
+    public function testMethodChannelsCreate(): void
+    {
 
         $data = array();
 
@@ -50,7 +54,8 @@ final class ChannelsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodChannelsContext(): void {
+    public function testMethodChannelsContext(): void
+    {
 
         $data = array();
 
@@ -64,7 +69,8 @@ final class ChannelsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodChannelsDefaults(): void {
+    public function testMethodChannelsDefaults(): void
+    {
 
         $data = array();
 
@@ -78,7 +84,8 @@ final class ChannelsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodChannelsTypesList(): void {
+    public function testMethodChannelsTypesList(): void
+    {
 
         $data = array();
 
@@ -92,7 +99,8 @@ final class ChannelsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodChannelsTypesCreate(): void {
+    public function testMethodChannelsTypesCreate(): void
+    {
 
         $data = array();
 
@@ -108,7 +116,8 @@ final class ChannelsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodChannelsTypesDelete(): void {
+    public function testMethodChannelsTypesDelete(): void
+    {
 
         $data = array();
 
@@ -123,7 +132,8 @@ final class ChannelsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodChannelsTypesGet(): void {
+    public function testMethodChannelsTypesGet(): void
+    {
 
         $data = array();
 
@@ -138,7 +148,8 @@ final class ChannelsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodChannelsTypesUpdate(): void {
+    public function testMethodChannelsTypesUpdate(): void
+    {
 
         $data = array();
 
@@ -153,7 +164,8 @@ final class ChannelsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodChannelsVisibility(): void {
+    public function testMethodChannelsVisibility(): void
+    {
 
         $data = array();
 
@@ -168,7 +180,8 @@ final class ChannelsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodChannelsVocabulariesList(): void {
+    public function testMethodChannelsVocabulariesList(): void
+    {
 
         $data = array();
 
@@ -182,7 +195,8 @@ final class ChannelsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodChannelsVocabulariesGet(): void {
+    public function testMethodChannelsVocabulariesGet(): void
+    {
 
         $data = array();
 
@@ -197,7 +211,8 @@ final class ChannelsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodChannelsDelete(): void {
+    public function testMethodChannelsDelete(): void
+    {
 
         $data = array();
 
@@ -212,7 +227,8 @@ final class ChannelsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodChannelsGet(): void {
+    public function testMethodChannelsGet(): void
+    {
 
         $data = array();
 
@@ -227,7 +243,8 @@ final class ChannelsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodChannelsUpdate(): void {
+    public function testMethodChannelsUpdate(): void
+    {
 
         $data = array();
 

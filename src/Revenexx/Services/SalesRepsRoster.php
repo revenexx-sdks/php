@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class SalesRepsRoster extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * A rep is one field sales person, as a record this platform owns. They are

@@ -10,10 +10,10 @@ use Revenexx\Enums\AssetStoreVisibility;
 
 class Storage extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * List the media assets in this tenant, newest first. Narrow the list with
@@ -22,7 +22,7 @@ class Storage extends Service
      * names, alt text and descriptions with `search`; order by `created_at`,
      * `size_bytes` or `original_name` (prefix with `-` to reverse). One page is
      * returned, 50 records by default and 200 at most.
-     * 
+     *
      * Records only: no file content is returned — fetch bytes with
      * `GET /assets/{id}/download` or hand out a link with
      * `POST /assets/{id}/sign`. Deleted assets are not listed.
@@ -65,7 +65,7 @@ class Storage extends Service
      * `visibility`, `alt_text`, `description`, `display_name` and `tags` are
      * applied on the way in; set `unpack` to also queue an uploaded archive's
      * members for ingestion.
-     * 
+     *
      * Every call creates a new asset — this never replaces the content of an
      * existing one — and it takes exactly one file. Use `POST /assets/bulk` for
      * several.
@@ -109,7 +109,7 @@ class Storage extends Service
         $size = 0;
         $mimeType = null;
         $postedName = null;
-        if(empty($file->getPath() ?? null)) {
+        if (empty($file->getPath() ?? null)) {
             $size = strlen($file->getData());
             $mimeType = $file->getMimeType();
             $postedName = $file->getFilename();
@@ -125,7 +125,7 @@ class Storage extends Service
             'content-type' => 'multipart/form-data',
             ], $apiParams);
 
-        if($onProgress !== null) {
+        if ($onProgress !== null) {
             $onProgress([
                 '$id' => $response['$id'] ?? null,
                 'progress' => 100,
@@ -147,7 +147,7 @@ class Storage extends Service
      * independently and the call answers 207 with a `results` entry per file:
      * either the created asset or the error that rejected it. A partial failure
      * is therefore a successful call, not an error status — read `results`.
-     * 
+     *
      * Only `folder_id` and `visibility` apply, and they apply to the whole
      * batch; per-file metadata is not accepted here. Set it afterwards with
      * `PATCH /assets/{id}`.
@@ -191,7 +191,7 @@ class Storage extends Service
      * becomes `soft_deleted`, and it is scheduled for permanent deletion once
      * the retention window has passed. Until then `POST /assets/{id}/restore`
      * brings it back.
-     * 
+     *
      * The stored file is not erased at this point and its bytes still count
      * against the tenant's storage quota — use `DELETE /assets/{id}/permanent`
      * to erase it and free the quota immediately.
@@ -259,7 +259,7 @@ class Storage extends Service
      * renames it; either re-derives the asset's public delivery path, so links
      * built from the old path stop resolving. Only the fields present in the
      * request are touched.
-     * 
+     *
      * The stored file itself is never modified here — to change the content,
      * upload a new asset.
      *
@@ -308,7 +308,7 @@ class Storage extends Service
      * asset. This is the authenticated read path — every call carries the
      * caller's credentials — and the bytes are the ones that were uploaded: no
      * resizing, re-encoding or other transformation is applied.
-     * 
+     *
      * To let a browser, an email or a third party fetch the file without an API
      * credential, mint a link with `POST /assets/{id}/sign` instead.
      *
@@ -340,7 +340,7 @@ class Storage extends Service
     /**
      * Erase an asset and its stored file for good and credit its bytes back to
      * the tenant's used storage. Works on live and soft-deleted assets alike.
-     * 
+     *
      * This cannot be undone: there is no restore afterwards, and links to the
      * asset stop resolving at once. Use `DELETE /assets/{id}` for the
      * reversible variant. Requires the elevated (admin) tier.
@@ -376,7 +376,7 @@ class Storage extends Service
      * model, re-renders the preview and mesh derivatives — before marking it
      * `available` again. The usual reason is an asset stuck in
      * `processing_failed`.
-     * 
+     *
      * The stored file is neither re-uploaded nor altered, and no thumbnails are
      * produced: delivery transforms are applied on the fly when the asset is
      * served, not here.
@@ -445,7 +445,7 @@ class Storage extends Service
      * party. `ttl_seconds` sets the lifetime: one hour by default, seven days
      * at most. The response carries the URL and the lifetime it was issued
      * with.
-     * 
+     *
      * The signature is checked at the delivery edge. A link cannot be revoked
      * before it expires, so keep the lifetime short. A public asset already
      * carries an unsigned delivery URL on its record and does not need this.
@@ -487,7 +487,7 @@ class Storage extends Service
      * media-type sniff, virus scan, quota — and a member that fails is skipped
      * rather than failing the run. `keep_archive` (true by default) decides
      * whether the archive asset itself survives.
-     * 
+     *
      * Asynchronous: this answers 202 as soon as the work is queued, so poll the
      * folder or asset list for the results. Only an asset that is an archive of
      * a supported type can be unpacked; an upload can ask for the same thing
@@ -527,7 +527,7 @@ class Storage extends Service
      * Return every folder in this tenant as one flat list ordered by path, each
      * record carrying its `parent_id` and its materialized `path`, so a client
      * can rebuild the tree without walking it. Not paginated and not filtered.
-     * 
+     *
      * Folders hold no file content of their own — list a folder's assets with
      * `GET /assets` and `filter[folder_id]`.
      *
@@ -560,7 +560,7 @@ class Storage extends Service
      * parent's path; that path is what the public delivery URL of every asset
      * inside it is built from, so two siblings may not slug to the same
      * segment.
-     * 
+     *
      * Creating a folder moves nothing into it — assign assets with
      * `folder_id` on upload or with `PATCH /assets/{id}`.
      *
@@ -596,7 +596,7 @@ class Storage extends Service
      * Delete a folder. By default it has to be empty: a folder that still holds
      * folders or assets is refused, so pass `recursive=true` to delete it
      * together with everything beneath it.
-     * 
+     *
      * A recursive delete soft-deletes the assets it takes with it — their files
      * are not erased and their bytes still count against the tenant's storage
      * quota, and each remains restorable through `POST /assets/{id}/restore`.
@@ -636,7 +636,7 @@ class Storage extends Service
      * Fetch one folder's record by id: its name, its parent, the materialized
      * path assets inside it are delivered under, and whether it is a system
      * folder (system folders cannot be renamed, moved or deleted).
-     * 
+     *
      * Its contents are not included — list them with `GET /assets` and
      * `filter[folder_id]`, and its child folders with `GET /folders`.
      *
@@ -671,7 +671,7 @@ class Storage extends Service
      * folder's materialized path and the path of every folder beneath it, which
      * changes the public delivery URL of every asset they hold — existing links
      * built from the old path stop resolving.
-     * 
+     *
      * Nothing else about the assets changes; they are not moved, re-uploaded or
      * reprocessed. A system folder cannot be changed, a folder cannot be moved
      * inside its own subtree, and the new name has to slug to a segment free
@@ -712,7 +712,7 @@ class Storage extends Service
      * and remote path it pulls from, the folder it imports into, its cron
      * schedule, whether it is enabled and when it last ran. Not paginated and
      * not filtered.
-     * 
+     *
      * These are the rules themselves, not what they moved: for the files a rule
      * has actually transferred, see `GET /sftp/sync-history`.
      *
@@ -748,7 +748,7 @@ class Storage extends Service
      * the per-rule knobs: recursion, include/exclude and size filters, how long
      * a remote file has to have stopped changing before it is taken, and
      * whether it is deleted from the remote after a successful transfer.
-     * 
+     *
      * Each run ingests every matching remote file exactly as an upload would,
      * quota, media-type and virus checks included, and records one history
      * entry per file. Creating the rule transfers nothing: the first run
@@ -797,7 +797,7 @@ class Storage extends Service
      * Delete a sync rule so it is never scheduled again. The assets it already
      * imported stay exactly where they are, its recorded run history is kept,
      * and nothing on the remote is touched.
-     * 
+     *
      * To stop a rule only for a while, set `enabled` to false with
      * `PATCH /sftp/rules/{id}` instead — a deleted rule cannot be restored.
      * Requires the elevated (admin) tier.
@@ -831,7 +831,7 @@ class Storage extends Service
      * Fetch one sync rule's configuration by id: the account and remote path it
      * pulls from, its target folder, its cron schedule, its `options` and
      * `last_run_at`.
-     * 
+     *
      * Configuration only, and `last_run_at` says when a run was last attempted,
      * not whether it succeeded. What a run did is in
      * `GET /sftp/rules/{id}/runs/{runId}` and `GET /sftp/sync-history`.
@@ -866,7 +866,7 @@ class Storage extends Service
      * schedule or options, or `enabled` to pause and resume it without deleting
      * it. Only the fields present in the request are touched, but `options` is
      * replaced wholesale rather than merged — send the whole object.
-     * 
+     *
      * A change takes effect from the next run; a run already in flight is not
      * affected, and nothing a previous run imported is revisited or undone.
      * Requires the elevated (admin) tier.
@@ -920,7 +920,7 @@ class Storage extends Service
      * with the rule id as soon as the job is queued — it does not wait for the
      * transfer and it does not hand back a run id, so follow the outcome in
      * `GET /sftp/sync-history`.
-     * 
+     *
      * The rule's own schedule is untouched, and this does not enable a disabled
      * rule: the job is queued but does nothing when it picks a disabled rule
      * up. Requires the elevated (admin) tier.
@@ -956,7 +956,7 @@ class Storage extends Service
      * produced, the bytes transferred, the duration and the error where one
      * applies — plus a `summary` counting those entries by status (`success`,
      * `skipped`, `failed`, `quarantined`).
-     * 
+     *
      * Use it to find out what one run actually did. It is not paginated, and it
      * does not list a rule's runs: take the `run_id` from
      * `GET /sftp/sync-history`. An unknown `runId` under a rule that does exist
@@ -997,7 +997,7 @@ class Storage extends Service
      * transferred and how long it took. Narrow it with `rule_id` and a
      * `from`/`to` range on when the entry was recorded; one page is returned,
      * 50 entries by default and 200 at most.
-     * 
+     *
      * This is the audit trail of what SFTP sync has brought in: every file
      * taken, skipped and rejected leaves an entry, and a run that matched
      * nothing leaves one too. To read a single run whole instead, group by
@@ -1046,7 +1046,7 @@ class Storage extends Service
      * `audio`, `pdf`, `document`, `archive`, `model3d`, `other` — with a count
      * and a byte total for each kind that has at least one asset, alongside the
      * tenant-wide totals.
-     * 
+     *
      * A dashboard figure, not a listing: no asset is named, and nothing here
      * can be filtered. The tenant-wide byte total is the same running figure
      * `GET /tenant/usage` reports, so soft-deleted assets are counted in it.
@@ -1080,7 +1080,7 @@ class Storage extends Service
      * holds. This is the figure the quota check on upload compares against — it
      * is maintained as a running total on every upload and permanent delete
      * rather than summed on read.
-     * 
+     *
      * Soft-deleted assets are still counted, because their files are still
      * stored; their bytes come back only once they are permanently deleted. For
      * the breakdown by asset kind, see `GET /tenant/stats`.

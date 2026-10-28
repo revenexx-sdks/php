@@ -10,10 +10,10 @@ use Revenexx\Enums\Factor;
 
 class Customers extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The same token `POST /customers/auth/magic-link` mints, answered WITH its

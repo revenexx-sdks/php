@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class CampaignsTouchesTest extends TestCase {
+final class CampaignsTouchesTest extends TestCase
+{
     private $client;
     private $campaignsTouches;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->campaignsTouches = new CampaignsTouches($this->client);
     }
 
-    public function testMethodCampaignsTouchesList(): void {
+    public function testMethodCampaignsTouchesList(): void
+    {
 
         $data = array();
 
@@ -30,7 +33,8 @@ final class CampaignsTouchesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCampaignsTouchesIngest(): void {
+    public function testMethodCampaignsTouchesIngest(): void
+    {
 
         $data = array();
 
@@ -45,7 +49,8 @@ final class CampaignsTouchesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCampaignsTouchesGet(): void {
+    public function testMethodCampaignsTouchesGet(): void
+    {
 
         $data = array();
 

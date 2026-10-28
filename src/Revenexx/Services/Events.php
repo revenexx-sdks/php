@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class Events extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Every event type this tenant's installed apps and platform services declare

@@ -8,16 +8,19 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\PagesSeedMode;
 
-final class QuotesRangesTest extends TestCase {
+final class QuotesRangesTest extends TestCase
+{
     private $client;
     private $quotesRanges;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->quotesRanges = new QuotesRanges($this->client);
     }
 
-    public function testMethodQuotesRangesList(): void {
+    public function testMethodQuotesRangesList(): void
+    {
 
         $data = array();
 
@@ -31,7 +34,8 @@ final class QuotesRangesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodQuotesRangesCreate(): void {
+    public function testMethodQuotesRangesCreate(): void
+    {
 
         $data = array();
 
@@ -46,7 +50,8 @@ final class QuotesRangesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodQuotesRangesDefaults(): void {
+    public function testMethodQuotesRangesDefaults(): void
+    {
 
         $data = array();
 
@@ -60,7 +65,8 @@ final class QuotesRangesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodQuotesRangesDelete(): void {
+    public function testMethodQuotesRangesDelete(): void
+    {
 
         $data = array();
 
@@ -75,7 +81,8 @@ final class QuotesRangesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodQuotesRangesGet(): void {
+    public function testMethodQuotesRangesGet(): void
+    {
 
         $data = array();
 
@@ -90,7 +97,8 @@ final class QuotesRangesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodQuotesRangesUpdate(): void {
+    public function testMethodQuotesRangesUpdate(): void
+    {
 
         $data = array();
 

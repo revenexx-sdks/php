@@ -16,10 +16,10 @@ use Revenexx\Enums\Target;
 
 class CustomersSegments extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * One organization inside one segment, plus the record of how it got there:

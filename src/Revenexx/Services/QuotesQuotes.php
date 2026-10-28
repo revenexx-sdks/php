@@ -13,10 +13,10 @@ use Revenexx\Enums\QuotesQuotesVocabularyName;
 
 class QuotesQuotes extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Every position of an open quote that names one product, across all quotes

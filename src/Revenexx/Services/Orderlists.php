@@ -12,10 +12,10 @@ use Revenexx\Enums\OrderListCartMode;
 
 class Orderlists extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * What a caller may see is a UNION, not an intersection: the lists this

@@ -13,10 +13,10 @@ use Revenexx\Enums\DocumentVisibility;
 
 class DocumentsRegister extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * A document is one record a merchant issued and filed against a transaction

@@ -12,10 +12,10 @@ use Revenexx\Enums\ReviewsReviewsCreateState;
 
 class ReviewsReviews extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Every review of this tenant in every state, without the trash unless

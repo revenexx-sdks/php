@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class MailingsAnalysis extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * List clicked links of mailings

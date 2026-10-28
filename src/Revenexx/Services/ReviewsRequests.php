@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class ReviewsRequests extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Filter `?state=`, `?order_id=`, `?contact_id=`, `?journey_ref=`. A token is

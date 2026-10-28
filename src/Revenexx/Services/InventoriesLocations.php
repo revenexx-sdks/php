@@ -11,10 +11,10 @@ use Revenexx\Enums\LocationType;
 
 class InventoriesLocations extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * A location is WHERE stock is kept — a warehouse, a shop floor, a supplier

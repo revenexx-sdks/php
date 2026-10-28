@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class PagesDelivery extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * One call gives a theme its whole chrome: header, footer and account

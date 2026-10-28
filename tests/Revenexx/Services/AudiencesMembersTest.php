@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class AudiencesMembersTest extends TestCase {
+final class AudiencesMembersTest extends TestCase
+{
     private $client;
     private $audiencesMembers;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->audiencesMembers = new AudiencesMembers($this->client);
     }
 
-    public function testMethodAudiencesMembersComposition(): void {
+    public function testMethodAudiencesMembersComposition(): void
+    {
 
         $data = array();
 
@@ -31,7 +34,8 @@ final class AudiencesMembersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAudiencesAudiencesImport(): void {
+    public function testMethodAudiencesAudiencesImport(): void
+    {
 
         $data = array();
 
@@ -46,7 +50,8 @@ final class AudiencesMembersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAudiencesMembersRead(): void {
+    public function testMethodAudiencesMembersRead(): void
+    {
 
         $data = array();
 
@@ -61,7 +66,8 @@ final class AudiencesMembersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAudiencesMembersAdd(): void {
+    public function testMethodAudiencesMembersAdd(): void
+    {
 
         $data = array();
 
@@ -76,7 +82,8 @@ final class AudiencesMembersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAudiencesMembersRemove(): void {
+    public function testMethodAudiencesMembersRemove(): void
+    {
 
         $data = array();
 
@@ -92,7 +99,8 @@ final class AudiencesMembersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAudiencesMembersTimeline(): void {
+    public function testMethodAudiencesMembersTimeline(): void
+    {
 
         $data = array();
 
@@ -107,7 +115,8 @@ final class AudiencesMembersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAudiencesImportsList(): void {
+    public function testMethodAudiencesImportsList(): void
+    {
 
         $data = array();
 
@@ -121,7 +130,8 @@ final class AudiencesMembersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAudiencesImportsGet(): void {
+    public function testMethodAudiencesImportsGet(): void
+    {
 
         $data = array();
 
@@ -136,7 +146,8 @@ final class AudiencesMembersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAudiencesMemberEventsList(): void {
+    public function testMethodAudiencesMemberEventsList(): void
+    {
 
         $data = array();
 
@@ -150,7 +161,8 @@ final class AudiencesMembersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAudiencesMemberEventsGet(): void {
+    public function testMethodAudiencesMemberEventsGet(): void
+    {
 
         $data = array();
 
@@ -165,7 +177,8 @@ final class AudiencesMembersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAudiencesMembersList(): void {
+    public function testMethodAudiencesMembersList(): void
+    {
 
         $data = array();
 
@@ -179,7 +192,8 @@ final class AudiencesMembersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAudiencesMembersGet(): void {
+    public function testMethodAudiencesMembersGet(): void
+    {
 
         $data = array();
 
@@ -194,7 +208,8 @@ final class AudiencesMembersTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAudiencesMembersMemberships(): void {
+    public function testMethodAudiencesMembersMemberships(): void
+    {
 
         $data = array();
 

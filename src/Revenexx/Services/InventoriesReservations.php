@@ -10,10 +10,10 @@ use Revenexx\Enums\InventoriesReservationsListStatus;
 
 class InventoriesReservations extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Call this when the goods leave the building, and not before. Reserving only

@@ -12,16 +12,19 @@ use Revenexx\Enums\ApproverType;
 use Revenexx\Enums\ProcurementPurchaseRequestItemsCreateType;
 use Revenexx\Enums\ProcurementVocabulariesGetName;
 
-final class ProcurementTest extends TestCase {
+final class ProcurementTest extends TestCase
+{
     private $client;
     private $procurement;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->procurement = new Procurement($this->client);
     }
 
-    public function testMethodProcurementApprovalRulesList(): void {
+    public function testMethodProcurementApprovalRulesList(): void
+    {
 
         $data = array();
 
@@ -35,7 +38,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementApprovalRulesCreate(): void {
+    public function testMethodProcurementApprovalRulesCreate(): void
+    {
 
         $data = array();
 
@@ -52,7 +56,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementApprovalRulesDelete(): void {
+    public function testMethodProcurementApprovalRulesDelete(): void
+    {
 
         $data = array();
 
@@ -67,7 +72,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementApprovalRulesGet(): void {
+    public function testMethodProcurementApprovalRulesGet(): void
+    {
 
         $data = array();
 
@@ -82,7 +88,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementApprovalRulesUpdate(): void {
+    public function testMethodProcurementApprovalRulesUpdate(): void
+    {
 
         $data = array();
 
@@ -97,7 +104,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementBudgetReleasesList(): void {
+    public function testMethodProcurementBudgetReleasesList(): void
+    {
 
         $data = array();
 
@@ -111,7 +119,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementBudgetReleasesGet(): void {
+    public function testMethodProcurementBudgetReleasesGet(): void
+    {
 
         $data = array();
 
@@ -126,7 +135,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementBudgetReleasesRetry(): void {
+    public function testMethodProcurementBudgetReleasesRetry(): void
+    {
 
         $data = array();
 
@@ -141,7 +151,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementBudgetReleasesSettle(): void {
+    public function testMethodProcurementBudgetReleasesSettle(): void
+    {
 
         $data = array();
 
@@ -157,7 +168,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementDirectOrdersList(): void {
+    public function testMethodProcurementDirectOrdersList(): void
+    {
 
         $data = array();
 
@@ -171,7 +183,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementDirectOrdersGet(): void {
+    public function testMethodProcurementDirectOrdersGet(): void
+    {
 
         $data = array();
 
@@ -186,7 +199,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementDirectOrdersCommit(): void {
+    public function testMethodProcurementDirectOrdersCommit(): void
+    {
 
         $data = array();
 
@@ -201,7 +215,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementDirectOrdersSettle(): void {
+    public function testMethodProcurementDirectOrdersSettle(): void
+    {
 
         $data = array();
 
@@ -217,7 +232,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementPurchaseRequestItemsOpen(): void {
+    public function testMethodProcurementPurchaseRequestItemsOpen(): void
+    {
 
         $data = array();
 
@@ -232,7 +248,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementPendingApprovalsList(): void {
+    public function testMethodProcurementPendingApprovalsList(): void
+    {
 
         $data = array();
 
@@ -246,7 +263,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementPendingApprovalsGet(): void {
+    public function testMethodProcurementPendingApprovalsGet(): void
+    {
 
         $data = array();
 
@@ -261,7 +279,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementPendingApprovalsApprove(): void {
+    public function testMethodProcurementPendingApprovalsApprove(): void
+    {
 
         $data = array();
 
@@ -276,7 +295,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementPendingApprovalsDecline(): void {
+    public function testMethodProcurementPendingApprovalsDecline(): void
+    {
 
         $data = array();
 
@@ -291,7 +311,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementPurchaseRequestEventsList(): void {
+    public function testMethodProcurementPurchaseRequestEventsList(): void
+    {
 
         $data = array();
 
@@ -305,7 +326,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementPurchaseRequestEventsGet(): void {
+    public function testMethodProcurementPurchaseRequestEventsGet(): void
+    {
 
         $data = array();
 
@@ -320,7 +342,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementPurchaseRequestItemsList(): void {
+    public function testMethodProcurementPurchaseRequestItemsList(): void
+    {
 
         $data = array();
 
@@ -334,7 +357,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementPurchaseRequestItemsCreate(): void {
+    public function testMethodProcurementPurchaseRequestItemsCreate(): void
+    {
 
         $data = array();
 
@@ -351,7 +375,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementPurchaseRequestItemsDelete(): void {
+    public function testMethodProcurementPurchaseRequestItemsDelete(): void
+    {
 
         $data = array();
 
@@ -366,7 +391,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementPurchaseRequestItemsGet(): void {
+    public function testMethodProcurementPurchaseRequestItemsGet(): void
+    {
 
         $data = array();
 
@@ -381,7 +407,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementPurchaseRequestItemsUpdate(): void {
+    public function testMethodProcurementPurchaseRequestItemsUpdate(): void
+    {
 
         $data = array();
 
@@ -396,7 +423,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementPurchaseRequestsList(): void {
+    public function testMethodProcurementPurchaseRequestsList(): void
+    {
 
         $data = array();
 
@@ -410,7 +438,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementPurchaseRequestsGet(): void {
+    public function testMethodProcurementPurchaseRequestsGet(): void
+    {
 
         $data = array();
 
@@ -425,7 +454,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementPurchaseRequestsUpdate(): void {
+    public function testMethodProcurementPurchaseRequestsUpdate(): void
+    {
 
         $data = array();
 
@@ -440,7 +470,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementPurchaseRequestsApprove(): void {
+    public function testMethodProcurementPurchaseRequestsApprove(): void
+    {
 
         $data = array();
 
@@ -455,7 +486,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementPurchaseRequestsCancel(): void {
+    public function testMethodProcurementPurchaseRequestsCancel(): void
+    {
 
         $data = array();
 
@@ -470,7 +502,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementPurchaseRequestsOrder(): void {
+    public function testMethodProcurementPurchaseRequestsOrder(): void
+    {
 
         $data = array();
 
@@ -485,7 +518,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementReconcile(): void {
+    public function testMethodProcurementReconcile(): void
+    {
 
         $data = array();
 
@@ -499,7 +533,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementSubmit(): void {
+    public function testMethodProcurementSubmit(): void
+    {
 
         $data = array();
 
@@ -515,7 +550,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementSubmitCart(): void {
+    public function testMethodProcurementSubmitCart(): void
+    {
 
         $data = array();
 
@@ -530,7 +566,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementVocabulariesList(): void {
+    public function testMethodProcurementVocabulariesList(): void
+    {
 
         $data = array();
 
@@ -544,7 +581,8 @@ final class ProcurementTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProcurementVocabulariesGet(): void {
+    public function testMethodProcurementVocabulariesGet(): void
+    {
 
         $data = array();
 

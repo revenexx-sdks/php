@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class ReviewsJobs extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Expires review links past their date — the same as the hourly schedule.

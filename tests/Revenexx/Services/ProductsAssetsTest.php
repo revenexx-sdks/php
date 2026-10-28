@@ -12,16 +12,19 @@ use Revenexx\Enums\License;
 use Revenexx\Enums\AssetsLicense;
 use Revenexx\Enums\AssetsSource;
 
-final class ProductsAssetsTest extends TestCase {
+final class ProductsAssetsTest extends TestCase
+{
     private $client;
     private $productsAssets;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->productsAssets = new ProductsAssets($this->client);
     }
 
-    public function testMethodProductsAssetsList(): void {
+    public function testMethodProductsAssetsList(): void
+    {
 
         $data = array();
 
@@ -35,7 +38,8 @@ final class ProductsAssetsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAssetsCreate(): void {
+    public function testMethodProductsAssetsCreate(): void
+    {
 
         $data = array();
 
@@ -51,7 +55,8 @@ final class ProductsAssetsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAssetsEmptyTrash(): void {
+    public function testMethodProductsAssetsEmptyTrash(): void
+    {
 
         $data = array();
 
@@ -65,7 +70,8 @@ final class ProductsAssetsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAssetsDelete(): void {
+    public function testMethodProductsAssetsDelete(): void
+    {
 
         $data = array();
 
@@ -80,7 +86,8 @@ final class ProductsAssetsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAssetsGet(): void {
+    public function testMethodProductsAssetsGet(): void
+    {
 
         $data = array();
 
@@ -95,7 +102,8 @@ final class ProductsAssetsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAssetsUpdate(): void {
+    public function testMethodProductsAssetsUpdate(): void
+    {
 
         $data = array();
 
@@ -110,7 +118,8 @@ final class ProductsAssetsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodProductsAssetsRestore(): void {
+    public function testMethodProductsAssetsRestore(): void
+    {
 
         $data = array();
 

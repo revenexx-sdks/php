@@ -10,16 +10,19 @@ use Revenexx\Enums\Trashed;
 use Revenexx\Enums\ReviewsReviewsCreateSource;
 use Revenexx\Enums\ReviewsReviewsCreateState;
 
-final class ReviewsReviewsTest extends TestCase {
+final class ReviewsReviewsTest extends TestCase
+{
     private $client;
     private $reviewsReviews;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->reviewsReviews = new ReviewsReviews($this->client);
     }
 
-    public function testMethodReviewsReviewsList(): void {
+    public function testMethodReviewsReviewsList(): void
+    {
 
         $data = array();
 
@@ -33,7 +36,8 @@ final class ReviewsReviewsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodReviewsReviewsCreate(): void {
+    public function testMethodReviewsReviewsCreate(): void
+    {
 
         $data = array();
 
@@ -49,7 +53,8 @@ final class ReviewsReviewsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodReviewsReviewsEmptyTrash(): void {
+    public function testMethodReviewsReviewsEmptyTrash(): void
+    {
 
         $data = array();
 
@@ -63,7 +68,8 @@ final class ReviewsReviewsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodReviewsReviewsPurge(): void {
+    public function testMethodReviewsReviewsPurge(): void
+    {
 
         $data = array();
 
@@ -77,7 +83,8 @@ final class ReviewsReviewsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodReviewsReviewsDelete(): void {
+    public function testMethodReviewsReviewsDelete(): void
+    {
 
         $data = array();
 
@@ -92,7 +99,8 @@ final class ReviewsReviewsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodReviewsReviewsGet(): void {
+    public function testMethodReviewsReviewsGet(): void
+    {
 
         $data = array();
 
@@ -107,7 +115,8 @@ final class ReviewsReviewsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodReviewsReviewsRestore(): void {
+    public function testMethodReviewsReviewsRestore(): void
+    {
 
         $data = array();
 

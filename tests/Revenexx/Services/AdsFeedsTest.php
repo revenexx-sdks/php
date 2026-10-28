@@ -8,16 +8,19 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\Destination;
 
-final class AdsFeedsTest extends TestCase {
+final class AdsFeedsTest extends TestCase
+{
     private $client;
     private $adsFeeds;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->adsFeeds = new AdsFeeds($this->client);
     }
 
-    public function testMethodAdsFeedsList(): void {
+    public function testMethodAdsFeedsList(): void
+    {
 
         $data = array();
 
@@ -31,7 +34,8 @@ final class AdsFeedsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsFeedsCreate(): void {
+    public function testMethodAdsFeedsCreate(): void
+    {
 
         $data = array();
 
@@ -47,7 +51,8 @@ final class AdsFeedsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsFeedsDelete(): void {
+    public function testMethodAdsFeedsDelete(): void
+    {
 
         $data = array();
 
@@ -62,7 +67,8 @@ final class AdsFeedsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsFeedsGet(): void {
+    public function testMethodAdsFeedsGet(): void
+    {
 
         $data = array();
 
@@ -77,7 +83,8 @@ final class AdsFeedsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsFeedsUpdate(): void {
+    public function testMethodAdsFeedsUpdate(): void
+    {
 
         $data = array();
 

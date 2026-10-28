@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class CampaignsAttribution extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The ledger. Filter `?campaign_id=`, `?order_id=`, `?is_last_touch=true`.

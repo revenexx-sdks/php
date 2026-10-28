@@ -10,10 +10,10 @@ use Revenexx\Enums\TurnoverSource;
 
 class LoyaltyBonus extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Filter `?organization_id=`, `?period=2026`, `?state=calculated` for the

@@ -8,16 +8,19 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\TurnoverSource;
 
-final class LoyaltyBonusTest extends TestCase {
+final class LoyaltyBonusTest extends TestCase
+{
     private $client;
     private $loyaltyBonus;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->loyaltyBonus = new LoyaltyBonus($this->client);
     }
 
-    public function testMethodLoyaltyBonusList(): void {
+    public function testMethodLoyaltyBonusList(): void
+    {
 
         $data = array();
 
@@ -31,7 +34,8 @@ final class LoyaltyBonusTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyBonusCreate(): void {
+    public function testMethodLoyaltyBonusCreate(): void
+    {
 
         $data = array();
 
@@ -47,7 +51,8 @@ final class LoyaltyBonusTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyBonusGet(): void {
+    public function testMethodLoyaltyBonusGet(): void
+    {
 
         $data = array();
 
@@ -62,7 +67,8 @@ final class LoyaltyBonusTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyBonusUpdate(): void {
+    public function testMethodLoyaltyBonusUpdate(): void
+    {
 
         $data = array();
 
@@ -77,7 +83,8 @@ final class LoyaltyBonusTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyBonusApprove(): void {
+    public function testMethodLoyaltyBonusApprove(): void
+    {
 
         $data = array();
 
@@ -92,7 +99,8 @@ final class LoyaltyBonusTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyBonusCalculate(): void {
+    public function testMethodLoyaltyBonusCalculate(): void
+    {
 
         $data = array();
 
@@ -108,7 +116,8 @@ final class LoyaltyBonusTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyBonusForfeit(): void {
+    public function testMethodLoyaltyBonusForfeit(): void
+    {
 
         $data = array();
 
@@ -124,7 +133,8 @@ final class LoyaltyBonusTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyBonusPay(): void {
+    public function testMethodLoyaltyBonusPay(): void
+    {
 
         $data = array();
 
@@ -139,7 +149,8 @@ final class LoyaltyBonusTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyBonusProgress(): void {
+    public function testMethodLoyaltyBonusProgress(): void
+    {
 
         $data = array();
 
@@ -154,7 +165,8 @@ final class LoyaltyBonusTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyBonusRebuild(): void {
+    public function testMethodLoyaltyBonusRebuild(): void
+    {
 
         $data = array();
 
@@ -170,7 +182,8 @@ final class LoyaltyBonusTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyBonusEntriesList(): void {
+    public function testMethodLoyaltyBonusEntriesList(): void
+    {
 
         $data = array();
 
@@ -184,7 +197,8 @@ final class LoyaltyBonusTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyBonusEntriesCorrect(): void {
+    public function testMethodLoyaltyBonusEntriesCorrect(): void
+    {
 
         $data = array();
 
@@ -201,7 +215,8 @@ final class LoyaltyBonusTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyBonusEntriesGet(): void {
+    public function testMethodLoyaltyBonusEntriesGet(): void
+    {
 
         $data = array();
 
@@ -216,7 +231,8 @@ final class LoyaltyBonusTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyBonusImport(): void {
+    public function testMethodLoyaltyBonusImport(): void
+    {
 
         $data = array();
 

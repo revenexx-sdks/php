@@ -8,16 +8,19 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\LeadSource;
 
-final class CustomersLeadsTest extends TestCase {
+final class CustomersLeadsTest extends TestCase
+{
     private $client;
     private $customersLeads;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->customersLeads = new CustomersLeads($this->client);
     }
 
-    public function testMethodCustomersConsentMirrorRun(): void {
+    public function testMethodCustomersConsentMirrorRun(): void
+    {
 
         $data = array();
 
@@ -31,7 +34,8 @@ final class CustomersLeadsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersContactsHandover(): void {
+    public function testMethodCustomersContactsHandover(): void
+    {
 
         $data = array();
 
@@ -47,7 +51,8 @@ final class CustomersLeadsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersContactsLifecycle(): void {
+    public function testMethodCustomersContactsLifecycle(): void
+    {
 
         $data = array();
 

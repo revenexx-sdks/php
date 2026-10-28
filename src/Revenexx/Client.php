@@ -4,17 +4,17 @@ namespace Revenexx;
 
 class Client
 {
-    const METHOD_GET = 'GET';
-    const METHOD_POST = 'POST';
-    const METHOD_PUT = 'PUT';
-    const METHOD_PATCH = 'PATCH';
-    const METHOD_DELETE = 'DELETE';
-    const METHOD_HEAD = 'HEAD';
-    const METHOD_OPTIONS = 'OPTIONS';
-    const METHOD_CONNECT = 'CONNECT';
-    const METHOD_TRACE = 'TRACE';
+    public const METHOD_GET = 'GET';
+    public const METHOD_POST = 'POST';
+    public const METHOD_PUT = 'PUT';
+    public const METHOD_PATCH = 'PATCH';
+    public const METHOD_DELETE = 'DELETE';
+    public const METHOD_HEAD = 'HEAD';
+    public const METHOD_OPTIONS = 'OPTIONS';
+    public const METHOD_CONNECT = 'CONNECT';
+    public const METHOD_TRACE = 'TRACE';
 
-    const CHUNK_SIZE = 5 * 1024 * 1024;
+    public const CHUNK_SIZE = 5 * 1024 * 1024;
 
     /**
      * Is Self Signed Certificates Allowed?
@@ -37,11 +37,11 @@ class Client
      */
     protected array $headers = [
         'content-type' => '',
-        'user-agent' => 'RevenexxPHPSDK/0.4.0 ()',
-        'x-sdk-name'=> 'Revenexx PHP',
-        'x-sdk-platform'=> '',
-        'x-sdk-language'=> 'php',
-        'x-sdk-version'=> '0.4.0',
+        'user-agent' => 'RevenexxPHPSDK/0.4.1 ()',
+        'x-sdk-name' => 'Revenexx PHP',
+        'x-sdk-platform' => '',
+        'x-sdk-language' => 'php',
+        'x-sdk-version' => '0.4.1',
     ];
 
     /**
@@ -63,7 +63,6 @@ class Client
      */
     public function __construct()
     {
- 
     }
 
     /**
@@ -212,8 +211,7 @@ class Client
         array $headers = [],
         array $params = [],
         ?string $responseType = null
-    )
-    {
+    ) {
         $headers = array_merge($this->headers, $headers);
         $ch = curl_init($this->endpoint . $path . (($method == self::METHOD_GET && !empty($params)) ? '?' . http_build_query($this->prepareQuery($params)) : ''));
         $responseHeaders = [];
@@ -238,11 +236,11 @@ class Client
         }
 
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_USERAGENT, php_uname('s') . '-' . php_uname('r') . ':php-' . phpversion());
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, $responseType !== 'location');
-        curl_setopt($ch, CURLOPT_HEADERFUNCTION, function($curl, $header) use (&$responseHeaders) {
+        curl_setopt($ch, CURLOPT_HEADERFUNCTION, function ($curl, $header) use (&$responseHeaders) {
             $len = strlen($header);
             $header = explode(':', strtolower($header), 2);
 
@@ -255,23 +253,23 @@ class Client
             return $len;
         });
 
-        if($method != self::METHOD_GET) {
+        if ($method != self::METHOD_GET) {
             curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
         }
 
         // Allow self signed certificates
-        if($this->selfSigned) {
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        if ($this->selfSigned) {
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         }
 
         // Set timeout if configured
-        if($this->timeout !== null) {
+        if ($this->timeout !== null) {
             curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
         }
 
         // Set connect timeout if configured
-        if($this->connectTimeout !== null) {
+        if ($this->connectTimeout !== null) {
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->connectTimeout);
         }
 
@@ -281,11 +279,11 @@ class Client
 
         $warnings = $responseHeaders['x-revenexx-warning'] ?? '';
         if ($warnings) {
-            foreach(explode(';', $warnings) as $warning) {
+            foreach (explode(';', $warnings) as $warning) {
                 \trigger_error($warning, E_USER_WARNING);
             }
         }
-        
+
         if (\is_string($responseBody) && str_starts_with($contentType, 'application/json')) {
             $responseBody = json_decode($responseBody, true);
         }
@@ -293,11 +291,11 @@ class Client
         if (curl_errno($ch)) {
             throw new RevenexxException(curl_error($ch), $responseStatus, $responseBody['type'] ?? '', $responseBody);
         }
-        
+
         curl_close($ch);
 
-        if($responseStatus >= 400) {
-            if(is_array($responseBody)) {
+        if ($responseStatus >= 400) {
+            if (is_array($responseBody)) {
                 throw new RevenexxException($responseBody['error'] ?? $responseBody['message'] ?? '', $responseStatus, $responseBody['type'] ?? '', json_encode($responseBody));
             } else {
                 throw new RevenexxException($responseBody, $responseStatus, '', $responseBody);
@@ -318,16 +316,16 @@ class Client
      * @param string $prefix
      * @return array
      */
-    protected function flatten(array $data, string $prefix = ''): array {
+    protected function flatten(array $data, string $prefix = ''): array
+    {
         $output = [];
 
-        foreach($data as $key => $value) {
+        foreach ($data as $key => $value) {
             $finalKey = $prefix ? "{$prefix}[{$key}]" : $key;
 
             if (is_array($value)) {
                 $output += $this->flatten($value, $finalKey); // @todo: handle name collision here if needed
-            }
-            else {
+            } else {
                 $output[$finalKey] = $value;
             }
         }
@@ -390,7 +388,7 @@ class Client
     {
         return [
             'name' => 'Revenexx PHP',
-            'version' => '0.4.0',
+            'version' => '0.4.1',
             'language' => 'php',
             'generator' => 'revenexx/sdk-generator',
             'generatorUrl' => 'https://github.com/revenexx/sdk-generator',

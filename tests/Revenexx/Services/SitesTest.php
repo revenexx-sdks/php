@@ -12,16 +12,19 @@ use Revenexx\Enums\Adapter;
 use Revenexx\Enums\SitesCreateTemplateDeploymentType;
 use Revenexx\Enums\AppsGetDeploymentDownloadType;
 
-final class SitesTest extends TestCase {
+final class SitesTest extends TestCase
+{
     private $client;
     private $sites;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->sites = new Sites($this->client);
     }
 
-    public function testMethodSitesList(): void {
+    public function testMethodSitesList(): void
+    {
 
         $data = array(
             "sites" => array(),
@@ -37,7 +40,8 @@ final class SitesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSitesCreate(): void {
+    public function testMethodSitesCreate(): void
+    {
 
         $data = array(
             "\$createdAt" => "",
@@ -84,7 +88,8 @@ final class SitesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSitesListFrameworks(): void {
+    public function testMethodSitesListFrameworks(): void
+    {
 
         $data = array(
             "frameworks" => array(),
@@ -100,7 +105,8 @@ final class SitesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSitesListSpecifications(): void {
+    public function testMethodSitesListSpecifications(): void
+    {
 
         $data = array(
             "specifications" => array(),
@@ -116,7 +122,8 @@ final class SitesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSitesDelete(): void {
+    public function testMethodSitesDelete(): void
+    {
 
         $data = array();
 
@@ -131,7 +138,8 @@ final class SitesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSitesGet(): void {
+    public function testMethodSitesGet(): void
+    {
 
         $data = array(
             "\$createdAt" => "",
@@ -175,7 +183,8 @@ final class SitesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSitesUpdate(): void {
+    public function testMethodSitesUpdate(): void
+    {
 
         $data = array(
             "\$createdAt" => "",
@@ -221,7 +230,8 @@ final class SitesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSitesUpdateSiteDeployment(): void {
+    public function testMethodSitesUpdateSiteDeployment(): void
+    {
 
         $data = array(
             "\$createdAt" => "",
@@ -266,7 +276,8 @@ final class SitesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSitesListDeployments(): void {
+    public function testMethodSitesListDeployments(): void
+    {
 
         $data = array(
             "deployments" => array(),
@@ -283,7 +294,8 @@ final class SitesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSitesCreateDeployment(): void {
+    public function testMethodSitesCreateDeployment(): void
+    {
 
         $data = array(
             "\$createdAt" => "",
@@ -329,7 +341,8 @@ final class SitesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSitesCreateDuplicateDeployment(): void {
+    public function testMethodSitesCreateDuplicateDeployment(): void
+    {
 
         $data = array(
             "\$createdAt" => "",
@@ -374,7 +387,8 @@ final class SitesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSitesCreateTemplateDeployment(): void {
+    public function testMethodSitesCreateTemplateDeployment(): void
+    {
 
         $data = array(
             "\$createdAt" => "",
@@ -423,7 +437,8 @@ final class SitesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSitesCreateVcsDeployment(): void {
+    public function testMethodSitesCreateVcsDeployment(): void
+    {
 
         $data = array(
             "\$createdAt" => "",
@@ -469,7 +484,8 @@ final class SitesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSitesDeleteDeployment(): void {
+    public function testMethodSitesDeleteDeployment(): void
+    {
 
         $data = array();
 
@@ -485,7 +501,8 @@ final class SitesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSitesGetDeployment(): void {
+    public function testMethodSitesGetDeployment(): void
+    {
 
         $data = array(
             "\$createdAt" => "",
@@ -530,7 +547,8 @@ final class SitesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSitesGetDeploymentDownload(): void {
+    public function testMethodSitesGetDeploymentDownload(): void
+    {
 
         $data = array();
 
@@ -546,7 +564,8 @@ final class SitesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSitesUpdateDeploymentStatus(): void {
+    public function testMethodSitesUpdateDeploymentStatus(): void
+    {
 
         $data = array(
             "\$createdAt" => "",
@@ -591,7 +610,8 @@ final class SitesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSitesListLogs(): void {
+    public function testMethodSitesListLogs(): void
+    {
 
         $data = array(
             "executions" => array(),
@@ -608,7 +628,8 @@ final class SitesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSitesDeleteLog(): void {
+    public function testMethodSitesDeleteLog(): void
+    {
 
         $data = array();
 
@@ -624,7 +645,8 @@ final class SitesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSitesGetLog(): void {
+    public function testMethodSitesGetLog(): void
+    {
 
         $data = array(
             "\$createdAt" => "",
@@ -657,7 +679,8 @@ final class SitesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSitesListVariables(): void {
+    public function testMethodSitesListVariables(): void
+    {
 
         $data = array(
             "total" => 1,
@@ -674,7 +697,8 @@ final class SitesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSitesCreateVariable(): void {
+    public function testMethodSitesCreateVariable(): void
+    {
 
         $data = array(
             "\$createdAt" => "",
@@ -699,7 +723,8 @@ final class SitesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSitesDeleteVariable(): void {
+    public function testMethodSitesDeleteVariable(): void
+    {
 
         $data = array();
 
@@ -715,7 +740,8 @@ final class SitesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSitesGetVariable(): void {
+    public function testMethodSitesGetVariable(): void
+    {
 
         $data = array(
             "\$createdAt" => "",
@@ -739,7 +765,8 @@ final class SitesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSitesUpdateVariable(): void {
+    public function testMethodSitesUpdateVariable(): void
+    {
 
         $data = array(
             "\$createdAt" => "",

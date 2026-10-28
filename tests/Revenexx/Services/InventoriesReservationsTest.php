@@ -8,16 +8,19 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\InventoriesReservationsListStatus;
 
-final class InventoriesReservationsTest extends TestCase {
+final class InventoriesReservationsTest extends TestCase
+{
     private $client;
     private $inventoriesReservations;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->inventoriesReservations = new InventoriesReservations($this->client);
     }
 
-    public function testMethodInventoriesCommit(): void {
+    public function testMethodInventoriesCommit(): void
+    {
 
         $data = array();
 
@@ -32,7 +35,8 @@ final class InventoriesReservationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodInventoriesRelease(): void {
+    public function testMethodInventoriesRelease(): void
+    {
 
         $data = array();
 
@@ -47,7 +51,8 @@ final class InventoriesReservationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodInventoriesReservationsList(): void {
+    public function testMethodInventoriesReservationsList(): void
+    {
 
         $data = array();
 
@@ -61,7 +66,8 @@ final class InventoriesReservationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodInventoriesReservationsSweep(): void {
+    public function testMethodInventoriesReservationsSweep(): void
+    {
 
         $data = array();
 
@@ -76,7 +82,8 @@ final class InventoriesReservationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodInventoriesReservationsGet(): void {
+    public function testMethodInventoriesReservationsGet(): void
+    {
 
         $data = array();
 
@@ -91,7 +98,8 @@ final class InventoriesReservationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodInventoriesReserve(): void {
+    public function testMethodInventoriesReserve(): void
+    {
 
         $data = array();
 

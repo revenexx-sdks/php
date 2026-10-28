@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class PromotionsEvaluationTest extends TestCase {
+final class PromotionsEvaluationTest extends TestCase
+{
     private $client;
     private $promotionsEvaluation;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->promotionsEvaluation = new PromotionsEvaluation($this->client);
     }
 
-    public function testMethodPromotionsEvaluationAvailable(): void {
+    public function testMethodPromotionsEvaluationAvailable(): void
+    {
 
         $data = array();
 
@@ -31,7 +34,8 @@ final class PromotionsEvaluationTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsEvaluationCheckCode(): void {
+    public function testMethodPromotionsEvaluationCheckCode(): void
+    {
 
         $data = array();
 
@@ -46,7 +50,8 @@ final class PromotionsEvaluationTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsEvaluationEvaluate(): void {
+    public function testMethodPromotionsEvaluationEvaluate(): void
+    {
 
         $data = array();
 
@@ -61,7 +66,8 @@ final class PromotionsEvaluationTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsEvaluationVocabularies(): void {
+    public function testMethodPromotionsEvaluationVocabularies(): void
+    {
 
         $data = array();
 
@@ -75,7 +81,8 @@ final class PromotionsEvaluationTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsEvaluationVocabulary(): void {
+    public function testMethodPromotionsEvaluationVocabulary(): void
+    {
 
         $data = array();
 

@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class PagesDeliveryTest extends TestCase {
+final class PagesDeliveryTest extends TestCase
+{
     private $client;
     private $pagesDelivery;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->pagesDelivery = new PagesDelivery($this->client);
     }
 
-    public function testMethodPagesDeliveryMenus(): void {
+    public function testMethodPagesDeliveryMenus(): void
+    {
 
         $data = array();
 
@@ -30,7 +33,8 @@ final class PagesDeliveryTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesDeliveryPage(): void {
+    public function testMethodPagesDeliveryPage(): void
+    {
 
         $data = array();
 
@@ -44,7 +48,8 @@ final class PagesDeliveryTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesDeliveryPages(): void {
+    public function testMethodPagesDeliveryPages(): void
+    {
 
         $data = array();
 
@@ -58,7 +63,8 @@ final class PagesDeliveryTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesDeliveryPopups(): void {
+    public function testMethodPagesDeliveryPopups(): void
+    {
 
         $data = array();
 
@@ -72,7 +78,8 @@ final class PagesDeliveryTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesDeliveryPreview(): void {
+    public function testMethodPagesDeliveryPreview(): void
+    {
 
         $data = array();
 
@@ -87,7 +94,8 @@ final class PagesDeliveryTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesDeliverySiteSettings(): void {
+    public function testMethodPagesDeliverySiteSettings(): void
+    {
 
         $data = array();
 
@@ -101,7 +109,8 @@ final class PagesDeliveryTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPagesDeliveryTemplate(): void {
+    public function testMethodPagesDeliveryTemplate(): void
+    {
 
         $data = array();
 

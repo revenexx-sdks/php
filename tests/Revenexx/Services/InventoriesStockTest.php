@@ -11,16 +11,19 @@ use Revenexx\Enums\AvailabilityStateTone;
 use Revenexx\Enums\InventoriesMovementsListType;
 use Revenexx\Enums\InventoriesVocabulariesGetName;
 
-final class InventoriesStockTest extends TestCase {
+final class InventoriesStockTest extends TestCase
+{
     private $client;
     private $inventoriesStock;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->inventoriesStock = new InventoriesStock($this->client);
     }
 
-    public function testMethodInventoriesAdjust(): void {
+    public function testMethodInventoriesAdjust(): void
+    {
 
         $data = array();
 
@@ -34,7 +37,8 @@ final class InventoriesStockTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodInventoriesAvailability(): void {
+    public function testMethodInventoriesAvailability(): void
+    {
 
         $data = array();
 
@@ -48,7 +52,8 @@ final class InventoriesStockTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodInventoriesAvailabilityStatesList(): void {
+    public function testMethodInventoriesAvailabilityStatesList(): void
+    {
 
         $data = array();
 
@@ -62,7 +67,8 @@ final class InventoriesStockTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodInventoriesAvailabilityStatesCreate(): void {
+    public function testMethodInventoriesAvailabilityStatesCreate(): void
+    {
 
         $data = array();
 
@@ -78,7 +84,8 @@ final class InventoriesStockTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodInventoriesAvailabilityStatesDelete(): void {
+    public function testMethodInventoriesAvailabilityStatesDelete(): void
+    {
 
         $data = array();
 
@@ -93,7 +100,8 @@ final class InventoriesStockTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodInventoriesAvailabilityStatesGet(): void {
+    public function testMethodInventoriesAvailabilityStatesGet(): void
+    {
 
         $data = array();
 
@@ -108,7 +116,8 @@ final class InventoriesStockTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodInventoriesAvailabilityStatesUpdate(): void {
+    public function testMethodInventoriesAvailabilityStatesUpdate(): void
+    {
 
         $data = array();
 
@@ -123,7 +132,8 @@ final class InventoriesStockTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodInventoriesMovementsList(): void {
+    public function testMethodInventoriesMovementsList(): void
+    {
 
         $data = array();
 
@@ -137,7 +147,8 @@ final class InventoriesStockTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodInventoriesMovementsGet(): void {
+    public function testMethodInventoriesMovementsGet(): void
+    {
 
         $data = array();
 
@@ -152,7 +163,8 @@ final class InventoriesStockTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodInventoriesReceive(): void {
+    public function testMethodInventoriesReceive(): void
+    {
 
         $data = array();
 
@@ -166,7 +178,8 @@ final class InventoriesStockTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodInventoriesReorderAlerts(): void {
+    public function testMethodInventoriesReorderAlerts(): void
+    {
 
         $data = array();
 
@@ -180,7 +193,8 @@ final class InventoriesStockTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodInventoriesReorderScan(): void {
+    public function testMethodInventoriesReorderScan(): void
+    {
 
         $data = array(
             "emitted" => array(),
@@ -198,7 +212,8 @@ final class InventoriesStockTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodInventoriesRestock(): void {
+    public function testMethodInventoriesRestock(): void
+    {
 
         $data = array();
 
@@ -212,7 +227,8 @@ final class InventoriesStockTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodInventoriesStockList(): void {
+    public function testMethodInventoriesStockList(): void
+    {
 
         $data = array();
 
@@ -226,7 +242,8 @@ final class InventoriesStockTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodInventoriesStockCreate(): void {
+    public function testMethodInventoriesStockCreate(): void
+    {
 
         $data = array();
 
@@ -241,7 +258,8 @@ final class InventoriesStockTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodInventoriesStockDelete(): void {
+    public function testMethodInventoriesStockDelete(): void
+    {
 
         $data = array();
 
@@ -256,7 +274,8 @@ final class InventoriesStockTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodInventoriesStockGet(): void {
+    public function testMethodInventoriesStockGet(): void
+    {
 
         $data = array();
 
@@ -271,7 +290,8 @@ final class InventoriesStockTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodInventoriesStockUpdate(): void {
+    public function testMethodInventoriesStockUpdate(): void
+    {
 
         $data = array();
 
@@ -286,7 +306,8 @@ final class InventoriesStockTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodInventoriesStockAdjust(): void {
+    public function testMethodInventoriesStockAdjust(): void
+    {
 
         $data = array();
 
@@ -302,7 +323,8 @@ final class InventoriesStockTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodInventoriesVocabulariesList(): void {
+    public function testMethodInventoriesVocabulariesList(): void
+    {
 
         $data = array();
 
@@ -316,7 +338,8 @@ final class InventoriesStockTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodInventoriesVocabulariesGet(): void {
+    public function testMethodInventoriesVocabulariesGet(): void
+    {
 
         $data = array();
 

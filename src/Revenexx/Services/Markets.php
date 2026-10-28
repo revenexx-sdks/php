@@ -13,10 +13,10 @@ use Revenexx\Enums\MarketsLocalesCreateStatus;
 
 class Markets extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Every column is an exact-match filter and they combine with AND

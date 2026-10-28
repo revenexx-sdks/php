@@ -10,16 +10,19 @@ use Revenexx\Enums\Trashed;
 use Revenexx\Enums\Kind;
 use Revenexx\Enums\RuleMatch;
 
-final class AudiencesAudiencesTest extends TestCase {
+final class AudiencesAudiencesTest extends TestCase
+{
     private $client;
     private $audiencesAudiences;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->audiencesAudiences = new AudiencesAudiences($this->client);
     }
 
-    public function testMethodAudiencesAudiencesList(): void {
+    public function testMethodAudiencesAudiencesList(): void
+    {
 
         $data = array();
 
@@ -33,7 +36,8 @@ final class AudiencesAudiencesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAudiencesAudiencesCreate(): void {
+    public function testMethodAudiencesAudiencesCreate(): void
+    {
 
         $data = array();
 
@@ -48,7 +52,8 @@ final class AudiencesAudiencesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAudiencesAudiencesRecomputeAll(): void {
+    public function testMethodAudiencesAudiencesRecomputeAll(): void
+    {
 
         $data = array();
 
@@ -62,7 +67,8 @@ final class AudiencesAudiencesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAudiencesAudiencesEmptyTrash(): void {
+    public function testMethodAudiencesAudiencesEmptyTrash(): void
+    {
 
         $data = array();
 
@@ -76,7 +82,8 @@ final class AudiencesAudiencesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAudiencesAudiencesPurge(): void {
+    public function testMethodAudiencesAudiencesPurge(): void
+    {
 
         $data = array();
 
@@ -90,7 +97,8 @@ final class AudiencesAudiencesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAudiencesAudiencesDelete(): void {
+    public function testMethodAudiencesAudiencesDelete(): void
+    {
 
         $data = array();
 
@@ -105,7 +113,8 @@ final class AudiencesAudiencesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAudiencesAudiencesGet(): void {
+    public function testMethodAudiencesAudiencesGet(): void
+    {
 
         $data = array();
 
@@ -120,7 +129,8 @@ final class AudiencesAudiencesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAudiencesAudiencesUpdate(): void {
+    public function testMethodAudiencesAudiencesUpdate(): void
+    {
 
         $data = array();
 
@@ -135,7 +145,8 @@ final class AudiencesAudiencesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAudiencesAudiencesFreeze(): void {
+    public function testMethodAudiencesAudiencesFreeze(): void
+    {
 
         $data = array();
 
@@ -150,7 +161,8 @@ final class AudiencesAudiencesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAudiencesAudiencesPreview(): void {
+    public function testMethodAudiencesAudiencesPreview(): void
+    {
 
         $data = array();
 
@@ -165,7 +177,8 @@ final class AudiencesAudiencesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAudiencesAudiencesRecompute(): void {
+    public function testMethodAudiencesAudiencesRecompute(): void
+    {
 
         $data = array();
 
@@ -180,7 +193,8 @@ final class AudiencesAudiencesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAudiencesAudiencesRestore(): void {
+    public function testMethodAudiencesAudiencesRestore(): void
+    {
 
         $data = array();
 
@@ -195,7 +209,8 @@ final class AudiencesAudiencesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAudiencesVocabulariesList(): void {
+    public function testMethodAudiencesVocabulariesList(): void
+    {
 
         $data = array();
 
@@ -209,7 +224,8 @@ final class AudiencesAudiencesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAudiencesVocabulariesGet(): void {
+    public function testMethodAudiencesVocabulariesGet(): void
+    {
 
         $data = array();
 

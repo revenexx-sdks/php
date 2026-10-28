@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class AdsJobs extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Records conversions of orders placed in the last three hours, requests

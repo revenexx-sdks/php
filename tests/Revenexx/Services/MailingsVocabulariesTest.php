@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class MailingsVocabulariesTest extends TestCase {
+final class MailingsVocabulariesTest extends TestCase
+{
     private $client;
     private $mailingsVocabularies;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->mailingsVocabularies = new MailingsVocabularies($this->client);
     }
 
-    public function testMethodMailingsVocabulariesList(): void {
+    public function testMethodMailingsVocabulariesList(): void
+    {
 
         $data = array();
 
@@ -30,7 +33,8 @@ final class MailingsVocabulariesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMailingsVocabulariesGet(): void {
+    public function testMethodMailingsVocabulariesGet(): void
+    {
 
         $data = array();
 

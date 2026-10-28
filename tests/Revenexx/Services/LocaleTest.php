@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class LocaleTest extends TestCase {
+final class LocaleTest extends TestCase
+{
     private $client;
     private $locale;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->locale = new Locale($this->client);
     }
 
-    public function testMethodLocaleGet(): void {
+    public function testMethodLocaleGet(): void
+    {
 
         $data = array(
             "continent" => "",
@@ -37,7 +40,8 @@ final class LocaleTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLocaleListCodes(): void {
+    public function testMethodLocaleListCodes(): void
+    {
 
         $data = array(
             "localeCodes" => array(),
@@ -53,7 +57,8 @@ final class LocaleTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLocaleListContinents(): void {
+    public function testMethodLocaleListContinents(): void
+    {
 
         $data = array(
             "continents" => array(),
@@ -69,7 +74,8 @@ final class LocaleTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLocaleListCountries(): void {
+    public function testMethodLocaleListCountries(): void
+    {
 
         $data = array(
             "countries" => array(),
@@ -85,7 +91,8 @@ final class LocaleTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLocaleListCountriesEU(): void {
+    public function testMethodLocaleListCountriesEU(): void
+    {
 
         $data = array(
             "countries" => array(),
@@ -101,7 +108,8 @@ final class LocaleTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLocaleListCountriesPhones(): void {
+    public function testMethodLocaleListCountriesPhones(): void
+    {
 
         $data = array(
             "phones" => array(),
@@ -117,7 +125,8 @@ final class LocaleTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLocaleListCurrencies(): void {
+    public function testMethodLocaleListCurrencies(): void
+    {
 
         $data = array(
             "currencies" => array(),
@@ -133,7 +142,8 @@ final class LocaleTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLocaleListLanguages(): void {
+    public function testMethodLocaleListLanguages(): void
+    {
 
         $data = array(
             "languages" => array(),

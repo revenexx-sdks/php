@@ -10,10 +10,10 @@ use Revenexx\Enums\Destination;
 
 class AdsFeeds extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * One reference per market and destination. The feed itself is built by the

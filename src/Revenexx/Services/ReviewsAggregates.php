@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class ReviewsAggregates extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * With `product_ids` (comma-separated, at most 200): one entry per product,

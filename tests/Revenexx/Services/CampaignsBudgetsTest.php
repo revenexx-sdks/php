@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class CampaignsBudgetsTest extends TestCase {
+final class CampaignsBudgetsTest extends TestCase
+{
     private $client;
     private $campaignsBudgets;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->campaignsBudgets = new CampaignsBudgets($this->client);
     }
 
-    public function testMethodCampaignsBudgetsList(): void {
+    public function testMethodCampaignsBudgetsList(): void
+    {
 
         $data = array();
 
@@ -30,7 +33,8 @@ final class CampaignsBudgetsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCampaignsBudgetsCreate(): void {
+    public function testMethodCampaignsBudgetsCreate(): void
+    {
 
         $data = array();
 
@@ -46,7 +50,8 @@ final class CampaignsBudgetsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCampaignsBudgetsDelete(): void {
+    public function testMethodCampaignsBudgetsDelete(): void
+    {
 
         $data = array();
 
@@ -61,7 +66,8 @@ final class CampaignsBudgetsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCampaignsBudgetsGet(): void {
+    public function testMethodCampaignsBudgetsGet(): void
+    {
 
         $data = array();
 
@@ -76,7 +82,8 @@ final class CampaignsBudgetsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCampaignsBudgetsUpdate(): void {
+    public function testMethodCampaignsBudgetsUpdate(): void
+    {
 
         $data = array();
 

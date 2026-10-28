@@ -16,16 +16,19 @@ use Revenexx\Enums\AppsCreateVcsDeploymentType;
 use Revenexx\Enums\AppsGetDeploymentDownloadType;
 use Revenexx\Enums\Method;
 
-final class AppsTest extends TestCase {
+final class AppsTest extends TestCase
+{
     private $client;
     private $apps;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->apps = new Apps($this->client);
     }
 
-    public function testMethodAppsList(): void {
+    public function testMethodAppsList(): void
+    {
 
         $data = array(
             "functions" => array(),
@@ -41,7 +44,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsCreate(): void {
+    public function testMethodAppsCreate(): void
+    {
 
         $data = array(
             "\$createdAt" => "",
@@ -86,7 +90,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsListMarketplace(): void {
+    public function testMethodAppsListMarketplace(): void
+    {
 
         $data = array();
 
@@ -100,7 +105,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsInstallFromMarketplace(): void {
+    public function testMethodAppsInstallFromMarketplace(): void
+    {
 
         $data = array();
 
@@ -116,7 +122,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsListRuntimes(): void {
+    public function testMethodAppsListRuntimes(): void
+    {
 
         $data = array(
             "runtimes" => array(),
@@ -132,7 +139,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsListSpecifications(): void {
+    public function testMethodAppsListSpecifications(): void
+    {
 
         $data = array(
             "specifications" => array(),
@@ -148,7 +156,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsListTemplates(): void {
+    public function testMethodAppsListTemplates(): void
+    {
 
         $data = array(
             "templates" => array(),
@@ -164,7 +173,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsGetTemplate(): void {
+    public function testMethodAppsGetTemplate(): void
+    {
 
         $data = array(
             "cron" => "",
@@ -196,7 +206,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsListUsage(): void {
+    public function testMethodAppsListUsage(): void
+    {
 
         $data = array(
             "builds" => array(),
@@ -235,7 +246,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsDelete(): void {
+    public function testMethodAppsDelete(): void
+    {
 
         $data = array();
 
@@ -250,7 +262,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsGet(): void {
+    public function testMethodAppsGet(): void
+    {
 
         $data = array(
             "\$createdAt" => "",
@@ -293,7 +306,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsUpdate(): void {
+    public function testMethodAppsUpdate(): void
+    {
 
         $data = array(
             "\$createdAt" => "",
@@ -337,7 +351,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsUpdateDeployment(): void {
+    public function testMethodAppsUpdateDeployment(): void
+    {
 
         $data = array(
             "\$createdAt" => "",
@@ -381,7 +396,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsListDeployments(): void {
+    public function testMethodAppsListDeployments(): void
+    {
 
         $data = array(
             "deployments" => array(),
@@ -398,7 +414,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsCreateDeployment(): void {
+    public function testMethodAppsCreateDeployment(): void
+    {
 
         $data = array(
             "\$createdAt" => "",
@@ -444,7 +461,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsCreateDuplicateDeployment(): void {
+    public function testMethodAppsCreateDuplicateDeployment(): void
+    {
 
         $data = array(
             "\$createdAt" => "",
@@ -489,7 +507,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsCreateTemplateDeployment(): void {
+    public function testMethodAppsCreateTemplateDeployment(): void
+    {
 
         $data = array(
             "\$createdAt" => "",
@@ -538,7 +557,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsCreateVcsDeployment(): void {
+    public function testMethodAppsCreateVcsDeployment(): void
+    {
 
         $data = array(
             "\$createdAt" => "",
@@ -584,7 +604,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsDeleteDeployment(): void {
+    public function testMethodAppsDeleteDeployment(): void
+    {
 
         $data = array();
 
@@ -600,7 +621,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsGetDeployment(): void {
+    public function testMethodAppsGetDeployment(): void
+    {
 
         $data = array(
             "\$createdAt" => "",
@@ -645,7 +667,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsGetDeploymentDownload(): void {
+    public function testMethodAppsGetDeploymentDownload(): void
+    {
 
         $data = array();
 
@@ -661,7 +684,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsUpdateDeploymentStatus(): void {
+    public function testMethodAppsUpdateDeploymentStatus(): void
+    {
 
         $data = array(
             "\$createdAt" => "",
@@ -706,7 +730,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsListExecutions(): void {
+    public function testMethodAppsListExecutions(): void
+    {
 
         $data = array(
             "executions" => array(),
@@ -723,7 +748,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsCreateExecution(): void {
+    public function testMethodAppsCreateExecution(): void
+    {
 
         $data = array(
             "\$createdAt" => "",
@@ -755,7 +781,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsDeleteExecution(): void {
+    public function testMethodAppsDeleteExecution(): void
+    {
 
         $data = array();
 
@@ -771,7 +798,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsGetExecution(): void {
+    public function testMethodAppsGetExecution(): void
+    {
 
         $data = array(
             "\$createdAt" => "",
@@ -804,7 +832,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsGetMarketplaceStatus(): void {
+    public function testMethodAppsGetMarketplaceStatus(): void
+    {
 
         $data = array();
 
@@ -819,7 +848,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsUnpublish(): void {
+    public function testMethodAppsUnpublish(): void
+    {
 
         $data = array();
 
@@ -834,7 +864,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsPublish(): void {
+    public function testMethodAppsPublish(): void
+    {
 
         $data = array();
 
@@ -849,7 +880,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsGetUsage(): void {
+    public function testMethodAppsGetUsage(): void
+    {
 
         $data = array(
             "builds" => array(),
@@ -888,7 +920,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsListVariables(): void {
+    public function testMethodAppsListVariables(): void
+    {
 
         $data = array(
             "total" => 1,
@@ -905,7 +938,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsCreateVariable(): void {
+    public function testMethodAppsCreateVariable(): void
+    {
 
         $data = array(
             "\$createdAt" => "",
@@ -930,7 +964,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsDeleteVariable(): void {
+    public function testMethodAppsDeleteVariable(): void
+    {
 
         $data = array();
 
@@ -946,7 +981,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsGetVariable(): void {
+    public function testMethodAppsGetVariable(): void
+    {
 
         $data = array(
             "\$createdAt" => "",
@@ -970,7 +1006,8 @@ final class AppsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAppsUpdateVariable(): void {
+    public function testMethodAppsUpdateVariable(): void
+    {
 
         $data = array(
             "\$createdAt" => "",

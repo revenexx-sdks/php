@@ -18,10 +18,10 @@ use Revenexx\Enums\Method;
 
 class Apps extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * List all Apps in the active project. Pass `search` to filter by name.
@@ -68,7 +68,7 @@ class Apps extends Service
      * Create a new revenexx App. An App is the deployment surface for code that
      * runs on the platform — backend jobs, APIs, integrations. The created App
      * owns subsequent deployments and executions.
-     * 
+     *
      * Phase 1 mirrors the underlying Functions runtime 1:1; future phases will
      * add manifest validation, registry coupling and schema migrations.
      *
@@ -704,7 +704,7 @@ class Apps extends Service
         $size = 0;
         $mimeType = null;
         $postedName = null;
-        if(empty($code->getPath() ?? null)) {
+        if (empty($code->getPath() ?? null)) {
             $size = strlen($code->getData());
             $mimeType = $code->getMimeType();
             $postedName = $code->getFilename();
@@ -720,7 +720,7 @@ class Apps extends Service
             'content-type' => 'multipart/form-data',
             ], $apiParams);
 
-        if($onProgress !== null) {
+        if ($onProgress !== null) {
             $onProgress([
                 '$id' => $response['$id'] ?? null,
                 'progress' => 100,

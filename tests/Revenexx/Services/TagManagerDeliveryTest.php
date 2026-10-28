@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class TagManagerDeliveryTest extends TestCase {
+final class TagManagerDeliveryTest extends TestCase
+{
     private $client;
     private $tagManagerDelivery;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->tagManagerDelivery = new TagManagerDelivery($this->client);
     }
 
-    public function testMethodTagManagerDeliveryContainer(): void {
+    public function testMethodTagManagerDeliveryContainer(): void
+    {
 
         $data = array();
 
@@ -30,7 +33,8 @@ final class TagManagerDeliveryTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTagManagerDeliveryPreview(): void {
+    public function testMethodTagManagerDeliveryPreview(): void
+    {
 
         $data = array();
 

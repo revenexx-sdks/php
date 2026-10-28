@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class QuotesAcceptance extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The buyer takes the offer. Sent with no positions it takes everything still

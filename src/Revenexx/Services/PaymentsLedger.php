@@ -13,10 +13,10 @@ use Revenexx\Enums\PaymentsVocabulariesGetName;
 
 class PaymentsLedger extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The ledger, paged and filtered — the Payments screen, the reconciliation

@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class ReviewsPrivacy extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Stars and text stay so product figures do not move; name, contact and

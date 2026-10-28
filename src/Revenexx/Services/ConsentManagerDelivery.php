@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class ConsentManagerDelivery extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The latest version published for the market in `x-revenexx-market`, else

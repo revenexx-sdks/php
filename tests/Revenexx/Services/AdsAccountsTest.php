@@ -10,16 +10,19 @@ use Revenexx\Enums\Trashed;
 use Revenexx\Enums\Platform;
 use Revenexx\Enums\Status;
 
-final class AdsAccountsTest extends TestCase {
+final class AdsAccountsTest extends TestCase
+{
     private $client;
     private $adsAccounts;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->adsAccounts = new AdsAccounts($this->client);
     }
 
-    public function testMethodAdsAccountsList(): void {
+    public function testMethodAdsAccountsList(): void
+    {
 
         $data = array();
 
@@ -33,7 +36,8 @@ final class AdsAccountsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsAccountsCreate(): void {
+    public function testMethodAdsAccountsCreate(): void
+    {
 
         $data = array();
 
@@ -50,7 +54,8 @@ final class AdsAccountsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsAccountsEmptyTrash(): void {
+    public function testMethodAdsAccountsEmptyTrash(): void
+    {
 
         $data = array();
 
@@ -64,7 +69,8 @@ final class AdsAccountsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsAccountsPurge(): void {
+    public function testMethodAdsAccountsPurge(): void
+    {
 
         $data = array();
 
@@ -78,7 +84,8 @@ final class AdsAccountsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsAccountsDelete(): void {
+    public function testMethodAdsAccountsDelete(): void
+    {
 
         $data = array();
 
@@ -93,7 +100,8 @@ final class AdsAccountsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsAccountsGet(): void {
+    public function testMethodAdsAccountsGet(): void
+    {
 
         $data = array();
 
@@ -108,7 +116,8 @@ final class AdsAccountsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsAccountsUpdate(): void {
+    public function testMethodAdsAccountsUpdate(): void
+    {
 
         $data = array();
 
@@ -123,7 +132,8 @@ final class AdsAccountsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsAccountsRestore(): void {
+    public function testMethodAdsAccountsRestore(): void
+    {
 
         $data = array();
 
@@ -138,7 +148,8 @@ final class AdsAccountsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsAccountsStatus(): void {
+    public function testMethodAdsAccountsStatus(): void
+    {
 
         $data = array();
 

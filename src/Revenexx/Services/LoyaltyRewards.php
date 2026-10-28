@@ -10,10 +10,10 @@ use Revenexx\Enums\Trashed;
 
 class LoyaltyRewards extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Filter `?membership_id=`, `?reward_id=`, `?state=`. Read-only.

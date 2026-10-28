@@ -23,16 +23,19 @@ use Revenexx\Enums\PromotionsPromotionsCreateStatus;
 use Revenexx\Enums\PromotionsPromotionsCopyParts;
 use Revenexx\Enums\When;
 
-final class PromotionsPromotionsTest extends TestCase {
+final class PromotionsPromotionsTest extends TestCase
+{
     private $client;
     private $promotionsPromotions;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->promotionsPromotions = new PromotionsPromotions($this->client);
     }
 
-    public function testMethodPromotionsBundlesList(): void {
+    public function testMethodPromotionsBundlesList(): void
+    {
 
         $data = array();
 
@@ -46,7 +49,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsBundlesCreate(): void {
+    public function testMethodPromotionsBundlesCreate(): void
+    {
 
         $data = array();
 
@@ -62,7 +66,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsBundlesDelete(): void {
+    public function testMethodPromotionsBundlesDelete(): void
+    {
 
         $data = array();
 
@@ -77,7 +82,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsBundlesGet(): void {
+    public function testMethodPromotionsBundlesGet(): void
+    {
 
         $data = array();
 
@@ -92,7 +98,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsBundlesUpdate(): void {
+    public function testMethodPromotionsBundlesUpdate(): void
+    {
 
         $data = array();
 
@@ -107,7 +114,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsConditionsList(): void {
+    public function testMethodPromotionsConditionsList(): void
+    {
 
         $data = array();
 
@@ -121,7 +129,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsConditionsCreate(): void {
+    public function testMethodPromotionsConditionsCreate(): void
+    {
 
         $data = array();
 
@@ -136,7 +145,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsConditionsValidate(): void {
+    public function testMethodPromotionsConditionsValidate(): void
+    {
 
         $data = array();
 
@@ -150,7 +160,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsConditionsDelete(): void {
+    public function testMethodPromotionsConditionsDelete(): void
+    {
 
         $data = array();
 
@@ -165,7 +176,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsConditionsGet(): void {
+    public function testMethodPromotionsConditionsGet(): void
+    {
 
         $data = array();
 
@@ -180,7 +192,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsConditionsUpdate(): void {
+    public function testMethodPromotionsConditionsUpdate(): void
+    {
 
         $data = array();
 
@@ -195,7 +208,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsCustomEffectTypesList(): void {
+    public function testMethodPromotionsCustomEffectTypesList(): void
+    {
 
         $data = array();
 
@@ -209,7 +223,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsCustomEffectTypesCreate(): void {
+    public function testMethodPromotionsCustomEffectTypesCreate(): void
+    {
 
         $data = array();
 
@@ -224,7 +239,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsCustomEffectTypesDelete(): void {
+    public function testMethodPromotionsCustomEffectTypesDelete(): void
+    {
 
         $data = array();
 
@@ -239,7 +255,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsCustomEffectTypesGet(): void {
+    public function testMethodPromotionsCustomEffectTypesGet(): void
+    {
 
         $data = array();
 
@@ -254,7 +271,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsCustomEffectTypesUpdate(): void {
+    public function testMethodPromotionsCustomEffectTypesUpdate(): void
+    {
 
         $data = array();
 
@@ -269,7 +287,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsEffectsList(): void {
+    public function testMethodPromotionsEffectsList(): void
+    {
 
         $data = array();
 
@@ -283,7 +302,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsEffectsCreate(): void {
+    public function testMethodPromotionsEffectsCreate(): void
+    {
 
         $data = array();
 
@@ -298,7 +318,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsEffectsDelete(): void {
+    public function testMethodPromotionsEffectsDelete(): void
+    {
 
         $data = array();
 
@@ -313,7 +334,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsEffectsGet(): void {
+    public function testMethodPromotionsEffectsGet(): void
+    {
 
         $data = array();
 
@@ -328,7 +350,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsEffectsUpdate(): void {
+    public function testMethodPromotionsEffectsUpdate(): void
+    {
 
         $data = array();
 
@@ -343,7 +366,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsGroupsList(): void {
+    public function testMethodPromotionsGroupsList(): void
+    {
 
         $data = array();
 
@@ -357,7 +381,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsGroupsCreate(): void {
+    public function testMethodPromotionsGroupsCreate(): void
+    {
 
         $data = array();
 
@@ -373,7 +398,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsGroupsDelete(): void {
+    public function testMethodPromotionsGroupsDelete(): void
+    {
 
         $data = array();
 
@@ -388,7 +414,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsGroupsGet(): void {
+    public function testMethodPromotionsGroupsGet(): void
+    {
 
         $data = array();
 
@@ -403,7 +430,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsGroupsUpdate(): void {
+    public function testMethodPromotionsGroupsUpdate(): void
+    {
 
         $data = array();
 
@@ -418,7 +446,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsPromotionsList(): void {
+    public function testMethodPromotionsPromotionsList(): void
+    {
 
         $data = array();
 
@@ -432,7 +461,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsPromotionsCreate(): void {
+    public function testMethodPromotionsPromotionsCreate(): void
+    {
 
         $data = array();
 
@@ -448,7 +478,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsPromotionsOverlapCheck(): void {
+    public function testMethodPromotionsPromotionsOverlapCheck(): void
+    {
 
         $data = array();
 
@@ -462,7 +493,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsPromotionsEmptyTrash(): void {
+    public function testMethodPromotionsPromotionsEmptyTrash(): void
+    {
 
         $data = array();
 
@@ -476,7 +508,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsPromotionsPurge(): void {
+    public function testMethodPromotionsPromotionsPurge(): void
+    {
 
         $data = array();
 
@@ -490,7 +523,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsPromotionsDelete(): void {
+    public function testMethodPromotionsPromotionsDelete(): void
+    {
 
         $data = array();
 
@@ -505,7 +539,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsPromotionsGet(): void {
+    public function testMethodPromotionsPromotionsGet(): void
+    {
 
         $data = array();
 
@@ -520,7 +555,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsPromotionsUpdate(): void {
+    public function testMethodPromotionsPromotionsUpdate(): void
+    {
 
         $data = array();
 
@@ -535,7 +571,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsPromotionsConditions(): void {
+    public function testMethodPromotionsPromotionsConditions(): void
+    {
 
         $data = array();
 
@@ -550,7 +587,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsPromotionsConditionsCheck(): void {
+    public function testMethodPromotionsPromotionsConditionsCheck(): void
+    {
 
         $data = array();
 
@@ -565,7 +603,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsPromotionsCopy(): void {
+    public function testMethodPromotionsPromotionsCopy(): void
+    {
 
         $data = array();
 
@@ -581,7 +620,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsPromotionsEnd(): void {
+    public function testMethodPromotionsPromotionsEnd(): void
+    {
 
         $data = array();
 
@@ -596,7 +636,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsPromotionsOverlaps(): void {
+    public function testMethodPromotionsPromotionsOverlaps(): void
+    {
 
         $data = array();
 
@@ -611,7 +652,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsPromotionsOverview(): void {
+    public function testMethodPromotionsPromotionsOverview(): void
+    {
 
         $data = array();
 
@@ -626,7 +668,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsPromotionsRestore(): void {
+    public function testMethodPromotionsPromotionsRestore(): void
+    {
 
         $data = array();
 
@@ -641,7 +684,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsPromotionsState(): void {
+    public function testMethodPromotionsPromotionsState(): void
+    {
 
         $data = array();
 
@@ -656,7 +700,8 @@ final class PromotionsPromotionsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPromotionsPromotionsTimeline(): void {
+    public function testMethodPromotionsPromotionsTimeline(): void
+    {
 
         $data = array();
 

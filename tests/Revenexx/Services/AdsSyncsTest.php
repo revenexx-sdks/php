@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class AdsSyncsTest extends TestCase {
+final class AdsSyncsTest extends TestCase
+{
     private $client;
     private $adsSyncs;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->adsSyncs = new AdsSyncs($this->client);
     }
 
-    public function testMethodAdsSyncsList(): void {
+    public function testMethodAdsSyncsList(): void
+    {
 
         $data = array();
 
@@ -30,7 +33,8 @@ final class AdsSyncsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsSyncsCreate(): void {
+    public function testMethodAdsSyncsCreate(): void
+    {
 
         $data = array();
 
@@ -47,7 +51,8 @@ final class AdsSyncsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsSyncsDelete(): void {
+    public function testMethodAdsSyncsDelete(): void
+    {
 
         $data = array();
 
@@ -62,7 +67,8 @@ final class AdsSyncsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsSyncsGet(): void {
+    public function testMethodAdsSyncsGet(): void
+    {
 
         $data = array();
 
@@ -77,7 +83,8 @@ final class AdsSyncsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsSyncsUpdate(): void {
+    public function testMethodAdsSyncsUpdate(): void
+    {
 
         $data = array();
 
@@ -92,7 +99,8 @@ final class AdsSyncsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsSyncsMembers(): void {
+    public function testMethodAdsSyncsMembers(): void
+    {
 
         $data = array();
 
@@ -107,7 +115,8 @@ final class AdsSyncsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsSyncsRequest(): void {
+    public function testMethodAdsSyncsRequest(): void
+    {
 
         $data = array();
 
@@ -123,7 +132,8 @@ final class AdsSyncsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodAdsSyncsResult(): void {
+    public function testMethodAdsSyncsResult(): void
+    {
 
         $data = array();
 

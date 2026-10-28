@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class LoyaltyReferralsTest extends TestCase {
+final class LoyaltyReferralsTest extends TestCase
+{
     private $client;
     private $loyaltyReferrals;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->loyaltyReferrals = new LoyaltyReferrals($this->client);
     }
 
-    public function testMethodLoyaltyReferralsCodesList(): void {
+    public function testMethodLoyaltyReferralsCodesList(): void
+    {
 
         $data = array();
 
@@ -30,7 +33,8 @@ final class LoyaltyReferralsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyReferralsCodesGet(): void {
+    public function testMethodLoyaltyReferralsCodesGet(): void
+    {
 
         $data = array();
 
@@ -45,7 +49,8 @@ final class LoyaltyReferralsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyReferralsCodesDeactivate(): void {
+    public function testMethodLoyaltyReferralsCodesDeactivate(): void
+    {
 
         $data = array();
 
@@ -61,7 +66,8 @@ final class LoyaltyReferralsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyReferralsList(): void {
+    public function testMethodLoyaltyReferralsList(): void
+    {
 
         $data = array();
 
@@ -75,7 +81,8 @@ final class LoyaltyReferralsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyReferralsClaim(): void {
+    public function testMethodLoyaltyReferralsClaim(): void
+    {
 
         $data = array();
 
@@ -91,7 +98,8 @@ final class LoyaltyReferralsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyReferralsGet(): void {
+    public function testMethodLoyaltyReferralsGet(): void
+    {
 
         $data = array();
 
@@ -106,7 +114,8 @@ final class LoyaltyReferralsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyReferralsReject(): void {
+    public function testMethodLoyaltyReferralsReject(): void
+    {
 
         $data = array();
 
@@ -122,7 +131,8 @@ final class LoyaltyReferralsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyReferralsReward(): void {
+    public function testMethodLoyaltyReferralsReward(): void
+    {
 
         $data = array();
 

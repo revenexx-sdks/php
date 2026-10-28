@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class JourneysJobs extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Executes due steps of all live journeys, oldest first, in chunks, within

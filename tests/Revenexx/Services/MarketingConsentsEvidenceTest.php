@@ -13,16 +13,19 @@ use Revenexx\Enums\MarketingConsentsConsentEventsListLegalBasis;
 use Revenexx\Enums\MarketingConsentsImportsListLegalBasis;
 use Revenexx\Enums\State;
 
-final class MarketingConsentsEvidenceTest extends TestCase {
+final class MarketingConsentsEvidenceTest extends TestCase
+{
     private $client;
     private $marketingConsentsEvidence;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->marketingConsentsEvidence = new MarketingConsentsEvidence($this->client);
     }
 
-    public function testMethodMarketingConsentsConsentEventsList(): void {
+    public function testMethodMarketingConsentsConsentEventsList(): void
+    {
 
         $data = array();
 
@@ -36,7 +39,8 @@ final class MarketingConsentsEvidenceTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketingConsentsConsentEventsGet(): void {
+    public function testMethodMarketingConsentsConsentEventsGet(): void
+    {
 
         $data = array();
 
@@ -51,7 +55,8 @@ final class MarketingConsentsEvidenceTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketingConsentsContactsGet(): void {
+    public function testMethodMarketingConsentsContactsGet(): void
+    {
 
         $data = array();
 
@@ -66,7 +71,8 @@ final class MarketingConsentsEvidenceTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketingConsentsContactsErase(): void {
+    public function testMethodMarketingConsentsContactsErase(): void
+    {
 
         $data = array();
 
@@ -82,7 +88,8 @@ final class MarketingConsentsEvidenceTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketingConsentsContactsExport(): void {
+    public function testMethodMarketingConsentsContactsExport(): void
+    {
 
         $data = array();
 
@@ -97,7 +104,8 @@ final class MarketingConsentsEvidenceTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketingConsentsImportsList(): void {
+    public function testMethodMarketingConsentsImportsList(): void
+    {
 
         $data = array();
 
@@ -111,7 +119,8 @@ final class MarketingConsentsEvidenceTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketingConsentsImportsCreate(): void {
+    public function testMethodMarketingConsentsImportsCreate(): void
+    {
 
         $data = array();
 
@@ -129,7 +138,8 @@ final class MarketingConsentsEvidenceTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketingConsentsImportsGet(): void {
+    public function testMethodMarketingConsentsImportsGet(): void
+    {
 
         $data = array();
 
@@ -144,7 +154,8 @@ final class MarketingConsentsEvidenceTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketingConsentsIpRetentionRun(): void {
+    public function testMethodMarketingConsentsIpRetentionRun(): void
+    {
 
         $data = array();
 
@@ -159,7 +170,8 @@ final class MarketingConsentsEvidenceTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketingConsentsLapseRun(): void {
+    public function testMethodMarketingConsentsLapseRun(): void
+    {
 
         $data = array();
 
@@ -174,7 +186,8 @@ final class MarketingConsentsEvidenceTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketingConsentsSweepRun(): void {
+    public function testMethodMarketingConsentsSweepRun(): void
+    {
 
         $data = array();
 

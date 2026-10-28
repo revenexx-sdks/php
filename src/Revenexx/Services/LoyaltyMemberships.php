@@ -10,10 +10,10 @@ use Revenexx\Enums\LoyaltyMembershipsCreateStatus;
 
 class LoyaltyMemberships extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Filter `?program_id=`, `?contact_id=`, `?organization_id=`, `?tier_id=` or

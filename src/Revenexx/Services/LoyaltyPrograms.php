@@ -13,10 +13,10 @@ use Revenexx\Enums\Period;
 
 class LoyaltyPrograms extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Every programme of this tenant. Filter `?kind=turnover_bonus` for the B2B

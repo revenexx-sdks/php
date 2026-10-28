@@ -9,16 +9,19 @@ use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\PaymentMethodKind;
 use Revenexx\Enums\PaymentFeeType;
 
-final class PaymentsMethodsTest extends TestCase {
+final class PaymentsMethodsTest extends TestCase
+{
     private $client;
     private $paymentsMethods;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->paymentsMethods = new PaymentsMethods($this->client);
     }
 
-    public function testMethodPaymentsMethodsList(): void {
+    public function testMethodPaymentsMethodsList(): void
+    {
 
         $data = array();
 
@@ -32,7 +35,8 @@ final class PaymentsMethodsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPaymentsMethodsCreate(): void {
+    public function testMethodPaymentsMethodsCreate(): void
+    {
 
         $data = array();
 
@@ -48,7 +52,8 @@ final class PaymentsMethodsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPaymentsMethodsDefaults(): void {
+    public function testMethodPaymentsMethodsDefaults(): void
+    {
 
         $data = array();
 
@@ -62,7 +67,8 @@ final class PaymentsMethodsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPaymentsMethodsEligible(): void {
+    public function testMethodPaymentsMethodsEligible(): void
+    {
 
         $data = array();
 
@@ -76,7 +82,8 @@ final class PaymentsMethodsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPaymentsMethodsDelete(): void {
+    public function testMethodPaymentsMethodsDelete(): void
+    {
 
         $data = array();
 
@@ -91,7 +98,8 @@ final class PaymentsMethodsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPaymentsMethodsGet(): void {
+    public function testMethodPaymentsMethodsGet(): void
+    {
 
         $data = array();
 
@@ -106,7 +114,8 @@ final class PaymentsMethodsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPaymentsMethodsUpdate(): void {
+    public function testMethodPaymentsMethodsUpdate(): void
+    {
 
         $data = array();
 
@@ -121,7 +130,8 @@ final class PaymentsMethodsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodPaymentsTaxClassesUsage(): void {
+    public function testMethodPaymentsTaxClassesUsage(): void
+    {
 
         $data = array();
 

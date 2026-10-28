@@ -18,10 +18,10 @@ use Revenexx\Enums\PricesVocabulariesGetName;
 
 class Prices extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The answer to "what does this item cost this customer in this market, and
@@ -30,7 +30,7 @@ class Prices extends Service
      * with the reason it lost. The resolution is exactly the one `POST
      * /prices/resolve` runs — same candidate lists, same groups, same tier
      * rule, same tie-break — so the answer matches what the shop quotes.
-     * 
+     *
      * Configuration, not a buyer route: it names lists a buyer must not learn
      * about. The market is the one `market` names, else the active market of the
      * request; a market other than the request's is read through its own
@@ -124,13 +124,13 @@ class Prices extends Service
      * status, priority, validity window, buyer scope and the default flag. Never
      * the prices themselves: those are a separate page per list (`GET
      * /prices/lists/{list_id}/entries`).
-     * 
+     *
      * Every filter is an EXACT match on a column, ANDed together; a query key
      * that is not a column is dropped in silence, which is why the answer echoes
      * `filter`. The scope, currency and status filters are the useful ones,
      * because between them they narrow the set to the candidates a resolve call
      * in a given currency for a given buyer can draw on at all.
-     * 
+     *
      * Market is deliberately not among them: a list is scoped to a market by an
      * assignment, not a column, and the `X-Revenexx-Market` header is what
      * narrows the set — this admin listing shows the tenant's lists whatever
@@ -290,11 +290,11 @@ class Prices extends Service
      * specificity group, its validity window, and its buyer scope (contact,
      * organization or channel — leave all three empty for a list open to
      * everyone).
-     * 
+     *
      * `code` and `name` are the only fields required — they are the two columns
      * with no default — and `code` is unique per tenant, so a code already in
      * use is a 409 rather than an overwrite of prices somebody is selling on.
-     * 
+     *
      * Everything else has a default, and two of them are worth choosing rather
      * than accepting. `currency` defaults to EUR and is the currency of every
      * amount in the list, since entries carry none; a resolve call only considers
@@ -302,14 +302,14 @@ class Prices extends Service
      * `tax_basis` defaults to NOTHING, which means the amounts inherit the
      * tenant's `tax_inclusive_default` — state net or gross here and the answer
      * stops depending on a tenant setting somebody may change later.
-     * 
+     *
      * `is_default: true` is taken only while no list of the tenant carries the
      * flag — the first list, the seed. Once a default exists the create is
      * refused with 409 `default_exists`: create the list without the flag, then
      * move it with `POST /prices/lists/{list_id}/make-default`, which demotes the
      * incumbent in the same call. That is what keeps the flag on exactly one
      * list.
-     * 
+     *
      * A new list prices nothing at all until it has entries, so it is inert until
      * you add them — which makes it safe to create one ahead of the prices that
      * will fill it.
@@ -399,13 +399,13 @@ class Prices extends Service
      * re-run — for a tenant installed before that hook existed, or one whose
      * standard list was deleted. Because it is idempotent it is also safe to call
      * from a provisioning script that cannot know which of the two is the case.
-     * 
+     *
      * What it writes comes from settings, not from constants: the code is the
      * tenant's `default_price_list_code`, the currency its `default_currency`,
      * and the seeded list STATES its tax basis from `tax_inclusive_default`
      * instead of inheriting it, because the one list every tenant gets should not
      * be the ambiguous one.
-     * 
+     *
      * Idempotent twice over — by that code, and by the existence of ANY default
      * list. So calling it repeatedly is free, changing `default_price_list_code`
      * later never produces a second list, and a tenant that has made some other
@@ -475,14 +475,14 @@ class Prices extends Service
      * entries that stay with it under `warnings`. Only the default list is
      * refused (409 `default_price_list`) — every fallback price comes from it,
      * so make another list the default first.
-     * 
+     *
      * A delete of a list that is already in the trash deletes it for good. Only
      * then do its entries go — `price_entries.price_list_id` cascades — and
      * only then does `price_list.deleted` fire. Carts, quotes and orders carry
      * the resolved price as a snapshot and no list id, so nothing elsewhere
      * blocks it. The daily purge does the same after the tenant's trash
      * retention.
-     * 
+     *
      * This is still not the way to take a list out of circulation for a while:
      * `status: "inactive"` does that and keeps the list editable. The trash is
      * for a list that should go; `POST /prices/lists/{id}/restore` is the way
@@ -553,7 +553,7 @@ class Prices extends Service
      * and a payload with no updatable column at all is refused rather than
      * answered with an unchanged row. There is no draft and no publish step —
      * the next resolve call reads what this one wrote.
-     * 
+     *
      * Three edits do more than their field names suggest. `currency`
      * re-denominates without converting: entries carry no currency of their own,
      * so 19.90 EUR becomes 19.90 CHF and the whole book is re-priced by one edit.
@@ -562,7 +562,7 @@ class Prices extends Service
      * the one to reach for instead of deleting it. `code` is the handle imports
      * and integrations address the list by, and a code another list already holds
      * is a 409.
-     * 
+     *
      * `is_default` may be restated as it stands, never changed: a change that
      * sets or clears it is refused with 400 `default_via_make_default`. `POST
      * /prices/lists/{list_id}/make-default` moves the flag and demotes in the
@@ -739,7 +739,7 @@ class Prices extends Service
      * deliberately no number at all — an `on_request` marker instead of one. So
      * this page is where the quantity tiers, the promo windows and the "ask us"
      * markers of a book are read.
-     * 
+     *
      * The ladder of one item is the set of entries sharing an identity, so
      * `?product_id=…` (or `?sku=…`) is how a caller reads the Staffel a
      * resolve answer was built from, and `?price_type=on_request` is how the
@@ -877,7 +877,7 @@ class Prices extends Service
      * entry must have is an identity — `product_id` or `sku`, which the row
      * CHECK enforces; everything else defaults, and one of those defaults
      * deserves a warning.
-     * 
+     *
      * `unit_price` defaults to **0**. That is the one door through which a zero
      * price enters an app whose whole doctrine is that a missing price is
      * `on_request` and never €0: a create that forgets the amount publishes a
@@ -886,14 +886,14 @@ class Prices extends Service
      * is none. The amount is per ONE unit of `unit`, in the LIST's currency
      * (entries carry none) and on the LIST's tax basis, as a decimal in major
      * units — 19.90, never 1990.
-     * 
+     *
      * Nothing enforces one rung per (item, quantity) on this route: create the
      * same `quantity_min` twice and both rows come back in the resolved `tiers`,
      * with the last of them setting the price — an ambiguous ladder no error
      * ever mentions (a replace or an import refuses such a payload as
      * `duplicate_tier`). `quantity_min` defaults to 1 and `price_type` to
      * `standard`.
-     * 
+     *
      * This route is for a rung at a time. A whole ladder in one call is `POST
      * …/entries/ladder`, an import is `POST …/entries/bulk`, and a complete
      * rewrite of the book is `PUT …/entries`. An unknown `list_id` answers 404
@@ -968,7 +968,7 @@ class Prices extends Service
      * `entries: []` is a legal payload and empties the list — the items it
      * priced then resolve from the next candidate list, or come back
      * `on_request`.
-     * 
+     *
      * Two consequences of "insert, then delete". Every row is inserted fresh, so
      * all entry ids change and anything holding one is stale afterwards. And it
      * is not a transaction: the new rows go out in bulk first and the old ones
@@ -976,7 +976,7 @@ class Prices extends Service
      * and a failure between the two leaves both sets — repeat the call. The
      * whole payload is normalized and validated BEFORE the first write — a
      * malformed row is a 400 with the list untouched.
-     * 
+     *
      * For a book of any size, or for adding to one you want to keep, use `POST
      * …/entries/bulk`: it upserts in chunks and never wipes.
      *
@@ -1015,7 +1015,7 @@ class Prices extends Service
      * price. One or the other, never both, and `sku_prefix` narrows the change to
      * part of the book. On-request entries are never touched, because a
      * percentage of "ask us" is not a number.
-     * 
+     *
      * The other half of a bulk change is what the arithmetic leaves behind: a 7 %
      * increase turns 19.90 into 21.293, which no merchant prints. Results are
      * therefore rounded to the tenant's price_precision/rounding_mode and then
@@ -1067,7 +1067,7 @@ class Prices extends Service
      * instead of duplicating the ladder. `mode: 'append'` keeps the old
      * insert-everything behaviour. Inserts go out as one PostgREST bulk write per
      * 1000 rows.
-     * 
+     *
      * This is the route for a large price book, and a large book arrives in
      * chunks: a call carries at most 5000 entries and a longer payload is refused
      * with 400 rather than truncated, so an importer of 200 000 prices sends
@@ -1158,14 +1158,14 @@ class Prices extends Service
     /**
      * Removes ONE rung. The item keeps its other rungs and stays priced — which
      * is exactly what makes the lowest rung the dangerous one to delete.
-     * 
+     *
      * Below the first threshold the FIRST rung's price applies (a minimum
      * quantity belongs to the catalog, not to the price ladder). So deleting the
      * "from 1" rung of a 1/10/50 ladder does not make single units unpriced: it
      * sells them at the 10-up volume price, silently, from the next resolve call
      * onwards. Nothing in the answer marks that the ladder no longer starts where
      * it used to.
-     * 
+     *
      * Delete an item's LAST rung and this list stops pricing it altogether: the
      * item falls through to the next candidate list, or comes back `on_request`
      * — never €0. To retire a price without losing it, set the rung's
@@ -1242,7 +1242,7 @@ class Prices extends Service
      * A partial update of one rung: send only what changes, a payload with no
      * updatable column at all is refused, and the next resolve call reads what
      * this one wrote.
-     * 
+     *
      * Two edits reach further than the field they touch. Moving `quantity_min`
      * moves the rung within the ladder and may land on a threshold the item
      * already has — nothing stops it, and both rows then sit in the resolved
@@ -1251,7 +1251,7 @@ class Prices extends Service
      * request" even though the other rungs still carry amounts, and even where a
      * less specific list would have priced it. That is the intended way to say
      * "ask us" for an item, and a surprise if you meant to retire a single tier.
-     * 
+     *
      * What this route cannot change is what the amount MEANS: currency and tax
      * basis belong to the list, so re-denominating or switching net/gross is a
      * list edit, not an entry edit. An entry of another list answers 404.
@@ -1325,7 +1325,7 @@ class Prices extends Service
      * tie-break, so two defaults leave the winner to row order and none leaves a
      * tie unsettled. Promote-then-demote as two PATCHes from a client produces
      * exactly those two states whenever the second call does not land.
-     * 
+     *
      * The write is as small as the change: exactly one write per row whose flag
      * was wrong, and none at all for the rows that were already right. A tenant
      * already in this state is therefore not written to, which is what makes
@@ -1368,10 +1368,10 @@ class Prices extends Service
      * — and get back, per item, the unit price this buyer pays, the net/gross
      * pair, the tax rate, the list that decided it and that item's full quantity
      * ladder.
-     * 
+     *
      * Which price wins when several match is the whole value of this app, and it
      * is not guessable from the field types. The order, in full:
-     * 
+     *
      * 1. **Candidates.** A list is a candidate when it is `active`, its currency
      * EQUALS the currency of the call (nothing is ever converted — a list in
      * another currency simply does not price the item), the instant `at` falls
@@ -1404,7 +1404,7 @@ class Prices extends Service
      * 7. **Nothing found → `on_request`, never 0**, with a reason
      * (`not_priced`, `on_request_entry`, `anonymous_denied`, `no_identity`). A
      * storefront shows "price on request"; it must never show €0.
-     * 
+     *
      * Amounts: `unit_price` is per ONE unit of the entry’s `unit`, in
      * `currency`, as a decimal in MAJOR units (19.90) — never minor units/cents
      * — and on the basis `tax_basis` names. `tax_basis` comes from the list’s
@@ -1412,7 +1412,7 @@ class Prices extends Service
      * tenant’s `tax_inclusive_default`; `tax_basis_source` says which of the
      * three. Read `unit_price_net`/`unit_price_gross` where you need an
      * unambiguous number.
-     * 
+     *
      * Whose prices: a request acting for a contact (the gateway resolved the
      * principal) is priced for THAT contact and its organization, taken from the
      * platform. The body may restate them; a `contact_id` or `organization_id`
@@ -1421,17 +1421,17 @@ class Prices extends Service
      * not state segment membership yet. A call acting for no contact — the back
      * office, another app — states its buyer context in the body. The market
      * and the channel are the caller's to choose on either plane.
-     * 
+     *
      * Tax is never guessed. The market comes from the `X-Revenexx-Market` header
      * (a market CODE) or from `market_id` in the body; with several markets whose
      * rates differ and no signal, the answer is `tax.resolved: false`, `reason:
      * market_required` rather than another market’s VAT. `tax_rate: null` means
      * UNKNOWN, not 0 %.
-     * 
+     *
      * An item that cannot be priced never fails the call: it comes back
      * on_request with its reason, so one bad line in a cart does not cost the
      * other lines their prices.
-     * 
+     *
      * One last thing worth knowing before you build on it. This is the most
      * customised surface this app has in the field: pricing is where a tenant's
      * ERP usually has the last word, and a tenant whose prices are computed there

@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class MailingsBlocks extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The product, voucher and footer blocks: the keys each carries in a design

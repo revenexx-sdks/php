@@ -14,10 +14,10 @@ use Revenexx\Enums\Model;
 
 class CampaignsCampaigns extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Every campaign of this tenant. Filter `?effective_state=running` for what

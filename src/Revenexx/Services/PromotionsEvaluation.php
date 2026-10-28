@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class PromotionsEvaluation extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * A different question from what a cart is owed: a shop that can only answer

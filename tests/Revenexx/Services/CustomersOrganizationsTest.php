@@ -18,16 +18,19 @@ use Revenexx\Enums\CustomersOrganizationsBlockReason;
 use Revenexx\Enums\CustomersOrganizationsBlockKind;
 use Revenexx\Enums\CustomersOrganizationsChangeCreditReason;
 
-final class CustomersOrganizationsTest extends TestCase {
+final class CustomersOrganizationsTest extends TestCase
+{
     private $client;
     private $customersOrganizations;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->customersOrganizations = new CustomersOrganizations($this->client);
     }
 
-    public function testMethodCustomersAddressFormatList(): void {
+    public function testMethodCustomersAddressFormatList(): void
+    {
 
         $data = array();
 
@@ -41,7 +44,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersAddressFormatGet(): void {
+    public function testMethodCustomersAddressFormatGet(): void
+    {
 
         $data = array();
 
@@ -56,7 +60,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersAddressesList(): void {
+    public function testMethodCustomersAddressesList(): void
+    {
 
         $data = array();
 
@@ -70,7 +75,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersAddressesCreate(): void {
+    public function testMethodCustomersAddressesCreate(): void
+    {
 
         $data = array();
 
@@ -84,7 +90,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersAddressesDelete(): void {
+    public function testMethodCustomersAddressesDelete(): void
+    {
 
         $data = array();
 
@@ -99,7 +106,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersAddressesGet(): void {
+    public function testMethodCustomersAddressesGet(): void
+    {
 
         $data = array();
 
@@ -114,7 +122,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersAddressesUpdate(): void {
+    public function testMethodCustomersAddressesUpdate(): void
+    {
 
         $data = array();
 
@@ -129,7 +138,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersContactPointsList(): void {
+    public function testMethodCustomersContactPointsList(): void
+    {
 
         $data = array();
 
@@ -143,7 +153,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersContactPointsCreate(): void {
+    public function testMethodCustomersContactPointsCreate(): void
+    {
 
         $data = array();
 
@@ -159,7 +170,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersContactPointsDelete(): void {
+    public function testMethodCustomersContactPointsDelete(): void
+    {
 
         $data = array();
 
@@ -174,7 +186,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersContactPointsGet(): void {
+    public function testMethodCustomersContactPointsGet(): void
+    {
 
         $data = array();
 
@@ -189,7 +202,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersContactPointsUpdate(): void {
+    public function testMethodCustomersContactPointsUpdate(): void
+    {
 
         $data = array();
 
@@ -204,7 +218,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersDerivedRefresh(): void {
+    public function testMethodCustomersDerivedRefresh(): void
+    {
 
         $data = array();
 
@@ -218,7 +233,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersOrganizationMetricsList(): void {
+    public function testMethodCustomersOrganizationMetricsList(): void
+    {
 
         $data = array();
 
@@ -232,7 +248,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersOrganizationMetricsFreshness(): void {
+    public function testMethodCustomersOrganizationMetricsFreshness(): void
+    {
 
         $data = array();
 
@@ -246,7 +263,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersOrganizationMetricsRefresh(): void {
+    public function testMethodCustomersOrganizationMetricsRefresh(): void
+    {
 
         $data = array();
 
@@ -260,7 +278,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersOrganizationMetricsGet(): void {
+    public function testMethodCustomersOrganizationMetricsGet(): void
+    {
 
         $data = array();
 
@@ -275,7 +294,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersOrganizationsList(): void {
+    public function testMethodCustomersOrganizationsList(): void
+    {
 
         $data = array();
 
@@ -289,7 +309,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersOrganizationsCreate(): void {
+    public function testMethodCustomersOrganizationsCreate(): void
+    {
 
         $data = array();
 
@@ -304,7 +325,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersOrganizationsOnboard(): void {
+    public function testMethodCustomersOrganizationsOnboard(): void
+    {
 
         $data = array();
 
@@ -319,7 +341,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersOrganizationsTrashEmpty(): void {
+    public function testMethodCustomersOrganizationsTrashEmpty(): void
+    {
 
         $data = array();
 
@@ -333,7 +356,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersOrganizationsDelete(): void {
+    public function testMethodCustomersOrganizationsDelete(): void
+    {
 
         $data = array();
 
@@ -348,7 +372,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersOrganizationsGet(): void {
+    public function testMethodCustomersOrganizationsGet(): void
+    {
 
         $data = array();
 
@@ -363,7 +388,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersOrganizationsUpdate(): void {
+    public function testMethodCustomersOrganizationsUpdate(): void
+    {
 
         $data = array();
 
@@ -378,7 +404,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersOrganizationsBlock(): void {
+    public function testMethodCustomersOrganizationsBlock(): void
+    {
 
         $data = array();
 
@@ -394,7 +421,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersOrganizationsCare(): void {
+    public function testMethodCustomersOrganizationsCare(): void
+    {
 
         $data = array();
 
@@ -409,7 +437,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersOrganizationsChangeCredit(): void {
+    public function testMethodCustomersOrganizationsChangeCredit(): void
+    {
 
         $data = array();
 
@@ -425,7 +454,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersOrganizationsRestore(): void {
+    public function testMethodCustomersOrganizationsRestore(): void
+    {
 
         $data = array();
 
@@ -440,7 +470,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersOrganizationsSetAccountManager(): void {
+    public function testMethodCustomersOrganizationsSetAccountManager(): void
+    {
 
         $data = array();
 
@@ -456,7 +487,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersOrganizationsSetPrimaryContact(): void {
+    public function testMethodCustomersOrganizationsSetPrimaryContact(): void
+    {
 
         $data = array();
 
@@ -472,7 +504,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersOrganizationsUnblockDelivery(): void {
+    public function testMethodCustomersOrganizationsUnblockDelivery(): void
+    {
 
         $data = array();
 
@@ -488,7 +521,8 @@ final class CustomersOrganizationsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCustomersOrganizationsUnblockOrder(): void {
+    public function testMethodCustomersOrganizationsUnblockOrder(): void
+    {
 
         $data = array();
 

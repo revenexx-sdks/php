@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class MailingsHealthTest extends TestCase {
+final class MailingsHealthTest extends TestCase
+{
     private $client;
     private $mailingsHealth;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->mailingsHealth = new MailingsHealth($this->client);
     }
 
-    public function testMethodMailingsHealthRead(): void {
+    public function testMethodMailingsHealthRead(): void
+    {
 
         $data = array();
 

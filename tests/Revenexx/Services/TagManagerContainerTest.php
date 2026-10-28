@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class TagManagerContainerTest extends TestCase {
+final class TagManagerContainerTest extends TestCase
+{
     private $client;
     private $tagManagerContainer;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->tagManagerContainer = new TagManagerContainer($this->client);
     }
 
-    public function testMethodTagManagerContainerChecksList(): void {
+    public function testMethodTagManagerContainerChecksList(): void
+    {
 
         $data = array();
 
@@ -30,7 +33,8 @@ final class TagManagerContainerTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTagManagerContainerChecksGet(): void {
+    public function testMethodTagManagerContainerChecksGet(): void
+    {
 
         $data = array();
 
@@ -45,7 +49,8 @@ final class TagManagerContainerTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTagManagerContainerVersionsList(): void {
+    public function testMethodTagManagerContainerVersionsList(): void
+    {
 
         $data = array();
 
@@ -59,7 +64,8 @@ final class TagManagerContainerTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTagManagerContainerVersionsGet(): void {
+    public function testMethodTagManagerContainerVersionsGet(): void
+    {
 
         $data = array();
 
@@ -74,7 +80,8 @@ final class TagManagerContainerTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTagManagerContainerPublish(): void {
+    public function testMethodTagManagerContainerPublish(): void
+    {
 
         $data = array();
 
@@ -88,7 +95,8 @@ final class TagManagerContainerTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTagManagerContainerRecheck(): void {
+    public function testMethodTagManagerContainerRecheck(): void
+    {
 
         $data = array();
 
@@ -103,7 +111,8 @@ final class TagManagerContainerTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTagManagerContainerRollback(): void {
+    public function testMethodTagManagerContainerRollback(): void
+    {
 
         $data = array();
 
@@ -118,7 +127,8 @@ final class TagManagerContainerTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTagManagerContainerStatus(): void {
+    public function testMethodTagManagerContainerStatus(): void
+    {
 
         $data = array();
 
@@ -132,7 +142,8 @@ final class TagManagerContainerTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTagManagerContainerValidate(): void {
+    public function testMethodTagManagerContainerValidate(): void
+    {
 
         $data = array();
 
@@ -147,7 +158,8 @@ final class TagManagerContainerTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodTagManagerPreviewCreate(): void {
+    public function testMethodTagManagerPreviewCreate(): void
+    {
 
         $data = array();
 

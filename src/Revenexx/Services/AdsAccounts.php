@@ -12,10 +12,10 @@ use Revenexx\Enums\Status;
 
 class AdsAccounts extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Every ad account, without the trash unless `trashed` asks for it. Filter

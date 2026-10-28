@@ -14,10 +14,10 @@ use Revenexx\Enums\ProcurementVocabulariesGetName;
 
 class Procurement extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * @param ?int $limit

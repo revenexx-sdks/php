@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class MailingsVariants extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Reserved for the A/B test of a later version. Empty in this one.

@@ -10,10 +10,10 @@ use Revenexx\Enums\PromotionsRedemptionsReleaseReason;
 
 class PromotionsRedemptions extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * The order is what survives the cart, so this is where a redemption stops

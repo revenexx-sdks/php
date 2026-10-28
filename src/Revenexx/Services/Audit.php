@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class Audit extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Read-only. The values are the tenant's settings in Console; they are

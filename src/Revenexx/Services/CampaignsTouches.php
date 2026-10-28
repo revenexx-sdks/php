@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class CampaignsTouches extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Filter `?campaign_id=`, `?kind=`, `?contact_id=`. Read-only.

@@ -11,16 +11,19 @@ use Revenexx\Enums\Visibility;
 use Revenexx\Enums\DocumentSource;
 use Revenexx\Enums\DocumentVisibility;
 
-final class DocumentsRegisterTest extends TestCase {
+final class DocumentsRegisterTest extends TestCase
+{
     private $client;
     private $documentsRegister;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->documentsRegister = new DocumentsRegister($this->client);
     }
 
-    public function testMethodDocumentsDocumentsList(): void {
+    public function testMethodDocumentsDocumentsList(): void
+    {
 
         $data = array();
 
@@ -34,7 +37,8 @@ final class DocumentsRegisterTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodDocumentsDocumentsCreate(): void {
+    public function testMethodDocumentsDocumentsCreate(): void
+    {
 
         $data = array();
 
@@ -52,7 +56,8 @@ final class DocumentsRegisterTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodDocumentsDocumentsDelete(): void {
+    public function testMethodDocumentsDocumentsDelete(): void
+    {
 
         $data = array();
 
@@ -67,7 +72,8 @@ final class DocumentsRegisterTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodDocumentsDocumentsGet(): void {
+    public function testMethodDocumentsDocumentsGet(): void
+    {
 
         $data = array();
 
@@ -82,7 +88,8 @@ final class DocumentsRegisterTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodDocumentsDocumentsUpdate(): void {
+    public function testMethodDocumentsDocumentsUpdate(): void
+    {
 
         $data = array();
 
@@ -97,7 +104,8 @@ final class DocumentsRegisterTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodDocumentsDocumentsLink(): void {
+    public function testMethodDocumentsDocumentsLink(): void
+    {
 
         $data = array();
 

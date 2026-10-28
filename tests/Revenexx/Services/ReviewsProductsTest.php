@@ -8,16 +8,19 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\Sort;
 
-final class ReviewsProductsTest extends TestCase {
+final class ReviewsProductsTest extends TestCase
+{
     private $client;
     private $reviewsProducts;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->reviewsProducts = new ReviewsProducts($this->client);
     }
 
-    public function testMethodReviewsProductsGet(): void {
+    public function testMethodReviewsProductsGet(): void
+    {
 
         $data = array();
 

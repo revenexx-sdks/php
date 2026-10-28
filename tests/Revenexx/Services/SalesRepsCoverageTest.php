@@ -9,16 +9,19 @@ use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\Tone;
 use Revenexx\Enums\SalesRepsVocabulariesGetName;
 
-final class SalesRepsCoverageTest extends TestCase {
+final class SalesRepsCoverageTest extends TestCase
+{
     private $client;
     private $salesRepsCoverage;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->salesRepsCoverage = new SalesRepsCoverage($this->client);
     }
 
-    public function testMethodSalesRepsAssignmentRolesList(): void {
+    public function testMethodSalesRepsAssignmentRolesList(): void
+    {
 
         $data = array();
 
@@ -32,7 +35,8 @@ final class SalesRepsCoverageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSalesRepsAssignmentRolesCreate(): void {
+    public function testMethodSalesRepsAssignmentRolesCreate(): void
+    {
 
         $data = array();
 
@@ -48,7 +52,8 @@ final class SalesRepsCoverageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSalesRepsAssignmentRolesDefaults(): void {
+    public function testMethodSalesRepsAssignmentRolesDefaults(): void
+    {
 
         $data = array();
 
@@ -63,7 +68,8 @@ final class SalesRepsCoverageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSalesRepsAssignmentRolesDelete(): void {
+    public function testMethodSalesRepsAssignmentRolesDelete(): void
+    {
 
         $data = array();
 
@@ -78,7 +84,8 @@ final class SalesRepsCoverageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSalesRepsAssignmentRolesGet(): void {
+    public function testMethodSalesRepsAssignmentRolesGet(): void
+    {
 
         $data = array();
 
@@ -93,7 +100,8 @@ final class SalesRepsCoverageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSalesRepsAssignmentRolesUpdate(): void {
+    public function testMethodSalesRepsAssignmentRolesUpdate(): void
+    {
 
         $data = array();
 
@@ -108,7 +116,8 @@ final class SalesRepsCoverageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSalesRepsAssignmentsList(): void {
+    public function testMethodSalesRepsAssignmentsList(): void
+    {
 
         $data = array();
 
@@ -122,7 +131,8 @@ final class SalesRepsCoverageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSalesRepsAssignmentsCreate(): void {
+    public function testMethodSalesRepsAssignmentsCreate(): void
+    {
 
         $data = array();
 
@@ -138,7 +148,8 @@ final class SalesRepsCoverageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSalesRepsAssignmentsDelete(): void {
+    public function testMethodSalesRepsAssignmentsDelete(): void
+    {
 
         $data = array();
 
@@ -153,7 +164,8 @@ final class SalesRepsCoverageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSalesRepsAssignmentsGet(): void {
+    public function testMethodSalesRepsAssignmentsGet(): void
+    {
 
         $data = array();
 
@@ -168,7 +180,8 @@ final class SalesRepsCoverageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSalesRepsAssignmentsUpdate(): void {
+    public function testMethodSalesRepsAssignmentsUpdate(): void
+    {
 
         $data = array();
 
@@ -183,7 +196,8 @@ final class SalesRepsCoverageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSalesRepsAssignmentsMakePrimary(): void {
+    public function testMethodSalesRepsAssignmentsMakePrimary(): void
+    {
 
         $data = array();
 
@@ -199,7 +213,8 @@ final class SalesRepsCoverageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSalesRepsVocabulariesList(): void {
+    public function testMethodSalesRepsVocabulariesList(): void
+    {
 
         $data = array();
 
@@ -213,7 +228,8 @@ final class SalesRepsCoverageTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodSalesRepsVocabulariesGet(): void {
+    public function testMethodSalesRepsVocabulariesGet(): void
+    {
 
         $data = array();
 

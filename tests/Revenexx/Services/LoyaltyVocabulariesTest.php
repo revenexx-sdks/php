@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class LoyaltyVocabulariesTest extends TestCase {
+final class LoyaltyVocabulariesTest extends TestCase
+{
     private $client;
     private $loyaltyVocabularies;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->loyaltyVocabularies = new LoyaltyVocabularies($this->client);
     }
 
-    public function testMethodLoyaltyVocabulariesList(): void {
+    public function testMethodLoyaltyVocabulariesList(): void
+    {
 
         $data = array();
 
@@ -30,7 +33,8 @@ final class LoyaltyVocabulariesTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodLoyaltyVocabulariesGet(): void {
+    public function testMethodLoyaltyVocabulariesGet(): void
+    {
 
         $data = array();
 

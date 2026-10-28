@@ -12,16 +12,19 @@ use Revenexx\Enums\CampaignsCampaignsCreateStatus;
 use Revenexx\Enums\AssetApp;
 use Revenexx\Enums\Model;
 
-final class CampaignsCampaignsTest extends TestCase {
+final class CampaignsCampaignsTest extends TestCase
+{
     private $client;
     private $campaignsCampaigns;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->campaignsCampaigns = new CampaignsCampaigns($this->client);
     }
 
-    public function testMethodCampaignsCampaignsList(): void {
+    public function testMethodCampaignsCampaignsList(): void
+    {
 
         $data = array();
 
@@ -35,7 +38,8 @@ final class CampaignsCampaignsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCampaignsCampaignsCreate(): void {
+    public function testMethodCampaignsCampaignsCreate(): void
+    {
 
         $data = array();
 
@@ -51,7 +55,8 @@ final class CampaignsCampaignsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCampaignsCampaignsEmptyTrash(): void {
+    public function testMethodCampaignsCampaignsEmptyTrash(): void
+    {
 
         $data = array();
 
@@ -65,7 +70,8 @@ final class CampaignsCampaignsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCampaignsCampaignsPurge(): void {
+    public function testMethodCampaignsCampaignsPurge(): void
+    {
 
         $data = array();
 
@@ -79,7 +85,8 @@ final class CampaignsCampaignsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCampaignsCampaignsDelete(): void {
+    public function testMethodCampaignsCampaignsDelete(): void
+    {
 
         $data = array();
 
@@ -94,7 +101,8 @@ final class CampaignsCampaignsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCampaignsCampaignsGet(): void {
+    public function testMethodCampaignsCampaignsGet(): void
+    {
 
         $data = array();
 
@@ -109,7 +117,8 @@ final class CampaignsCampaignsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCampaignsCampaignsUpdate(): void {
+    public function testMethodCampaignsCampaignsUpdate(): void
+    {
 
         $data = array();
 
@@ -124,7 +133,8 @@ final class CampaignsCampaignsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCampaignsCampaignsAttach(): void {
+    public function testMethodCampaignsCampaignsAttach(): void
+    {
 
         $data = array();
 
@@ -139,7 +149,8 @@ final class CampaignsCampaignsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCampaignsCampaignsDetach(): void {
+    public function testMethodCampaignsCampaignsDetach(): void
+    {
 
         $data = array();
 
@@ -154,7 +165,8 @@ final class CampaignsCampaignsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCampaignsCampaignsLinks(): void {
+    public function testMethodCampaignsCampaignsLinks(): void
+    {
 
         $data = array();
 
@@ -171,7 +183,8 @@ final class CampaignsCampaignsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCampaignsCampaignsPerformance(): void {
+    public function testMethodCampaignsCampaignsPerformance(): void
+    {
 
         $data = array();
 
@@ -186,7 +199,8 @@ final class CampaignsCampaignsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCampaignsCampaignsRestore(): void {
+    public function testMethodCampaignsCampaignsRestore(): void
+    {
 
         $data = array();
 

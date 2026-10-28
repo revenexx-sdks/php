@@ -8,16 +8,19 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\CartItemType;
 
-final class CartsItemsTest extends TestCase {
+final class CartsItemsTest extends TestCase
+{
     private $client;
     private $cartsItems;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->cartsItems = new CartsItems($this->client);
     }
 
-    public function testMethodCartsItemsList(): void {
+    public function testMethodCartsItemsList(): void
+    {
 
         $data = array();
 
@@ -32,7 +35,8 @@ final class CartsItemsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsItemsCreate(): void {
+    public function testMethodCartsItemsCreate(): void
+    {
 
         $data = array();
 
@@ -47,7 +51,8 @@ final class CartsItemsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsItemsReplace(): void {
+    public function testMethodCartsItemsReplace(): void
+    {
 
         $data = array();
 
@@ -63,7 +68,8 @@ final class CartsItemsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsItemsPriced(): void {
+    public function testMethodCartsItemsPriced(): void
+    {
 
         $data = array();
 
@@ -78,7 +84,8 @@ final class CartsItemsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsItemsDelete(): void {
+    public function testMethodCartsItemsDelete(): void
+    {
 
         $data = array();
 
@@ -94,7 +101,8 @@ final class CartsItemsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsItemsGet(): void {
+    public function testMethodCartsItemsGet(): void
+    {
 
         $data = array();
 
@@ -110,7 +118,8 @@ final class CartsItemsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCartsItemsUpdate(): void {
+    public function testMethodCartsItemsUpdate(): void
+    {
 
         $data = array();
 

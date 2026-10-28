@@ -7,16 +7,19 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-final class CampaignsAssetsTest extends TestCase {
+final class CampaignsAssetsTest extends TestCase
+{
     private $client;
     private $campaignsAssets;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->campaignsAssets = new CampaignsAssets($this->client);
     }
 
-    public function testMethodCampaignsAssetsList(): void {
+    public function testMethodCampaignsAssetsList(): void
+    {
 
         $data = array();
 
@@ -30,7 +33,8 @@ final class CampaignsAssetsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCampaignsAssetsGet(): void {
+    public function testMethodCampaignsAssetsGet(): void
+    {
 
         $data = array();
 
@@ -45,7 +49,8 @@ final class CampaignsAssetsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodCampaignsAssetsDetach(): void {
+    public function testMethodCampaignsAssetsDetach(): void
+    {
 
         $data = array();
 

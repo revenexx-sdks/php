@@ -11,16 +11,19 @@ use Revenexx\Enums\MarketStatus;
 use Revenexx\Enums\MarketsVocabularyName;
 use Revenexx\Enums\MarketsLocalesCreateStatus;
 
-final class MarketsTest extends TestCase {
+final class MarketsTest extends TestCase
+{
     private $client;
     private $markets;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->client = Mockery::mock(Client::class);
         $this->markets = new Markets($this->client);
     }
 
-    public function testMethodMarketsList(): void {
+    public function testMethodMarketsList(): void
+    {
 
         $data = array();
 
@@ -34,7 +37,8 @@ final class MarketsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketsCreate(): void {
+    public function testMethodMarketsCreate(): void
+    {
 
         $data = array();
 
@@ -50,7 +54,8 @@ final class MarketsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketsLocalePolicy(): void {
+    public function testMethodMarketsLocalePolicy(): void
+    {
 
         $data = array();
 
@@ -64,7 +69,8 @@ final class MarketsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketsVocabularies(): void {
+    public function testMethodMarketsVocabularies(): void
+    {
 
         $data = array();
 
@@ -78,7 +84,8 @@ final class MarketsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketsVocabulary(): void {
+    public function testMethodMarketsVocabulary(): void
+    {
 
         $data = array();
 
@@ -93,7 +100,8 @@ final class MarketsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketsDelete(): void {
+    public function testMethodMarketsDelete(): void
+    {
 
         $data = array();
 
@@ -108,7 +116,8 @@ final class MarketsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketsGet(): void {
+    public function testMethodMarketsGet(): void
+    {
 
         $data = array();
 
@@ -123,7 +132,8 @@ final class MarketsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketsUpdate(): void {
+    public function testMethodMarketsUpdate(): void
+    {
 
         $data = array();
 
@@ -138,7 +148,8 @@ final class MarketsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketsBackfill(): void {
+    public function testMethodMarketsBackfill(): void
+    {
 
         $data = array();
 
@@ -154,7 +165,8 @@ final class MarketsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketsClone(): void {
+    public function testMethodMarketsClone(): void
+    {
 
         $data = array();
 
@@ -170,7 +182,8 @@ final class MarketsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketsConfirmShipFrom(): void {
+    public function testMethodMarketsConfirmShipFrom(): void
+    {
 
         $data = array();
 
@@ -186,7 +199,8 @@ final class MarketsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketsContext(): void {
+    public function testMethodMarketsContext(): void
+    {
 
         $data = array();
 
@@ -201,7 +215,8 @@ final class MarketsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketsMakeDefault(): void {
+    public function testMethodMarketsMakeDefault(): void
+    {
 
         $data = array();
 
@@ -217,7 +232,8 @@ final class MarketsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketsReadiness(): void {
+    public function testMethodMarketsReadiness(): void
+    {
 
         $data = array();
 
@@ -232,7 +248,8 @@ final class MarketsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketsCurrenciesList(): void {
+    public function testMethodMarketsCurrenciesList(): void
+    {
 
         $data = array();
 
@@ -247,7 +264,8 @@ final class MarketsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketsCurrenciesCreate(): void {
+    public function testMethodMarketsCurrenciesCreate(): void
+    {
 
         $data = array();
 
@@ -263,7 +281,8 @@ final class MarketsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketsCurrenciesDelete(): void {
+    public function testMethodMarketsCurrenciesDelete(): void
+    {
 
         $data = array();
 
@@ -279,7 +298,8 @@ final class MarketsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketsCurrenciesGet(): void {
+    public function testMethodMarketsCurrenciesGet(): void
+    {
 
         $data = array();
 
@@ -295,7 +315,8 @@ final class MarketsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketsCurrenciesUpdate(): void {
+    public function testMethodMarketsCurrenciesUpdate(): void
+    {
 
         $data = array();
 
@@ -311,7 +332,8 @@ final class MarketsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketsLocalesList(): void {
+    public function testMethodMarketsLocalesList(): void
+    {
 
         $data = array();
 
@@ -326,7 +348,8 @@ final class MarketsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketsLocalesCreate(): void {
+    public function testMethodMarketsLocalesCreate(): void
+    {
 
         $data = array();
 
@@ -342,7 +365,8 @@ final class MarketsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketsLocalesDelete(): void {
+    public function testMethodMarketsLocalesDelete(): void
+    {
 
         $data = array();
 
@@ -358,7 +382,8 @@ final class MarketsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketsLocalesGet(): void {
+    public function testMethodMarketsLocalesGet(): void
+    {
 
         $data = array();
 
@@ -374,7 +399,8 @@ final class MarketsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketsLocalesUpdate(): void {
+    public function testMethodMarketsLocalesUpdate(): void
+    {
 
         $data = array();
 
@@ -390,7 +416,8 @@ final class MarketsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketsTaxClassesList(): void {
+    public function testMethodMarketsTaxClassesList(): void
+    {
 
         $data = array();
 
@@ -405,7 +432,8 @@ final class MarketsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketsTaxClassesCreate(): void {
+    public function testMethodMarketsTaxClassesCreate(): void
+    {
 
         $data = array();
 
@@ -422,7 +450,8 @@ final class MarketsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketsTaxClassesDelete(): void {
+    public function testMethodMarketsTaxClassesDelete(): void
+    {
 
         $data = array();
 
@@ -438,7 +467,8 @@ final class MarketsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketsTaxClassesGet(): void {
+    public function testMethodMarketsTaxClassesGet(): void
+    {
 
         $data = array();
 
@@ -454,7 +484,8 @@ final class MarketsTest extends TestCase {
         $this->assertSame($data, $response);
     }
 
-    public function testMethodMarketsTaxClassesUpdate(): void {
+    public function testMethodMarketsTaxClassesUpdate(): void
+    {
 
         $data = array();
 

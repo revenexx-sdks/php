@@ -19,10 +19,10 @@ use Revenexx\Enums\Reason;
 
 class CustomersContacts extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * A contact event is one entry on a customer's timeline: an activity somebody

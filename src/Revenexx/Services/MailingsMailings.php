@@ -13,10 +13,10 @@ use Revenexx\Enums\Device;
 
 class MailingsMailings extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Every mailing of this tenant. Filter

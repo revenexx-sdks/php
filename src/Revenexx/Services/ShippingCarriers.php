@@ -11,10 +11,10 @@ use Revenexx\Enums\ShippingCarrierStatus;
 
 class ShippingCarriers extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Filterable by exact column value — `?code=`, `?status=` and

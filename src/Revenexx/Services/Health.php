@@ -9,10 +9,10 @@ use Revenexx\InputFile;
 
 class Health extends Service
 {
-     public function __construct(Client $client)
-     {
-         parent::__construct($client);
-     }
+    public function __construct(Client $client)
+    {
+        parent::__construct($client);
+    }
 
     /**
      * Answers as long as the process is running. Never touches a dependency, so

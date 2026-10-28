@@ -4,48 +4,48 @@ namespace Revenexx;
 
 use Exception;
 
-class RevenexxException extends Exception {
+class RevenexxException extends Exception
+{
+    /**
+     * @var ?string
+     */
+    private ?string $response;
 
-  /**
-   * @var mixed
-   */
-  private ?string $response;
+    /**
+     * @var string
+     */
+    private string $type;
 
-  /**
-   * @var string
-   */
-  private string $type;
+    /**
+     * @param ?string $message
+     * @param int $code
+     * @param string $type
+     * @param ?string $response
+     */
+    public function __construct(
+        ?string $message = null,
+        int $code = 0,
+        string $type = '',
+        ?string $response = null
+    ) {
+        parent::__construct($message, $code);
+        $this->response = $response;
+        $this->type = $type;
+    }
 
-  /**
-   * @param ?string $message
-   * @param int $code
-   * @param string $type
-   * @param ?string $response
-   */
-  public function __construct(
-      ?string $message = null,
-      int $code = 0,
-      string $type = '',
-      ?string $response = null
-  ) {
-      parent::__construct($message, $code);
-      $this->response = $response;
-      $this->type = $type;
-  }
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
 
-  /**
-   * @return string
-   */
-  public function getType(): string
-  {
-      return $this->type;
-  }
-  
-  /**
-   * @return ?string
-   */
-  final public function getResponse(): ?string
-  {
-      return $this->response;
-  }
+    /**
+     * @return ?string
+     */
+    final public function getResponse(): ?string
+    {
+        return $this->response;
+    }
 }
