@@ -117,7 +117,7 @@ POST https://api.revenexx.com/v1/carts/merge
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
-| session_key | string | The session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Accepted and not yet checked; from 3.0.0 on, a call acting for a contact reaches such a cart only with it. |  |
+| session_key | string | For a call acting for a contact: the session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Such a cart answers 404 to a buyer who does not present its key. A contact's cart is never reached by a key. Ignored on a call acting for no contact. |  |
 | source_cart_id | string | The cart being folded in. It must be active, and it does NOT survive as a workspace: its lines are copied into the target, it becomes status merged, and merged_into_cart_id points at the target. Its own lines stay on it as the record of what was moved. |  |
 | target_cart_id | string | The cart that SURVIVES. Must be active; it gains the source's lines (identical product lines at the same price adding up) and its totals are recomputed. |  |
 
@@ -172,7 +172,7 @@ DELETE https://api.revenexx.com/v1/carts/{id}
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The cart, by its id — the `id` every cart answer carries. A uuid: the data plane casts the segment, so a code or a slug is refused before the cart is looked up. |  |
-| session_key | string | The session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Accepted and not yet checked; from 3.0.0 on, a call acting for a contact reaches such a cart only with it. |  |
+| session_key | string | For a call acting for a contact: the session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Such a cart answers 404 to a buyer who does not present its key. A contact's cart is never reached by a key. Ignored on a call acting for no contact. |  |
 
 
 ```http request
@@ -186,7 +186,7 @@ GET https://api.revenexx.com/v1/carts/{id}
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The cart, by its id — the `id` every cart answer carries. A uuid: the data plane casts the segment, so a code or a slug is refused before the cart is looked up. |  |
-| session_key | string | The session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Accepted and not yet checked; from 3.0.0 on, a call acting for a contact reaches such a cart only with it. |  |
+| session_key | string | For a call acting for a contact: the session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Such a cart answers 404 to a buyer who does not present its key. A contact's cart is never reached by a key. Ignored on a call acting for no contact. |  |
 
 
 ```http request
@@ -200,7 +200,7 @@ PUT https://api.revenexx.com/v1/carts/{id}
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The cart, by its id — the `id` every cart answer carries. A uuid: the data plane casts the segment, so a code or a slug is refused before the cart is looked up. |  |
-| session_key | string | The session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Accepted and not yet checked; from 3.0.0 on, a call acting for a contact reaches such a cart only with it. |  |
+| session_key | string | For a call acting for a contact: the session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Such a cart answers 404 to a buyer who does not present its key. A contact's cart is never reached by a key. Ignored on a call acting for no contact. |  |
 | attribution | object | Where the cart came from (RAD-287): the UTM values of the visit, the campaign, the ad click id, the landing page and referrer, first and last touch, the consent state of the consent manager and whether the objection notice for existing-customer mail was shown. The storefront writes it whole on every touch while the cart is open; it is frozen once the cart is ordered, and the order copies it at placement. A merge keeps the survivor's, or adopts the merged cart's when the survivor has none. Null until written. Replaced whole; `null` clears it. An ordered or merged cart answers 409 `attribution_frozen`. |  |
 | channel_id | string | Move the cart to another sales channel. |  |
 | currency | string | Re-denominate the cart — which re-denominates every amount in it, because the lines are read in this code and hold none of their own. Only while the cart is still empty of money: a cart whose subtotal or any line price is non-zero answers 409 `currency_mismatch`, since nothing here converts and a changed code would restate a history in a currency it was never in. `null` is refused: a cart is always priced in one. |  |
@@ -224,7 +224,7 @@ POST https://api.revenexx.com/v1/carts/{id}/abandon
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The cart, by its id — the `id` every cart answer carries. A uuid: the data plane casts the segment, so a code or a slug is refused before the cart is looked up. |  |
-| session_key | string | The session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Accepted and not yet checked; from 3.0.0 on, a call acting for a contact reaches such a cart only with it. |  |
+| session_key | string | For a call acting for a contact: the session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Such a cart answers 404 to a buyer who does not present its key. A contact's cart is never reached by a key. Ignored on a call acting for no contact. |  |
 
 
 ```http request
@@ -238,7 +238,7 @@ POST https://api.revenexx.com/v1/carts/{id}/activate
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The cart, by its id — the `id` every cart answer carries. A uuid: the data plane casts the segment, so a code or a slug is refused before the cart is looked up. |  |
-| session_key | string | The session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Accepted and not yet checked; from 3.0.0 on, a call acting for a contact reaches such a cart only with it. |  |
+| session_key | string | For a call acting for a contact: the session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Such a cart answers 404 to a buyer who does not present its key. A contact's cart is never reached by a key. Ignored on a call acting for no contact. |  |
 
 
 ```http request
@@ -252,7 +252,7 @@ POST https://api.revenexx.com/v1/carts/{id}/merge-into
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The SOURCE cart — the one whose lines move and which becomes status merged. |  |
-| session_key | string | The session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Accepted and not yet checked; from 3.0.0 on, a call acting for a contact reaches such a cart only with it. |  |
+| session_key | string | For a call acting for a contact: the session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Such a cart answers 404 to a buyer who does not present its key. A contact's cart is never reached by a key. Ignored on a call acting for no contact. |  |
 | target_cart_id | string | Receiving cart (must be active). The cart in the path is the source and becomes status merged. |  |
 
 
@@ -267,7 +267,7 @@ POST https://api.revenexx.com/v1/carts/{id}/order
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The cart, by its id — the `id` every cart answer carries. A uuid: the data plane casts the segment, so a code or a slug is refused before the cart is looked up. |  |
-| session_key | string | The session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Accepted and not yet checked; from 3.0.0 on, a call acting for a contact reaches such a cart only with it. |  |
+| session_key | string | For a call acting for a contact: the session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Such a cart answers 404 to a buyer who does not present its key. A contact's cart is never reached by a key. Ignored on a call acting for no contact. |  |
 | order_ref | string | The order number this cart becomes, in order management's own numbering. Stored on the cart — filtering on it is how anyone gets from an order back to the cart behind it — and it is also the reference the stock reservation is booked under. Omit it and the cart id is used for the reservation instead. |  |
 
 
@@ -282,5 +282,5 @@ POST https://api.revenexx.com/v1/carts/{id}/reopen
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The cart, by its id — the `id` every cart answer carries. A uuid: the data plane casts the segment, so a code or a slug is refused before the cart is looked up. |  |
-| session_key | string | The session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Accepted and not yet checked; from 3.0.0 on, a call acting for a contact reaches such a cart only with it. |  |
+| session_key | string | For a call acting for a contact: the session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Such a cart answers 404 to a buyer who does not present its key. A contact's cart is never reached by a key. Ignored on a call acting for no contact. |  |
 

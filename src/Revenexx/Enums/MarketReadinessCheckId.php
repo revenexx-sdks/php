@@ -9,6 +9,7 @@ class MarketReadinessCheckId implements JsonSerializable
     private static MarketReadinessCheckId $LOCALES;
     private static MarketReadinessCheckId $CURRENCIES;
     private static MarketReadinessCheckId $TAXCLASSES;
+    private static MarketReadinessCheckId $SHIPFROMCOUNTRY;
     private static MarketReadinessCheckId $TAXBASIS;
 
     private string $value;
@@ -48,6 +49,13 @@ class MarketReadinessCheckId implements JsonSerializable
             self::$TAXCLASSES = new MarketReadinessCheckId('tax_classes');
         }
         return self::$TAXCLASSES;
+    }
+    public static function SHIPFROMCOUNTRY(): MarketReadinessCheckId
+    {
+        if (!isset(self::$SHIPFROMCOUNTRY)) {
+            self::$SHIPFROMCOUNTRY = new MarketReadinessCheckId('ship_from_country');
+        }
+        return self::$SHIPFROMCOUNTRY;
     }
     public static function TAXBASIS(): MarketReadinessCheckId
     {

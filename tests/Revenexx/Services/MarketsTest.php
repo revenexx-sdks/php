@@ -54,6 +54,22 @@ final class MarketsTest extends TestCase
         $this->assertSame($data, $response);
     }
 
+    public function testMethodMarketsDefaults(): void
+    {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->markets->marketsDefaults(
+            array()
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodMarketsLocalePolicy(): void
     {
 
@@ -64,6 +80,21 @@ final class MarketsTest extends TestCase
             ->andReturn($data);
 
         $response = $this->markets->marketsLocalePolicy(
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodMarketsSetup(): void
+    {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->markets->marketsSetup(
         );
 
         $this->assertSame($data, $response);

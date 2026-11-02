@@ -191,6 +191,42 @@ class Markets extends Service
     }
 
     /**
+     * Stores, for this tenant, every setting the app needs STORED rather than
+     * merely declared and that the tenant has not stored yet — today
+     * `locale_granularity`, which the search service refuses to publish without.
+     * The value is the declared default, and a value the tenant already stored is
+     * never touched, so the call is idempotent and safe to repeat. The app does
+     * the same by itself whenever a market's locales change. Answers what was
+     * written, what was already stored, and why nothing was written when nothing
+     * was.
+     *
+     * @param array $data
+     * @throws RevenexxException
+     * @return array
+     */
+    public function marketsDefaults(array $data): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/markets/defaults'
+        );
+
+        $apiParams = [];
+        $apiParams = \array_merge($apiParams, $data);
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
      * How this tenant keys its translations, resolved for a surface that stands
      * in no market at all. The Cockpit edits a tenant BASELINE when no market is
      * selected, and a baseline value has to be readable by every market — so
@@ -211,6 +247,38 @@ class Markets extends Service
             [],
             [],
             '/v1/markets/locale-policy'
+        );
+
+        $apiParams = [];
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * What this app needs once before it is ready, as the checklist the Cockpit's
+     * „Einrichtung“ shows: every step of `cockpit.json#setup`, done or not,
+     * in the order declared. A step is done when what it names exists — at
+     * least one market, one locale, one tax class — or, for the locale policy,
+     * when the tenant's settings STORE how locales are maintained (the declared
+     * default alone is no answer). A read only: it stores nothing. Not cached: a
+     * changed setting reaches no code here.
+     *
+     * @throws RevenexxException
+     * @return array
+     */
+    public function marketsSetup(): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/markets/setup'
         );
 
         $apiParams = [];

@@ -32,7 +32,7 @@ POST https://api.revenexx.com/v1/carts/import
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
-| session_key | string | The session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Accepted and not yet checked; from 3.0.0 on, a call acting for a contact reaches such a cart only with it. |  |
+| session_key | string | For a call acting for a contact: the session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Such a cart answers 404 to a buyer who does not present its key. A contact's cart is never reached by a key. Ignored on a call acting for no contact. |  |
 | contact_id | string | Owner of the cart this import creates. Ignored when target_cart_id is sent. |  |
 | csv | string | The CSV rows, when that is easier than putting them in `payload`. First line is the header, and its names are the ones the profile's mapping expects (the bundled quick-order template reads sku, name, quantity, unit_price). Numbers are coerced; a JSON column survives as a JSON string. |  |
 | name | string | Name for the cart this import creates. A name in the payload's own `cart` block wins over it; without either the cart is called 'Imported cart'. |  |
@@ -185,7 +185,7 @@ POST https://api.revenexx.com/v1/carts/{id}/export
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | id | string | **Required** The cart, by its id — the `id` every cart answer carries. A uuid: the data plane casts the segment, so a code or a slug is refused before the cart is looked up. |  |
-| session_key | string | The session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Accepted and not yet checked; from 3.0.0 on, a call acting for a contact reaches such a cart only with it. |  |
+| session_key | string | For a call acting for a contact: the session key of a cart owned by no contact — a guest's, or a punchout visit's pSid. Such a cart answers 404 to a buyer who does not present its key. A contact's cart is never reached by a key. Ignored on a call acting for no contact. |  |
 | format | string | Format of an ad-hoc export, read only when no profile_id is sent. 'json' returns the whole `{cart, items}` document, 'csv' the lines alone, 'xlsx' the lines as an Excel workbook (base64). Default 'json'. |  |
 | profile_id | string | The export profile to run — one of the ids `GET /carts/io/profiles?direction=export&active=true` lists. Omit it for an ad-hoc export in the canonical shape, which is what `format` is for. |  |
 

@@ -11,6 +11,8 @@ use Revenexx\Enums\OrderPaymentStatus;
 use Revenexx\Enums\OrderFulfillmentStatus;
 use Revenexx\Enums\OrderCancellationKind;
 use Revenexx\Enums\OrderVocabularyTone;
+use Revenexx\Enums\OrderReturnStatus;
+use Revenexx\Enums\OrderReturnRefundMode;
 use Revenexx\Enums\OrdersVocabulariesGetName;
 use Revenexx\Enums\OrderCommentVisibility;
 use Revenexx\Enums\OrderReturnSettlement;
@@ -1009,6 +1011,157 @@ class Orders extends Service
 
         $apiParams = [];
         $apiParams['id'] = $id;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Every return of this tenant, whichever order it belongs to, oldest first
+     * — in every state, settled and rejected ones included. The read a nightly
+     * sweep makes: settling a return writes the return and the order's positions
+     * but never the order row, so an order's `updated_at` does not move and a
+     * sweep over orders cannot see it. Ask
+     * `?status=completed&completed_at=gte.<last run>&order=completed_at.asc`
+     * instead, and each row names its `order_id`, the `positions` that came back,
+     * the `resolution`, the `refund_mode` and the `refund_total`. Every timestamp
+     * column takes one bound (gt., gte., lt., lte.); every other parameter is an
+     * exact match on the column it names, and a key that names no column is 400
+     * unknown_filter. The jsonb columns are not offered: the data plane answers
+     * 400 for anything that is not a whole JSON document. A sweep should start
+     * its next window a little before its last one ended: `completed_at` is the
+     * app's clock at the completion, taken just before the row is written, so a
+     * completion can land a moment after a read that already covered its time.
+     * Read-only — a return is registered and moved under its own order.
+     *
+     * @param ?string $id
+     * @param ?string $orderId
+     * @param ?string $number
+     * @param ?OrderReturnStatus $status
+     * @param ?string $reasonCode
+     * @param ?string $reason
+     * @param ?string $registeredAt
+     * @param ?string $receivedAt
+     * @param ?string $completedAt
+     * @param ?string $rejectedAt
+     * @param ?string $resolution
+     * @param ?OrderReturnRefundMode $refundMode
+     * @param ?float $refundTotal
+     * @param ?float $discountReturned
+     * @param ?string $externalId
+     * @param ?string $sourceSyncedAt
+     * @param ?string $createdAt
+     * @param ?string $updatedAt
+     * @param ?string $organizationId
+     * @param ?int $limit
+     * @param ?int $offset
+     * @param ?string $order
+     * @throws RevenexxException
+     * @return array
+     */
+    public function ordersReturnsList(?string $id = null, ?string $orderId = null, ?string $number = null, ?OrderReturnStatus $status = null, ?string $reasonCode = null, ?string $reason = null, ?string $registeredAt = null, ?string $receivedAt = null, ?string $completedAt = null, ?string $rejectedAt = null, ?string $resolution = null, ?OrderReturnRefundMode $refundMode = null, ?float $refundTotal = null, ?float $discountReturned = null, ?string $externalId = null, ?string $sourceSyncedAt = null, ?string $createdAt = null, ?string $updatedAt = null, ?string $organizationId = null, ?int $limit = null, ?int $offset = null, ?string $order = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/orders/returns'
+        );
+
+        $apiParams = [];
+
+        if (!is_null($id)) {
+            $apiParams['id'] = $id;
+        }
+
+        if (!is_null($orderId)) {
+            $apiParams['order_id'] = $orderId;
+        }
+
+        if (!is_null($number)) {
+            $apiParams['number'] = $number;
+        }
+
+        if (!is_null($status)) {
+            $apiParams['status'] = $status;
+        }
+
+        if (!is_null($reasonCode)) {
+            $apiParams['reason_code'] = $reasonCode;
+        }
+
+        if (!is_null($reason)) {
+            $apiParams['reason'] = $reason;
+        }
+
+        if (!is_null($registeredAt)) {
+            $apiParams['registered_at'] = $registeredAt;
+        }
+
+        if (!is_null($receivedAt)) {
+            $apiParams['received_at'] = $receivedAt;
+        }
+
+        if (!is_null($completedAt)) {
+            $apiParams['completed_at'] = $completedAt;
+        }
+
+        if (!is_null($rejectedAt)) {
+            $apiParams['rejected_at'] = $rejectedAt;
+        }
+
+        if (!is_null($resolution)) {
+            $apiParams['resolution'] = $resolution;
+        }
+
+        if (!is_null($refundMode)) {
+            $apiParams['refund_mode'] = $refundMode;
+        }
+
+        if (!is_null($refundTotal)) {
+            $apiParams['refund_total'] = $refundTotal;
+        }
+
+        if (!is_null($discountReturned)) {
+            $apiParams['discount_returned'] = $discountReturned;
+        }
+
+        if (!is_null($externalId)) {
+            $apiParams['external_id'] = $externalId;
+        }
+
+        if (!is_null($sourceSyncedAt)) {
+            $apiParams['source_synced_at'] = $sourceSyncedAt;
+        }
+
+        if (!is_null($createdAt)) {
+            $apiParams['created_at'] = $createdAt;
+        }
+
+        if (!is_null($updatedAt)) {
+            $apiParams['updated_at'] = $updatedAt;
+        }
+
+        if (!is_null($organizationId)) {
+            $apiParams['organization_id'] = $organizationId;
+        }
+
+        if (!is_null($limit)) {
+            $apiParams['limit'] = $limit;
+        }
+
+        if (!is_null($offset)) {
+            $apiParams['offset'] = $offset;
+        }
+
+        if (!is_null($order)) {
+            $apiParams['order'] = $order;
+        }
 
         $apiHeaders = [];
 

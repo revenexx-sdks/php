@@ -11,6 +11,8 @@ use Revenexx\Enums\OrderPaymentStatus;
 use Revenexx\Enums\OrderFulfillmentStatus;
 use Revenexx\Enums\OrderCancellationKind;
 use Revenexx\Enums\OrderVocabularyTone;
+use Revenexx\Enums\OrderReturnStatus;
+use Revenexx\Enums\OrderReturnRefundMode;
 use Revenexx\Enums\OrdersVocabulariesGetName;
 use Revenexx\Enums\OrderCommentVisibility;
 use Revenexx\Enums\OrderReturnSettlement;
@@ -208,6 +210,21 @@ final class OrdersTest extends TestCase
 
         $response = $this->orders->ordersReturnReasonsGet(
             ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodOrdersReturnsList(): void
+    {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->orders->ordersReturnsList(
         );
 
         $this->assertSame($data, $response);
