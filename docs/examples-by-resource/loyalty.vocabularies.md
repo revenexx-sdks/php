@@ -1,0 +1,44 @@
+# loyalty.vocabularies
+
+## loyalty-vocabularies-list
+
+List the closed vocabularies this app enforces
+
+```php
+<?php
+
+use Revenexx\Client;
+use Revenexx\Services\LoyaltyVocabularies;
+
+$client = (new Client())
+    ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
+    ->setTenant('<TENANT_SLUG>') // Your tenant slug
+    ->setApiKeyAuth('<API_KEY>') // A gateway-managed scoped API key (rvxk_…).
+;
+
+$loyaltyVocabularies = new LoyaltyVocabularies($client);
+
+$result = $loyaltyVocabularies->loyaltyVocabulariesList();
+```
+
+## loyalty-vocabularies-get
+
+Read one vocabulary with its values and labels
+
+```php
+<?php
+
+use Revenexx\Client;
+use Revenexx\Services\LoyaltyVocabularies;
+
+$client = (new Client())
+    ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
+    ->setTenant('<TENANT_SLUG>') // Your tenant slug
+    ->setApiKeyAuth('<API_KEY>') // A gateway-managed scoped API key (rvxk_…).
+;
+
+$loyaltyVocabularies = new LoyaltyVocabularies($client);
+
+$result = $loyaltyVocabularies->loyaltyVocabulariesGet(
+    name: ''
+);```

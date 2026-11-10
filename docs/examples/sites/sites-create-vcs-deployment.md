@@ -3,7 +3,7 @@
 
 use Revenexx\Client;
 use Revenexx\Services\Sites;
-use Revenexx\Enums\SitesCreateTemplateDeploymentType;
+use Revenexx\Enums\CubesCreateVcsDeploymentType;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -16,6 +16,6 @@ $sites = new Sites($client);
 $result = $sites->sitesCreateVcsDeployment(
     siteId: '',
     reference: 'main',
-    type: SitesCreateTemplateDeploymentType::BRANCH(),
+    type: CubesCreateVcsDeploymentType::BRANCH(),
     activate: true // optional
 );```

@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\BuildRuntime;
 use Revenexx\Enums\Framework;
 use Revenexx\Enums\Adapter;
-use Revenexx\Enums\SitesCreateTemplateDeploymentType;
+use Revenexx\Enums\CubesCreateVcsDeploymentType;
 use Revenexx\Enums\AppsGetDeploymentDownloadType;
 
 final class SitesTest extends TestCase
@@ -431,7 +431,7 @@ final class SitesTest extends TestCase
             "",
             "",
             "",
-            SitesCreateTemplateDeploymentType::BRANCH()
+            CubesCreateVcsDeploymentType::BRANCH()
         );
 
         $this->assertSame($data, $response);
@@ -478,7 +478,7 @@ final class SitesTest extends TestCase
         $response = $this->sites->sitesCreateVcsDeployment(
             "",
             "main",
-            SitesCreateTemplateDeploymentType::BRANCH()
+            CubesCreateVcsDeploymentType::BRANCH()
         );
 
         $this->assertSame($data, $response);

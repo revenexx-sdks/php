@@ -147,13 +147,16 @@ class Customers extends Service
     /**
      * Sign in without a password: a link goes to the address, and `PUT
      * /customers/auth/magic-link` turns it into a session. Only a buyer this shop
-     * holds, with a login, who may sign in is sent one. For anybody else — an
-     * address nobody holds, a contact with no login, a blocked buyer or company,
-     * an undecided application — nothing is created and nothing is sent, and
-     * the answer is the same 201 in the same shape, so it cannot be used to find
-     * out who is a customer. It never founds an account. The mail is this shop's
-     * own template through the messaging service; the secret is not in this
-     * response, only in the link.
+     * holds, with a login of its own, who may sign in is sent one. For anybody
+     * else — an address nobody holds, a contact with no login, a blocked buyer
+     * or company, an undecided application, a buyer whose company switched
+     * sign-in links off — nothing is created and nothing is sent, and the
+     * answer is the same 201 in the same shape, so it cannot be used to find out
+     * who is a customer. It never founds an account. The address is matched
+     * without regard to case or the spaces around it, and the link goes to the
+     * address as the contact holds it. The mail is this shop's own template
+     * through the messaging service; the secret is not in this response, only in
+     * the link.
      *
      * @param string $email
      * @param string $url
@@ -406,8 +409,14 @@ class Customers extends Service
      * CAN change: a buyer this shop holds who carries no platform login — an
      * address written straight into the record by an import — is given one
      * here, because the alternative is telling the one person who cannot help
-     * themselves that no account exists, with no other way in. Nothing else about
-     * the contact moves, and the password only moves in step two.
+     * themselves that no account exists, with no other way in. Only a buyer who
+     * may sign in is given one: a blocked buyer, an application not yet approved
+     * and a contact in the trash get none. A login the identity service holds for
+     * the address, or under the user a decoy named for it, that no buyer names is
+     * deleted and replaced, never taken over. The address is matched without
+     * regard to case or the spaces around it, and the mail goes to the address as
+     * the contact holds it. Nothing else about the contact moves, and the
+     * password only moves in step two.
      *
      * @param string $email
      * @param string $url

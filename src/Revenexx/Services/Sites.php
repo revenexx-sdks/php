@@ -9,7 +9,7 @@ use Revenexx\InputFile;
 use Revenexx\Enums\BuildRuntime;
 use Revenexx\Enums\Framework;
 use Revenexx\Enums\Adapter;
-use Revenexx\Enums\SitesCreateTemplateDeploymentType;
+use Revenexx\Enums\CubesCreateVcsDeploymentType;
 use Revenexx\Enums\AppsGetDeploymentDownloadType;
 
 class Sites extends Service
@@ -584,12 +584,12 @@ class Sites extends Service
      * @param string $reference
      * @param string $repository
      * @param string $rootDirectory
-     * @param SitesCreateTemplateDeploymentType $type
+     * @param CubesCreateVcsDeploymentType $type
      * @param ?bool $activate
      * @throws RevenexxException
      * @return array
      */
-    public function sitesCreateTemplateDeployment(string $siteId, string $owner, string $reference, string $repository, string $rootDirectory, SitesCreateTemplateDeploymentType $type, ?bool $activate = null): array
+    public function sitesCreateTemplateDeployment(string $siteId, string $owner, string $reference, string $repository, string $rootDirectory, CubesCreateVcsDeploymentType $type, ?bool $activate = null): array
     {
         $apiPath = str_replace(
             ['{siteId}'],
@@ -627,12 +627,12 @@ class Sites extends Service
      *
      * @param string $siteId
      * @param string $reference
-     * @param SitesCreateTemplateDeploymentType $type
+     * @param CubesCreateVcsDeploymentType $type
      * @param ?bool $activate
      * @throws RevenexxException
      * @return array
      */
-    public function sitesCreateVcsDeployment(string $siteId, string $reference, SitesCreateTemplateDeploymentType $type, ?bool $activate = null): array
+    public function sitesCreateVcsDeployment(string $siteId, string $reference, CubesCreateVcsDeploymentType $type, ?bool $activate = null): array
     {
         $apiPath = str_replace(
             ['{siteId}'],

@@ -1,0 +1,23 @@
+# loyalty.jobs
+
+## loyalty-jobs-recalculate
+
+Run the hourly loyalty job by hand
+
+```php
+<?php
+
+use Revenexx\Client;
+use Revenexx\Services\LoyaltyJobs;
+
+$client = (new Client())
+    ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
+    ->setTenant('<TENANT_SLUG>') // Your tenant slug
+    ->setApiKeyAuth('<API_KEY>') // A gateway-managed scoped API key (rvxk_…).
+;
+
+$loyaltyJobs = new LoyaltyJobs($client);
+
+$result = $loyaltyJobs->loyaltyJobsRecalculate(
+    data: []
+);```

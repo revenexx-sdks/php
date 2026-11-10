@@ -8,6 +8,7 @@ class BudgetReleaseScope implements JsonSerializable
 {
     private static BudgetReleaseScope $ORDER;
     private static BudgetReleaseScope $ITEM;
+    private static BudgetReleaseScope $RETURN;
 
     private string $value;
 
@@ -39,5 +40,12 @@ class BudgetReleaseScope implements JsonSerializable
             self::$ITEM = new BudgetReleaseScope('item');
         }
         return self::$ITEM;
+    }
+    public static function RETURN(): BudgetReleaseScope
+    {
+        if (!isset(self::$RETURN)) {
+            self::$RETURN = new BudgetReleaseScope('return');
+        }
+        return self::$RETURN;
     }
 }

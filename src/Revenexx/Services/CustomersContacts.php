@@ -599,8 +599,10 @@ class CustomersContacts extends Service
      * person is handed to `POST /customers/auth/recovery` and mints their own. It
      * mirrors the state it finds: a blocked contact, or one whose registration is
      * still pending or rejected, gets its login created DISABLED, so a repair can
-     * never hand access to somebody who was refused it. And it delivers nothing
-     * at all — telling the person is what the invitation is for.
+     * never hand access to somebody who was refused it. A contact in the trash
+     * gets none and is answered 409 `in_trash`, with the address that restores
+     * it. And it delivers nothing at all — telling the person is what the
+     * invitation is for.
      *
      * @param string $contactId
      * @param ?string $createdBy
