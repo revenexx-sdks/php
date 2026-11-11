@@ -5,6 +5,7 @@ use Revenexx\Client;
 use Revenexx\Services\Apps;
 use Revenexx\Enums\Runtime;
 use Revenexx\Enums\Scopes;
+use Revenexx\Enums\VcsTriggerMode;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -32,5 +33,7 @@ $result = $apps->appsCreate(
     schedule: '0 3 * * *', // optional
     scopes: [Scopes::SESSIONSWRITE()], // optional
     specification: 's-1vcpu-512mb', // optional
-    timeout: 1 // optional
+    timeout: 1, // optional
+    vcsPreviewsEnabled: true, // optional
+    vcsTriggerMode: VcsTriggerMode::PUSH() // optional
 );```

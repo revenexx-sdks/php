@@ -4,6 +4,7 @@
 use Revenexx\Client;
 use Revenexx\InputFile;
 use Revenexx\Services\Cubes;
+use Revenexx\Enums\ReleaseMode;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -16,5 +17,6 @@ $cubes = new Cubes($client);
 $result = $cubes->cubesCreateDeployment(
     cubeId: '',
     code: InputFile::withPath('file.png'),
-    activate: true // optional
+    activate: true, // optional
+    releaseMode: ReleaseMode::DEPLOY() // optional
 );```

@@ -8,9 +8,11 @@ use Revenexx\Service;
 use Revenexx\InputFile;
 use Revenexx\Enums\Runtime;
 use Revenexx\Enums\Scopes;
+use Revenexx\Enums\VcsTriggerMode;
 use Revenexx\Enums\Runtimes;
 use Revenexx\Enums\UseCases;
 use Revenexx\Enums\Range;
+use Revenexx\Enums\ReleaseMode;
 use Revenexx\Enums\Type;
 use Revenexx\Enums\AppsCreateVcsDeploymentType;
 use Revenexx\Enums\AppsGetDeploymentDownloadType;
@@ -90,10 +92,12 @@ class Apps extends Service
      * @param ?array $scopes
      * @param ?string $specification
      * @param ?int $timeout
+     * @param ?bool $vcsPreviewsEnabled
+     * @param ?VcsTriggerMode $vcsTriggerMode
      * @throws RevenexxException
      * @return array
      */
-    public function appsCreate(string $functionId, string $name, Runtime $runtime, ?string $commands = null, ?bool $enabled = null, ?string $entrypoint = null, ?array $events = null, ?array $execute = null, ?string $installationId = null, ?bool $logging = null, ?string $providerBranch = null, ?string $providerRepositoryId = null, ?string $providerRootDirectory = null, ?bool $providerSilentMode = null, ?string $schedule = null, ?array $scopes = null, ?string $specification = null, ?int $timeout = null): array
+    public function appsCreate(string $functionId, string $name, Runtime $runtime, ?string $commands = null, ?bool $enabled = null, ?string $entrypoint = null, ?array $events = null, ?array $execute = null, ?string $installationId = null, ?bool $logging = null, ?string $providerBranch = null, ?string $providerRepositoryId = null, ?string $providerRootDirectory = null, ?bool $providerSilentMode = null, ?string $schedule = null, ?array $scopes = null, ?string $specification = null, ?int $timeout = null, ?bool $vcsPreviewsEnabled = null, ?VcsTriggerMode $vcsTriggerMode = null): array
     {
         $apiPath = str_replace(
             [],
@@ -164,6 +168,14 @@ class Apps extends Service
 
         if (!is_null($timeout)) {
             $apiParams['timeout'] = $timeout;
+        }
+
+        if (!is_null($vcsPreviewsEnabled)) {
+            $apiParams['vcsPreviewsEnabled'] = $vcsPreviewsEnabled;
+        }
+
+        if (!is_null($vcsTriggerMode)) {
+            $apiParams['vcsTriggerMode'] = $vcsTriggerMode;
         }
 
         $apiHeaders = [];
@@ -239,6 +251,45 @@ class Apps extends Service
         $apiParams = [];
         $apiParams['name'] = $name;
         $apiParams['owner'] = $owner;
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Rebuild the source a release of this App was built from, so
+     * its release gates run again and a new release round opens.
+     * Picks the newest deployment whose manifest names this app and
+     * version; `commit` narrows it to that commit.
+     *
+     * @param string $name
+     * @param string $version
+     * @param ?string $commit
+     * @throws RevenexxException
+     * @return array
+     */
+    public function appsRebuildRelease(string $name, string $version, ?string $commit = null): array
+    {
+        $apiPath = str_replace(
+            [],
+            [],
+            '/v1/apps/releases/rebuild'
+        );
+
+        $apiParams = [];
+        $apiParams['name'] = $name;
+        $apiParams['version'] = $version;
+
+        if (!is_null($commit)) {
+            $apiParams['commit'] = $commit;
+        }
 
         $apiHeaders = [];
         $apiHeaders['content-type'] = 'application/json';
@@ -496,10 +547,12 @@ class Apps extends Service
      * @param ?array $scopes
      * @param ?string $specification
      * @param ?int $timeout
+     * @param ?bool $vcsPreviewsEnabled
+     * @param ?VcsTriggerMode $vcsTriggerMode
      * @throws RevenexxException
      * @return array
      */
-    public function appsUpdate(string $functionId, string $name, ?string $commands = null, ?bool $enabled = null, ?string $entrypoint = null, ?array $events = null, ?array $execute = null, ?string $installationId = null, ?bool $logging = null, ?string $providerBranch = null, ?string $providerRepositoryId = null, ?string $providerRootDirectory = null, ?bool $providerSilentMode = null, ?Runtime $runtime = null, ?string $schedule = null, ?array $scopes = null, ?string $specification = null, ?int $timeout = null): array
+    public function appsUpdate(string $functionId, string $name, ?string $commands = null, ?bool $enabled = null, ?string $entrypoint = null, ?array $events = null, ?array $execute = null, ?string $installationId = null, ?bool $logging = null, ?string $providerBranch = null, ?string $providerRepositoryId = null, ?string $providerRootDirectory = null, ?bool $providerSilentMode = null, ?Runtime $runtime = null, ?string $schedule = null, ?array $scopes = null, ?string $specification = null, ?int $timeout = null, ?bool $vcsPreviewsEnabled = null, ?VcsTriggerMode $vcsTriggerMode = null): array
     {
         $apiPath = str_replace(
             ['{functionId}'],
@@ -573,6 +626,14 @@ class Apps extends Service
 
         if (!is_null($timeout)) {
             $apiParams['timeout'] = $timeout;
+        }
+
+        if (!is_null($vcsPreviewsEnabled)) {
+            $apiParams['vcsPreviewsEnabled'] = $vcsPreviewsEnabled;
+        }
+
+        if (!is_null($vcsTriggerMode)) {
+            $apiParams['vcsTriggerMode'] = $vcsTriggerMode;
         }
 
         $apiHeaders = [];
@@ -672,10 +733,11 @@ class Apps extends Service
      * @param InputFile $code
      * @param ?string $commands
      * @param ?string $entrypoint
+     * @param ?ReleaseMode $releaseMode
      * @throws RevenexxException
      * @return array
      */
-    public function appsCreateDeployment(string $functionId, bool $activate, InputFile $code, ?string $commands = null, ?string $entrypoint = null, ?callable $onProgress = null): array
+    public function appsCreateDeployment(string $functionId, bool $activate, InputFile $code, ?string $commands = null, ?string $entrypoint = null, ?ReleaseMode $releaseMode = null, ?callable $onProgress = null): array
     {
         $apiPath = str_replace(
             ['{functionId}'],
@@ -694,6 +756,10 @@ class Apps extends Service
 
         if (!is_null($entrypoint)) {
             $apiParams['entrypoint'] = $entrypoint;
+        }
+
+        if (!is_null($releaseMode)) {
+            $apiParams['releaseMode'] = $releaseMode;
         }
 
         $apiHeaders = [];
@@ -1140,9 +1206,9 @@ class Apps extends Service
     }
 
     /**
-     * Read-through view of the App's App Registry row — visibility +
-     * Marketplace publish flag. Used by Cockpit to render the Publish/Unpublish
-     * button correctly on cold load.
+     * Read-through view of the App's App Registry row — app type + Marketplace
+     * publish flag. Used by Cockpit to render the Publish/Unpublish button
+     * correctly on cold load.
      *
      * @param string $functionId
      * @throws RevenexxException
@@ -1201,8 +1267,8 @@ class Apps extends Service
     /**
      * Publish this App to the Marketplace. The App must have at
      * least one `ready` deployment with a registered manifest,
-     * and its visibility (derived from `billing.json`) must be
-     * `public` or `included`. Idempotent.
+     * and its manifest field `type` must not be `private`.
+     * Idempotent.
      *
      * @param string $functionId
      * @throws RevenexxException
@@ -1220,6 +1286,80 @@ class Apps extends Service
         $apiParams['functionId'] = $functionId;
 
         $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * List the release rounds of this App as the App Registry holds
+     * them: version, round number, state (submitted, candidate,
+     * approved, rejected), release mode, gate results, decision
+     * deadline and rejection reason.
+     *
+     * @param string $functionId
+     * @throws RevenexxException
+     * @return array
+     */
+    public function appsListReleases(string $functionId): array
+    {
+        $apiPath = str_replace(
+            ['{functionId}'],
+            [$functionId],
+            '/v1/apps/{functionId}/releases'
+        );
+
+        $apiParams = [];
+        $apiParams['functionId'] = $functionId;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Accept a preview candidate of this App after seeing it run.
+     * Without `version` the version of the latest registered
+     * deployment is accepted; without `rc` its newest candidate
+     * round. Only the App's vendor can accept, and only a candidate
+     * in preview mode.
+     *
+     * @param string $functionId
+     * @param ?int $rc
+     * @param ?string $version
+     * @throws RevenexxException
+     * @return array
+     */
+    public function appsAcceptRelease(string $functionId, ?int $rc = null, ?string $version = null): array
+    {
+        $apiPath = str_replace(
+            ['{functionId}'],
+            [$functionId],
+            '/v1/apps/{functionId}/releases/accept'
+        );
+
+        $apiParams = [];
+        $apiParams['functionId'] = $functionId;
+
+        if (!is_null($rc)) {
+            $apiParams['rc'] = $rc;
+        }
+
+        if (!is_null($version)) {
+            $apiParams['version'] = $version;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
 
         return $this->client->call(
             Client::METHOD_POST,
@@ -1426,6 +1566,141 @@ class Apps extends Service
 
         return $this->client->call(
             Client::METHOD_PUT,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Unpublish this Theme from the Marketplace. Existing tenant
+     * installations are unaffected; only future Marketplace
+     * discovery is gated. Idempotent.
+     *
+     * @param string $siteId
+     * @throws RevenexxException
+     * @return array
+     */
+    public function appsUnpublishTheme(string $siteId): array
+    {
+        $apiPath = str_replace(
+            ['{siteId}'],
+            [$siteId],
+            '/v1/sites/{siteId}/publish'
+        );
+
+        $apiParams = [];
+        $apiParams['siteId'] = $siteId;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_DELETE,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Publish this Theme to the Marketplace. The Site must have at
+     * least one `ready` deployment with a registered theme manifest
+     * (theme.json) declaring `kind: theme`, and its manifest field
+     * `type` must not be `private`. Idempotent.
+     *
+     * @param string $siteId
+     * @throws RevenexxException
+     * @return array
+     */
+    public function appsPublishTheme(string $siteId): array
+    {
+        $apiPath = str_replace(
+            ['{siteId}'],
+            [$siteId],
+            '/v1/sites/{siteId}/publish'
+        );
+
+        $apiParams = [];
+        $apiParams['siteId'] = $siteId;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * List the release rounds of this Theme as the App Registry holds
+     * them: version, round number, state (submitted, candidate,
+     * approved, rejected), release mode, gate results, decision
+     * deadline and rejection reason.
+     *
+     * @param string $siteId
+     * @throws RevenexxException
+     * @return array
+     */
+    public function appsListThemeReleases(string $siteId): array
+    {
+        $apiPath = str_replace(
+            ['{siteId}'],
+            [$siteId],
+            '/v1/sites/{siteId}/releases'
+        );
+
+        $apiParams = [];
+        $apiParams['siteId'] = $siteId;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Accept a preview candidate of this Theme after seeing it run.
+     * Without `version` the version of the latest registered
+     * deployment is accepted; without `rc` its newest candidate
+     * round. Only the Theme's vendor can accept, and only a candidate
+     * in preview mode.
+     *
+     * @param string $siteId
+     * @param ?int $rc
+     * @param ?string $version
+     * @throws RevenexxException
+     * @return array
+     */
+    public function appsAcceptThemeRelease(string $siteId, ?int $rc = null, ?string $version = null): array
+    {
+        $apiPath = str_replace(
+            ['{siteId}'],
+            [$siteId],
+            '/v1/sites/{siteId}/releases/accept'
+        );
+
+        $apiParams = [];
+        $apiParams['siteId'] = $siteId;
+
+        if (!is_null($rc)) {
+            $apiParams['rc'] = $rc;
+        }
+
+        if (!is_null($version)) {
+            $apiParams['version'] = $version;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
             $apiPath,
             $apiHeaders,
             $apiParams

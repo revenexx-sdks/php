@@ -44,6 +44,8 @@ POST https://api.revenexx.com/v1/sites
 | siteId | string | Site ID. Choose a custom ID or generate a random ID with `ID.unique()`. Valid chars are a-z, A-Z, 0-9, period, hyphen, and underscore. Can't start with a special char. Max length is 36 chars. |  |
 | specification | string | Framework specification for the site and builds. |  |
 | timeout | integer | Maximum request time in seconds. |  |
+| vcsPreviewsEnabled | boolean | Whether pull request events create preview deployments and PR comments. |  |
+| vcsTriggerMode | string | Controls when a VCS deployment is triggered. "push" deploys on every branch push, "tag" deploys only when a tag is pushed or a GitHub release is published. |  |
 
 
 ```http request
@@ -114,6 +116,8 @@ PUT https://api.revenexx.com/v1/sites/{siteId}
 | providerSilentMode | boolean | Is the VCS (Version Control System) connection in silent mode for the repo linked to the site? In silent mode, comments will not be made on commits and pull requests. |  |
 | specification | string | Framework specification for the site and builds. |  |
 | timeout | integer | Maximum request time in seconds. |  |
+| vcsPreviewsEnabled | boolean | Whether pull request events create preview deployments and PR comments. |  |
+| vcsTriggerMode | string | Controls when a VCS deployment is triggered. "push" deploys on every branch push, "tag" deploys only when a tag is pushed or a GitHub release is published. |  |
 
 
 ```http request
@@ -162,6 +166,7 @@ POST https://api.revenexx.com/v1/sites/{siteId}/deployments
 | code | file | Your source directory packaged as a gzipped tar archive (`.tar.gz`), sent as the file part of the multipart request. |  |
 | installCommand | string | Install Commands. |  |
 | outputDirectory | string | Output Directory. |  |
+| releaseMode | string | Release mode: `deploy` releases the version once its round is approved; `preview` makes it a candidate the vendor accepts after seeing it run. Only meaningful for App and Theme deployments. |  |
 
 
 ```http request

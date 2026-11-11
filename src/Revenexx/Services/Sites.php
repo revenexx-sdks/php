@@ -9,6 +9,8 @@ use Revenexx\InputFile;
 use Revenexx\Enums\BuildRuntime;
 use Revenexx\Enums\Framework;
 use Revenexx\Enums\Adapter;
+use Revenexx\Enums\VcsTriggerMode;
+use Revenexx\Enums\ReleaseMode;
 use Revenexx\Enums\CubesCreateVcsDeploymentType;
 use Revenexx\Enums\AppsGetDeploymentDownloadType;
 
@@ -82,10 +84,12 @@ class Sites extends Service
      * @param ?bool $providerSilentMode
      * @param ?string $specification
      * @param ?int $timeout
+     * @param ?bool $vcsPreviewsEnabled
+     * @param ?VcsTriggerMode $vcsTriggerMode
      * @throws RevenexxException
      * @return array
      */
-    public function sitesCreate(BuildRuntime $buildRuntime, Framework $framework, string $name, string $siteId, ?Adapter $adapter = null, ?string $buildCommand = null, ?bool $enabled = null, ?string $fallbackFile = null, ?string $installCommand = null, ?string $installationId = null, ?bool $logging = null, ?string $outputDirectory = null, ?string $providerBranch = null, ?string $providerRepositoryId = null, ?string $providerRootDirectory = null, ?bool $providerSilentMode = null, ?string $specification = null, ?int $timeout = null): array
+    public function sitesCreate(BuildRuntime $buildRuntime, Framework $framework, string $name, string $siteId, ?Adapter $adapter = null, ?string $buildCommand = null, ?bool $enabled = null, ?string $fallbackFile = null, ?string $installCommand = null, ?string $installationId = null, ?bool $logging = null, ?string $outputDirectory = null, ?string $providerBranch = null, ?string $providerRepositoryId = null, ?string $providerRootDirectory = null, ?bool $providerSilentMode = null, ?string $specification = null, ?int $timeout = null, ?bool $vcsPreviewsEnabled = null, ?VcsTriggerMode $vcsTriggerMode = null): array
     {
         $apiPath = str_replace(
             [],
@@ -153,6 +157,14 @@ class Sites extends Service
 
         if (!is_null($timeout)) {
             $apiParams['timeout'] = $timeout;
+        }
+
+        if (!is_null($vcsPreviewsEnabled)) {
+            $apiParams['vcsPreviewsEnabled'] = $vcsPreviewsEnabled;
+        }
+
+        if (!is_null($vcsTriggerMode)) {
+            $apiParams['vcsTriggerMode'] = $vcsTriggerMode;
         }
 
         $apiHeaders = [];
@@ -296,10 +308,12 @@ class Sites extends Service
      * @param ?bool $providerSilentMode
      * @param ?string $specification
      * @param ?int $timeout
+     * @param ?bool $vcsPreviewsEnabled
+     * @param ?VcsTriggerMode $vcsTriggerMode
      * @throws RevenexxException
      * @return array
      */
-    public function sitesUpdate(string $siteId, Framework $framework, string $name, ?Adapter $adapter = null, ?string $buildCommand = null, ?BuildRuntime $buildRuntime = null, ?bool $enabled = null, ?string $fallbackFile = null, ?string $installCommand = null, ?string $installationId = null, ?bool $logging = null, ?string $outputDirectory = null, ?string $providerBranch = null, ?string $providerRepositoryId = null, ?string $providerRootDirectory = null, ?bool $providerSilentMode = null, ?string $specification = null, ?int $timeout = null): array
+    public function sitesUpdate(string $siteId, Framework $framework, string $name, ?Adapter $adapter = null, ?string $buildCommand = null, ?BuildRuntime $buildRuntime = null, ?bool $enabled = null, ?string $fallbackFile = null, ?string $installCommand = null, ?string $installationId = null, ?bool $logging = null, ?string $outputDirectory = null, ?string $providerBranch = null, ?string $providerRepositoryId = null, ?string $providerRootDirectory = null, ?bool $providerSilentMode = null, ?string $specification = null, ?int $timeout = null, ?bool $vcsPreviewsEnabled = null, ?VcsTriggerMode $vcsTriggerMode = null): array
     {
         $apiPath = str_replace(
             ['{siteId}'],
@@ -370,6 +384,14 @@ class Sites extends Service
 
         if (!is_null($timeout)) {
             $apiParams['timeout'] = $timeout;
+        }
+
+        if (!is_null($vcsPreviewsEnabled)) {
+            $apiParams['vcsPreviewsEnabled'] = $vcsPreviewsEnabled;
+        }
+
+        if (!is_null($vcsTriggerMode)) {
+            $apiParams['vcsTriggerMode'] = $vcsTriggerMode;
         }
 
         $apiHeaders = [];
@@ -470,10 +492,11 @@ class Sites extends Service
      * @param ?string $buildCommand
      * @param ?string $installCommand
      * @param ?string $outputDirectory
+     * @param ?ReleaseMode $releaseMode
      * @throws RevenexxException
      * @return array
      */
-    public function sitesCreateDeployment(string $siteId, bool $activate, InputFile $code, ?string $buildCommand = null, ?string $installCommand = null, ?string $outputDirectory = null, ?callable $onProgress = null): array
+    public function sitesCreateDeployment(string $siteId, bool $activate, InputFile $code, ?string $buildCommand = null, ?string $installCommand = null, ?string $outputDirectory = null, ?ReleaseMode $releaseMode = null, ?callable $onProgress = null): array
     {
         $apiPath = str_replace(
             ['{siteId}'],
@@ -496,6 +519,10 @@ class Sites extends Service
 
         if (!is_null($outputDirectory)) {
             $apiParams['outputDirectory'] = $outputDirectory;
+        }
+
+        if (!is_null($releaseMode)) {
+            $apiParams['releaseMode'] = $releaseMode;
         }
 
         $apiHeaders = [];

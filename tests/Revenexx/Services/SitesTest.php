@@ -9,6 +9,8 @@ use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\BuildRuntime;
 use Revenexx\Enums\Framework;
 use Revenexx\Enums\Adapter;
+use Revenexx\Enums\VcsTriggerMode;
+use Revenexx\Enums\ReleaseMode;
 use Revenexx\Enums\CubesCreateVcsDeploymentType;
 use Revenexx\Enums\AppsGetDeploymentDownloadType;
 
@@ -72,7 +74,9 @@ final class SitesTest extends TestCase
             "providerSilentMode" => true,
             "specification" => "",
             "timeout" => 1,
-            "vars" => array());
+            "vars" => array(),
+            "vcsPreviewsEnabled" => true,
+            "vcsTriggerMode" => "");
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -170,7 +174,9 @@ final class SitesTest extends TestCase
             "providerSilentMode" => true,
             "specification" => "",
             "timeout" => 1,
-            "vars" => array());
+            "vars" => array(),
+            "vcsPreviewsEnabled" => true,
+            "vcsTriggerMode" => "");
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -215,7 +221,9 @@ final class SitesTest extends TestCase
             "providerSilentMode" => true,
             "specification" => "",
             "timeout" => 1,
-            "vars" => array());
+            "vars" => array(),
+            "vcsPreviewsEnabled" => true,
+            "vcsTriggerMode" => "");
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -262,7 +270,9 @@ final class SitesTest extends TestCase
             "providerSilentMode" => true,
             "specification" => "",
             "timeout" => 1,
-            "vars" => array());
+            "vars" => array(),
+            "vcsPreviewsEnabled" => true,
+            "vcsTriggerMode" => "");
 
         $this->client
             ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
@@ -303,11 +313,13 @@ final class SitesTest extends TestCase
             "\$updatedAt" => "",
             "activate" => true,
             "billingJson" => "",
+            "buildDigest" => "",
             "buildDuration" => 1,
             "buildId" => "",
             "buildLogs" => "",
             "buildSize" => 1,
             "entrypoint" => "",
+            "gateResultsJson" => "",
             "manifestJson" => "",
             "providerBranch" => "",
             "providerBranchUrl" => "",
@@ -319,6 +331,7 @@ final class SitesTest extends TestCase
             "providerRepositoryName" => "",
             "providerRepositoryOwner" => "",
             "providerRepositoryUrl" => "",
+            "releaseMode" => "",
             "resourceId" => "",
             "resourceType" => "",
             "screenshotDark" => "",
@@ -350,11 +363,13 @@ final class SitesTest extends TestCase
             "\$updatedAt" => "",
             "activate" => true,
             "billingJson" => "",
+            "buildDigest" => "",
             "buildDuration" => 1,
             "buildId" => "",
             "buildLogs" => "",
             "buildSize" => 1,
             "entrypoint" => "",
+            "gateResultsJson" => "",
             "manifestJson" => "",
             "providerBranch" => "",
             "providerBranchUrl" => "",
@@ -366,6 +381,7 @@ final class SitesTest extends TestCase
             "providerRepositoryName" => "",
             "providerRepositoryOwner" => "",
             "providerRepositoryUrl" => "",
+            "releaseMode" => "",
             "resourceId" => "",
             "resourceType" => "",
             "screenshotDark" => "",
@@ -396,11 +412,13 @@ final class SitesTest extends TestCase
             "\$updatedAt" => "",
             "activate" => true,
             "billingJson" => "",
+            "buildDigest" => "",
             "buildDuration" => 1,
             "buildId" => "",
             "buildLogs" => "",
             "buildSize" => 1,
             "entrypoint" => "",
+            "gateResultsJson" => "",
             "manifestJson" => "",
             "providerBranch" => "",
             "providerBranchUrl" => "",
@@ -412,6 +430,7 @@ final class SitesTest extends TestCase
             "providerRepositoryName" => "",
             "providerRepositoryOwner" => "",
             "providerRepositoryUrl" => "",
+            "releaseMode" => "",
             "resourceId" => "",
             "resourceType" => "",
             "screenshotDark" => "",
@@ -446,11 +465,13 @@ final class SitesTest extends TestCase
             "\$updatedAt" => "",
             "activate" => true,
             "billingJson" => "",
+            "buildDigest" => "",
             "buildDuration" => 1,
             "buildId" => "",
             "buildLogs" => "",
             "buildSize" => 1,
             "entrypoint" => "",
+            "gateResultsJson" => "",
             "manifestJson" => "",
             "providerBranch" => "",
             "providerBranchUrl" => "",
@@ -462,6 +483,7 @@ final class SitesTest extends TestCase
             "providerRepositoryName" => "",
             "providerRepositoryOwner" => "",
             "providerRepositoryUrl" => "",
+            "releaseMode" => "",
             "resourceId" => "",
             "resourceType" => "",
             "screenshotDark" => "",
@@ -510,11 +532,13 @@ final class SitesTest extends TestCase
             "\$updatedAt" => "",
             "activate" => true,
             "billingJson" => "",
+            "buildDigest" => "",
             "buildDuration" => 1,
             "buildId" => "",
             "buildLogs" => "",
             "buildSize" => 1,
             "entrypoint" => "",
+            "gateResultsJson" => "",
             "manifestJson" => "",
             "providerBranch" => "",
             "providerBranchUrl" => "",
@@ -526,6 +550,7 @@ final class SitesTest extends TestCase
             "providerRepositoryName" => "",
             "providerRepositoryOwner" => "",
             "providerRepositoryUrl" => "",
+            "releaseMode" => "",
             "resourceId" => "",
             "resourceType" => "",
             "screenshotDark" => "",
@@ -573,11 +598,13 @@ final class SitesTest extends TestCase
             "\$updatedAt" => "",
             "activate" => true,
             "billingJson" => "",
+            "buildDigest" => "",
             "buildDuration" => 1,
             "buildId" => "",
             "buildLogs" => "",
             "buildSize" => 1,
             "entrypoint" => "",
+            "gateResultsJson" => "",
             "manifestJson" => "",
             "providerBranch" => "",
             "providerBranchUrl" => "",
@@ -589,6 +616,7 @@ final class SitesTest extends TestCase
             "providerRepositoryName" => "",
             "providerRepositoryOwner" => "",
             "providerRepositoryUrl" => "",
+            "releaseMode" => "",
             "resourceId" => "",
             "resourceType" => "",
             "screenshotDark" => "",

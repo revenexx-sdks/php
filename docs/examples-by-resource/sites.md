@@ -36,6 +36,7 @@ use Revenexx\Services\Sites;
 use Revenexx\Enums\BuildRuntime;
 use Revenexx\Enums\Framework;
 use Revenexx\Enums\Adapter;
+use Revenexx\Enums\VcsTriggerMode;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -63,7 +64,9 @@ $result = $sites->sitesCreate(
     providerRootDirectory: '', // optional
     providerSilentMode: true, // optional
     specification: 's-1vcpu-512mb', // optional
-    timeout: 1 // optional
+    timeout: 1, // optional
+    vcsPreviewsEnabled: true, // optional
+    vcsTriggerMode: VcsTriggerMode::PUSH() // optional
 );```
 
 ## sites-list-frameworks
@@ -164,6 +167,7 @@ use Revenexx\Services\Sites;
 use Revenexx\Enums\Framework;
 use Revenexx\Enums\Adapter;
 use Revenexx\Enums\BuildRuntime;
+use Revenexx\Enums\VcsTriggerMode;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -191,7 +195,9 @@ $result = $sites->sitesUpdate(
     providerRootDirectory: '', // optional
     providerSilentMode: true, // optional
     specification: 's-1vcpu-512mb', // optional
-    timeout: 1 // optional
+    timeout: 1, // optional
+    vcsPreviewsEnabled: true, // optional
+    vcsTriggerMode: VcsTriggerMode::PUSH() // optional
 );```
 
 ## sites-update-site-deployment
@@ -252,6 +258,7 @@ Create deployment
 use Revenexx\Client;
 use Revenexx\InputFile;
 use Revenexx\Services\Sites;
+use Revenexx\Enums\ReleaseMode;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -267,7 +274,8 @@ $result = $sites->sitesCreateDeployment(
     code: InputFile::withPath('file.png'),
     buildCommand: '', // optional
     installCommand: '', // optional
-    outputDirectory: '' // optional
+    outputDirectory: '', // optional
+    releaseMode: ReleaseMode::DEPLOY() // optional
 );```
 
 ## sites-create-duplicate-deployment

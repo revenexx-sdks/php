@@ -46,6 +46,8 @@ Phase 1 mirrors the underlying Functions runtime 1:1; future phases will add man
 | scopes | array | List of scopes allowed for API key auto-generated for every execution. Maximum of 100 scopes are allowed. |  |
 | specification | string | Runtime specification for the function and builds. |  |
 | timeout | integer | Function maximum execution time in seconds. |  |
+| vcsPreviewsEnabled | boolean | Whether pull request events create preview deployments and PR comments. |  |
+| vcsTriggerMode | string | Controls when a VCS deployment is triggered. "push" deploys on every branch push, "tag" deploys only when a tag is pushed or a GitHub release is published. |  |
 
 
 ```http request
@@ -75,6 +77,24 @@ POST https://api.revenexx.com/v1/apps/marketplace/install
 | --- | --- | --- | --- |
 | name | string | App name. |  |
 | owner | string | Owner tenant slug of the app being installed. |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/apps/releases/rebuild
+```
+
+** Rebuild the source a release of this App was built from, so
+its release gates run again and a new release round opens.
+Picks the newest deployment whose manifest names this app and
+version; `commit` narrows it to that commit. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| commit | string | Commit SHA the round recorded (7 to 64 hex characters). Optional. |  |
+| name | string | App name as in its manifest. |  |
+| version | string | Version to rebuild. |  |
 
 
 ```http request
@@ -188,6 +208,8 @@ PUT https://api.revenexx.com/v1/apps/{functionId}
 | scopes | array | List of scopes allowed for API Key auto-generated for every execution. Maximum of 100 scopes are allowed. |  |
 | specification | string | Runtime specification for the function and builds. |  |
 | timeout | integer | Maximum execution time in seconds. |  |
+| vcsPreviewsEnabled | boolean | Whether pull request events create preview deployments and PR comments. |  |
+| vcsTriggerMode | string | Controls when a VCS deployment is triggered. "push" deploys on every branch push, "tag" deploys only when a tag is pushed or a GitHub release is published. |  |
 
 
 ```http request
@@ -238,6 +260,7 @@ Registry before kicking off the build. **
 | code | file | Your source directory packaged as a gzipped tar archive (`.tar.gz`), sent as the file part of the multipart request. |  |
 | commands | string | Build Commands. |  |
 | entrypoint | string | Entrypoint File. |  |
+| releaseMode | string | Release mode: `deploy` releases the version once its round is approved; `preview` makes it a candidate the vendor accepts after seeing it run. Only meaningful for App and Theme deployments. |  |
 
 
 ```http request
@@ -413,7 +436,7 @@ GET https://api.revenexx.com/v1/apps/{functionId}/executions/{executionId}
 GET https://api.revenexx.com/v1/apps/{functionId}/marketplace-status
 ```
 
-** Read-through view of the App's App Registry row — visibility + Marketplace publish flag. Used by Cockpit to render the Publish/Unpublish button correctly on cold load. **
+** Read-through view of the App's App Registry row — app type + Marketplace publish flag. Used by Cockpit to render the Publish/Unpublish button correctly on cold load. **
 
 ### Parameters
 
@@ -441,14 +464,49 @@ POST https://api.revenexx.com/v1/apps/{functionId}/publish
 
 ** Publish this App to the Marketplace. The App must have at
 least one `ready` deployment with a registered manifest,
-and its visibility (derived from `billing.json`) must be
-`public` or `included`. Idempotent. **
+and its manifest field `type` must not be `private`.
+Idempotent. **
 
 ### Parameters
 
 | Field Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | functionId | string | **Required** App ID. |  |
+
+
+```http request
+GET https://api.revenexx.com/v1/apps/{functionId}/releases
+```
+
+** List the release rounds of this App as the App Registry holds
+them: version, round number, state (submitted, candidate,
+approved, rejected), release mode, gate results, decision
+deadline and rejection reason. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| functionId | string | **Required** App ID. |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/apps/{functionId}/releases/accept
+```
+
+** Accept a preview candidate of this App after seeing it run.
+Without `version` the version of the latest registered
+deployment is accepted; without `rc` its newest candidate
+round. Only the App's vendor can accept, and only a candidate
+in preview mode. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| functionId | string | **Required** App ID. |  |
+| rc | integer | Release round to accept. Defaults to the newest candidate round of the version. |  |
+| version | string | Version to accept. Defaults to the version of the latest registered deployment. |  |
 
 
 ```http request
@@ -537,4 +595,70 @@ PUT https://api.revenexx.com/v1/apps/{functionId}/variables/{variableId}
 | key | string | Variable key. Max length: 255 chars. |  |
 | secret | boolean | Secret variables can be updated or deleted, but only functions can read them during build and runtime. |  |
 | value | string | Variable value. Max length: 8192 chars. |  |
+
+
+```http request
+DELETE https://api.revenexx.com/v1/sites/{siteId}/publish
+```
+
+** Unpublish this Theme from the Marketplace. Existing tenant
+installations are unaffected; only future Marketplace
+discovery is gated. Idempotent. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| siteId | string | **Required** Site ID. |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/sites/{siteId}/publish
+```
+
+** Publish this Theme to the Marketplace. The Site must have at
+least one `ready` deployment with a registered theme manifest
+(theme.json) declaring `kind: theme`, and its manifest field
+`type` must not be `private`. Idempotent. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| siteId | string | **Required** Site ID. |  |
+
+
+```http request
+GET https://api.revenexx.com/v1/sites/{siteId}/releases
+```
+
+** List the release rounds of this Theme as the App Registry holds
+them: version, round number, state (submitted, candidate,
+approved, rejected), release mode, gate results, decision
+deadline and rejection reason. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| siteId | string | **Required** Site ID. |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/sites/{siteId}/releases/accept
+```
+
+** Accept a preview candidate of this Theme after seeing it run.
+Without `version` the version of the latest registered
+deployment is accepted; without `rc` its newest candidate
+round. Only the Theme's vendor can accept, and only a candidate
+in preview mode. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| siteId | string | **Required** Site ID. |  |
+| rc | integer | Release round to accept. Defaults to the newest candidate round of the version. |  |
+| version | string | Version to accept. Defaults to the version of the latest registered deployment. |  |
 

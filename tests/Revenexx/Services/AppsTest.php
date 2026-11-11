@@ -8,9 +8,11 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\Runtime;
 use Revenexx\Enums\Scopes;
+use Revenexx\Enums\VcsTriggerMode;
 use Revenexx\Enums\Runtimes;
 use Revenexx\Enums\UseCases;
 use Revenexx\Enums\Range;
+use Revenexx\Enums\ReleaseMode;
 use Revenexx\Enums\Type;
 use Revenexx\Enums\AppsCreateVcsDeploymentType;
 use Revenexx\Enums\AppsGetDeploymentDownloadType;
@@ -75,6 +77,8 @@ final class AppsTest extends TestCase
             "specification" => "",
             "timeout" => 1,
             "vars" => array(),
+            "vcsPreviewsEnabled" => true,
+            "vcsTriggerMode" => "",
             "version" => "");
 
         $this->client
@@ -115,6 +119,55 @@ final class AppsTest extends TestCase
             ->andReturn($data);
 
         $response = $this->apps->appsInstallFromMarketplace(
+            "",
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodAppsRebuildRelease(): void
+    {
+
+        $data = array(
+            "\$createdAt" => "",
+            "\$id" => "",
+            "\$updatedAt" => "",
+            "activate" => true,
+            "billingJson" => "",
+            "buildDigest" => "",
+            "buildDuration" => 1,
+            "buildId" => "",
+            "buildLogs" => "",
+            "buildSize" => 1,
+            "entrypoint" => "",
+            "gateResultsJson" => "",
+            "manifestJson" => "",
+            "providerBranch" => "",
+            "providerBranchUrl" => "",
+            "providerCommitAuthor" => "",
+            "providerCommitAuthorUrl" => "",
+            "providerCommitHash" => "",
+            "providerCommitMessage" => "",
+            "providerCommitUrl" => "",
+            "providerRepositoryName" => "",
+            "providerRepositoryOwner" => "",
+            "providerRepositoryUrl" => "",
+            "releaseMode" => "",
+            "resourceId" => "",
+            "resourceType" => "",
+            "screenshotDark" => "",
+            "screenshotLight" => "",
+            "sourceSize" => 1,
+            "status" => "waiting",
+            "totalSize" => 1,
+            "type" => "");
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->apps->appsRebuildRelease(
             "",
             ""
         );
@@ -293,6 +346,8 @@ final class AppsTest extends TestCase
             "specification" => "",
             "timeout" => 1,
             "vars" => array(),
+            "vcsPreviewsEnabled" => true,
+            "vcsTriggerMode" => "",
             "version" => "");
 
         $this->client
@@ -337,6 +392,8 @@ final class AppsTest extends TestCase
             "specification" => "",
             "timeout" => 1,
             "vars" => array(),
+            "vcsPreviewsEnabled" => true,
+            "vcsTriggerMode" => "",
             "version" => "");
 
         $this->client
@@ -382,6 +439,8 @@ final class AppsTest extends TestCase
             "specification" => "",
             "timeout" => 1,
             "vars" => array(),
+            "vcsPreviewsEnabled" => true,
+            "vcsTriggerMode" => "",
             "version" => "");
 
         $this->client
@@ -423,11 +482,13 @@ final class AppsTest extends TestCase
             "\$updatedAt" => "",
             "activate" => true,
             "billingJson" => "",
+            "buildDigest" => "",
             "buildDuration" => 1,
             "buildId" => "",
             "buildLogs" => "",
             "buildSize" => 1,
             "entrypoint" => "",
+            "gateResultsJson" => "",
             "manifestJson" => "",
             "providerBranch" => "",
             "providerBranchUrl" => "",
@@ -439,6 +500,7 @@ final class AppsTest extends TestCase
             "providerRepositoryName" => "",
             "providerRepositoryOwner" => "",
             "providerRepositoryUrl" => "",
+            "releaseMode" => "",
             "resourceId" => "",
             "resourceType" => "",
             "screenshotDark" => "",
@@ -470,11 +532,13 @@ final class AppsTest extends TestCase
             "\$updatedAt" => "",
             "activate" => true,
             "billingJson" => "",
+            "buildDigest" => "",
             "buildDuration" => 1,
             "buildId" => "",
             "buildLogs" => "",
             "buildSize" => 1,
             "entrypoint" => "",
+            "gateResultsJson" => "",
             "manifestJson" => "",
             "providerBranch" => "",
             "providerBranchUrl" => "",
@@ -486,6 +550,7 @@ final class AppsTest extends TestCase
             "providerRepositoryName" => "",
             "providerRepositoryOwner" => "",
             "providerRepositoryUrl" => "",
+            "releaseMode" => "",
             "resourceId" => "",
             "resourceType" => "",
             "screenshotDark" => "",
@@ -516,11 +581,13 @@ final class AppsTest extends TestCase
             "\$updatedAt" => "",
             "activate" => true,
             "billingJson" => "",
+            "buildDigest" => "",
             "buildDuration" => 1,
             "buildId" => "",
             "buildLogs" => "",
             "buildSize" => 1,
             "entrypoint" => "",
+            "gateResultsJson" => "",
             "manifestJson" => "",
             "providerBranch" => "",
             "providerBranchUrl" => "",
@@ -532,6 +599,7 @@ final class AppsTest extends TestCase
             "providerRepositoryName" => "",
             "providerRepositoryOwner" => "",
             "providerRepositoryUrl" => "",
+            "releaseMode" => "",
             "resourceId" => "",
             "resourceType" => "",
             "screenshotDark" => "",
@@ -566,11 +634,13 @@ final class AppsTest extends TestCase
             "\$updatedAt" => "",
             "activate" => true,
             "billingJson" => "",
+            "buildDigest" => "",
             "buildDuration" => 1,
             "buildId" => "",
             "buildLogs" => "",
             "buildSize" => 1,
             "entrypoint" => "",
+            "gateResultsJson" => "",
             "manifestJson" => "",
             "providerBranch" => "",
             "providerBranchUrl" => "",
@@ -582,6 +652,7 @@ final class AppsTest extends TestCase
             "providerRepositoryName" => "",
             "providerRepositoryOwner" => "",
             "providerRepositoryUrl" => "",
+            "releaseMode" => "",
             "resourceId" => "",
             "resourceType" => "",
             "screenshotDark" => "",
@@ -630,11 +701,13 @@ final class AppsTest extends TestCase
             "\$updatedAt" => "",
             "activate" => true,
             "billingJson" => "",
+            "buildDigest" => "",
             "buildDuration" => 1,
             "buildId" => "",
             "buildLogs" => "",
             "buildSize" => 1,
             "entrypoint" => "",
+            "gateResultsJson" => "",
             "manifestJson" => "",
             "providerBranch" => "",
             "providerBranchUrl" => "",
@@ -646,6 +719,7 @@ final class AppsTest extends TestCase
             "providerRepositoryName" => "",
             "providerRepositoryOwner" => "",
             "providerRepositoryUrl" => "",
+            "releaseMode" => "",
             "resourceId" => "",
             "resourceType" => "",
             "screenshotDark" => "",
@@ -693,11 +767,13 @@ final class AppsTest extends TestCase
             "\$updatedAt" => "",
             "activate" => true,
             "billingJson" => "",
+            "buildDigest" => "",
             "buildDuration" => 1,
             "buildId" => "",
             "buildLogs" => "",
             "buildSize" => 1,
             "entrypoint" => "",
+            "gateResultsJson" => "",
             "manifestJson" => "",
             "providerBranch" => "",
             "providerBranchUrl" => "",
@@ -709,6 +785,7 @@ final class AppsTest extends TestCase
             "providerRepositoryName" => "",
             "providerRepositoryOwner" => "",
             "providerRepositoryUrl" => "",
+            "releaseMode" => "",
             "resourceId" => "",
             "resourceType" => "",
             "screenshotDark" => "",
@@ -880,6 +957,38 @@ final class AppsTest extends TestCase
         $this->assertSame($data, $response);
     }
 
+    public function testMethodAppsListReleases(): void
+    {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->apps->appsListReleases(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodAppsAcceptRelease(): void
+    {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->apps->appsAcceptRelease(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
     public function testMethodAppsGetUsage(): void
     {
 
@@ -1026,6 +1135,70 @@ final class AppsTest extends TestCase
         $response = $this->apps->appsUpdateVariable(
             "",
             "",
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodAppsUnpublishTheme(): void
+    {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->apps->appsUnpublishTheme(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodAppsPublishTheme(): void
+    {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->apps->appsPublishTheme(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodAppsListThemeReleases(): void
+    {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->apps->appsListThemeReleases(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodAppsAcceptThemeRelease(): void
+    {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->apps->appsAcceptThemeRelease(
             ""
         );
 

@@ -7,6 +7,7 @@ use Revenexx\Client;
 use Revenexx\Service;
 use Revenexx\InputFile;
 use Revenexx\Enums\VcsTriggerMode;
+use Revenexx\Enums\ReleaseMode;
 use Revenexx\Enums\CubesCreateVcsDeploymentType;
 
 class Cubes extends Service
@@ -310,10 +311,11 @@ class Cubes extends Service
      * @param string $cubeId
      * @param InputFile $code
      * @param ?bool $activate
+     * @param ?ReleaseMode $releaseMode
      * @throws RevenexxException
      * @return array
      */
-    public function cubesCreateDeployment(string $cubeId, InputFile $code, ?bool $activate = null, ?callable $onProgress = null): array
+    public function cubesCreateDeployment(string $cubeId, InputFile $code, ?bool $activate = null, ?ReleaseMode $releaseMode = null, ?callable $onProgress = null): array
     {
         $apiPath = str_replace(
             ['{cubeId}'],
@@ -327,6 +329,10 @@ class Cubes extends Service
 
         if (!is_null($activate)) {
             $apiParams['activate'] = $activate;
+        }
+
+        if (!is_null($releaseMode)) {
+            $apiParams['releaseMode'] = $releaseMode;
         }
 
         $apiHeaders = [];
@@ -431,6 +437,124 @@ class Cubes extends Service
 
         return $this->client->call(
             Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * List the release rounds of this Cube as the registry holds
+     * them: version, round number, state (submitted, candidate,
+     * approved, rejected), release mode, gate results, decision
+     * deadline, rejection reason and the deployment that opened it.
+     *
+     * @param string $cubeId
+     * @throws RevenexxException
+     * @return array
+     */
+    public function cubesListReleases(string $cubeId): array
+    {
+        $apiPath = str_replace(
+            ['{cubeId}'],
+            [$cubeId],
+            '/v1/cubes/{cubeId}/releases'
+        );
+
+        $apiParams = [];
+        $apiParams['cubeId'] = $cubeId;
+
+        $apiHeaders = [];
+
+        return $this->client->call(
+            Client::METHOD_GET,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Accept a preview candidate of this Cube after checking it.
+     * Without `version` the version of the latest released
+     * deployment is accepted; without `rc` its newest candidate
+     * round. Only the Cube's vendor can accept, and only a candidate
+     * in preview mode.
+     *
+     * @param string $cubeId
+     * @param ?int $rc
+     * @param ?string $version
+     * @throws RevenexxException
+     * @return array
+     */
+    public function cubesAcceptRelease(string $cubeId, ?int $rc = null, ?string $version = null): array
+    {
+        $apiPath = str_replace(
+            ['{cubeId}'],
+            [$cubeId],
+            '/v1/cubes/{cubeId}/releases/accept'
+        );
+
+        $apiParams = [];
+        $apiParams['cubeId'] = $cubeId;
+
+        if (!is_null($rc)) {
+            $apiParams['rc'] = $rc;
+        }
+
+        if (!is_null($version)) {
+            $apiParams['version'] = $version;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
+            $apiPath,
+            $apiHeaders,
+            $apiParams
+        );
+    }
+
+    /**
+     * Release the source a version of this Cube was built from
+     * again, so it is linted and judged again in a new release
+     * round. Takes the round's deployment, or the newest deployment
+     * whose manifest names this version; `commit` narrows that.
+     *
+     * @param string $cubeId
+     * @param string $version
+     * @param ?string $commit
+     * @param ?string $deploymentId
+     * @throws RevenexxException
+     * @return array
+     */
+    public function cubesRebuildRelease(string $cubeId, string $version, ?string $commit = null, ?string $deploymentId = null): array
+    {
+        $apiPath = str_replace(
+            ['{cubeId}'],
+            [$cubeId],
+            '/v1/cubes/{cubeId}/releases/rebuild'
+        );
+
+        $apiParams = [];
+        $apiParams['cubeId'] = $cubeId;
+        $apiParams['version'] = $version;
+
+        if (!is_null($commit)) {
+            $apiParams['commit'] = $commit;
+        }
+
+        if (!is_null($deploymentId)) {
+            $apiParams['deploymentId'] = $deploymentId;
+        }
+
+        $apiHeaders = [];
+        $apiHeaders['content-type'] = 'application/json';
+
+        return $this->client->call(
+            Client::METHOD_POST,
             $apiPath,
             $apiHeaders,
             $apiParams

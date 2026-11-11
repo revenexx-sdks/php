@@ -167,6 +167,7 @@ Create deployment
 use Revenexx\Client;
 use Revenexx\InputFile;
 use Revenexx\Services\Cubes;
+use Revenexx\Enums\ReleaseMode;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -179,7 +180,8 @@ $cubes = new Cubes($client);
 $result = $cubes->cubesCreateDeployment(
     cubeId: '',
     code: InputFile::withPath('file.png'),
-    activate: true // optional
+    activate: true, // optional
+    releaseMode: ReleaseMode::DEPLOY() // optional
 );```
 
 ## cubes-create-vcs-deployment
@@ -229,4 +231,75 @@ $cubes = new Cubes($client);
 $result = $cubes->cubesGetDeployment(
     cubeId: '',
     deploymentId: ''
+);```
+
+## cubes-list-releases
+
+List cube releases
+
+```php
+<?php
+
+use Revenexx\Client;
+use Revenexx\Services\Cubes;
+
+$client = (new Client())
+    ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
+    ->setTenant('<TENANT_SLUG>') // Your tenant slug
+    ->setApiKeyAuth('<API_KEY>') // A gateway-managed scoped API key (rvxk_…).
+;
+
+$cubes = new Cubes($client);
+
+$result = $cubes->cubesListReleases(
+    cubeId: ''
+);```
+
+## cubes-accept-release
+
+Accept cube release candidate
+
+```php
+<?php
+
+use Revenexx\Client;
+use Revenexx\Services\Cubes;
+
+$client = (new Client())
+    ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
+    ->setTenant('<TENANT_SLUG>') // Your tenant slug
+    ->setApiKeyAuth('<API_KEY>') // A gateway-managed scoped API key (rvxk_…).
+;
+
+$cubes = new Cubes($client);
+
+$result = $cubes->cubesAcceptRelease(
+    cubeId: '',
+    rc: 1, // optional
+    version: '' // optional
+);```
+
+## cubes-rebuild-release
+
+Rebuild cube release
+
+```php
+<?php
+
+use Revenexx\Client;
+use Revenexx\Services\Cubes;
+
+$client = (new Client())
+    ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
+    ->setTenant('<TENANT_SLUG>') // Your tenant slug
+    ->setApiKeyAuth('<API_KEY>') // A gateway-managed scoped API key (rvxk_…).
+;
+
+$cubes = new Cubes($client);
+
+$result = $cubes->cubesRebuildRelease(
+    cubeId: '',
+    version: '',
+    commit: '', // optional
+    deploymentId: '' // optional
 );```

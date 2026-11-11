@@ -35,6 +35,7 @@ use Revenexx\Client;
 use Revenexx\Services\Apps;
 use Revenexx\Enums\Runtime;
 use Revenexx\Enums\Scopes;
+use Revenexx\Enums\VcsTriggerMode;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -62,7 +63,9 @@ $result = $apps->appsCreate(
     schedule: '0 3 * * *', // optional
     scopes: [Scopes::SESSIONSWRITE()], // optional
     specification: 's-1vcpu-512mb', // optional
-    timeout: 1 // optional
+    timeout: 1, // optional
+    vcsPreviewsEnabled: true, // optional
+    vcsTriggerMode: VcsTriggerMode::PUSH() // optional
 );```
 
 ## apps-list-marketplace
@@ -110,6 +113,30 @@ $apps = new Apps($client);
 $result = $apps->appsInstallFromMarketplace(
     name: '',
     owner: ''
+);```
+
+## apps-rebuild-release
+
+Rebuild app release
+
+```php
+<?php
+
+use Revenexx\Client;
+use Revenexx\Services\Apps;
+
+$client = (new Client())
+    ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
+    ->setTenant('<TENANT_SLUG>') // Your tenant slug
+    ->setApiKeyAuth('<API_KEY>') // A gateway-managed scoped API key (rvxk_…).
+;
+
+$apps = new Apps($client);
+
+$result = $apps->appsRebuildRelease(
+    name: '',
+    version: '',
+    commit: '' // optional
 );```
 
 ## apps-list-runtimes
@@ -282,6 +309,7 @@ use Revenexx\Client;
 use Revenexx\Services\Apps;
 use Revenexx\Enums\Runtime;
 use Revenexx\Enums\Scopes;
+use Revenexx\Enums\VcsTriggerMode;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -309,7 +337,9 @@ $result = $apps->appsUpdate(
     schedule: '0 3 * * *', // optional
     scopes: [Scopes::SESSIONSWRITE()], // optional
     specification: 's-1vcpu-512mb', // optional
-    timeout: 1 // optional
+    timeout: 1, // optional
+    vcsPreviewsEnabled: true, // optional
+    vcsTriggerMode: VcsTriggerMode::PUSH() // optional
 );```
 
 ## apps-update-deployment
@@ -370,6 +400,7 @@ Create app deployment
 use Revenexx\Client;
 use Revenexx\InputFile;
 use Revenexx\Services\Apps;
+use Revenexx\Enums\ReleaseMode;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -384,7 +415,8 @@ $result = $apps->appsCreateDeployment(
     activate: true,
     code: InputFile::withPath('file.png'),
     commands: '', // optional
-    entrypoint: '' // optional
+    entrypoint: '', // optional
+    releaseMode: ReleaseMode::DEPLOY() // optional
 );```
 
 ## apps-create-duplicate-deployment
@@ -725,6 +757,52 @@ $result = $apps->appsPublish(
     functionId: ''
 );```
 
+## apps-list-releases
+
+List app releases
+
+```php
+<?php
+
+use Revenexx\Client;
+use Revenexx\Services\Apps;
+
+$client = (new Client())
+    ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
+    ->setTenant('<TENANT_SLUG>') // Your tenant slug
+    ->setApiKeyAuth('<API_KEY>') // A gateway-managed scoped API key (rvxk_…).
+;
+
+$apps = new Apps($client);
+
+$result = $apps->appsListReleases(
+    functionId: ''
+);```
+
+## apps-accept-release
+
+Accept app release candidate
+
+```php
+<?php
+
+use Revenexx\Client;
+use Revenexx\Services\Apps;
+
+$client = (new Client())
+    ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
+    ->setTenant('<TENANT_SLUG>') // Your tenant slug
+    ->setApiKeyAuth('<API_KEY>') // A gateway-managed scoped API key (rvxk_…).
+;
+
+$apps = new Apps($client);
+
+$result = $apps->appsAcceptRelease(
+    functionId: '',
+    rc: 1, // optional
+    version: '' // optional
+);```
+
 ## apps-get-usage
 
 Get app usage
@@ -866,4 +944,94 @@ $result = $apps->appsUpdateVariable(
     key: '',
     secret: true, // optional
     value: '' // optional
+);```
+
+## apps-unpublish-theme
+
+Unpublish theme from Marketplace
+
+```php
+<?php
+
+use Revenexx\Client;
+use Revenexx\Services\Apps;
+
+$client = (new Client())
+    ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
+    ->setTenant('<TENANT_SLUG>') // Your tenant slug
+    ->setApiKeyAuth('<API_KEY>') // A gateway-managed scoped API key (rvxk_…).
+;
+
+$apps = new Apps($client);
+
+$result = $apps->appsUnpublishTheme(
+    siteId: ''
+);```
+
+## apps-publish-theme
+
+Publish theme to Marketplace
+
+```php
+<?php
+
+use Revenexx\Client;
+use Revenexx\Services\Apps;
+
+$client = (new Client())
+    ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
+    ->setTenant('<TENANT_SLUG>') // Your tenant slug
+    ->setApiKeyAuth('<API_KEY>') // A gateway-managed scoped API key (rvxk_…).
+;
+
+$apps = new Apps($client);
+
+$result = $apps->appsPublishTheme(
+    siteId: ''
+);```
+
+## apps-list-theme-releases
+
+List theme releases
+
+```php
+<?php
+
+use Revenexx\Client;
+use Revenexx\Services\Apps;
+
+$client = (new Client())
+    ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
+    ->setTenant('<TENANT_SLUG>') // Your tenant slug
+    ->setApiKeyAuth('<API_KEY>') // A gateway-managed scoped API key (rvxk_…).
+;
+
+$apps = new Apps($client);
+
+$result = $apps->appsListThemeReleases(
+    siteId: ''
+);```
+
+## apps-accept-theme-release
+
+Accept theme release candidate
+
+```php
+<?php
+
+use Revenexx\Client;
+use Revenexx\Services\Apps;
+
+$client = (new Client())
+    ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
+    ->setTenant('<TENANT_SLUG>') // Your tenant slug
+    ->setApiKeyAuth('<API_KEY>') // A gateway-managed scoped API key (rvxk_…).
+;
+
+$apps = new Apps($client);
+
+$result = $apps->appsAcceptThemeRelease(
+    siteId: '',
+    rc: 1, // optional
+    version: '' // optional
 );```

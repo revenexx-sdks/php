@@ -7,6 +7,7 @@ use Revenexx\InputFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Revenexx\Enums\VcsTriggerMode;
+use Revenexx\Enums\ReleaseMode;
 use Revenexx\Enums\CubesCreateVcsDeploymentType;
 
 final class CubesTest extends TestCase
@@ -184,11 +185,13 @@ final class CubesTest extends TestCase
             "\$updatedAt" => "",
             "activate" => true,
             "billingJson" => "",
+            "buildDigest" => "",
             "buildDuration" => 1,
             "buildId" => "",
             "buildLogs" => "",
             "buildSize" => 1,
             "entrypoint" => "",
+            "gateResultsJson" => "",
             "manifestJson" => "",
             "providerBranch" => "",
             "providerBranchUrl" => "",
@@ -200,6 +203,7 @@ final class CubesTest extends TestCase
             "providerRepositoryName" => "",
             "providerRepositoryOwner" => "",
             "providerRepositoryUrl" => "",
+            "releaseMode" => "",
             "resourceId" => "",
             "resourceType" => "",
             "screenshotDark" => "",
@@ -230,11 +234,13 @@ final class CubesTest extends TestCase
             "\$updatedAt" => "",
             "activate" => true,
             "billingJson" => "",
+            "buildDigest" => "",
             "buildDuration" => 1,
             "buildId" => "",
             "buildLogs" => "",
             "buildSize" => 1,
             "entrypoint" => "",
+            "gateResultsJson" => "",
             "manifestJson" => "",
             "providerBranch" => "",
             "providerBranchUrl" => "",
@@ -246,6 +252,7 @@ final class CubesTest extends TestCase
             "providerRepositoryName" => "",
             "providerRepositoryOwner" => "",
             "providerRepositoryUrl" => "",
+            "releaseMode" => "",
             "resourceId" => "",
             "resourceType" => "",
             "screenshotDark" => "",
@@ -277,11 +284,13 @@ final class CubesTest extends TestCase
             "\$updatedAt" => "",
             "activate" => true,
             "billingJson" => "",
+            "buildDigest" => "",
             "buildDuration" => 1,
             "buildId" => "",
             "buildLogs" => "",
             "buildSize" => 1,
             "entrypoint" => "",
+            "gateResultsJson" => "",
             "manifestJson" => "",
             "providerBranch" => "",
             "providerBranchUrl" => "",
@@ -293,6 +302,7 @@ final class CubesTest extends TestCase
             "providerRepositoryName" => "",
             "providerRepositoryOwner" => "",
             "providerRepositoryUrl" => "",
+            "releaseMode" => "",
             "resourceId" => "",
             "resourceType" => "",
             "screenshotDark" => "",
@@ -307,6 +317,87 @@ final class CubesTest extends TestCase
             ->andReturn($data);
 
         $response = $this->cubes->cubesGetDeployment(
+            "",
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCubesListReleases(): void
+    {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->cubes->cubesListReleases(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCubesAcceptRelease(): void
+    {
+
+        $data = array();
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->cubes->cubesAcceptRelease(
+            ""
+        );
+
+        $this->assertSame($data, $response);
+    }
+
+    public function testMethodCubesRebuildRelease(): void
+    {
+
+        $data = array(
+            "\$createdAt" => "",
+            "\$id" => "",
+            "\$updatedAt" => "",
+            "activate" => true,
+            "billingJson" => "",
+            "buildDigest" => "",
+            "buildDuration" => 1,
+            "buildId" => "",
+            "buildLogs" => "",
+            "buildSize" => 1,
+            "entrypoint" => "",
+            "gateResultsJson" => "",
+            "manifestJson" => "",
+            "providerBranch" => "",
+            "providerBranchUrl" => "",
+            "providerCommitAuthor" => "",
+            "providerCommitAuthorUrl" => "",
+            "providerCommitHash" => "",
+            "providerCommitMessage" => "",
+            "providerCommitUrl" => "",
+            "providerRepositoryName" => "",
+            "providerRepositoryOwner" => "",
+            "providerRepositoryUrl" => "",
+            "releaseMode" => "",
+            "resourceId" => "",
+            "resourceType" => "",
+            "screenshotDark" => "",
+            "screenshotLight" => "",
+            "sourceSize" => 1,
+            "status" => "waiting",
+            "totalSize" => 1,
+            "type" => "");
+
+        $this->client
+            ->allows()->call(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+            ->andReturn($data);
+
+        $response = $this->cubes->cubesRebuildRelease(
             "",
             ""
         );

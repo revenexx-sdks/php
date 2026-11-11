@@ -35,6 +35,10 @@ class Scopes implements JsonSerializable
     private static Scopes $FUNCTIONSWRITE;
     private static Scopes $SITESREAD;
     private static Scopes $SITESWRITE;
+    private static Scopes $INTEGRATIONSREAD;
+    private static Scopes $INTEGRATIONSWRITE;
+    private static Scopes $CUBESREAD;
+    private static Scopes $CUBESWRITE;
     private static Scopes $LOGREAD;
     private static Scopes $LOGWRITE;
     private static Scopes $EXECUTIONREAD;
@@ -281,6 +285,34 @@ class Scopes implements JsonSerializable
             self::$SITESWRITE = new Scopes('sites.write');
         }
         return self::$SITESWRITE;
+    }
+    public static function INTEGRATIONSREAD(): Scopes
+    {
+        if (!isset(self::$INTEGRATIONSREAD)) {
+            self::$INTEGRATIONSREAD = new Scopes('integrations.read');
+        }
+        return self::$INTEGRATIONSREAD;
+    }
+    public static function INTEGRATIONSWRITE(): Scopes
+    {
+        if (!isset(self::$INTEGRATIONSWRITE)) {
+            self::$INTEGRATIONSWRITE = new Scopes('integrations.write');
+        }
+        return self::$INTEGRATIONSWRITE;
+    }
+    public static function CUBESREAD(): Scopes
+    {
+        if (!isset(self::$CUBESREAD)) {
+            self::$CUBESREAD = new Scopes('cubes.read');
+        }
+        return self::$CUBESREAD;
+    }
+    public static function CUBESWRITE(): Scopes
+    {
+        if (!isset(self::$CUBESWRITE)) {
+            self::$CUBESWRITE = new Scopes('cubes.write');
+        }
+        return self::$CUBESWRITE;
     }
     public static function LOGREAD(): Scopes
     {

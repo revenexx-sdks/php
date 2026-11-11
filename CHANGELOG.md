@@ -1,3 +1,10 @@
+## v0.6.0
+- Breaking: Apps.appsCreateDeployment, Cubes.cubesCreateDeployment, Sites.sitesCreateDeployment take a new releaseMode argument where onProgress was
+- New methods: Apps.appsAcceptRelease, Apps.appsAcceptThemeRelease, Apps.appsListReleases, Apps.appsListThemeReleases, Apps.appsPublishTheme, Apps.appsRebuildRelease, Apps.appsUnpublishTheme, Cubes.cubesAcceptRelease, Cubes.cubesListReleases, Cubes.cubesRebuildRelease
+- New options vcsPreviewsEnabled, vcsTriggerMode on Apps.appsCreate, Apps.appsUpdate, Sites.sitesCreate, Sites.sitesUpdate
+- New types: ReleaseMode, Integrations
+- New enum values: Scopes.CUBESREAD, Scopes.CUBESWRITE, Scopes.INTEGRATIONSREAD, Scopes.INTEGRATIONSWRITE
+
 ## v0.5.0
 - New: DELETE /v1/cubes/{cubeId}, GET /v1/cubes, GET /v1/cubes/{cubeId}, GET /v1/cubes/{cubeId}/deployments and 5 more. Regenerated from the latest API specification.
 

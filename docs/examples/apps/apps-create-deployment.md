@@ -4,6 +4,7 @@
 use Revenexx\Client;
 use Revenexx\InputFile;
 use Revenexx\Services\Apps;
+use Revenexx\Enums\ReleaseMode;
 
 $client = (new Client())
     ->setEndpoint('https://api.revenexx.com') // Your API Endpoint
@@ -18,5 +19,6 @@ $result = $apps->appsCreateDeployment(
     activate: true,
     code: InputFile::withPath('file.png'),
     commands: '', // optional
-    entrypoint: '' // optional
+    entrypoint: '', // optional
+    releaseMode: ReleaseMode::DEPLOY() // optional
 );```

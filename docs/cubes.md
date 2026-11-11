@@ -115,6 +115,7 @@ POST https://api.revenexx.com/v1/cubes/{cubeId}/deployments
 | cubeId | string | **Required** Cube ID. |  |
 | activate | boolean | Automatically activate the deployment when it is finished building. |  |
 | code | file | The Cube directory packaged as a gzipped tar archive (`.tar.gz`) with `cube.json` at its root, sent as the file part of the multipart request. |  |
+| releaseMode | string | Release mode: `deploy` releases the Cube once its round is approved; `preview` makes it a candidate the vendor accepts after checking it. |  |
 
 
 ```http request
@@ -147,4 +148,58 @@ GET https://api.revenexx.com/v1/cubes/{cubeId}/deployments/{deploymentId}
 | --- | --- | --- | --- |
 | cubeId | string | **Required** Cube ID. |  |
 | deploymentId | string | **Required** Deployment ID. |  |
+
+
+```http request
+GET https://api.revenexx.com/v1/cubes/{cubeId}/releases
+```
+
+** List the release rounds of this Cube as the registry holds
+them: version, round number, state (submitted, candidate,
+approved, rejected), release mode, gate results, decision
+deadline, rejection reason and the deployment that opened it. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| cubeId | string | **Required** Cube ID. |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/cubes/{cubeId}/releases/accept
+```
+
+** Accept a preview candidate of this Cube after checking it.
+Without `version` the version of the latest released
+deployment is accepted; without `rc` its newest candidate
+round. Only the Cube's vendor can accept, and only a candidate
+in preview mode. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| cubeId | string | **Required** Cube ID. |  |
+| rc | integer | Release round to accept. Defaults to the newest candidate round of the version. |  |
+| version | string | Version to accept. Defaults to the version of the latest released deployment. |  |
+
+
+```http request
+POST https://api.revenexx.com/v1/cubes/{cubeId}/releases/rebuild
+```
+
+** Release the source a version of this Cube was built from
+again, so it is linted and judged again in a new release
+round. Takes the round's deployment, or the newest deployment
+whose manifest names this version; `commit` narrows that. **
+
+### Parameters
+
+| Field Name | Type | Description | Default |
+| --- | --- | --- | --- |
+| cubeId | string | **Required** Cube ID. |  |
+| commit | string | Commit SHA the round recorded (7 to 64 hex characters). Optional. |  |
+| deploymentId | string | Deployment the round was built as. Optional. |  |
+| version | string | Version to rebuild. |  |
 
